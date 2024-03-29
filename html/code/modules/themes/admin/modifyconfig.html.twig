@@ -1,0 +1,447 @@
+{# @themes/admin/modifyconfig.html.twig #}
+
+{% block modifyconfig %}
+{{ include('@themes/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            <h2>Modify Themes Configuration</h2>
+        </div>
+        <div class="xar-mod-page-body">
+            <form action="{{ xar_currenturl() }}" method="post" enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <legend>General options</legend>
+                    {{ xar_data_form({object: module_settings}) }}
+                </fieldset>
+                <fieldset>
+                    <legend>Configuration Options</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'The default directory for site themes - no trailing slash.' %}
+                            <label for="themedir" title="{{ label }}">
+                                Default Theme Directory:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_var({scope: "config", name: "Site.BL.ThemesDirectory"}) %}
+                            <input type="text" id="themedir" name="themedir" value="{{ value }}" maxlength="100" class="xar-form-textlong"/>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'The default document type the BL compiler will produce' %}
+                            <label for="doctype" title="{{ label }}">
+                                Default Document Type:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_var({scope: "config", name: "Site.BL.DocType"}) %}
+                            {% set options = [
+                                    {'id': 'html2', 'name': 'html2'},
+                                    {'id': 'html32', 'name': 'html32'},
+                                    {'id': 'html401-strict', 'name': 'html401-strict'},
+                                    {'id': 'html401-transitional', 'name': 'html401-transitional'},
+                                    {'id': 'html401-frameset', 'name': 'html401-frameset'},
+                                    {'id': 'xhtml1-strict', 'name': 'xhtml1-strict'},
+                                    {'id': 'xhtml1-transitional', 'name': 'xhtml1-transitional'},
+                                    {'id': 'xhtml1-frameset', 'name': 'xhtml1-frameset'},
+                                    {'id': 'xhtml11', 'name': 'xhtml11'},
+                                    {'id': 'mathml101', 'name': 'mathml101'},
+                                    {'id': 'mathml2', 'name': 'mathml2'},
+                                    {'id': 'svg10', 'name': 'svg10'},
+                                    {'id': 'svg11', 'name': 'svg11'},
+                                    {'id': 'svg11-basic', 'name': 'svg11-basic'},
+                                    {'id': 'svg11-tiny', 'name': 'svg11-tiny'},
+                                    {'id': 'xhtml-math-svg', 'name': 'xhtml-math-svg'},
+                                    {'id': 'svg-xhtml-math', 'name': 'svg-xhtml-math'},
+                                    {'id': 'rss', 'name': 'rss'},
+                                    {'id': 'html5', 'name': 'html5'},
+                                ] %}
+                            {{ xar_data_input({type: "dropdown", id: "doctype", name: "doctype", value: value, options: options, class: "xar-form-textlong"}) }}
+                        </div>
+                    </div>
+                    {# <!--
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Use the Admin Dashboard to manage all your Admin settings from a single page.' %}
+                            <label for="dashboard" title="{{ label }}" class="xar-form-label">
+                                Enable the Admin Dashboard.
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set checked = xar_var({scope: "module", module: "themes", name: "usedashboard"}) %}
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "checkbox", name: "usedashboard", checked: checked}) }}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-form-input-wrapper">
+                            {% set label = 'Template name for the dashboard - no trailing suffix, defaults to 'dashboard'' %}
+                            <label for="dashtemplate" title="{{ label }}" class="xar-form-label">
+                                Dashboard Template name
+                            </label>
+                            <input type="text" name="dashtemplate" id="dashtemplate" value="{{ dashtemplate }}" size="30" maxlength="100"/>&#160;(without the .xt extension) 
+                            <div class="xar-col dummy">
+                                The Admin Dashboard is automatically used with all admin functions. The default page template name is  <strong>dashboard.xt</strong>.
+                            </div>
+                            <div class="xar-col dummy">
+                                A page template called  <strong>admin.xt</strong>will be used automatically without this switch and can be customised on a module by module basis (eg admin-articles.xt).
+                            </div>
+                        </div>
+                    </div>
+                    --> #}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Use submenus in the page for admin functions.' %}
+                            <label for="adminpagemenu" title="{{ label }}">
+                                Enable InPage Admin SubMenus
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set checked = xar_var({scope: "module", module: "themes", name: "adminpagemenu"}) %}
+                            {{ xar_data_input({type: "checkbox", name: "adminpagemenu", checked: checked}) }}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Use submenus in the page for user functions.' %}
+                            <label for="userpagemenu" title="{{ label }}">
+                                Enable InPage User SubMenus
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set checked = xar_var({scope: "module", module: "themes", name: "userpagemenu"}) %}
+                            {{ xar_data_input({type: "checkbox", name: "userpagemenu", checked: checked}) }}
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>                    
+                        Debug Options                    
+                    </legend>
+                    {{ include('@themes/includes/debug.html.twig') }}
+                </fieldset>
+                <fieldset>
+                    <legend>User Settings</legend>
+                    {% set enable_user_menu = xar_var({scope: "module", module: "themes", name: "enable_user_menu"}) %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set varlabel = 'Allow users to select a theme from their profile' %}
+                            <label for="enable_user_menu" class="xar-form-label" title="{{ varlabel }}">
+                                Enable User Settings                    
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% if not enable_user_menu %}
+                                <input type="checkbox" name="enable_user_menu" id="enable_user_menu" onclick="toggleDisplay('user_themes_id');"/>
+                            {% else %}
+                                <input type="checkbox" name="enable_user_menu" id="enable_user_menu" onclick="toggleDisplay('user_themes_id');" checked="checked"/>
+                            {% endif %}
+                            {{ varlabel }}                   
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set varlabel = 'Select themes users may choose from' %}
+                            <label for="user_themes" class="xar-form-label" title="{{ varlabel }}">
+                                User Themes                    
+                            </label>
+                        </div>          
+                        <div class="xar-col">
+                            {{ varlabel }}<br/>
+                            {{ xar_data_input({property: user_themes, name: "user_themes", id: "user_themes", layout: "vertical"}) }}
+                        </div>         
+                    </div>
+                    {% if not enable_user_menu %}                
+                        <script type="text/javascript">
+                            //<![CDATA[
+                            setDisplayOff('user_themes_id');
+                            //]]>                    
+                        </script>
+                     {% endif %}
+                </fieldset>
+                <fieldset>
+                <legend>Site Display Options</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="sitename">
+                                Site Name
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteName"}) %}
+                            <input type="text" name="sitename" id="sitename" value="{{ value }}" size="30" maxlength="100"/>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="slogan" class="xar-form-label">
+                                Site Slogan
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteSlogan"}) %}
+                            <input type="text" name="slogan" id="slogan" value="{{ value }}" size="30" maxlength="100"/>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="copyright">
+                                Copyright
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteCopyRight"}) %}
+                            <input type="text" name="copyright" id="copyright" value="{{ value }}" size="30" maxlength="100"/>
+                        </div>
+                    </div>
+                    {{ xar_coremethod('xarVar', 'delCached', ['Mod.Variables.themes','SiteCopyRight']) }} 
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="footer">
+                                Footer Note
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteFooter"}) %}
+                            {{ xar_data_input({type: "textarea", name: "footer", cols: "40", rows: "3", value: value, class: "xar-form-textareamedium"}) }}
+                        </div>
+                    </div>
+                    {{ xar_coremethod('xarVar', 'delCached', ['Mod.Variables.themes','SiteFooter']) }} 
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="separator">
+                                Page Title Separator
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteTitleSeparator"}) %}
+                            <input type="text" name="separator" id="separator" value="{{ value }}" size="10" maxlength="15"/>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set options = [
+                                    {'id': 'default', 'name': {{ xar_translate('Site Name - Module Name - Page Name') }}},
+                                    {'id': 'sp', 'name': {{ xar_translate('Site Name - Page Name') }}},
+                                    {'id': 'mps', 'name': {{ xar_translate('Module Name - Page Name - Site Name') }}},
+                                    {'id': 'pms', 'name': {{ xar_translate('Page Name - Module Name - Site Name') }}},
+                                    {'id': 'to', 'name': {{ xar_translate('Page Name') }}},
+                                    {'id': 'theme', 'name': {{ xar_translate('Theme Driven') }}},
+                                ] %}
+                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteTitleOrder"}) %}
+                            <label for="pagetitle">
+                                Page Title Order
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "dropdown", name: "pagetitle", options: options, value: value}) }}
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Template Caching options</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="cachetemplates">                        
+                                Cache compiled templates                        
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set checked = xar_var({scope: "config", name: "Site.BL.CacheTemplates"}) %}
+                            {{ xar_data_input({type: "checkbox", name: "cachetemplates", checked: checked}) }} Enable template caching
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="memcachetemplates" class="xar-form-label">
+                                Memory Caching <span class="xar-warn">(experimental)</span>
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set checked = xar_var({scope: "config", name: "Site.BL.MemCacheTemplates"}) %}
+                            {{ xar_data_input({type: "checkbox", name: "memcachetemplates", checked: checked}) }} Enable memory caching for templates
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>CSS Rendering Options</legend>
+                    {{ xar_javascript({scope: "theme", filename: "toggle.js"}) }}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="combinecss">
+                                Combine CSS <span class="xar-warn">(experimental)</span>            
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set combined = xar_var({scope: "module", module: "themes", name: "css.combined"}) %}
+                            {% if combined %}
+                                <input type="checkbox" name="combinecss" id="combinecss" checked="checked" onclick="toggleDisplay('compressedcss');"/>
+                            {% else %}
+                                <input type="checkbox" name="combinecss" id="combinecss" onclick="toggleDisplay('compressedcss');"/>
+                            {% endif %}
+                            Combine all stylesheets and embedded styles into a single file.
+                        </div>
+                    </div>       
+                    <div id="compressedcss" class="xar-row">
+                        <div class="xar-col">
+                            <label for="compresscss">
+                                Compress CSS <span class="xar-warn">(experimental)</span> 
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set compressed = xar_var({scope: "module", module: "themes", name: "css.compressed"}) %}
+                            {{ xar_data_input({type: "checkbox", name: "compresscss", id: "compresscss", checked: compressed}) }} Compresses combined CSS stylesheet, eliminating whitespace, comments and linebreaks.
+                        </div>
+                    </div>
+                    {% if not combined %}
+                        <script type="text/javascript">
+                            //<![CDATA[
+                            setDisplayOff('compressedcss');
+                            //]]>                    
+                        </script>
+                     {% endif %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="enableajax">
+                                Enable AJAX
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set allowajax = xar_coremethod('xarConfigVars', 'get', [null, 'Site.Core.AllowAJAX']) %}
+                            {{ xar_data_input({type: "checkbox", name: "allowajax", id: "allowajax", checked: allowajax}) }}
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>BlockLayout Templating Engine</legend>
+                    <p class="xar-note">
+                        Eliminates all superfluous whitespace from the templates. Multiple spaces, CRs etc. are reduced to a single space.
+                    </p>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Compress whitespace in the template' %}
+                            <label for="bl_compresswhitespace" title="{{ label }}" class="xar-form-label">
+                                Compress whitespace:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set options = [
+                                    {'id': 0, 'name': {{ xar_translate('No') }}},
+                                    {'id': 1, 'name': {{ xar_translate('Yes') }}},
+                                ] %}
+                            {% set checked = xar_var({scope: "config", name: "Site.BL.CompressWhitespace"}) %}
+                            {{ xar_data_input({type: "radio", name: "compresswhitespace", value: checked, options: options}) }}
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Template Debugging options</legend>
+                    <p class="xar-note">The options activated below are visible to the debug administrators, <a href="{{ xar_moduleurl('roles','admin','modifyconfig',{'tab': 'debugging'}) }}">which are defined here</a>.</p>
+                    {% if xar_coremethod('xarConfigVars', 'get', [null,'Site.BL.CacheTemplates']) %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label for="showphpcbit" class="xar-form-label">                            
+                                    Show php block header                            
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {% set checked = xar_var({scope: "module", module: "themes", name: "ShowPHPCommentBlockInTemplates"}) %}
+                                {{ xar_data_input({type: "checkbox", name: "showphpcbit", id: "showphpcbit", checked: checked}) }} Block header is displayed in compiled templates.
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="showtemplates">                        
+                                Show template filenames                        
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set checked = xar_var({scope: "module", module: "themes", name: "ShowTemplates"}) %}
+                            {{ xar_data_input({type: "checkbox", name: "showtemplates", checked: checked}) }} Filenames are shown as HTML comments.
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="variable_dump" class="xar-form-label">                        
+                                Show Available Variables                         
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set checked = xar_var({scope: "module", module: "themes", name: "variable_dump"}) %}
+                            {{ xar_data_input({type: "checkbox", name: "variable_dump", checked: checked}) }} Debug Templates by Showing Available Variables
+                        </div>
+                    </div>
+                    {% if xar_coremethod('xarMod', 'isAvailable', ['atom']) %}
+                        {# <!-- This should be moved if we ever fully support the atom spec --> #}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label for="AtomTag" class="xar-form-label">                            
+                                    Atom Tag                            
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {% set value = xar_var({scope: "module", module: "themes", name: "AtomTag"}) %}
+                                <input type="text" name="AtomTag" id="AtomTag" value="{{ value }}" size="30" maxlength="100"/>
+                            </div>
+                        </div>
+                    {% endif %}
+                </fieldset>
+                {{ include('@base/includes/update-button.html.twig') }}
+            </form>
+            <form action="{{ xar_currenturl() }}" method="post">
+                <fieldset>
+                    <legend>Flush Caches</legend>
+                    <p class="xar-alert">Removes all cached files, forcing their recompilation</p>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Remove all the cached templates' %}
+                            <label for="flushcaches" title="{{ label }}" class="xar-form-label">
+                                Flush file caches:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set options = [
+                                    {'id': 'templates', 'name': {{ xar_translate('Templates') }}},
+                                    {'id': 'rss', 'name': {{ xar_translate('RSS') }}},
+                                    {'id': 'database', 'name': {{ xar_translate('Database') }}},
+                                    {'id': 'css', 'name': {{ xar_translate('CSS') }}},
+
+                                ] %}
+                            {% set value = xar_modvar('themes', 'flushcaches') %}
+                            {{ xar_data_input({type: "checkboxlist", name: "flushcaches", value: value, options: options}) }}
+                        </div>
+                    </div>
+                    <p class="xar-alert">Empties the cache tables in the database, forcing their repopulation</p>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Empty the cache table in the database' %}
+                            <label for="flushdbcaches" title="{{ label }}" class="xar-form-label">
+                                Flush database caches:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set options = [
+                                    {'id': 'dynamicdata', 'name': {{ xar_translate('Dynamicdata') }}},
+                                ] %}
+                            {% set value = xar_modvar('themes', 'flushdbcaches') %}
+                            {{ xar_data_input({type: "checkboxlist", name: "flushdbcaches", value: value, options: options}) }}
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="xar-form-actions">
+                    <div class="xar-row">
+                        <div class="xar-col"></div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "hidden", name: "phase", id: "phase", value: "flush"}) }}
+                            <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                            {% set label = 'Flush' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

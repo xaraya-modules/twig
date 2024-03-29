@@ -1,0 +1,11 @@
+{# @themes/admin/display_config.html.twig #}
+
+{% block display_config %}
+{{ include('@themes/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            {{ xar_data_label({object: object}) }}
+        </h2>
+        {{ xar_data_display({object: object}) }}
+    </div>
+{% endblock %}

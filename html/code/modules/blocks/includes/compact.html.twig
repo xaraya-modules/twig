@@ -1,0 +1,96 @@
+{# @blocks/includes/compact.html.twig #}
+
+{% block compact %}
+<div class="xar-row">
+        <div class="xar-col">
+            <label class="xar-form-label">Legend of Actions</label>
+        </div>
+        <div class="xar-col">
+            <strong>[D]efault [H]idden [M]aximized [E]dit [R]emove</strong>
+        </div>
+    </div>
+    <div class="xar-overflow-auto" style="clear:both">
+        {% for loop_key1, loop_item1 in blocks %}{% set loop_index1 = loop.index %}
+            {% if ((loop_index1 + 1) % 2) %}
+                <div class="xar-floatleft xar-halfwidth xar-border-thinbottom">
+                    <div class="xar-sub xar-floatright xar-align-right">[
+                        {% if loop_item1.groups %}
+                            {% for loop_key2, loop_item2 in loop_item1.groups %}{% set loop_index2 = loop.index %}{% set loop_groupsl_index = loop_index2 %}{% set loop_groupsl_item = loop_item2 %}{% set loop_groupsl_key = loop_key2 %}
+                                <a href="{{ xar_moduleurl('blocks','admin','modify_group') }}&amp;id={{ loop_groupsl_item.id }}" title="{{ xar_translate('Edit group') }}">{{ loop_groupsl_item.name }}</a>
+                            </xar:loop>
+                        {% else %}
+                            none
+                        {% endif %}|
+                        {% if loop_item1['template'] != NULL %}
+                            {{ loop_item1['template'] }}
+                            &#160;
+                        {% else %}
+                        {% if not loop_item1['group_template'] %}D
+                        {% else %}{{ loop_item1['group_template'] }} &#160;{% endif %}{% endif %}|
+                        {% if loop_item1['state'] == '0' %}
+                            H
+                        {% else %}
+                            M
+                        {% endif %}|
+                        <a href="{{ xar_moduleurl('blocks','admin','modify_instance') }}&amp;bid={{ loop_item1.bid }}">
+                            E
+                        </a>|
+                        <a href="{{ loop_item1['deleteurl'] }}">
+                            R
+                        </a>]
+                    </div>
+                    {% if not loop_item1['title'] %}
+                        {{ loop_item1['name'] }}
+                    {% else %}
+                        <span title="{{ xar_prep_display(loop_item1['title']) }}">
+                        {{ loop_item1['name'] }}</span>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="xar-floatright xar-halfwidth xar-border-thinbottom">
+                    <div class="xar-sub xar-floatright xar-align-right">[
+                        {% if loop_item1.groups %}
+                            <xar:loop name="loop_item1.groups" id="groupsr">
+                                <a href="{{ xar_moduleurl('blocks','admin','modify_group') }}&amp;id={{ loop.groupsr.item.id }}" title="{{ xar_translate('Edit group') }}">
+                                    {{ loop.groupsr.item.name }}
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            none
+                        {% endif %}|
+                        {% if loop_item1['template'] != NULL %}
+                            {{ loop_item1['template'] }}
+                            &#160;
+                        {% else %}
+                            {% if not loop_item1['group_template'] %}
+                                D
+                            {% else %}
+                                {{ loop_item1['group_template'] }} &#160;
+                            {% endif %}
+                        {% endif %}|
+                        {% if loop_item1['state'] == '0' %}
+                            H
+                        {% else %}
+                            M
+                        {% endif %}|
+                        <a href="{{ xar_moduleurl('blocks','admin','modify_instance') }}&amp;bid={{ loop_item1.bid }}">
+                            E
+                        </a>|
+                        <a href="{{ loop_item1['deleteurl'] }}">
+                            R
+                        </a>]
+                    </div>
+                    {% if not loop_item1['title'] %}
+                        {{ loop_item1['name'] }}
+                    {% else %}
+                        <span title="{{ xar_prep_display(loop_item1['title']) }}">
+                        {{ loop_item1['name'] }}</span>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div>
+        {{ xar_pager({startnum: startnum, itemsperpage: itemsperpage, total: total}) }}
+    </div>
+{% endblock %}

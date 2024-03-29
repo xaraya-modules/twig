@@ -1,0 +1,51 @@
+{# @roles/search.html.twig #}
+
+{% extends '@roles/base.html.twig' %}
+
+{% block modulespace %}
+<h2>Search Users</h2>
+    {% if users and users|length > 0 %}
+        <h3>Users Found:</h3>
+        <ul>
+            {% for id, user in users %}
+                <li>
+                    <a href="{{ xar_moduleurl('roles','user','display',{'id': user['id']}) }}">
+                        {{ xar_prep_display(user['name']) }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if status %}
+        <p>{{ xar_prep_display(status) }}</p>
+    {% endif %}
+    <p></p>
+    {% if properties and properties|length > 0 %}
+        {# <!-- @todo arrange by columns of 4 fields each --> #}
+        {% set i = 0 %}
+        {% for field in properties|keys %}
+            {% set dummy = 1; col = intval(i/4); columns[col][] = field; i++ %}
+        {% endfor %}
+        <table class="xar-table" border="0" cellpadding="2" cellspacing="0">
+            <tr>
+                <td class="xar-align-top">Search on:</td>
+                {# <!--
+                    you can also specify individual fields here, if you don't want to allow searching
+                    through all dynamic properties (e.g. ... name="icq" ... property="$properties['icq']" ...)
+                --> #}
+                {% for fields in columns %}
+                    <td class="xar-align-top">
+                        {% for field in fields %}
+                            {% set checked = checked[field] %}
+                            {{ xar_data_input({type: "checkbox", name: field, id: field, checked: checked}) }}
+                            <label for="{{ field }}">
+                                {{ xar_data_label({property: properties[field]}) }}
+                            </label>
+                            <br />
+                        {% endfor %}
+                    </td>
+                {% endfor %}
+            </tr>
+        </table>
+    {% endif %}
+{% endblock %}

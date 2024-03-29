@@ -1,0 +1,65 @@
+{# @categories/admin/new.html.twig #}
+
+{% block new %}
+{{ include('@categories/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            Create New Category
+        </h2>
+        <form action="{{ xar_moduleurl('categories','admin','create') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+            {% for i in range(1, repeat) %}
+                <fieldset class="xar-norm">
+                    <legend>
+                        <strong>
+                        Category&#160;{{ i }}</strong>
+                    </legend>
+                    {% set object = objects[i] %}
+                    {{ xar_data_form({object: object}) }}
+                    {% if hooks %}
+                        {% for module, output in hooks %}{{ output }}{% endfor %}
+                    {% endif %}
+                </fieldset>
+            {% endfor %}
+            <fieldset class="xar-norm">
+                <div class="xar-row">
+                    <div class="xar-col">
+                    </div>
+                    <div class="xar-col">
+                        <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                        {% set label = 'Cancel' %}
+                        {{- xar_button({type: "cancel", label: label}) -}}&#160;
+                        {% set label = 'Add' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </fieldset>
+            {% if xar_modvar('categories', 'allowbatch') %}
+                <fieldset class="xar-norm">
+                    <legend>
+                        <strong>
+                            Batch Processing
+                        </strong>
+                    </legend>
+                    <div class="xar-form-input-wrapper">
+                        <label for="repeat" class="xar-form-label help" title="{{ xar_translate('Input and save a set of categories at the same time.') }}">
+                            Category forms to display
+                        </label>
+                        <input class="xar-form-textlong" type="text" name="repeat" id="repeat" value="{{ repeat }}"/>
+                    </div>
+                </fieldset>
+                <fieldset class="xar-norm">
+                    <div class="xar-form-input-wrapper">
+                        <div class="xar-form-container-after">
+                            {% set label = 'Submit' %}
+                            {{- xar_button({type: "submit", name: "reassign", id: "reassign", label: label}) -}}
+                            {# <!--
+                                <input type="reset" value="{{ xar_translate('Reset') }}"/>
+                            --> #}
+                        </div>
+                    </div>
+                </fieldset>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

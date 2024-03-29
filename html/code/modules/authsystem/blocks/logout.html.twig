@@ -1,0 +1,11 @@
+{# @authsystem/blocks/logout.html.twig #}
+
+{% block logout %}
+<div class="xar-align-center">
+        <p>Welcome, 
+        {{ name }}</p>
+        <p>
+            <a href="{{ xar_moduleurl('authsystem','user','logout') }}">Logout</a>
+        </p>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{# @dynamicdata/admin/access.html.twig #}
+
+{% block access %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            Manage Access to {{ object.properties.label.value }}
+            {% set tab = 'access' %}
+            {{ include('@dynamicdata/includes/object_menu.html.twig') }}
+        </h2>
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','access') }}">
+            {{ include('@dynamicdata/includes/object_access.html.twig') }}
+        </form>
+    </div>
+{% endblock %}

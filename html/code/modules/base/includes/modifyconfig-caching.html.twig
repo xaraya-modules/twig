@@ -1,0 +1,147 @@
+{# @base/includes/modifyconfig-caching.html.twig #}
+
+{% block modifyconfig_caching %}
+<div style="padding: 5px">
+        These options are set in var/cache/config.caching.php
+    </div>
+    {% set cache_config_file = xar_coremethod('sys', 'varpath') ~ '/cache/config.caching.php' %}
+    {% if file_exists(cache_config_file) %}
+       <fieldset>
+            <legend>Persistent Caching</legend>
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'Enable persistent caching' %}
+                    <label for="shorturl" title="{{ label }}" class="xar-form-label">
+                        Enable Persistent Caching
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set value = cache_settings['Variable.CacheIsEnabled'] %}
+                    {{ xar_data_output({type: "checkbox", name: "persistent_isenabled", value: value}) }}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'Storage type' %}
+                    <label for="shorturl" title="{{ label }}" class="xar-form-label">
+                        Storage Type
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set options = [ 
+                            {'id': 'files', 'name': 'File System'}, 
+                            {'id': 'database', 'name': 'Database'}, 
+                        ] %}
+                    {% set value = cache_settings['Variable.CacheStorage'] %}
+                    {{ xar_data_output({type: "dropdown", name: "persistent_storagetype", value: value, options: options}) }}
+                </div>
+            </div>
+            {% if cache_settings['Variable.CacheProvider'] %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'The instantiated Doctrine CacheProvider' %}
+                    <label for="shorturl" title="{{ label }}" class="xar-form-label">
+                        Cache Provider
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set value = get_class(cache_settings['Variable.CacheProvider']) %}
+                    {{ xar_data_output({type: "textbox", name: "persistent_cacheprovider", value: value}) }}
+                </div>
+            </div>
+            {% endif %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'The length of time before the content in cache is deleted' %}
+                    <label for="shorturl" title="{{ label }}" class="xar-form-label">
+                        Expires after
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set value = cache_settings['Variable.TimeExpiration'] %}
+                    {{ xar_data_output({type: "integerbox", name: "persistent_timeexpiration", value: value}) }}
+                    seconds
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'The maximum size a single item to be cached can have' %}
+                    <label for="shorturl" title="{{ label }}" class="xar-form-label">
+                        Cache size
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set value = cache_settings['Variable.SizeLimit'] %}
+                    {{ xar_data_output({type: "integerbox", name: "persistent_sizelimit", value: value}) }}
+                    bytes
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'The name of the file to write to for persistent caching' %}
+                    <label for="shorturl" title="{{ label }}" class="xar-form-label">
+                        Log File
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set value = cache_settings['Variable.LogFile'] %}
+                    {{ xar_data_output({type: "textbox", name: "persistent_logfile", value: value}) }}
+                    (if logging is enabled)
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Core Cache Preload</legend>
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'Enable core cache preload from .php files (opcache)' %}
+                    <label for="shorturl" title="{{ label }}" class="xar-form-label">
+                        Enable Core Cache Preload
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set value = cache_settings['CoreCache.Preload'] %}
+                    {{ xar_data_output({type: "checkbox", name: "corecache_isenabled", value: value}) }}
+                </div>
+            </div>
+            {% if cache_settings['CoreCache.Preload'] %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'Preloading core cache values for a particular scope and name' %}
+                    <label for="shorturl" title="{{ label }}" class="xar-form-label">
+                        Preloading Scope and Name
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% for scope, value in cache_settings['CoreCache.Preload'] %}
+                        {% if '.' in scope %}
+                            {% set pieces = scope|split('.') %}
+                            {% set filepath = xar_coremethod('sys', 'varpath') ~ '/cache/core/' ~ pieces[0] ~ '.' ~ pieces[1] ~ '.php' %}
+                            {% if value is null %}
+                                Scope: {{ pieces[0] }} - Name: {{ pieces[1] }} (disabled)<br/>
+                            {% elseif file_exists(filepath) %}
+                                Scope: {{ pieces[0] }} - Name: {{ pieces[1] }} ({{ filesize(filepath) }} bytes)<br/>
+                            {% else %}
+                                Scope: {{ pieces[0] }} - Name: {{ pieces[1] }} (not cached)<br/>
+                            {% endif %}
+                        {% else %}
+                            {% set filepath = xar_coremethod('sys', 'varpath') ~ '/cache/core/' ~ scope ~ '.php' %}
+                            {% if value is null %}
+                                Scope: {{ scope }} (disabled)<br/>
+                            {% elseif file_exists(filepath) %}
+                                Scope: {{ scope }} ({{ filesize(filepath) }} bytes)<br/>
+                            {% else %}
+                                Scope: {{ scope }} (not cached)<br/>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </fieldset>
+    {% else %}
+        <div style="padding: 5px">
+            The file var/cache/config.caching.php does not exist. Please copy it from var/cache/config.caching.php.dist
+        </div>
+    {% endif %}
+{% endblock %}

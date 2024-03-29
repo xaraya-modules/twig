@@ -1,0 +1,30 @@
+{# @dynamicdata/objects/showform-objects.html.twig #}
+
+{% block showform_objects %}
+{% for name, property in properties %}
+        {% if property.getDisplayStatus() == 0 %}
+        {% elseif property.getDisplayStatus() == 3 %}
+            {{ xar_data_input({property: properties[name], hidden: "hidden"}) }}
+        {% else %}
+            <div class="xar-row">
+                <div class="xar-col-condensed">
+                    {{ xar_data_label({property: properties[name], for: "id"}) }}
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({property: properties[name]}) }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% if properties['name'].value %}
+        <div class="xar-form-input-wrapper">
+            Object Query
+        </div>
+        <div class="xar-form-input-wrapper">
+            {% set thisobject = DataObjectFactory..getObject({'name': properties['name'}.value]) %}
+	    {% if thisobject %}
+                {{ thisobject.dataquery.qecho() }}
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

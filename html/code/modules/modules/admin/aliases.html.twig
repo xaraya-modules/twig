@@ -1,0 +1,47 @@
+{# @modules/admin/aliases.html.twig #}
+
+{% block aliases %}
+{{ include('@modules/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Manage Module Aliases</h2>
+        <form method="post" action="{{ xar_moduleurl('modules','admin','aliases') }}">
+            <fieldset>
+                <legend>
+                    Aliases of {{ modname }}
+                </legend>
+                {% if aliasesMap %}
+                    {% for key, value in aliasesMap %}
+                        {% if value != modname %}
+                        {% else %}
+                        <div class="xar-col dummy">
+                            <a href="{{ xar_moduleurl('modules','admin','aliases',{'name': value, 'remove': key}) }}">
+                                {% set imagealt = '[remove]' %}
+                                {% set iconurl = xar_imageurl('icons/delete.png', 'theme') %}
+                                {{ xar_data_output({type: "image", value: iconurl, imagetext: imagealt}) }}
+                            </a>
+                            &#160;{{ key }}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="xar-col dummy">
+                        No aliases defined
+                    </div>
+                {% endif %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label class="xar-form-label">
+                            Add an alias
+                        </label>
+                        <input type="text" name="add"/>&#160;
+                        <input type="hidden" name="name" value="{{ modname }}"/>
+                        {% set label = 'Add Alias' %}
+                        {% set iconurl = xar_imageurl('icons/add.png', 'theme') %}
+                        {% set imagealt = '[add]' %}
+                        {{- xar_button({type: "submit", label: label, src: iconurl, title: imagealt, style: "width: 16px"}) -}}
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

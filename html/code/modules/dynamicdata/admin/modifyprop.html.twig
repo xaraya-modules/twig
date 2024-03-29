@@ -1,0 +1,141 @@
+{# @dynamicdata/admin/modifyprop.html.twig #}
+
+{% block modifyprop %}
+{{ xar_javascript({scope: "theme", filename: "toggle.js"}) }}
+    {{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if objectid %}
+            <h2>
+                Modify DataProperties {{ label }}
+                {% set tab = 'modifyprop' %}
+                {{ include('@dynamicdata/includes/object_menu.html.twig') }}
+                {% if fields %}
+                    <script type="text/javascript">
+                    function xar_dynamicdata_formpreview()
+                    {
+                        var my_window = window.open('{{ urlform }}',
+                                                    'FormPreview',
+                                                    'width=780,height=580,status=no,scrollbars=1,resizable=yes,top=0,left=0,dependent=yes,alwaysRaised=yes');
+                        my_window.opener = window;
+                        my_window.focus();
+                    }
+                    </script>
+                    &#160;<a href="javascript:xar_dynamicdata_formpreview();" title="Preview Input Form {{ label }}">
+                        {{- xar_image({scope: "theme", file: "icons/document-properties.png", class: "xar-icon", alt: "preview"}) -}}
+                    </a>
+                {% endif %}
+            </h2>
+            <fieldset>
+                <legend>Object summary</legend>
+                {{ xar_data_display({layout: layout, itemid: objectid, fieldlist: "objectid,name,label,class,"}) }}
+            </fieldset>
+        {% else %}
+            <h2>Modify DataProperties {{ label }}</h2>
+        {% endif %}
+        {# <!-- This is where the list of properties shown starts --> #}
+        {% if visibility != 'public' %}
+            <h3 class="xar-align-center">Warning! This is a <em>{{ visibility }}</em> object used
+            internally by the {{ xar_coremethod('xarMod', 'getName', [module_id]) }} module.<br/>
+            Trying to modify the properties of this object here may break the module. Please proceed with caution.</h3>
+        {% endif %}
+        {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}
+        {% if layout is null %}
+            {% set layout = 'default' %}
+        {% endif %}
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','updateprop') }}">
+            {{ include('@dynamicdata/includes/proplist-' ~ layout ~ '.html.twig') }}
+        </form>
+        <p>[ 
+            {% if not details %}
+                {% if objectid %}
+                    <a href="{{ xar_moduleurl('dynamicdata','admin','relations',{'objectid': objectid}) }}">Show Object Links</a>
+                {% else %}
+                    <a href="{{ detailslink }}">Show Static Properties and Relations</a>
+                {% endif %}
+            {% else %}
+                <a href="{{ detailslink }}">Hide Static Properties and Relations</a>
+            {% endif %}
+        ]</p>
+        {% if static|length > 0 %}
+            <fieldset>
+                <legend>{{ statictitle }}</legend>
+                <table class="xar-table xar-fullwidth">
+                    <tr>
+                        <th>Name</th>
+                        <th>Label</th>
+                        <th>Property Type</th>
+                        <th>Default</th>
+                        <th>Data Source</th>
+                        <th>Configuration</th>
+                    </tr>
+                    {% for field in static %}
+                        <tr>
+                            <td>{{ field['name'] }}</td>
+                            <td>{{ field['label'] }}</td>
+                            <td>
+                                {% set name = 'static_type[' ~ field['id'] ~ ']' %}
+                                {{ xar_data_output({property: fieldtypeprop, name: name, value: field['type']}) }}
+                            </td>
+                            <td>{{ field['defaultvalue'] }}</td>
+                            <td>{{ field['source'] }}</td>
+                            <td>{{ field['configuration'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </fieldset>
+            <fieldset>
+                {# <!-- xar:data-view module="dynamicdata" itemtype="1" where="$where" param="itemid" layout="cells" / --> #}
+                {% if tables|length > 0 %}
+                    {% for table in tables %}
+                        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','importprops') }}">
+                            <div class="xar-form-actions">
+                                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                                <input type="hidden" name="module_id" id="module_id" value="{{ module_id }}"/>
+                                <input type="hidden" name="itemtype" id="itemtype" value="{{ itemtype }}"/>
+                                <input type="hidden" name="table" id="table" value="{{ table }}"/>
+                                {% set label = 'Import table' %}
+                                {{- xar_button({type: "submit", label: label}) -}}
+                            </div>
+                        </form>
+                    {% endfor %}
+                {% endif %}
+            </fieldset>
+        {% endif %}
+        {% if relations|length > 0 %}
+            <h2>{{ relationstitle }}</h2>
+            {# <!--
+            TODO: very much under construction, obviously :-)
+            --> #}
+            <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','modifyprop') }}">
+                {# <!-- don't accept updates for this (for now) --> #}
+                {% for relation in relations %}
+                    {% if relation['links']|length > 0 %}
+                        {% for link in relation['links'] %}
+                            <p>
+                                <label>
+                                <strong>{{ labels['module'] }}</strong>{{ relation['module'] }}</label>
+                                <label>
+                                <strong>{{ labels['linktype'] }}</strong>{{ link['type'] }}</label>
+                                <label>
+                                <strong>{{ labels['linkfrom'] }}</strong>{{ link['from'] }}</label>
+                                <label>
+                                <strong>{{ labels['linkto'] }}</strong>{{ link['to'] }}</label>
+                            </p>
+                        {% endfor %}
+                    {% else %}
+                        <p>
+                            <label>
+                            <strong>{{ labels['module'] }}</strong>{{ relation['module'] }}</label>
+                            <label>
+                            <strong>{{ labels['linktype'] }}</strong>( not found )</label>
+                            <label>
+                            <strong>{{ labels['linkfrom'] }}</strong>-</label>
+                            <label>
+                            <strong>{{ labels['linkto'] }}</strong>( not found )</label>
+                        </p>
+                    {% endif %}
+                {% endfor %}
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

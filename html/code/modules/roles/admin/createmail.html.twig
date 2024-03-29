@@ -1,0 +1,261 @@
+{# @roles/admin/createmail.html.twig #}
+
+{% block createmail %}
+{% set stateoptions = [
+            {'id': xarRoles..ROLES_STATE_ALL, 'name': {{ xar_translate('All') }}},
+            {'id': xarRoles..ROLES_STATE_INACTIVE, 'name': {{ xar_translate('Inactive') }}},
+            {'id': xarRoles..ROLES_STATE_NOTVALIDATED, 'name': {{ xar_translate('Not Validated') }}},
+            {'id': xarRoles..ROLES_STATE_ACTIVE, 'name': {{ xar_translate('Active') }}},
+            {'id': xarRoles..ROLES_STATE_PENDING, 'name': {{ xar_translate('Pending') }}},
+        ] %}
+    {% set modstatus = xar_coremethod('xarSession', 'getVar', ['statusmsg']) %}
+    {% set messagetitle = 'Write this string in the message body or subject to display the corresponding information' %}
+    {{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            <a href="{{ xar_moduleurl('roles','admin','createmail') }}">Messaging System:</a> Send Mail To Users/Groups
+        </h2>
+        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set tab = request.2 %}
+        {% set xmldata = 'mail' %}
+        {{ include('@base/includes/admin-menu-skel.html.twig') }}
+
+        <form method="post" action="{{ xar_moduleurl('roles','admin','createmail') }}">
+            {# <!--
+                Module List Sort and Filter Controls table
+            --> #}
+            <table class="xar-table xar-fullwidth">
+                <tr>
+                    <th class="xar-nowrap">
+                        {% set label = 'Select display type' %}
+                        <label for="filter" title="{{ label }}">Show
+                            Users
+                        </label>
+                    </th>
+                    <th class="xar-nowrap">
+                        {% set label = 'Select a group' %}
+                        <label for="filter" title="{{ label }}">Groups</label>
+                    </th>
+                    <th class="xar-nowrap">
+                        {% set label = 'Select the state of users' %}
+                        <label for="filter" title="{{ label }}">
+                            State
+                        </label>
+                    </th>
+                    {% if id > 0 %}
+                        <th class="xar-nowrap">
+                            {% set label = 'Includes subgroups' %}
+                            <label for="filter" title="{{ label }}">Include
+                                Subgroups
+                            </label>
+                        </th>
+                    {% endif %}
+                    <th class="xar-nowrap">
+                        {% set label = 'Select template for the message' %}
+                        <label for="filter" title="{{ label }}">
+                            Templates
+                        </label>
+                    </th>
+                    <th class="xar-nowrap">
+                        <label for="reload">Action</label>
+                    </th>
+                </tr>
+                <tr>
+                    <td class="xar-align-center">
+                        <select name="selstyle" id="selstyle" onchange="this.form.submit()">
+                            {% for key, value in style %}
+                                {% if key == selstyle %}
+                                    <option value="{{ key }}" selected="selected">{{ value }}</option>
+                                {% else %}
+                                    <option value="{{ key }}">{{ value }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="xar-align-center">
+                        <select name="id" id="id" onchange="this.form.submit()">
+                            {% if type == 'single' %}
+                                <option value="{{ id }}" selected="selected">Single user</option>
+                            {% endif %}
+                            {% if id == -1 %}
+                                <option value="{{ id }}" selected="selected">-- choose --</option>
+                            {% endif %}
+                            {% if id == 0 %}
+                                <option value="0" selected="selected">All Users</option>
+                            {% else %}
+                                <option value="0">All Users</option>
+                            {% endif %}
+                            {% set prevgroup = "" %}
+                            {% for loop_key1, loop_item1 in groups %}{% set loop_index1 = loop.index %}
+                                {% if prevgroup != loop_item1['name'] %}
+                                    {% if id == loop_item1['id'] %}
+                                        <option value="{{ loop_item1['id'] }}" selected="selected">
+                                        {{ loop_item1['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ loop_item1['id'] }}">
+                                        {{ loop_item1['name'] }}</option>
+                                    {% endif %}
+                                {% endif %}
+                                {% set prevgroup = loop_item1['name'] %}
+                            </xar:loop>
+                        </select>
+                    </td>
+                    <td class="xar-align-center">
+                        {% set firstline = xar_translate('-- choose --') %}
+                        {{ xar_data_input({type: "dropdown", name: "state", tabindex: "5", onchange: "this.form.submit()", firstline: firstline, options: stateoptions, value: state}) }}
+                    </td>
+                    {% if id > 0 %}
+                        <td class="xar-align-center xar-valign-middle">
+                            {{ xar_data_input({type: "checkbox", name: "includesubgroups", id: "includesubgroups", checked: includesubgroups, onchange: "this.form.submit()"}) }}
+                        </td>
+                    {% endif %}
+                    <td class="xar-align-center">
+                        <select name="mailtype" id="mailtype" size="1" tabindex="5" onchange="this.form.submit()">
+                            {% for loop_key2, loop_item2 in templates %}{% set loop_index2 = loop.index %}
+                                {% if mailtype == loop_item1['key'] %}
+                                    <option value="{{ loop_item1['key'] }}" selected="selected">
+                                    {{ loop_item1['value'] }}</option>
+                                {% else %}
+                                    <option value="{{ loop_item1['key'] }}">
+                                        {{ loop_item1['value'] }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="xar-align-center">
+                        <input type="hidden" name="q" id="q" value="new"/>
+                        {% set label = 'Reload' %}
+                        {{- xar_button({type: "submit", label: label, name: "reload", id: "reload"}) -}}
+                    </td>
+                </tr>
+            </table>
+        </form>
+        {% if modstatus %}
+            {# <!--
+                lets display latest status ?? this contains very strange values, so let's not :-)
+            <p>
+                {{ modstatus }}
+            </p>
+            --> #}
+        {% endif %}
+        <fieldset>
+            <legend>Users</legend>
+            {% if users is null %}
+                <p>No users selected .</p>
+            {% else %}
+            {# <!--
+                the Roles Lists table-based styles (borrow from the Modules list)
+            --> #}
+                {% if selstyle == '1' %}
+                    <p>{{ totalselected }} user(s) selected.</p>
+                {% elseif selstyle == '2' %}
+                    {% if users|length == 0 %}
+                        <p>No users match</p>
+                    {% else %}
+                        <table class="xar-table xar-fullwidth">
+                            <tr>
+                                <th>
+                                    <a href="{{ xar_moduleurl('roles','admin','createmail',{'state': state, 'order': 'name'}) }}">
+                                    Real name</a>
+                                </th>
+                                <th>
+                                    <a href="{{ xar_moduleurl('roles','admin','createmail',{'state': state, 'order': 'uname'}) }}">
+                                    Login</a>
+                                </th>
+                                <th>
+                                    <a href="{{ xar_moduleurl('roles','admin','createmail',{'state': state, 'order': 'email'}) }}">
+                                    Email</a>
+                                </th>
+                                <th>
+                                    <a href="{{ xar_moduleurl('roles','admin','createmail',{'state': state, 'order': 'date_reg'}) }}">
+                                    Date Registered</a>
+                                </th>
+                                <th>
+                                    <a href="{{ xar_moduleurl('roles','admin','createmail',{'state': state, 'order': 'state'}) }}">
+                                    State</a>
+                                </th>
+                            </tr>
+                            <xar:loop name="$users">
+                                <tr>
+                                    <td>
+                                        {% set value = loop_item1['name'] %}
+                                        {{ xar_data_output({type: "name", value: value}) }}
+                                    </td>
+                                    <td>{{ loop_item1['uname'] }}</td>
+                                    <td>
+                                        {% set label = 'Email this user' %}
+                                        <a href="{{ xar_moduleurl('roles','admin','createmail',{'id': loop_item1['id']}) }}" title="{{ label }}">
+                                        {{ loop_item1['email'] }}</a>
+                                    </td>
+                                    <td class="xar-align-center">
+                                    {{ xar_coremethod('xarLocale', 'formatDate', ['%m/%d/%Y',loop_item1['date_reg']]) }}</td>
+                                    <td>
+                                        {% if loop_item1['status'] == 1 %}Inactive 
+                                        {% elseif loop_item1['status'] == 2 %}Not Validated 
+                                        {% elseif loop_item1['status'] == 3 %}Active 
+                                        {% elseif loop_item1['status'] == 4 %}Pending{% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {# <!-- end loop over users --> #}
+                            {# <!-- if there is a pager show it in the last row --> #}
+                        </table>
+                        {% if pager %}
+                            <div class="xar-align-center">{{ pager }}</div>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </fieldset>
+          <form action="{{ xar_moduleurl('roles','admin','sendmail') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <fieldset>
+                <legend>Message</legend>
+                <p>Choose a message template from the Templates dropdown above, or type in your
+                message directly :</p>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Subject line of the email' %}
+                        <label for="subject" title="{{ label }}" class="xar-form-label">
+                            Subject:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" name="subject" id="subject" value="{{ xar_prep_display(subject) }}" maxlength="150" class="xar-form-textxlong"/>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Body of the email' %}
+                        <label for="message" title="{{ label }}" class="xar-form-label">
+                            Message:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <textarea name="message" id="message" class="xar-form-textareaxlarge">{{ xar_prep_display(message) }}</textarea>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                        <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                        <input type="hidden" name="state" id="state" value="{{ state }}"/>
+                        <input type="hidden" name="includesubgroups" id="includesubgroups" value="{{ includesubgroups }}"/>
+                        {# <!--<input type="hidden" name="ids" id="ids" value="{{ ids }}"/>--> #}
+                        {% set label = 'Cancel' %}
+                        <input type="button" value="{{ label }}" onclick="history.back(-1);" class="xar-margin-thickright"/>&#160;
+                        {% set label = 'Send' %}
+                        {% if users is null or users == 0 %}
+                            {{- xar_button({type: "submit", label: label, disabled: "disabled"}) -}}
+                        {% else %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

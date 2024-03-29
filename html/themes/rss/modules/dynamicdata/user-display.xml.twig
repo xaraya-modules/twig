@@ -1,0 +1,14 @@
+{# modules/dynamicdata/user-display.xml.twig #}
+
+{% block user_display %}
+{% set dummy = xar_coremethod('xarTpl', 'setPageTemplateName', ['header']) %}
+    {% if object %}
+        <xar:element name="{{ object.name }}">
+            {{ xar_data_display({object: object}) }}
+        </xar:element>
+        {% else %}
+        <xar:element name="{{ module }}_{{ itemtype }}">
+            {{ xar_data_display({module: module, itemtype: itemtype, itemid: itemid}) }}
+        </xar:element>
+    {% endif %}
+{% endblock %}

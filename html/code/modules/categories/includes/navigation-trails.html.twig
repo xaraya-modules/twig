@@ -1,0 +1,104 @@
+{# @categories/includes/navigation-trails.html.twig #}
+
+{% block navigation_trails %}
+{% if catdescr %}
+    <div class="xar-mod-head"><span class="xar-mod-title">{{ catdescr }}{% if cathooks and cathooks['pubsub'] %} {{ cathooks['pubsub'] }}{% endif %}</span></div>
+    {% endif %}
+
+    <table class="xar-table" border="0" cellpadding="1" cellspacing="0">
+    <tr>
+        <td valign="top">
+            {{ cattitle }} :
+        </td>
+        <td valign="top">
+            {% for loop_key1, loop_item1 in cattrails %}{% set loop_index1 = loop.index %}{% set loop_trails_index = loop_index1 %}{% set loop_trails_item = loop_item1 %}{% set loop_trails_key = loop_key1 %}
+                {% for loop_key2, loop_item2 in loop_trails_item['catitems'] %}{% set loop_index2 = loop.index %}{% set loop_catitems_index = loop_index2 %}{% set loop_catitems_item = loop_item2 %}{% set loop_catitems_key = loop_key2 %}
+    {# <!--
+    The 'baseflag' variable allows you to skip certain categories in the trail :
+      {{ loop_catitems_item['baseflag'] }} = 0 : top level
+      {{ loop_catitems_item['baseflag'] }} = 1 : above the base category
+      {{ loop_catitems_item['baseflag'] }} = 2 : base category
+      {{ loop_catitems_item['baseflag'] }} = 3 : below the base category
+      {{ loop_catitems_item['baseflag'] }} = 4 : current category
+    --> #}>
+                    {{ loop_catitems_item['catjoin'] }}
+                    {% if not loop_catitems_item['catlink'] %}
+                        {{ loop_catitems_item['catlabel'] }}
+                    {% else %}
+                        <a href="{{ loop_catitems_item['catlink'] }}">{{ loop_catitems_item['catlabel'] }}</a>
+                    {% endif %}
+                </xar:loop>
+                {% if loop_trails_item['catcount'] %}
+                    ({{ loop_trails_item['catcount'] }})
+                {% endif %}
+                {% if loop_trails_item['viewall'] and ((caticons and caticons|length > 0) or (catlines and catlines|length > 0)) %}
+                    [<a href="{{ loop_trails_item['viewall'] }}">include children</a>]
+                {% endif %}
+                <br />
+            </xar:loop>
+        </td>
+    </tr>
+    </table>
+
+    {% if catimage %}
+        <br />
+        <table class="xar-table" border="0" width="95%">
+            <tr>
+                <td align="center" valign="top">
+                    <img src="{{ catimage }}" border="0" alt="{{ catname }}"/>
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+
+    {% if cathooks %}
+        <br />
+        {# <!-- TODO: do something specific with pubsub, hitcount, comments etc. --> #}
+        {% for hookmodule, hookoutput in cathooks %}
+            {% if hookmodule != 'pubsub' %}
+                {{ hookoutput }}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if caticons and caticons|length > 0 %}
+        <br />
+        <table class="xar-table" border="0" cellpadding="8" cellspacing="0" width="95%">
+                <xar:loop id="icons" name="$caticons">
+            <tr>
+                    <td align="center" valign="middle">
+                        <a href="{{ loop.icons.item['catlink'] }}"><img src="{{ loop.icons.item['catimage'] }}" border="0" alt="{{ loop.icons.item['catlabel'] }}"/><br />{{ loop.icons.item['catlabel'] }}</a>
+                        {% if loop.icons.item['catcount'] %}
+                            ({{ loop.icons.item['catcount'] }})
+                        {% endif %}
+                    </td>
+                    {% if loop.icons.item['catnum'] % 2 == 0 %}
+                    {% endif %}
+            </tr>
+                {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if catlines and catlines|length > 0 %}
+        <br />
+        <table class="xar-table" border="0" cellpadding="8" cellspacing="0">
+            <tr>
+                <td valign="top">
+                <xar:loop id="catlines" name="$catlines">
+                    {{ loop.catlines.item['beforetags'] }}
+                    <a href="{{ loop.catlines.item['catlink'] }}">{{ loop.catlines.item['catlabel'] }}</a>
+                    {% if loop.catlines.item['catcount'] %}
+                        ({{ loop.catlines.item['catcount'] }})
+                    {% endif %}
+                    {% if loop.catlines.item['catdescr'] %}
+                        : {{ loop.catlines.item['catdescr'] }}
+                    {% endif %}
+                    {{ loop.catlines.item['aftertags'] }}
+                {% endfor %}
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+
+    <br />
+{% endblock %}

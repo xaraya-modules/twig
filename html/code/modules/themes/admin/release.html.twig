@@ -1,0 +1,26 @@
+{# @themes/admin/release.html.twig #}
+
+{% block release %}
+{{ include('@themes/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Recent Theme Extensions</h2>
+        {% if not warning %}
+            {% if feedcontent %}
+                <ul>
+                    {% for loop_key1, loop_item1 in feedcontent %}{% set loop_index1 = loop.index %}
+                        <li>
+                            {% if loop_item1['link'] %}
+                                <a href="{{ loop_item1['link'] }}" target="_BLANK">{{ loop_item1['title'] }}</a>: 
+                            {% else %}
+                                {{ loop_item1['title'] }}:
+                            {% endif %}
+                            {% if loop_item1['description'] %}
+                                {{ loop_item1['description'] }}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% else %}{{ warning }}{% endif %}
+    </div>
+{% endblock %}

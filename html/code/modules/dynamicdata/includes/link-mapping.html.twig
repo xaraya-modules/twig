@@ -1,0 +1,27 @@
+{# @dynamicdata/includes/link-mapping.html.twig #}
+
+{% block link_mapping %}
+<?xml version="1.0"?>
+<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
+    <fieldset>
+        <legend>Mapping Objects to Datastores</legend>
+        <table class="xar-table">
+            <tr>
+                <th>Objects</th>
+                <th>Datastores</th>
+                <th>Properties</th>
+            </tr>
+            {% for id, objectinfo in objects %}
+                {% if mapping[id] %}
+                    {% for source, numprops in mapping[id] %}
+                        <tr>
+                            <td><a href="{{ xar_moduleurl('dynamicdata','admin','relations',{'objectid': id}) }}">{{ objectinfo['label'] }}</a></td>
+                            <td><a href="{{ xar_moduleurl('dynamicdata','admin','relations',{'table': source}) }}">{{ source }}</a></td>
+                            <td class="xar-align-center">{{ numprops }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </table>
+    </fieldset>
+{% endblock %}

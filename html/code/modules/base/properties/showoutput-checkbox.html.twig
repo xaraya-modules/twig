@@ -1,0 +1,8 @@
+{# @base/properties/showoutput-checkbox.html.twig #}
+
+{% block showoutput_checkbox %}
+{% set yes = 'Yes' %}
+    {% set no = 'No' %}
+    {% if value %}{{ yes }} 
+    {% else %}{{ no }}{% endif %}
+{% endblock %}

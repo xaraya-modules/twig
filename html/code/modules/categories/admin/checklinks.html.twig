@@ -1,0 +1,156 @@
+{# @categories/admin/checklinks.html.twig #}
+
+{% block checklinks %}
+{{ include('@categories/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Check Orphan Links</h2>
+        <div style="margin: auto;">
+        {% if not modid %}
+            <table class="xar-table" border="0" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th valign="center" width="40%">
+                        <strong>Module Name</strong>
+                    </th>
+                    <th align="center" valign="center" width="15%">
+                        <strong>Module<br />Items</strong>
+                    </th>
+                    <th align="center" valign="center" width="15%">
+                        <strong>Distinct<br />Categories</strong>
+                    </th>
+                    <th align="center" valign="center" width="15%">
+                        <strong>Total<br />Links</strong>
+                    </th>
+                </tr>
+                {% if not moditems or moditems|length == 0 %}
+                    <tr>
+                        <td colspan="4" align="center">
+                            <br />
+                                There are currently no orphan category links in the database...
+                            <br />
+                            <br />
+                        </td>
+                    </tr>
+                {% else %}
+                    {% for moditem in moditems %}
+                        <tr style="border-bottom: 1px dotted">
+                            <td valign="center" width="40%">
+                                <a href="{{ moditem['link'] }}">{{ moditem['name'] }}</a>
+                            </td>
+                            <td align="center" valign="center" width="15%">
+                                {{ moditem['numitems'] }}
+                            </td>
+                            <td align="center" valign="center" width="15%">
+                                {{ moditem['numcats'] }}
+                            </td>
+                            <td align="center" valign="center" width="15%">
+                                {{ moditem['numlinks'] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td valign="center" width="40%">
+                            <strong>Grand Total</strong>
+                        </td>
+                        <td align="center" valign="center" width="15%">
+                            <strong>{{ numitems }}</strong>
+                        </td>
+                        <td align="center" valign="center" width="15%">
+                            <strong>-</strong>
+                        </td>
+                        <td align="center" valign="center" width="15%">
+                            <strong>{{ numlinks }}</strong>
+                        </td>
+                    </tr>
+                {% endif %}
+
+            </table>
+        {% else %}
+            <h3>{{ xar_translate('Module #(1)', modname) }}</h3>
+    
+            {% if moditems %}
+                <form method="post" action="&xar-modurl-categories-admin-checklinks;">
+                    <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                    <input type="hidden" name="modid" id="modid" value="{{ modid }}"/>
+                    <input type="hidden" name="itemtype" id="itemtype" value="{{ itemtype }}"/>
+    
+                    {% set label = 'Delete Links' %}
+                    {{- xar_button({type: "submit", name: "confirm", id: "confirm", label: label}) -}}
+                </form>
+            {% endif %}
+    
+                <table class="xar-table" border="0" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th valign="center" width="50px">
+                            {% if not sortlink['itemid'] %}
+                                ID
+                            {% else %}
+                                <a href="{{ sortlink['itemid'] }}">ID</a>
+                            {% endif %}
+                        </th>
+                        <th align="lwft" valign="center">
+                            Item
+                        </th>
+                        <th align="center" valign="center" width="30%">
+                            <strong>Category Links</strong>
+                        </th>
+                    </tr>
+    
+                    {% if not moditems or moditems|length == '0' %}
+                        <tr>
+                            <td colspan="2" align="center">
+                                <br />
+                                    There are currently no orphaned category links for this module...
+                                <br />
+                                <br />
+                            </td>
+                        </tr>
+                    {% else %}
+                        {% for itemid, moditem in moditems %}
+                            <tr style="border-bottom: 1px dotted">
+                                {% if moditem['title'] and moditem['link'] %}
+                                    <td align="right" valign="center" width="50px">
+                                        {{ itemid }}
+                                    </td>
+                                    <td align="left" valign="center">
+                                        <a href="{{ moditem['link'] }}">{{ moditem['title'] }} </a>
+                                    </td>
+                                {% else %}
+                                    <td align="right" valign="center" width="50px">
+                                        {{ itemid }}
+                                    </td>
+                                    <td align="left" valign="center">
+                                        {{ itemid }}
+                                    </td>
+                                {% endif %}
+                                <td align="center" valign="center" width="30%">
+                                    {% for cid in moditem['cids'] %}
+                                      {% if catinfo[cid] %}
+                                        {{ catinfo[cid]['name'] }}<br/>
+                                      {% else %}
+                                        {{ cid }}<br/>
+                                      {% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% if pager %}
+                            <tr>
+                                <td colspan="2" align="center">
+                                    {{ pager }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td align="left" colspan="2">
+                                <strong>Grand Total</strong>:
+                            </td>
+                            <td align="center">
+                                <strong>{{ numorphans }}</strong>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

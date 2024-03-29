@@ -1,0 +1,15 @@
+{# @base/properties/showoutput-dropdown.html.twig #}
+
+{% block showoutput_dropdown %}
+{% if option['name'] %}
+        {% if option_link %}
+            {% if option['link'] %}
+                <a href="{{ option.link }}">{{ option.name }}</a>
+            {% else %}
+                {{ option.name }}
+            {% endif %}
+        {% else %}
+            {{ option.name }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

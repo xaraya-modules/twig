@@ -1,0 +1,81 @@
+{# @themes/admin/cacheview.html.twig #}
+
+{% block cacheview %}
+{{ include('@themes/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            View Template Cache Files
+        </h2>
+        {% set cacheurltxt = 'Click to browse this file' %}
+
+        {% if showfiles == false %}
+            <table width="98%" border="1" cellspacing="0" cellpadding="4">
+                <tr>
+                    <th>Cache File</th>
+                    <th>Template Name</th>
+                </tr>
+                {% if not items %}
+                    <tr>
+                        <td colspan="2">
+                            NO CACHE FILES TO DISPLAY
+                        </td>
+                     </tr>
+                {% else %}
+                     {% for key, name in items %}
+                     <tr>
+                         <td style="text-align:left">
+                         {% if popup == true %}
+                             <span class="help" title="{{ cacheurltxt }}">
+                                 <a name ="cacheurl" href="{{ name.fullnurl }}" onclick="window.open(this.href, 'popupwindow', 'width=640,height=300,scrollbars,resizable'); return false;">{{ name['hashn'] }}</a>
+                             </span>
+                         {% else %}
+                             <span class="help" title="{{ cacheurltxt }}">
+                                  <a name="cacheurl" href="{{ name.fullnurl }}">{{ name.hashn }}</a>
+                             </span>
+                         {% endif %}
+                         </td>
+                         <td style="text-align:left">{{ name.templn }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        {% elseif showfiles == true %}
+            <div style="margin-left: 1em; margin-right: 1em; text-align:left;">
+            {% if popup == false %}
+                <p>
+                    {% set label = 'Back' %}
+                    {{- xar_button({type: "cancel", value: label}) -}}
+                </p>
+            {% endif %}
+            </div>
+            <table width="100%" border="0" cellspacing="2" cellpadding="0" valign="top">
+                <tr>
+                    <td colspan="2" style="font-weight:bold;">Browsing:&#160;{{ hashfile }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="font-weight:bold;">Cache file for:&#160;{{ templn }}
+                    </td>
+                </tr>
+                {% for key, line in items %}
+                <tr>
+                    <td valign="top" style="text-align:left; font-size:smaller; color:red">
+                        {{ line.lineno }}:&#160;&#160;
+                    </td>
+                    <td valign="top" style="text-align:left; font-size:smaller">
+                       {{ line.linetxt }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <fieldset>
+                <div class="xar-form-input-wrapper-after">
+                {% if popup == false %}
+                    {% set label = 'Back' %}
+                    {{- xar_button({type: "cancel", value: label}) -}}
+                {% endif %}
+               </div>
+            </fieldset>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{# @categories/includes/navigation-prevnext.html.twig #}
+
+{% block navigation_prevnext %}
+<table class="xar-table" border="0" cellpadding="2" cellspacing="0" width="100%">
+    <tr>
+        <td>
+        {% if not prevlabel %}
+            &#160;
+        {% else %}
+            <a href="{{ prevlink }}"> &lt;&lt; {{ prevlabel }}</a>
+        {% endif %}
+        </td>
+        <td style="text-align: right;">
+        {% if not nextlabel %}
+            &#160;
+        {% else %}
+            <a href="{{ nextlink }}">{{ nextlabel }} &gt;&gt; </a>
+        {% endif %}
+        </td>
+    </tr>
+    </table>
+    <br />
+{% endblock %}

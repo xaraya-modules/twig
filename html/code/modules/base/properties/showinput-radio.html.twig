@@ -1,0 +1,78 @@
+{# @base/properties/showinput-radio.html.twig #}
+
+{% block showinput_radio %}
+{% if not layout or layout == 'horizontal' or layout == 'default' %}
+        {% if onchange is not null %}
+          {% set evt_change = onchange %}
+        {% else %}
+          {% set evt_change = 'return true;' %}
+        {% endif %}
+        {% for key, option in options %}
+            {% if key == 0 %}
+                {% set theID = id %}
+            {% else %}
+                {% set theID = id ~ '_' ~ key %}
+            {% endif %}
+            {% if option['id'] == value %}
+                <input type="radio" name="{{ name }}" id="{{ theID }}" value="{{ option['id'] }}" onchange="{{ evt_change }}" checked="checked"/>
+            {% else %}
+                <input type="radio" name="{{ name }}" id="{{ theID }}" value="{{ option['id'] }}" onchange="{{ evt_change }}"/>
+            {% endif %}&#160;
+            <label for="{{ theID }}">{{ option['name'] }}</label>&#160;&#160;
+        {% endfor %}
+    {% elseif layout == 'table' %}
+        {% if onchange is not null %}
+          {% set evt_change = onchange %}
+        {% else %}
+          {% set evt_change = 'return true;' %}
+        {% endif %}
+        <table>
+            <tr>
+                {% for key, option in options %}
+                    {% if key == 0 %}
+                        {% set theID = id %}
+                    {% else %}
+                        {% set theID = id ~ '_' ~ key %}
+                    {% endif %}
+                    <td style="text-align: center">
+                        <label for="{{ theID }}">{{ option['name'] }}</label><br/>
+                        {% if option['id'] == value %}
+                            <input type="radio" name="{{ name }}" id="{{ theID }}" value="{{ option['id'] }}" onchange="{{ evt_change }}" checked="checked"/>
+                        {% else %}
+                            <input type="radio" name="{{ name }}" id="{{ theID }}" value="{{ option['id'] }}" onchange="{{ evt_change }}"/>
+                        {% endif %}&#160;
+                    </td>
+                {% endfor %}
+            </tr>
+        </table>
+    {% elseif layout == 'vertical' %}
+        {% if onchange is not null %}
+          {% set evt_change = onchange %}
+        {% else %}
+          {% set evt_change = 'return true;' %}
+        {% endif %}
+        {% for key, option in options %}
+            <div>
+                {% if key == 0 %}
+                    {% set theID = id %}
+                {% else %}
+                    {% set theID = id ~ '_' ~ key %}
+                {% endif %}
+                {% if option['id'] == value %}
+                    <input type="radio" name="{{ name }}" id="{{ theID }}" value="{{ option['id'] }}" onchange="{{ evt_change }}" checked="checked"/>
+                {% else %}
+                    <input type="radio" name="{{ name }}" id="{{ theID }}" value="{{ option['id'] }}" onchange="{{ evt_change }}"/>
+                {% endif %}&#160;
+                <label for="{{ theID }}">{{ option['name'] }} </label>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>
+          Specify your own layout here...
+        </p>
+        <p>
+          You can also specify a separate template, e.g. if you want to handle individual fields differently for a particular module / itemtype
+        </p>
+    {% endif %}
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

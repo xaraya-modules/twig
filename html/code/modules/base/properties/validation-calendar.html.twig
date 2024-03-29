@@ -1,0 +1,41 @@
+{# @base/properties/validation-calendar.html.twig #}
+
+{% block validation_calendar %}
+<table class="xar-table xar-norm">
+        <tr>
+            <td>Store as</td>
+            <td>
+                <select name="{{ name }}[dbformat]" id="{{ id }}_dbformat" tabindex="{{ tabindex }}">
+                    {% set timestamp = xar_coremethod('xarMLS', 'userTime') %}
+                    {% set datetime = xar_coremethod('xarLocale', 'formatDate', ['%Y-%m-%d %H.%M.%S']) %}
+                    {% set date = xar_coremethod('xarLocale', 'formatDate', ['%Y-%m-%d']) %}
+                    {# <!--
+              Note : timestamp is not an option for ExtendedDate
+            --> #}
+                    {% if not class or class != 'dynamic_extendeddate_property' %}
+                        <option value="">timestamp : {{ timestamp }}</option>
+                    {% endif %}
+                    {% if dbformat and dbformat == 'datetime' %}
+                        <option value="datetime" selected="selected">datetime :
+                            {{ datetime }}
+                        </option>
+                    {% else %}
+                        <option value="datetime">datetime : {{ datetime }}</option>
+                    {% endif %}
+                    {% if dbformat and dbformat == 'date' %}
+                        <option value="date" selected="selected">date : {{ date }}</option>
+                    {% else %}
+                        <option value="date">date : {{ date }}</option>
+                    {% endif %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Other rule</td>
+            <td>
+                <input type="text" name="{{ name }}[other]" id="{{ id }}_other" value="{{ other }}"  size="50" tabindex="{{ tabindex }}"/>
+            </td>
+        </tr>
+    </table>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

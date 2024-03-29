@@ -1,0 +1,53 @@
+{# @categories/includes/navigation-tree.html.twig #}
+
+{% block navigation_tree %}
+{% for cattree in cattrees %}
+        {% for catparent in cattree['catparents'] %}
+            {% if not catparent['catlink'] %}
+                {{ catparent['catlabel'] }}
+            {% else %}
+                <a href="{{ catparent['catlink'] }}">{{ catparent['catlabel'] }}</a>
+            {% endif %}
+            {% if cids|length > 0 and catparent['catid'] in cids %}
+                +
+            {% endif %}
+            {% if catparent['catcount'] %}
+                ({{ catparent['catcount'] }})
+            {% endif %}
+            <br />
+        {% endfor %}
+        {% for catitem in cattree['catitems'] %}
+            &#8226;&#160;
+            {% if not catitem['catlink'] %}
+                <strong>{{ catitem['catlabel'] }}</strong>
+            {% else %}
+                <a href="{{ catitem['catlink'] }}">{{ catitem['catlabel'] }}</a>
+            {% endif %}
+            {% if cids|length > 0 and catitem['catid'] in cids %}
+                +
+            {% endif %}
+            {% if catitem['catcount'] %}
+                ({{ catitem['catcount'] }})
+            {% endif %}
+            <br />
+            {% if catitem['catchildren'] and catitem['catchildren']|length > 0 %}
+            {% for catchild in catitem['catchildren'] %}
+                &#160;&#160;&#8226;&#160;
+                {% if not catchild['clink'] %}
+                    <strong>{{ catchild['clabel'] }}</strong>
+                {% else %}
+                    <a href="{{ catchild['clink'] }}">{{ catchild['clabel'] }}</a>
+                {% endif %}
+                {% if cids|length > 0 and catchild['cid'] in cids %}
+                    +
+                {% endif %}
+                {% if catchild['ccount'] %}
+                    ({{ catchild['ccount'] }})
+                {% endif %}
+                <br />
+            {% endfor %}
+            {% endif %}
+        {% endfor %}
+        <br />
+    {% endfor %}
+{% endblock %}

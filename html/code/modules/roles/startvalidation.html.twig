@@ -1,0 +1,85 @@
+{# @roles/startvalidation.html.twig #}
+
+{% extends '@roles/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">Account Validation</span>
+    </div>
+    <div class="xar-mod-body">
+        <h2>Start Validation</h2>
+        {% if sent is not null and sent == '1' %}
+            <p>
+                <strong>Your validation code has been sent again to the email address you have registered.</strong>
+            </p>
+        {% else %}
+            <p>
+                Your account has not yet been activated. You need to finish these final steps in order to complete your account activation.
+            </p>
+        {% endif %}
+        {% if valcode %}
+            {% set validationlink = xar_moduleurl('roles','user','getvalidation',
+            {'phase': 'getvalidate', 'uname': xar_prep_display(uname), 'valcode': valcode}) %}
+            <p>To continue, please follow 
+            <a href="{{ validationlink }}">this link</a>.</p>
+        {% else %}
+            <form action="{{ xar_moduleurl('roles','user','getvalidation') }}" method="post" enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <legend>Start Validation</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <p>Please enter your username and validation code below:</p>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Please enter your user name' %}
+                            <label for="uname" class="xar-form-label" title="{{ label }}">
+                                Username
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            <input type="text" name="uname" id="uname" value="{{ xar_prep_display(uname) }}"/>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Please enter your validation code' %}
+                            <label for="valcode" class="xar-form-label" title="{{ label }}">
+                                Validation Code:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            <input type="text" name="valcode" id="valcode" value=""/>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="xar-form-actions">
+                    <input type="hidden" name="phase" id="phase" value="getvalidate"/>
+                    {{- xar_button({type: "submit", label: validatelabel}) -}}
+                </fieldset>
+            </form>
+            <p>If you did not receive your validation code, we will try to resend it now.</p>
+            <form action="{{ xar_moduleurl('roles','user','getvalidation') }}" method="post" enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <legend>Resend Validation</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Please enter your username' %}
+                            <label for="unameresend" class="xar-form-label" title="{{ label }}">
+                                Username:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            <input type="text" name="uname" id="unameresend" value="{{ uname }}"/>
+                       </div>
+                    </div>
+                </fieldset>
+                <fieldset class="xar-form-actions">
+                    <input type="hidden" name="phase" id="phase" value="resend"/>
+                    {{- xar_button({type: "submit", label: resendlabel}) -}}
+                </fieldset>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

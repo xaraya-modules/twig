@@ -1,0 +1,191 @@
+{# @dynamicdata/objects/ui_query.html.twig #}
+
+{% block ui_query %}
+{{ include('@dynamicdata/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% set viewlink = object.getActionURL('view') %}
+        {% set searchlink = object.getActionURL('search') %}
+        {% set querylink = object.getActionURL('query') %}
+        <h2>
+            Query {{ object.label }}&#160;
+            <a href="{{ viewlink }}" title="View {{ object.label }}">
+                {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+            </a>&#160;
+            <a href="{{ querylink }}" title="Reset Query">
+                {{- xar_image({scope: "theme", file: "icons/view-refresh.png", class: "xar-icon", alt: "reset"}) -}}
+            </a>&#160;
+            <a href="{{ searchlink }}" title="Search {{ object.label }}">
+                {{- xar_image({scope: "theme", file: "icons/system-search.png", class: "xar-icon", alt: "search"}) -}}
+            </a>
+        </h2>
+        {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}
+        <form method="post" action="{{ querylink }}">
+            <fieldset>
+                {# <!-- if we use the current URL, the object is already specified --> #}
+                {% if object.linktype != 'current' %}
+                    <input type="hidden" name="object" id="object" value="{{ object.name }}"/>
+                {% endif %}
+                <input type="hidden" name="method" id="method" value="query"/>
+                {% if object.join %}
+                    <input type="hidden" name="join" id="join" value="{{ object.join }}"/>
+                {% endif %}
+                {% if object.table %}
+                    <input type="hidden" name="table" id="table" value="{{ object.table }}"/>
+                {% endif %}
+                {% if return_url %}
+                    <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                {% endif %}
+                <legend>Query Criteria</legend>
+                {# <!-- only show properties with status ACTIVE, DISPLAYONLY and VIEWONLY --> #}
+                {% set filterstatus = >[1, 2, 4]< %}
+                {% set show_props = [] %}
+                {% for name, property in object.properties %}
+                    {% set displaystatus = property.getDisplayStatus() %}
+                    {% if displaystatus not in filterstatus %}
+                    {% else %}
+                    {% set dummy = array_push(show_props, name) %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label class="xar-form-label" for="field_{{ name }}">{{ property.label }}</label>
+                        </div>
+                        <div class="xar-col">
+                            {# <!-- CHECKME: could the dummy datastore actually do something here ? --> #}
+                            {% if property.datastore == '_dummy_' %}
+                                N/A
+                                <xar:continue/>
+                            {% endif %}
+    
+                            {# <!-- initialize fieldname, fieldid and fieldvalue --> #}
+                            {% set fieldname = 'field[' ~ name ~ ']' %}
+                            {% set fieldid = 'field_' ~ name %}
+                            {% if query['field'][name] is not null %}
+                                {% set fieldvalue = query['field'][name] %}
+                            {% else %}
+                                {% set fieldvalue = null %}
+                            {% endif %}
+    
+                            {# <!-- handle input depending on the property type --> #}
+                            {% if is_a(property, 'SelectProperty') or is_a(property, 'UsernameProperty') %}
+                                <select name="{{ fieldname }}" id="{{ fieldid }}">
+                                    {# <!-- make sure we have an empty default entry --> #}
+                                    <option value="">Undefined</option>
+                                    {# <!-- get the options for this select property --> #}
+                                    {% if is_a(property, 'UsernameProperty') %}
+                                        {% set options = xar_apifunc('roles', 'user', 'getall') %}
+                                    {% else %}
+                                        {% set options = property.getOptions() %}
+                                    {% endif %}
+                                    {% for option in options %}
+                                        {% if option['id'] is null %}
+                                            {# <!-- field status has an array of arrays - skip for now --> #}
+                                        {% elseif fieldvalue == option['id'] %}
+                                            <option value="{{ option['id'] }}" selected="selected">{{ option['name'] }}</option>
+                                        {% else %}
+                                            <option value="{{ option['id'] }}">{{ option['name'] }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+    
+                            {% elseif is_a(property, 'CalendarProperty') %}
+                                {% set name2 = name ~ '2' %}
+                                {% set fieldname2 = 'field[' ~ name2 ~ ']' %}
+                                {% set fieldid2 = 'field_' ~ name2 %}
+                                {% if query['field'][name2] is not null %}
+                                    {% set fieldvalue2 = query['field'][name2] %}
+                                {% else %}
+                                    {% set fieldvalue2 = null %}
+                                {% endif %}
+                                {{ xar_data_input({type: "calendar", name: fieldname, id: fieldid, value: fieldvalue}) }}
+                                &#160;
+                                <select name="match[{{ name }}]" id="match_{{ name }}">
+                                    <option value="eq"></option>
+                                    {% if query['match'][name] and query['match'][name] == 'range' %}
+                                        <option value="range" selected="selected">to</option>
+                                    {% else %}
+                                        <option value="range">to</option>
+                                    {% endif %}
+                                </select>
+                                <div class="xar-col dummy">
+                                {{ xar_data_input({type: "calendar", name: fieldname2, id: fieldid2, value: fieldvalue2}) }}
+                                </div>
+    
+                            {% elseif is_a(property, 'NumberBoxProperty') %}
+                                {% set name2 = name ~ '2' %}
+                                {% set fieldname2 = 'field[' ~ name2 ~ ']' %}
+                                {% set fieldid2 = 'field_' ~ name2 %}
+                                {% if query['field'][name2] is not null %}
+                                    {% set fieldvalue2 = query['field'][name2] %}
+                                {% else %}
+                                    {% set fieldvalue2 = null %}
+                                {% endif %}
+                                <input type="text" name="{{ fieldname }}" id="{{ fieldid }}" value="{{ fieldvalue }}" size="5" />
+                                &#160;
+                                <select name="match[{{ name }}]" id="match_{{ name }}">
+                                    <option value="eq"></option>
+                                    {% if query['match'][name] and query['match'][name] == 'range' %}
+                                        <option value="range" selected="selected">to</option>
+                                    {% else %}
+                                        <option value="range">to</option>
+                                    {% endif %}
+                                </select>
+                                &#160;
+                                <input type="text" name="{{ fieldname2 }}" id="{{ fieldid2 }}" value="{{ fieldvalue2 }}" size="5" />
+    
+                            {% elseif is_a(property, 'CheckboxProperty') %}
+                                {% if fieldvalue %}
+                                    <input type="checkbox" name="{{ fieldname }}" id="{{ fieldid }}" value="{{ fieldvalue }}" checked="checked" />
+                                {% else %}
+                                    <input type="checkbox" name="{{ fieldname }}" id="{{ fieldid }}" value="1" />
+                                {% endif %}
+    
+                            {% elseif is_a(property, 'HiddenProperty') %}
+                                &#160;<input type="hidden" name="{{ fieldname }}" id="{{ fieldid }}" value="{{ fieldvalue }}" />
+    
+                            {% else %}
+                                <input type="text" name="{{ fieldname }}" id="{{ fieldid }}" value="{{ fieldvalue }}" size="20" />
+                                &#160;
+                                <select name="match[{{ name }}]" id="match_{{ name }}">
+                                    {% for value, label in query.options %}
+                                        {% if query['match'][name] and query['match'][name] == value %}
+                                            <option value="{{ value }}" selected="selected">{{ label }}</option>
+                                        {% else %}
+                                            <option value="{{ value }}">{{ label }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                {# <!-- check class: {{ get_class(property) }} ({{ get_parent_class(property) }}) --> #}
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label class="xar-form-label" for="sort">Sort by</label>
+                    </div>
+                    <div class="xar-col">
+                        <select name="sort" id="sort">
+                            <option value=""></option>
+                            {% for name in show_props %}
+                                {% set property = object.properties.name %}
+                                {% if query['sort'] == name %}
+                                    <option value="{{ name }}" selected="selected">{{ property.label }}</option>
+                                {% else %}
+                                    <option value="{{ name }}">{{ property.label }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="xar-form-actions">
+                {% set label = 'Query' %}
+                {{- xar_button({type: "submit", label: label}) -}}
+            </fieldset>
+        </form>
+        {% if result %}
+            {# <!-- don't show a newlink here --> #}
+            {{ xar_data_view({object: result}) }}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{# @base/admin/confirmlogout.html.twig #}
+
+{% block confirmlogout %}
+{{ include('@base/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Confirm Logout</h2>
+        <p>Are you sure? Click "Cancel" to return to the previous admin panel</p>
+        <div class="xar-align-center">
+            {% set authdata = xar_apifunc('roles','user','getdefaultauthdata') %}[ 
+            <a href="{{ xar_moduleurl(authdata['defaultlogoutmodname'],'user','logout') }}">Logout</a>] [ 
+            <a href="javascript:top.history.go(-1)">Cancel</a>]
+        </div>
+    </div>
+{% endblock %}

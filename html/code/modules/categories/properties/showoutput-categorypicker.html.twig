@@ -1,0 +1,23 @@
+{# @categories/properties/showoutput-categorypicker.html.twig #}
+
+{% block showoutput_categorypicker %}
+{% if onchange is not null %}
+      {% set evt_change = onchange %}
+    {% else %}
+      {% set evt_change = 'return true;' %}
+    {% endif %}
+    {% if style is null %}
+        {% set style = '' %}
+    {% endif %}
+    {% if firstline %}
+        {% for item in items %}
+            {% set cidname = name."[" ~ item['num'] ~ "]" %}
+            {{ xar_data_input({type: "categories", name: cidname, basecid: item['category_id'], value: item['value'], firstline: firstline, onchange: evt_change, style: style}) }}
+        {% endfor %}
+    {% else %}
+        {% for item in items %}
+            {% set cidname = name."[" ~ item['num'] ~ "]" %}
+            {{ xar_data_input({type: "categories", name: cidname, basecid: item['category_id'], value: item['value'], onchange: evt_change, style: style}) }}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

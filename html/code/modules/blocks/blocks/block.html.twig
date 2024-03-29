@@ -1,0 +1,41 @@
+{# @blocks/blocks/block.html.twig #}
+
+{% block block %}
+{# <!-- the following _bl_ variables are available in this template
+        $_bl_block_id       : the id of the block instance (empty in standalone blocks)
+        $_bl_block_name     : the name of the block instance (empty in standalone blocks)
+        $_bl_block_group    : the name of the current block group (empty in standalone blocks)
+        $_bl_block_group_id : the id of the current block group (empty in standalone blocks)
+        $_bl_block_type     : the name of this block type
+        $_bl_block_type_id  : the id of this block type
+    --> #}       
+    <div class="xar-block xar-block-{{ _bl_block_name }}">
+        {% if title %}
+            <div class="xar-block-head">
+                <div class="xar-block-title">
+                    {{ title }}
+                    {% if xar_security_check('AdminBase') %}
+                        <a class="xar-icon" href="{{ xar_moduleurl('blocks','admin','modify_instance',{'block_id': _bl_block_id}) }}" title="Edit this block" style="float: right; margin-left: 5px">
+                            {{- xar_image({scope: "theme", class: "xar-icon", file: "icons/modify-config.png"}) -}}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            {% if xar_security_check('AdminBase') %}
+                <div class="xar-block-head">
+                    <div class="xar-block-title">
+                        <a class="xar-icon" href="{{ xar_moduleurl('blocks','admin','modify_instance',{'block_id': _bl_block_id}) }}" title="Edit this block" style="float: right">
+                            {% set alttext = 'Modify' %}
+                            {{- xar_image({scope: "theme", file: "icons/modify-config.png", class: "xar-icon", alt: alttext}) -}}
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+        <div class="xar-block-body">
+            {{ content }}
+        </div>
+        <div class="xar-block-foot"></div>
+    </div>
+{% endblock %}

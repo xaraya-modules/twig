@@ -1,0 +1,327 @@
+{# @privileges/admin/modifyprivilege.html.twig #}
+
+{% block modifyprivilege %}
+{{ xar_javascript({scope: "module", module: "privileges", filename: "xarTree.js"}) }}
+    <script type="text/javascript">
+        {# <!--
+        var oldOnLoadFunction = (window.onload) ? window.onload : new Function("","return true;");
+        function doOnLoad() {
+            oldOnLoadFunction();
+            xarTree_init('PrivilegesTree');
+        }
+        var oldOnUnloadFunction = (window.onunload) ? window.onunload : new Function("","return true;");
+        function doOnUnload() {
+            oldOnUnloadFunction();
+            xarTree_init('PrivilegesTree');
+        }
+
+        window.onload = doOnLoad;
+        window.onunload = doOnUnload;
+
+        function setaction(target){
+        document.forms['privilegeform'].action = target;
+        document.forms['privilegeform'].submit();}
+    // --> #}
+    </script>
+    {{ include('@privileges/includes/admin-mod-head.html.twig') }}
+	<div class="xar-mod-body">
+		<div class="xar-mod-page-head">
+	        <h2>Modify Privilege: {{ pname }}</h2>
+	        {% if parents|length != 0 %}
+	                <ul class="xar-tabs">
+	                    {% set title = 'These are the privileges that contain {{ pname }} as a component' %}
+	                    {% set label = 'Used in' %}
+	                    <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+	                    {% set prevgroup = "" %}
+	                    {% for i in range(0, parents|length - 1) %}
+	                        {% if prevgroup != parents[i]['parentname'] %}
+	                            <li class="xar-tab">
+	                                <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': parents[i}['parentid']]) }}" title="{{ xar_translate('Show this privilege') }}" class="xar-norm xar-norm-outline">
+	                                    {{ parents[i]['parentname'] }}
+	                                </a>
+	                            </li>
+	                        {% endif %}
+	                        {% set prevgroup = parents[i]['parentname'] %}
+	                    {% endfor %}
+	                </ul>
+	        {% endif %}
+	            <ul class="xar-tabs">
+	                {% set title = 'Choose an action to perform on this privilege' %}
+	                {% set label = 'Manage privilege' %}
+	                <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+	                <li class="xar-tab">
+	                    <a href="{{ xar_moduleurl('privileges','admin','displayprivilege',{'id': ppid}) }}">
+	                        Display
+	                    </a>
+	                </li>
+	                <li class="xar-tab-active">
+	                    <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': ppid}) }}">
+	                        Modify
+	                     </a>
+	                </li>
+	                <li class="xar-tab">
+	                    <a href="{{ xar_moduleurl('privileges','admin','deleteprivilege',{'id': ppid}) }}">
+	                        Delete
+	                    </a>
+	                </li>
+	                <li class="xar-tab">
+	                    <a href="{{ xar_moduleurl('privileges','admin','viewroles',{'id': ppid}) }}">
+	                        Groups/Users
+	                    </a>
+	                </li>
+	            </ul>
+	      </div>
+	      <div class="xar-mod-page-body">
+	      <form name="privilegeform" id="privilegeform" action="{{ xar_moduleurl('privileges','admin','updateprivilege') }}" method="post" enctype="application/x-www-form-urlencoded">
+	            <fieldset>
+	                <legend>Privilege properties</legend>
+	                {% if frozen %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <span class="xar-form-label">Name:</span>{{ pname }} 
+                            </div>
+                            <div class="xar-col">
+                                <input type="hidden" name="pname" id="pname" value="{{ pname }}"/>
+                            </div>
+                        </div>
+	                    <p>This privilege cannot be edited or deleted</p>
+	                {% else %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label for="pname" title="{{ xar_translate('TITLE') }}" class="xar-form-label">
+                                    Name:
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                <input type="text" name="pname" id="pname" value="{{ pname }}" maxlength="40" class="xar-form-textlong"/>
+                            </div>
+                        </div>
+	                    {% set onclick = "this.form.action='" ~ xar_moduleurl('privileges','admin','modifyprivilege') ."';this.form.submit()"; %}
+	                    {# <!-- FIXME: make this dprop support onclick, cause IE6 doesn't do onchange
+	                    <div class="xar-col dummy">
+	                        {% set options = [
+	                                {'id': 'empty', 'name': 'empty'},
+	                                {'id': 'full', 'name': 'with rights'},
+	                            ] %}
+	                        {{ xar_data_input({type: "radio", name: "ptype", id: "ptype", options: options, value: ptype, onclick: onclick}) }}
+	                    </div>
+	                    --> #}
+	                    {% if ptype == 'empty' %}
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label for="ptype1_empty" title="{{ xar_translate('This privilege has no children') }}">
+                                        empty
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    <input type="radio" name="ptype" id="ptype1_empty" value="empty" checked="checked" onclick=""/>
+                                </div>
+                            </div>
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label for="ptype1_full" title="{{ xar_translate('This privilege has children') }}">
+                                        with rights
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    <input type="radio" name="ptype" id="ptype1_full" value="full" onclick="this.form.action='&xar-modurl-privileges-admin-modifyprivilege;';this.form.submit();"/>
+                                </div>
+                            </div>
+	                    {% else %}
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label for="ptype_empty" title="{{ xar_translate('This privilege has no children') }}">
+                                        empty
+                                    </label>
+                                </div>
+                                 <div class="xar-col">
+                                    <input type="radio" name="ptype" id="ptype_empty" value="empty" onclick="this.form.action='&xar-modurl-privileges-admin-modifyprivilege;';this.form.submit();"/>
+                                </div>
+                           </div>
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label for="ptype_full" title="{{ xar_translate('This privilege has children') }}">
+                                        with rights
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    <input type="radio" name="ptype" id="ptype_full" value="full" checked="checked" onclick="this.form.action='&xar-modurl-privileges-admin-modifyprivilege;';this.form.submit();"/>
+                                </div>
+                            </div>
+	                        {% if xar_modvar('privileges', 'showrealms') %}
+                                <div class="xar-row">
+                                    <div class="xar-col">
+                                        <label for="prealm" title="{{ xar_translate('Realm to which this privilege applies') }}" class="xar-form-label">Realm:</label>
+                                    </div>
+                                    <div class="xar-col">
+                                        {{ xar_data_input({type: "dropdown", name: "prealm", options: realms, value: prealm}) }}
+                                    </div>
+                                </div>
+	                        {% endif %}
+	                    {% endif %}
+	                    {% if ptype != null %}
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label for="pmodule" title="{{ xar_translate('Module which holds the target component') }}" class="xar-form-label">
+                                        Module:
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    {{ xar_data_input({type: "module", name: "pmodule", value: pmodule, firstline: "all,All", onchange: onclick, store_prop: "name"}) }}
+                                </div>
+                            </div>
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label for="pcomponent" title="{{ xar_translate('Component to which this privilege applies') }}" class="xar-form-label">
+                                        Component:
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    <select name="pcomponent" id="pcomponent" onchange="this.form.action='&xar-modurl-privileges-admin-modifyprivilege;';this.form.submit();">
+                                        {% for loop_key1, loop_item1 in components %}{% set loop_index1 = loop.index %}
+                                            {% if strtolower(loop_item1['name']) == strtolower(pcomponent) %}
+        
+                                                <option value="{{ loop_item1['name'] }}" selected="selected">
+                                                {{ loop_item1['name'] }}</option>
+                                                {% else %}
+                                                <option value="{{ loop_item1['name'] }}">
+                                                {{ loop_item1['name'] }}</option>
+                                            {% endif %}
+                                        </xar:loop>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label for="plevel" title="{{ xar_translate('Level of access') }}" class="xar-form-label">
+                                        Level:
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    {% set levels = SecurityLevel..displayMap %}
+                                    {# <!-- TODO: this needs to go --> #}
+                                    {% set foo = 1; array_shift(levels) %}
+                                    {% set options = [] %}
+                                    {% for key, value in levels %}
+                                        {# <!-- TODO: this needs to go --> #}
+                                        {% set foo = 1; options[] = {'id': key * 100, 'name': value} %}
+                                    {% endfor %}
+                                    {{ xar_data_input({type: "dropdown", name: "plevel", value: plevel, options: options, tabindex: "6"}) }}
+                                </div>
+                            </div>
+	                    {% endif %}
+	                    {% if pcomponent != 'All' and not target %}
+	                        <p>Allow instances of component {{ pcomponent }} that have:</p>
+	                        {% for id, instance in instances %}
+                                <div class="xar-row">
+                                    <div class="xar-col">
+                                        <label for="pinstance{{ id }}" class="xar-form-label">
+                                            {{ instance['header'] }}
+                                        </label>
+                                    </div>
+                                    <div class="xar-col">
+                                        {% if instance['type'] == 'manual' %}
+                                            <input type="text" name="pinstance['{{ id }}']" id="pinstance{{ id }}" value="{{ instance['default'] }}" size="20" tabindex="7"/>
+                                        {% else %}
+                                            <select name="pinstance['{{ id }}']" id="pinstance{{ id }}" size="1" tabindex="7">
+                                                {% for option in instance['dropdown'] %}
+                                                    {% if option['name'] == instance['default'] %}
+                                                        <option value="{{ option['name'] }}" selected="selected">{{ option['name'] }}</option>
+                                                    {% else %}
+                                                        <option value="{{ option['name'] }}">{{ option['name'] }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        {% endif %}
+                                    </div>
+                                </div>
+	                        {% endfor %}
+	                        {% elseif target %}
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label for="pinstance0" class="xar-form-label">
+                                        Current Instances:
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    <input type="text" name="pinstance[0]" id="pinstance0" value="{{ curinstance }}" tabindex="7"/>
+                                </div>
+                            </div>
+	                        <p>
+	                            <a href="{{ target }}" title="{{ xar_translate('Use Wizard') }}">
+	                                Modify the instances that apply for this privilege
+	                            </a>
+	                        </p>
+	                    {% endif %}
+	                {% endif %}
+	                {% if not frozen %}
+	                    <div class="xar-forms-actions">
+                            <div class="xar-row">
+                                <div class="xar-col"></div>
+                                <div class="xar-col">
+                                    {% set label = 'Update' %}
+                                    {{- xar_button({type: "submit", label: label}) -}}
+                                </div>
+                            </div>
+                        </div>
+	                {% endif %}
+	            </fieldset>
+	            <fieldset>
+	                <legend>The Components of '{{ pname }}':</legend>
+	                <div>
+	                    {{ include('@privileges/includes/tree.html.twig') }}
+	                </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="privid" title="{{ xar_translate('Privilege to add') }}" class="xar-form-label">
+                                Add new component
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            <select name="privid" id="privid">
+                                <option value=""></option>
+                                {% for loop_key2, loop_item2 in privileges %}{% set loop_index2 = loop.index %}
+                                    <option value="{{ loop_item1['id'] }}">{{ loop_item1['name'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+	            </fieldset>
+                <div class="xar-form-actions">
+                    <div class="xar-row">
+                        <div class="xar-col"></div>
+                        <div class="xar-col">
+                            <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                            <input type="hidden" name="poldcomponent" id="poldcomponent" value="{{ oldcomponent }}"/>
+                            <input type="hidden" name="id" id="id" value="{{ ppid }}"/>
+                            {% set value = 'Add' %}
+                            <input type="button" value="{{ value }}" onclick="javascript:this.form.action = '&xar-modurl-privileges-admin-addmember;&amp;ppid={{ ppid }}&amp;authid={{ authid }}';this.form.submit();"/>
+                        </div>
+                    </div>
+	            </div>
+	        </form>
+	        <fieldset>
+	            <legend>'{{ pname }}' Component Memberships</legend>
+	            {% if parents|length == 0 %}
+	                <p>'{{ pname }}' is not a member of any other privileges.</p>
+	            {% else %}
+	                <xar:loop name="$parents">
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <span class="xar-form-label">
+                                    <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': loop_item1['parentid']}) }}">
+                                        {{ loop_item1['parentname'] }}
+                                    </a>
+                                </span>
+                                <a href="{{ xar_moduleurl('privileges','admin','removemember',{'childid': ppid, 'parentid': loop_item1['parentid'},'authid'=>authid]) }}">
+                                    <img src="{{ xar_coremethod('sys', 'code') }}modules/privileges/xarimages/remove.gif" alt="{{ xar_translate('Remove') }}" title="Remove {{ pname }} from {{ loop_item1['parentname'] }}"/>
+                                </a>
+                            </div>
+                        </div>
+	                {% endfor %}
+	                <br class="xar-clearboth"/>
+	            {% endif %}
+	        </fieldset>
+    	</div>
+    </div>
+{% endblock %}

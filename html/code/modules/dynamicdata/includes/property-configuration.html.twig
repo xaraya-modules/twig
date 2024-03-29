@@ -1,0 +1,106 @@
+{# @dynamicdata/includes/property-configuration.html.twig #}
+
+{% block property_configuration %}
+{% if itemid %}
+        <h2>Configuration for DataProperty {{ itemid }}</h2>
+        {% if isupload %}
+            {% set enc_type = 'multipart/form-data' %}
+        {% else %}
+            {% set enc_type = 'application/x-www-form-urlencoded' %}
+        {% endif %}
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','showpropval') }}" enctype="{{ enc_type }}">
+            <fieldset>
+                <legend>Property summary</legend>
+                {% set fieldlist = >['name','label','objectid','type']< %}
+                {{ xar_data_display({object: object, fieldlist: fieldlist}) }}
+            </fieldset>
+            <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+            <input type="hidden" name="itemid" id="itemid" value="{{ itemid }}"/>
+            {# <!-- This is the main part of the page --> #}
+            {{ showval }} 
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        {% set label = 'Update' %}
+                        {{- xar_button({type: "submit", label: label, name: "confirm"}) -}}&#160;
+                        {% set label = 'Update and Exit' %}
+                        {{- xar_button({type: "submit", label: label, name: "exit"}) -}}
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    {% elseif proptype %}
+        {% set propname = propertytype.name %}
+        <h2>Sample Configuration for DataProperty Type {{ propname }}</h2>
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','showpropval') }}">
+            <fieldset class="xar-form-actions">
+                <legend>Select Property Type</legend>
+                {{ xar_data_input({name: "proptype", type: "fieldtype", store_prop: "name", value: propname}) }}&#160;
+                {% set label = 'Select' %}
+                {{- xar_button({type: "submit", label: label}) -}}
+            </fieldset>
+        </form>
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','showpropval') }}">
+            <fieldset>
+                <legend>Property Type Summary</legend>
+                <table class="xar-table xar-fullwidth">
+                    <tr>
+                        <td>
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label class="xar-form-label" for="{{ proptype }}_desc" title="" style="">
+                                        Property Type
+                                    </label>
+                            </div>
+                            <div class="xar-col">
+                                    [{{ propinfo.type }}] {{ propinfo.desc }}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label class="xar-form-label" for="{{ proptype }}_config" title="" style="">
+                                        Configuration
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    <textarea name="{{ proptype }}_config" id="{{ proptype }}_config" rows="4" cols="50" readonly="readonly">{{ propinfo.configuration }}</textarea>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <input type="hidden" name="proptype" value="{{ proptype }}"/>
+            {{ showval }}
+            <div class="xar-row">
+                <div class="xar-col">
+                </div>
+                <div class="xar-col">
+                    {% set label = 'Preview' %}
+                    {{- xar_button({type: "submit", label: label, name: "preview"}) -}}
+                </div>
+            </div>
+{# <!-- See CHECKME in showpropval
+                <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                <input type="submit" name="confirm" value="{{ xar_translate('Update') }}" disabled="disabled"/>
+--> #}
+        </form>
+
+    {% else %}
+        <h2>Sample Configuration for DataProperty Types</h2>
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','showpropval') }}">
+            <fieldset class="xar-form-actions">
+                <legend>Select Property Type</legend>
+                {{ xar_data_input({name: "proptype", type: "fieldtype", store_prop: "name", value: "textbox"}) }}
+                {% set label = 'Select' %}
+                {{- xar_button({type: "submit", label: label}) -}}
+            </fieldset>
+        </form>
+    {% endif %}
+{% endblock %}

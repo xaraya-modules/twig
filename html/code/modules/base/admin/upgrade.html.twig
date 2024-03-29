@@ -1,0 +1,63 @@
+{# @base/admin/upgrade.html.twig #}
+
+{% block upgrade %}
+{{ include('@base/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Upgrading your system</h2>
+        <fieldset>
+            <legend>Version Information</legend>
+            <table class="xar-table">
+                <tr>
+                    <th></th>
+                    <th>Your Files</th>
+                    <th>Your Database</th>
+                </tr>
+                <tr>
+                    <td>
+                        {% set label = 'Current Core Version' %}
+                        <label title="{{ label }}" class="xar-form-label">                            
+                            Xaraya Core:                            
+                        </label>
+                    </td>
+                    <td>
+                        {{ xarCore..VERSION_ID }} version {{ xarCore..VERSION_NUM }} ({{ xarCore..VERSION_SUB }})
+                    </td>
+                    <td>
+                        {{ xar_var({scope: "config", name: "System.Core.VersionId"}) }} version
+                        {{ xar_var({scope: "config", name: "System.Core.VersionNum"}) }}
+                        ({{ xar_var({scope: "config", name: "System.Core.VersionSub"}) }})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {% set label = 'Current Build' %}
+                        <label title="{{ label }}" class="xar-form-label">                            
+                            Build:                            
+                        </label>
+                    </td>
+                    <td>
+                        {{ xarCore..VERSION_REV }}
+                    </td>
+                    <td>
+                        {{ xar_var({scope: "config", name: "System.Core.VersionRev"}) }}
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <fieldset>
+            Status:
+            {% set idsequal = xarCore..VERSION_ID == xar_coremethod('xarConfigVars', 'get', [null, 'System.Core.VersionId']) %}
+            {% if idsequal %}
+                {% if versioncompare == 0 %}
+                    Your installation is current.
+                {% elseif versioncompare == 1 %}
+                    The file version of Xarayais greater than the database version. You should upgrade your database now.
+                {% else %}
+                    The database version is higher than the file version. You need to install 
+                {% endif %}
+            {% else %}
+                The file and database versions of Xaraya are not compatible.
+            {% endif %}
+        </fieldset>
+    </div>
+{% endblock %}

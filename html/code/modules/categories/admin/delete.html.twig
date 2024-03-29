@@ -1,0 +1,33 @@
+{# @categories/admin/delete.html.twig #}
+
+{% block delete %}
+{{ xar_style({scope: "module", file: "forms"}) }}
+    {{ include('@categories/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            Delete Category
+        </h2>
+        <form class="xar-formwidget" action="{{ xar_moduleurl('categories','admin','delete') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <fieldset>
+                <legend>
+                    <strong>
+                        {{ xar_translate('Delete category \\'#(1)\\'?') }}
+                    </strong>
+                </legend>
+                <input type="hidden" name="ok" id="ok" value="1"/>
+                <input type="hidden" name="itemid" id="itemid" value="{{ itemid }}"/>
+                <input type="hidden" name="authid" id="authid" value="{{ authkey }}"/>
+                <div>
+                    {{ xar_translate('This category has #(1) sub-categories and #(2) module items assigned to it and its subcategories.', numcats, numitems) }}
+                </div>
+                <div>
+                    {% set label = 'Cancel' %}
+                    {{- xar_button({type: "cancel", label: label}) -}}
+                    &#160;
+                    {% set label = 'Delete' %}
+                    {{- xar_button({type: "submit", name: "confirm", label: label}) -}}
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

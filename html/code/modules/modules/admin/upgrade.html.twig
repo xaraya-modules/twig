@@ -1,0 +1,15 @@
+{# @modules/admin/upgrade.html.twig #}
+
+{% block upgrade %}
+{{ include('@modules/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {# <!-- This section deals with dependancies. --> #}
+        {% if dependencies %}{% endif %}
+        {# <!-- This section deals with upgrade errors. --> #}
+        <h2>Module Upgrade Failed</h2>
+        {{ include('@modules/includes/install-errors.html.twig') }}
+        <p>
+            <a href="{{ xar_moduleurl('modules','admin','view') }}">Go back to the modules list.</a>
+        </p>
+    </div>
+{% endblock %}

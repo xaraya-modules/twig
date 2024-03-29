@@ -1,0 +1,41 @@
+{# @base/properties/showinput-extendeddate.html.twig #}
+
+{% block showinput_extendeddate %}
+Year 
+    {% if not tabindex %}
+        <input type="text" name="{{ name }}[year]" id="{{ id }}" value="{{ year }}" size="4" maxlength="4"/>
+    {% else %}
+        <input type="text" name="{{ name }}[year]" id="{{ id }}" value="{{ year }}" size="4" maxlength="4" tab="{{ tabindex }}"/>
+    {% endif %}
+    Month 
+    {% if not tabindex %}
+        <input type="text" name="{{ name }}[mon]" id="{{ id }}_mon" value="{{ mon }}" size="2" maxlength="2"/>
+    {% else %}
+        <input type="text" name="{{ name }}[mon]" id="{{ id }}_mon" value="{{ mon }}" size="2" maxlength="2" tab="{{ tabindex }}"/>
+    {% endif %}
+    Day 
+    {% if not tabindex %}
+        <input type="text" name="{{ name }}[day]" id="{{ id }}_day" value="{{ day }}" size="2" maxlength="2"/>
+    {% else %}
+        <input type="text" name="{{ name }}[day]" id="{{ id }}_day" value="{{ day }}" size="2" maxlength="2" tab="{{ tabindex }}"/>
+    {% endif %}
+    {% if format and format == 'datetime' %}
+        Time 
+        {% if not tabindex %}
+            <input type="text" name="{{ name }}[hour]" id="{{ id }}_hour" value="{{ hour }}" size="2" maxlength="2"/>
+        {% else %}
+            <input type="text" name="{{ name }}[hour]" id="{{ id }}_hour" value="{{ hour }}" size="2" maxlength="2" tab="{{ tabindex }}"/>
+        {% endif %}: 
+        {% if not tabindex %}
+            <input type="text" name="{{ name }}[min]" id="{{ id }}_min" value="{{ min }}" size="2" maxlength="2"/>
+        {% else %}
+            <input type="text" name="{{ name }}[min]" id="{{ id }}_min" value="{{ min }}" size="2" maxlength="2" tab="{{ tabindex }}"/>
+        {% endif %}: 
+        {% if not tabindex %}
+            <input type="text" name="{{ name }}[sec]" id="{{ id }}_sec" value="{{ sec }}" size="2" maxlength="2"/>
+        {% else %}
+            <input type="text" name="{{ name }}[sec]" id="{{ id }}_sec" value="{{ sec }}" size="2" maxlength="2" tab="{{ tabindex }}"/>
+        {% endif %}
+    {% endif %}
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

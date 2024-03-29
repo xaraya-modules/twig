@@ -1,0 +1,30 @@
+{# @base/properties/showinput-timezone.html.twig #}
+
+{% block showinput_timezone %}
+<select name="{{ name }}" id="{{ id }}" tabindex="{{ tabindex }}">
+            {% set now = time() %}
+            {% for option in options %}
+                {% if option['offset'] is not null %}
+                    {% if option['offset']|slice(0,1) == '-' %}
+                        {% set plus = '' %}
+                    {% else %}
+                        {% set plus = '+' %}
+                    {% endif %}
+               {# <!-- if you want to show the current time (without daylight saving)
+                    {% set fields = option['offset']|split('.') %}
+                    {% set offset = (fields[0] * 60 + fields[1]) * 60 %}
+                    {% set gmtime = gmdate('H.i',now + offset) %}
+                --> #}
+                    {% set label = option['name'] ~ ' (GMT ' ~ plus ~ option['offset']/3600 ~ ')' %}
+                {% else %}
+                    {% set label = option['name'] %}
+                {% endif %}
+                {% if value is not null and option['id'] == value %}
+                    <option value="{{ option['id'] }}" selected="selected">{{ label }}</option>
+                {% else %}
+                    <option value="{{ option['id'] }}">{{ label }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

@@ -1,0 +1,141 @@
+{# @base/includes/modifyconfig-logging.html.twig #}
+
+{% block modifyconfig_logging %}
+{% set writable = is_writeable(xar_coremethod('sys', 'varpath') ~ 'logs') %}
+    {% if writable %}
+        <fieldset>
+            <legend>Basic Logging</legend>
+            Logging is currently not available. <br/>To enable it please change the permissions on the directory var/logs and its contents so that they are writable for your web server.
+        </fieldset>
+    {% else %}
+    
+		{% set levels = [
+					{'id': 1, 'name': {{ xar_translate('Emergency') }}},
+					{'id': 2, 'name': {{ xar_translate('Alert') }}},
+					{'id': 4, 'name': {{ xar_translate('Critical') }}},
+					{'id': 8, 'name': {{ xar_translate('Error') }}},
+					{'id': 16, 'name': {{ xar_translate('Warning') }}},
+					{'id': 32, 'name': {{ xar_translate('Notice') }}},
+					{'id': 64, 'name': {{ xar_translate('Info') }}},
+					{'id': 128, 'name': {{ xar_translate('Debug') }}},
+				] %}
+
+        <form action="{{ xar_currenturl() }}" method="post" onsubmit="return xar_base_formCheck(this, base_fieldRequired, base_fieldDescription);" enctype="application/x-www-form-urlencoded">
+           {# <!-- {{ include('@base/includes/modifyconfig-logging.html.twig') }} --> #}
+            <fieldset>
+                <legend>General</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="logenabled" title="{{ xar_translate('General flag to enable logging') }}" class="xar-form-label">                                
+                            Enable logging:                                
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set options = [
+                                {'id': 0, 'name': {{ xar_translate('No') }}},
+                                {'id': 1, 'name': {{ xar_translate('Yes') }}},
+                            ] %}
+                        {% set log_enabled = xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'Log.Enabled']) %}
+                        {{ xar_data_input({type: "radio", name: "logenabled", value: log_enabled, options: options}) }}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="logenabled" title="{{ xar_translate('The loggers that are logging') }}" class="xar-form-label">                                
+                            Active loggers:                                
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set value = xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'Log.Available']) %}
+                        {{ xar_data_input({property: logavailable, name: "available_loggers", value: value, layout: "horizontal"}) }}
+                    </div>
+                </div>
+                <div class="xar-row">
+                	<div>
+                		To configure any of the activated loggers above you need to install the LogConfig module (recommended) or modify the configuration file at <br/>
+                		var/logs/config.log.php (only a good idea if you know what you're doing).
+                	</div>
+                	Currently only the simple and mail loggers are supported.
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Fallback Logger</legend>
+                <div class="xar-row">
+                	<div>
+                		This logger is a basic version of the Simple logger. Xaraya will create it if you have enabled logging but haven't activated any of the loggers above.
+                	</div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="logfilename" title="{{ xar_translate('The cipher we are using') }}" class="xar-form-label">                                
+                            Log file name:                                
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set value = xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'Log.Filename']) %}
+                        {{ xar_data_input({type: "textbox", name: "logfilename", value: value}) }}
+                        <br/>Allowed extensions are txt and html
+                        <br/>If the file does not exist, Xaraya will try to create it
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="loglevel" title="{{ xar_translate('The cipher we are using') }}" class="xar-form-label">                                
+                            Log level:                                
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set value = @unserialize(xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'Log.Level'])) %}
+                        {{ xar_data_input({type: "checkboxlist", name: "loglevel", value: value, options: levels}) }}
+                    </div>
+                </div>
+                {% if xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'Log.Enabled']) and empty(xar_coremethod('xarLog', 'availables')) and xar_coremethod('xarLog', 'fallbackPossible') %}
+					<div style="color: green">
+						Fallback logging is currently active.
+					</div>
+                {% else %}
+					<div style="color: red">
+						Fallback logging is currently not active.
+					</div>
+                {% endif %}
+
+            </fieldset>
+            <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+            {{ include('@base/includes/update-button.html.twig') }}
+        </form>
+
+        <div style="margin-top: 20px">
+			{% if log_enabled and 'simple' in available_loggers %}
+				{% if log_data %}
+					<fieldset>
+						<legend>
+							Simple Logger Log
+						</legend>
+						{{ xar_data_input({type: "textarea", style: "width: 95%; height: 1000px", name: "logfile", value: log_data}) }}
+					</fieldset>
+					<div class="xar-row">
+						<div class="xar-col">
+						</div>
+						<div class="xar-col">
+							<form action="{{ xar_currenturl() }}" method="post" enctype="application/x-www-form-urlencoded">
+								{% set label = 'Clear Log' %}
+								{{- xar_button({type: "submit", name: "clear", label: label}) -}}
+								<input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+								{% set label = 'Save and Clear Log' %}
+								{{- xar_button({type: "submit", name: "clearsave", label: label}) -}}
+							</form>
+						</div>
+					</div>
+				{% else %}
+					<div class="xar-row">
+						<div class="xar-col">
+						</div>
+						<div class="xar-col">
+							The Simple Logger Log is empty
+						</div>
+					</div>
+				{% endif %}
+			{% endif %}
+		</div>
+    {% endif %}
+{% endblock %}

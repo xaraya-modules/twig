@@ -1,0 +1,137 @@
+{# @dynamicdata/admin/modify.html.twig #}
+
+{% block modify %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if object.objectid %}
+            {% set viewlink = xar_moduleurl('dynamicdata','admin','view',{'itemid': object.objectid}) %}
+        {% else %}
+            {% set viewlink = xar_moduleurl('dynamicdata','admin','view',{'table': object.table}) %}
+        {% endif %}
+        {% if not tab or tab == 'edit' %}
+            <h2>
+                {% if objectid and objectid == 1 %}
+                    {{ xar_translate('Modify DataObject for #(1)', object.properties.label.value) }}
+                    {% set tab = 'edit' %}
+                    {{ include('@dynamicdata/includes/object_menu.html.twig') }}
+                {% else %}
+                    {{ xar_translate('Modify Item #(1) in #(2)&#160;', object.itemid, object.label) }}
+                    <a href="{{ viewlink }}" title="View {{ object.label }}">
+                        {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+                    </a>
+                {% endif %}
+            </h2>
+            {% if preview is not null %}
+                <fieldset>
+                    <legend>Preview</legend>
+                    {{ xar_data_display({object: object}) }}
+                </fieldset>
+            {% endif %}
+            {% set isupload = object.upload %}
+            {% if isupload %}
+                {% set enc_type = 'multipart/form-data' %}
+            {% else %}
+                {% set enc_type = 'application/x-www-form-urlencoded' %}
+            {% endif %}
+            <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','update') }}" enctype="{{ enc_type }}">
+                <fieldset>
+                    <legend>Modify Object Definition</legend>
+                    {% if object.visibility != 'public' %}
+                        <h3 class="xar-align-center">Warning! This is a <em>{{ object.visibility }}</em> object used
+                        internally by the {{ xar_coremethod('xarMod', 'getName', [object.moduleid]) }} module.<br/>
+                        Trying to modify this item here may break the module. Please proceed with caution.</h3>
+                    {% endif %}
+                    {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}
+                    {# <!-- this does most of the hard work :) --> #}
+                    {{ include('@dynamicdata/includes/showinvalids.html.twig') }}
+                    {{ xar_data_form({object: object}) }}
+                    {% if hooks %}
+                        {% for module, output in hooks %}
+                            {{ output }}
+                        {% endfor %}
+                    {% endif %}
+                </fieldset>
+                <div class="xar-form-actions">
+                    <div class="xar-row">
+                        <div class="xar-col"></div>
+                        <div class="xar-col">
+                            <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                            <input type="hidden" name="tab" id="tab" value="edit"/>
+                            <input type="hidden" name="objectid" id="objectid" value="{{ object.objectid }}"/>
+                            <input type="hidden" name="itemid" id="itemid" value="{{ object.itemid }}"/>
+                            {% if object.join %}
+                                <input type="hidden" name="join" id="join" value="{{ object.join }}"/>
+                            {% endif %}
+                            {% if object.table %}
+                                <input type="hidden" name="table" id="table" value="{{ object.table }}"/>
+                            {% endif %}
+                            <input type="hidden" name="tplmodule" id="tplmodule" value="{{ tplmodule }}"/>
+                            {% if return_url %}
+                                <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                            {% endif %}
+                            <input type="hidden" name="notfresh" id="notfresh" value="true"/>
+                            {% set label = 'Preview' %}
+                            {{- xar_button({type: "submit", label: label, name: "preview"}) -}}
+                            &#160;
+                            {% set label = 'Update' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </div>
+                    </div>
+                </div>
+                {% if objectid and objectid == 2 %}
+                    <p>
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','showpropval',{'itemid': itemid}) }}">
+                            Edit configuration
+                        </a>
+                    </p>
+                {% endif %}
+            </form>
+        {% elseif tab == 'clone' %}
+            <h2>
+                {% if objectid and objectid == 1 %}
+                    Clone the object: {{ object.properties.label.value }}
+                    {{ include('@dynamicdata/includes/object_menu.html.twig') }}
+                {% else %}
+                    Modify Item {{ object.itemid }} in {{ object.label }}&#160;
+                    <a href="{{ viewlink }}" title="View {{ object.label }}">
+                        {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+                    </a>
+                {% endif %}
+            </h2>
+            <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','update') }}">
+                {% if adminaccess %}
+                    <fieldset>
+                        <legend>
+                            Clone this object
+                        </legend>
+                        Do you want to create a copy of the dataobject {{ object.properties.name.value }} ({{ label }})?
+                        <div>
+                            Name for the new object:&#160;<input type="textbox" name="newname" value="{{ object.properties.name.value }}_copy" size="50"/>
+                        </div>
+                        <div class="xar-form-actions">
+                            <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                            <input type="hidden" name="tab" id="tab" value="clone"/>
+                            <input type="hidden" name="objectid" id="objectid" value="{{ object.objectid }}"/>
+                            <input type="hidden" name="itemid" id="itemid" value="{{ object.itemid }}"/>
+                            <input type="hidden" name="tplmodule" id="tplmodule" value="{{ tplmodule }}"/>
+                            {% if return_url %}
+                                <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                            {% endif %}
+                            {% set label = 'Clone' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                            &#160;
+                            {% set label = 'Cancel' %}
+                            {{- xar_button({type: "cancel", label: label, class: "xar-margin-thickleft"}) -}}
+                        </div>
+                        {% if objectid and objectid == 2 %}
+                            <p>
+                                <a href="{{ xar_moduleurl('dynamicdata','admin','showpropval',{'itemid': itemid}) }}">
+                                    Edit configuration</a>
+                            </p>
+                        {% endif %}
+                  </fieldset>
+                {% endif %}
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

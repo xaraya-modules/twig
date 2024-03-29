@@ -1,0 +1,34 @@
+{# modules/dynamicdata/objects/showview.xml.twig #}
+
+{% block showview %}
+{# <!-- FIXME: this does not generate valid RSS feeds --> #}
+    {% for itemid, fields in items %}
+    <item>
+        {% for name in properties|keys %}
+            {% if linkfield and linkfield == name and links[itemid]['display'] %}
+                <title>{{ xar_data_output({property: properties[name], value: fields[name]}) }}</title>
+                <link>{{ links[itemid]['display']['olink'] }}</link>
+                <guid isPermaLink="true">{{ links[itemid]['display']['olink'] }}</guid>
+                {% set condition = '1' %}
+                <xar:break />
+            {% endif %}
+        {% endfor %}
+        {% if not condition and links[itemid]['display'] %}
+            <title>{{ object.label }} {{ itemid }}</title>
+            <link>{{ links[itemid]['display']['olink'] }}</link>
+            <guid isPermaLink="true">{{ links[itemid]['display']['olink'] }}</guid>
+        {% endif %}
+        {% if properties['author'] is not null and fields['author'] %}
+            <author>{{ xar_data_output({property: properties['author'], value: fields['author']}) }}</author>
+        {% endif %}
+        {% if properties['pubdate'] is not null and fields['pubdate'] %}
+            <pubDate>{{ xar_coremethod('xarLocale', 'formatUTCDate', ["%a, %d %b %Y %H.%M.%S GMT",fields['pubdate']]) }}</pubDate>
+        {% endif %}
+        {# <!-- uncomment these if you want to eg use a property value as a description
+        <content:format rdf:resource="http://www.w3.org/1999/xhtml" />
+        <content:encoded><![CDATA[ {{ xar_prep_html(fields['description']) }} ]]></content:encoded>
+        <description>{{ xar_prep_display(fields['description']) }}</description>
+        --> #}
+    </item>
+    {% endfor %}
+{% endblock %}

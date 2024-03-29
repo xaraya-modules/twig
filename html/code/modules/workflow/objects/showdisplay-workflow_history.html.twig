@@ -1,0 +1,26 @@
+{# @workflow/objects/showdisplay-workflow_history.html.twig #}
+
+{% block showdisplay_workflow_history %}
+{# <!-- Adapted from dynamicdata/xartemplates/objects/showdisplay.xt --> #}
+    {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', ['categories',modname,itemtype]) %}
+        {{ include('@workflow/includes/catnavigation.html.twig') }}
+    {% endif %}
+    {# <!-- The layout could be set directly or through inheritance (for example in the modify prop screen) --> #}
+    {% if not layout %}
+        {% set layout = 'default' %}
+    {% endif %}
+    {% if not userId %}
+        {% set userId = object.getContext().getUserId() ?? xar_coremethod('xarSession', 'getVar', ['role_id']) %}
+    {% endif %}
+    {% if layout == 'default' %}
+        {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
+        {% set item = [] %}
+        {% for name, property in properties %}
+            {% set item = item + {(name): property.value} %}
+        {% endfor %}
+        {{ include('@workflow/includes/test_historyitem.html.twig') }}
+    {% else %}
+        {# <!-- You can include your own layout here or specify a separate template, e.g. if you want to handle individual fields differently for a particular module / itemtype --> #}
+        {{ include('@' ~ tplmodule ~ '/includes/display-' ~ layout ~ '.html.twig') }}
+    {% endif %}
+{% endblock %}

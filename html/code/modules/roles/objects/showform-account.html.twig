@@ -1,0 +1,93 @@
+{# @roles/objects/showform-account.html.twig #}
+
+{% block showform_account %}
+{# <!-- This is the form for roles dd roles_users object. --> #}
+    {% if not layout %}
+        {% set layout = 'default' %}
+    {% endif %}
+    {% if layout == 'default' %}
+        {# <!--
+            This is the layout used by the roles module itself when a user is editing their basic account info
+            Any data not provided by the object is provided by the $formdata array
+        --> #}
+        {% set settings = '|split(')) %}
+        <h2>Edit {{ object.properties['name'].getValue() }}</h2>
+        <fieldset>
+            <legend>User Details</legend>
+            {% if (bool)xar_modvar('roles', 'requirevalidation') %}
+                <div class="xar-row">
+                        Changing your email address will require you to revalidate your account.
+                </div>
+            {% endif %}
+            {% set fields = >['name','uname','email','password','regdate']< %}
+            {% for name in fields %}
+                {% if properties[name] is null %}
+                {% else %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {{ xar_data_label({property: properties[name], for: "id"}) }}
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({property: properties[name]}) }}
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+
+            {{ xar_data_input({property: object.properties['id'], hidden: "hidden"}) }}
+            {{ xar_data_input({property: object.properties['state'], hidden: "hidden"}) }}
+            {{ xar_data_input({property: object.properties['valcode'], hidden: "hidden"}) }}
+            {{ xar_data_input({property: object.properties['authmodule'], hidden: "hidden"}) }}
+            {{ xar_data_input({property: object.properties['role_type'], hidden: "hidden"}) }}
+
+            {% if 'passwordupdate' in settings %}
+                {% set passwordupdate = xar_coremethod('xarModUserVars', 'get', ['roles', 'passwordupdate']) %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="passwordupdate" class="xar-form-label">
+                                Password last updated:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% if passwordupdate %}
+                                {{ xar_localedate(passwordupdate, 'medium', '') }}
+                                {{ xar_localedate(passwordupdate, '', 'medium') }}
+                            {% else %}
+                                Never
+                            {% endif %}
+                        </div>
+                    </div>
+            {% endif %}
+
+            {% if 'userlastlogin' in settings %}
+                {% set userlastlogin = xar_coremethod('xarModUserVars', 'get', ['roles', 'userlastlogin']) %}
+                {% if userlastlogin %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="userlastlogin" class="xar-form-label">
+                                Time of Last Login:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_localedate(userlastlogin, 'medium', '') }}
+                            {{ xar_localedate(userlastlogin, '', 'medium') }}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            {% if formdata['hooks'] %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% for module, output in formdata['hooks'] %}
+                        {{ output }}{% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+        </fieldset>
+    {% else %}
+        {# <!-- You can also specify your own layout here or in a separate template, e.g. if you want to handle individual fields differently for a particular module usermenu --> #}
+        {{ include('@' ~ tplmodule ~ '/includes/form-' ~ layout ~ '.html.twig') }}
+    {% endif %}
+{% endblock %}

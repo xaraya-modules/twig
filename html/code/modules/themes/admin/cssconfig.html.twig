@@ -1,0 +1,81 @@
+{# @themes/admin/cssconfig.html.twig #}
+
+{% block cssconfig %}
+{# <!--
+        Temporarily using blocks css because it's already implemented in stable scenario.. TODO: convert to native core.css as soon as practicable 
+    --> #}
+    {{ xar_style({scope: "common"}) }}
+    {{ include('@themes/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Cascading Style Sheets (CSS) Manager</h2>
+        {% if component == '' %}
+            <h3>CSS Options</h3>
+            <p>
+                The CSS subsystem can function in one of two modes: configurable (managed) or non-configurable (unmanaged - default). While default mode is extremely fast and fool-proof, the configurable option gives much more flexibility and control over the way css is treated by Xaraya.
+            </p>
+            <form class="xar-blocks-admin" action="{{ xar_moduleurl('themes', 'admin', 'cssconfig') }}" method="post">
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Enable manual stylesheet configuration' %}
+                        <span title="{{ label }}" class="xar-form-label">Mode:</span>
+                        <div class="xar-floatleft">
+                            {% if configurable %}
+                                <div>
+                                    <input type="radio" value="0" id="configurable_false" name="configurable"/>
+                                    {% set label = 'Let the system handle CSS automatically' %}
+                                    <label for="configurable_false" title="{{ label }}">
+                                        Unmanaged
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" value="1" id="configurable_true" checked="checked" name="configurable"/>
+                                    {% set label = 'Allow manual CSS management' %}
+                                    <label for="configurable_true" title="{{ label }}">
+                                        Managed
+                                    </label>
+                                </div>
+                            {% else %}
+                                <div>
+                                    <input type="radio" value="0" id="configurable_false" checked="checked" name="configurable"/>
+                                    {% set label = 'Let the system handle CSS automatically' %}
+                                    <label for="configurable_false" title="{{ label }}">
+                                        Unmanaged
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" value="1" id="configurable_true" name="configurable"/>
+                                    {% set label = 'Allow manual CSS management' %}
+                                    <label for="configurable_true" title="{{ label }}">
+                                        Managed
+                                    </label>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <span class="xar-form-label">
+                        <a href="{{ resettagsurl }}">(CSS) Stylesheet Tags</a>
+                        </span>{{ resettagsurlstatus }}
+                    </div>
+                </div>
+                <div class="xar-form-actions">
+                    <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                    {% set label = 'Submit' %}
+                    {{- xar_button({type: "submit", label: label}) -}}
+                </div>
+            </form>
+            <h4>Note: About stylesheet tags</h4>
+            <p>
+                With the manager come the custom template tags. These should be used in modules and theme templates instead of (old) xarTplAddStyleLink and $tpl:additionalStyles. See examples in the Default theme and in this module templates. The complete list of the tags is also available in "Template Tags" panel, although modifying the tags from that interface would probably not be advisable.
+            </p>
+            {% elseif component == 'core' %}
+            {{ include('@themes/includes/corecss.html.twig') }}
+            {% elseif component == 'themes' %}
+            {{ include('@themes/includes/themescss.html.twig') }}
+            {% elseif component == 'modules' %}
+            {{ include('@themes/includes/modulescss.html.twig') }}
+        {% endif %}
+    </div>
+{% endblock %}

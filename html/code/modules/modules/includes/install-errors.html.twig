@@ -1,0 +1,18 @@
+{# @modules/includes/install-errors.html.twig #}
+
+{% block install_errors %}
+{% if errorstack %}
+        {% for loop_key1, loop_item1 in errorstack %}{% set loop_index1 = loop.index %}
+            {% if loop_item1.major > 0 %}
+                <h3>{{ loop_item1.title }}</h3>
+                <p>{{ loop_item1.short }}</p>
+                <p>{{ loop_item1.long }}</p>
+                {% if loop_item1.stack %}
+                    <pre>
+{{ loop_item1.stack }}
+</pre>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

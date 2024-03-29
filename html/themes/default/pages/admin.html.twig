@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{{ xar_twig_header("text/html") -}}
+    <html xml:lang="en" lang="en">
+        {# <!-- Call blocks early so any css and js is included --> #}
+        {% set admingroup = xar_blockgroup("admin") %}
+        <head>
+            {{ xar_blockgroup("header") }}
+            <title>
+                {{ tpl.pageTitle }}
+            </title>
+            <base href="{{ xar_baseurl() }}index.php"/>
+            <link rel='icon' href="favicon.ico"/>
+            {{ xar_style({scope: "common"}) }}
+            {{ xar_style({scope: "theme", file: "style", title: "Xaraya Default Stylesheet"}) }}
+            {{ xar_style({scope: "theme", file: "admin", title: "Xaraya Default Admin Stylesheet"}) }}
+            {{ xar_place_css() }}
+            {{ xar_place_javascript({position: "head"}) }}
+        </head>
+        <body>
+            <div id="admin-wrapper">
+                <div id="admin-main">
+                    <div style="text-align: right">
+                        <a href="{{ xar_baseurl() }}" style="text-decoration: none">
+                            {{ xar_var({name: "SiteName", scope: "module", module: "themes"}) }}
+                        </a>
+                    </div>
+                    <div id="docpage-1">
+                        {% block modulespace %}{{ _bl_mainModuleOutput|raw }}{% endblock %}
+                    </div>
+                    <div id="docpage-2" style="display: none">
+                    </div>
+                </div>
+                <div id="sideInfo1" class="admin-sideInfo">
+                    {# <!-- Convenience link to front end
+                    Note: the adminmenu block has an option to show this link,
+                    but you might want to use this, eg, when the adminmenu block isn't displayed
+                    {% set title = 'Go to the front end interface' %}
+                    <a href="index.php" title="{{ title|raw }}">
+                        [ Front end ]
+                    </a>
+                    --> #}
+                    {{ admingroup|raw }}
+                </div>
+                {{ xar_place_javascript({position: "body"}) }}
+            </div>
+        </body>
+    </html>

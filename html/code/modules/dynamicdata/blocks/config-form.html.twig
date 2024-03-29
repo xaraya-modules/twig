@@ -1,0 +1,14 @@
+{# @dynamicdata/blocks/config-form.html.twig #}
+
+{% block config_form %}
+<div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'Select the dynamic object for which you want to create a form.' %}
+            <label class="help xar-form-label" title="{{ label }}" for="objectid{{ _bl_block_id }}">DataObject</label>
+        </div>
+        <div class="xar-col">
+            {% set id = 'objectid' ~ _bl_block_id %}
+            {{ xar_data_input({type: "object", name: "objectid", id: id, value: objectid}) }}
+        </div>
+    </div>
+{% endblock %}

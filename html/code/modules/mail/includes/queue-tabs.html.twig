@@ -1,0 +1,42 @@
+{# @mail/includes/queue-tabs.html.twig #}
+
+{% block queue_tabs %}
+{# <!--
+        Tabs for the Queue section, takes one parameter to decide 
+        which tab should be active.
+        Variables:
+        $active_tab - name of tab which should be active
+    --> #}
+    <ul class="xar-tabs xar-alt xar-norm-outline">
+        {% set title = 'Queue management areas' %}
+        {% set label = 'Queue' %}
+        <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+        {% set tabclass = 'xar-tab' %}
+        {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% if active_tab == 'registration' %}
+            {% set tabclass = 'xar-tab-active' %}
+            {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+            <a href="{{ xar_moduleurl('mail','admin','view') }}" class="{{ tlinkclass }}">Registration</a>
+        </li>
+        {% set tabclass = 'xar-tab' %}
+        {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% if active_tab == 'status' %}
+            {% set tabclass = 'xar-tab-active' %}
+            {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+            <a href="{{ xar_moduleurl('mail','admin','qstatus') }}" class="{{ tlinkclass }}">Status</a>
+        </li>
+        {% set tabclass = 'xar-tab' %}
+        {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% if active_tab == 'mapping' %}
+            {% set tabclass = 'xar-tab-active' %}
+            {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+            <a href="{{ xar_moduleurl('mail','admin','mapping') }}" class="{{ tlinkclass }}">Mapping</a>
+        </li>
+    </ul>
+{% endblock %}

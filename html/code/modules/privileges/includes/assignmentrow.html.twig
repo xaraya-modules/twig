@@ -1,0 +1,31 @@
+{# @privileges/includes/assignmentrow.html.twig #}
+
+{% block assignmentrow %}
+<tr class="{{ displayclass }}">
+        <td>
+            {{ row['name'] }}
+        </td>
+        <td>
+            <a href="{{ xar_moduleurl('roles','admin','showprivileges',{'id': row['role_id']}) }}">
+                {{ row['role_name'] }}
+            </a>
+        </td>
+        <td>
+            {{ row['component'] }}
+        </td>
+        <td>
+            {% set level = SecurityLevel..displayMap[row['level']] %}
+            {{ level }}
+        </td>
+        {# <!--
+        <td style="text-align: center;">
+            <input type="checkbox" name="{{ row['role_id'] }}" id="{{ row['role_id'] }}"/>
+        </td>
+        --> #}
+        <td style="text-align: center;">
+            <a href="{{ xar_moduleurl('privileges','admin','assignprivileges',{'phase': 'remove', 'assignment': row['role_id'} ~ ',' ~ row['id']]) }}">
+                Remove
+            </a>
+        </td>
+    </tr>
+{% endblock %}

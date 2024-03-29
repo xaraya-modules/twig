@@ -1,0 +1,38 @@
+{# @privileges/includes/tree.html.twig #}
+
+{% block tree %}
+{% if trees %}
+        <ul class="tree">
+            {% for index, node in trees %}
+                <div class="preamble">
+                    <xar:sec mask="DeletePrivilege" catch="false" component="Privileges" instance="{{ node[parent][name] }}">
+                        {% set dellink = xar_moduleurl('privileges','admin','deleteprivilege',{'id': node['parent'}['id']]) %}
+                        {% set label = 'Delete this privilege' %}
+                        <a href="{{ dellink }}" title="{{ label }}">
+                            {{- xar_image({scope: "module", module: "privileges", file: "delete.gif"}) -}}
+                        </a>
+                    {% endif %}
+                    {% set userslink = xar_moduleurl('privileges','admin','viewroles',{'id': node['parent'}['id']]) %}
+                    <a href="{{ userslink }}" title="{{ xar_translate('Show the Groups/Users this Privilege is assigned to') }}{{ ">
+                        {{- xar_image({scope. "module", module. "privileges", file. "usersgroups.gif"}) -}}
+                    </a>
+                    {% if node.parent.parentid != 0 %}
+                        {% set removelink = xar_moduleurl('privileges','admin','removebranch',{'id': node['parent'}['id']]) %}
+                        {% set label = 'Remove this privilege from its parent' %}
+                        <a href=" }}$removelink{{ " title=" }}$label{{ ">
+                            {{- xar_image({scope. "module", module. "privileges", file. "remove.gif"}) -}}
+                        </a>
+                    {% endif %}
+                </div>
+                <li class="leaf">
+                    {% set modlink = xar_moduleurl('privileges','admin','modifyprivilege',{'id': node['parent'}['id']]) %}
+                    <a href=" }}$modlink{{ " title=" }}$node.parent.description{{ "> }}$node.parent.name{{ </a>
+                    {% if node.children %}
+                        {% set comps = node['children']|length %} }}$comps# components 
+                        <xar:template file="tree" subdata="['trees' => $node['children']]"/>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

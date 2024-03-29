@@ -1,0 +1,45 @@
+{# @modules/blocks/modify-adminmenu.html.twig #}
+
+{% block modify_adminmenu %}
+<div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'By checking this box a logout link will be shown in the panel instance.' %}
+            <label for="showlogout" title="{{ label }}">
+                Show a logout link in this menu
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "showlogout", value: showlogout}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+         <div class="xar-col">
+            {% set label = 'By checking this box the menu will NOT show the overview page of the module by default.' %}
+            <label for="overview" title="{{ label }}">
+                Disable the module overview by default
+            </label>
+        </div>
+       <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "overview", value: overview}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'How should the menu items be ordered?' %}
+            <label for="menustyle" title="{{ label }}" class="xar-form-label">
+                Sort menuitems:
+            </label>
+        </div>
+        <div class="xar-col">
+            <select name="menustyle" id="menustyle">
+                <xar:foreach in="$sortorder" value="$v" key="$k">
+                    {% if k == menustyle %}
+                        <option value="{{ k }}" selected="selected">{{ v }}</option>
+                    {% else %}
+                        <option value="{{ k }}">{{ v }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+{% endblock %}

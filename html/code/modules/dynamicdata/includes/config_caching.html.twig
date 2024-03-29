@@ -1,0 +1,16 @@
+{# @dynamicdata/includes/config_caching.html.twig #}
+
+{% block config_caching %}
+<div class="xar-row">
+        <div class="xar-col" style="padding-bottom: 10px;">
+            {% set label = 'This lets you cache objects in the database or filesystem' %}
+            <label for="caching" title="{{ label }}" class="xar-form-label">
+                Enable persistent object caching
+            </label>
+        </div>
+        <div class="xar-col">
+            {% set value = xar_modvar('dynamicdata', 'caching') %}
+            {{ xar_data_input({type: "checkbox", name: "caching", value: value}) }}
+        </div>
+    </div>
+{% endblock %}

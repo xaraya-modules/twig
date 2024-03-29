@@ -1,0 +1,18 @@
+{# @categories/includes/alert_success.html.twig #}
+
+{% block alert_success %}
+{% if message_success %}
+        <div class="alert alert-success" role="alert">
+            {% if message_success is iterable %}
+                {% for message in message_success %}
+                    {% if message %}
+                        {{ message }}
+                        <br/>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                {{ message_success }}
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

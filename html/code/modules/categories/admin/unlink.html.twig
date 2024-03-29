@@ -1,0 +1,28 @@
+{# @categories/admin/unlink.html.twig #}
+
+{% block unlink %}
+{{ include('@categories/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Delete Category Links</h2><br />
+        <div style="margin: auto;">
+    
+        <div align="center">
+        {% if not modname %}
+            Are you sure you want to delete all category links ?
+        {% elseif not itemid %}
+            {{ xar_translate('Are you sure you want to delete all category links for module', modname) }}
+        {% else %}
+            {{ xar_translate('Are you sure you want to delete all category links for module', modname, itemid) }}
+        {% endif %}
+        <br /><br />
+        <form method="post" action="&xar-modurl-categories-admin-unlink;">
+            <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+            <input type="hidden" name="modid" id="modid" value="{{ modid }}"/>
+            <input type="hidden" name="itemtype" id="itemtype" value="{{ itemtype }}"/>
+            <input type="hidden" name="itemid" id="itemid" value="{{ itemid }}"/>
+    
+            {{- xar_button({type: "submit", name: "confirm", id: "confirm", label: confirmbutton}) -}}
+        </form></div>
+        </div>
+    </div>
+{% endblock %}

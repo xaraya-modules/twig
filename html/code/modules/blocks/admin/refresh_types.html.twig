@@ -1,0 +1,171 @@
+{# @blocks/admin/refresh_types.html.twig #}
+
+{% block refresh_types %}
+<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
+    {{ include('@blocks/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Refresh Block Types</h2>
+        <p class="xar-note">Block Types Refreshed</p>
+        {% if unchanged %}
+            <h3>Unchanged</h3>
+            <p>The following block types were not changed</p>
+            <table class="xar-table xar-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Module</th>
+                        <th>Description</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for type in unchanged %}
+                    <tr>
+                        <td>{{ type['type'] }}</td>
+                        <td>{{ type['module'] }}</td>
+                        <td>{{ type['type_info']['text_type_long'] }}</td>
+                        <td>{{ type_states[type['type_state']]['name'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if new %}
+            <h3>New Block Types</h3>
+            <p>The following block types were added to the system</p>
+            <table class="xar-table xar-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Module</th>
+                        <th>Description</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for type in new %}
+                    <tr>
+                        <td>{{ type['type'] }}</td>
+                        <td>{{ type['module'] }}</td>
+                        <td>{{ type['type_info']['text_type_long'] }}</td>
+                        <td>{{ type_states[type['type_state']]['name'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+
+        {% if new %}
+            <h3>Activated Block Types</h3>
+            <p>The following block types were reactivated</p>
+            <table class="xar-table xar-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Module</th>
+                        <th>Description</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for type in new %}
+                    <tr>
+                        <td>{{ type['type'] }}</td>
+                        <td>{{ type['module'] }}</td>
+                        <td>{{ type['type_info']['text_type_long'] }}</td>
+                        <td>{{ type_states[type['type_state']]['name'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if error %}
+            <h3>Block Types in Error</h3>
+            <p>The following block types were found to be in error state</p>
+            <table class="xar-table xar-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Module</th>
+                        <th>Description</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for type in error %}
+                    <tr>
+                        <td>{{ type['type'] }}</td>
+                        <td>{{ type['module'] }}</td>
+                        <td>{{ type['type_info']['text_type_long'] }}</td>
+                        <td>{{ type_states[type['type_state']]['name'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if missing %}
+            <h3>Missing Block Types</h3>
+            <p>The following block types were found to be missing</p>
+            <table class="xar-table xar-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Module</th>
+                        <th>Description</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for type in missing %}
+                    <tr>
+                        <td>{{ type['type'] }}</td>
+                        <td>{{ type['module'] }}</td>
+                        <td>{{ type['type_info']['text_type_long'] }}</td>
+                        <td>{{ type_states[type['type_state']]['name'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+ 
+        {% if unavailable %}
+            <h3>Unavailable Block Types</h3>
+            <p>The following block types were found to belong to modules which are not active</p>
+            <table class="xar-table xar-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Module</th>
+                        <th>Description</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for type in unavailable %}
+                    <tr>
+                        <td>{{ type['type'] }}</td>
+                        <td>{{ type['module'] }}</td>
+                        <td>{{ type['type_info']['text_type_long'] }}</td>
+                        <td>{{ type_states[type['type_state']]['name'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <fieldset>
+            <div class="xar-align-center">
+                <form method="get" action="{{ xar_currenturl() }}">
+                    <input type="hidden" name="module" id="module" value="blocks"/>
+                    <input type="hidden" name="type" id="type" value="admin"/>
+                    <input type="hidden" name="func" id="func" value="refresh_types"/>
+                    {% set submitLabel = 'Refresh Again' %}
+                    {{- xar_button({type: "submit", label: submitLabel}) -}}
+                </form>
+            </div>
+        </fieldset>
+    </div>
+{% endblock %}

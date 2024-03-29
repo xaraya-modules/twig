@@ -1,0 +1,20 @@
+{# @roles/waitingconfirm.html.twig #}
+
+{% extends '@roles/base.html.twig' %}
+
+{% block modulespace %}
+{# <!-- Roles module confirmation for existing users revalidating their email --> #}
+    {% set adminemail = xar_var({scope: "module", module: "mail", name: "adminmail"}) %}
+    <div class="xar-mod-head">
+        <span class="xar-mod-title">Change of Email</span>
+    </div>
+    <div class="xar-mod-body">
+        <h2>Instructions Sent</h2>
+        <p>
+            You have changed your email address and your account now requires re-validation before you can log in. Information on how to re-validate your account have been sent to the email address you provided. Please take a moment to read these instructions.
+        </p>
+        <p>
+            If you have a question or didn't receive your instructions please contact the <a href="mailto:{{ adminemail }}">website administrator</a>.
+        </p>
+    </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{# @dynamicdata/includes/showinvalids.html.twig #}
+
+{% block showinvalids %}
+{% set debugadmins = xar_coremethod('xarConfigVars', 'get', [null, 'Site.User.DebugAdmins']) %}
+    {% set username = xar_uservar('uname') %}
+    {% if xar_modvar('dynamicdata', 'debugmode') and username in debugadmins %}
+        {% set invalids = object.getInvalids() %}
+        {% if invalids %}
+          <fieldset>
+            <legend>Invalid Values</legend>
+            {% for key, value in invalids %}
+                <div>
+                    {{ key }}:&#160;{{ value }}
+                </div>
+            {% endfor %}
+          </fieldset>
+        {% endif %}
+    {% endif %}
+{% endblock %}

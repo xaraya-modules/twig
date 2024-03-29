@@ -1,0 +1,128 @@
+{# @dynamicdata/objects/ui_search.html.twig #}
+
+{% block ui_search %}
+{{ include('@dynamicdata/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% set viewlink = object.getActionURL('view') %}
+        {% set searchlink = object.getActionURL('search') %}
+        {% set querylink = object.getActionURL('query') %}
+        <h2>
+            Search {{ object.label }}&#160;
+            <a href="{{ viewlink }}" title="View {{ object.label }}">
+                {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+            </a>&#160;
+            <a href="{{ searchlink }}" title="Reset Search">
+                {{- xar_image({scope: "theme", file: "icons/view-refresh.png", class: "xar-icon", alt: "reset"}) -}}
+            </a>
+        </h2>
+        {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}
+        <form method="post" action="{{ searchlink }}">
+            <fieldset>
+                <legend>Search Criteria</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label class="xar-form-label" for="q">Search for</label>
+                    </div>
+                    <div class="xar-col">
+                        {# <!-- if we use the current URL, the object is already specified --> #}
+                        {% if object.linktype != 'current' %}
+                            <input type="hidden" name="object" id="object" value="{{ object.name }}"/>
+                        {% endif %}
+                        <input type="hidden" name="method" id="method" value="search"/>
+                        {% if object.join %}
+                            <input type="hidden" name="join" id="join" value="{{ object.join }}"/>
+                        {% endif %}
+                        {% if object.table %}
+                            <input type="hidden" name="table" id="table" value="{{ object.table }}"/>
+                        {% endif %}
+                        {% if return_url %}
+                            <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                        {% endif %}
+                        <input type="text" name="q" id="q" value="{{ search['q'] }}" size="20"/>
+                        {% set label = 'Search' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                        &#160;<a href="{{ querylink }}">Advanced</a>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label class="xar-form-label" for="match">Search type</label>
+                    </div>
+                    <div class="xar-col">
+                        <select name="match" id="match">
+                            {% for value, label in search.options %}
+                                {% if search['match'] == value %}
+                                    <option value="{{ value }}" selected="selected">{{ label }}</option>
+                                {% else %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        Search in
+                    </div>
+                    <div class="xar-col">
+                        {# <!-- only show properties with status ACTIVE, DISPLAYONLY and VIEWONLY --> #}
+                        {% set filterstatus = >[1, 2, 4]< %}
+                        {% set show_props = [] %}
+                        {% for name, property in object.properties %}
+                            {% set displaystatus = property.getDisplayStatus() %}
+                            {% if displaystatus not in filterstatus %}
+                            {% else %}
+                            {% set dummy = array_push(show_props, name) %}
+                            {% endif %}
+                        {% endfor %}
+                        {# <!-- show properties in three columns to save screen space --> #}
+                        {% set size = floor((show_props|length - 0.5) / 3) + 1 %}
+                        {% set columns = array_chunk(show_props,size) %}
+                        <table class="xar-table">
+                            <tr>
+                            {% for proplist in columns %}
+                                <td valign="top">
+                                {% for name in proplist %}
+                                    {% set property = object.properties.name %}
+                                    {# <!-- CHECKME: could the dummy datastore actually do something here ? --> #}
+                                    {% if property.datastore == '_dummy_' %}
+                                        <input type="checkbox" name="field[{{ name }}]" id="field_{{ name }}" value="1" disabled="disabled"/>
+                                    {% elseif not search['field'] or name in search['field'] %}
+                                        <input type="checkbox" name="field[{{ name }}]" id="field_{{ name }}" value="1" checked="checked"/>
+                                    {% else %}
+                                        <input type="checkbox" name="field[{{ name }}]" id="field_{{ name }}" value="1"/>
+                                    {% endif %}
+                                    &#160;<label for="field_{{ name }}">{{ property.label }}</label><br/>
+                                {% endfor %}
+                                </td>
+                            {% endfor %}
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label class="xar-form-label" for="sort">Sort by</label>
+                    </div>
+                    <div class="xar-col">
+                        <select name="sort" id="sort">
+                            <option value=""></option>
+                            {% for name in show_props %}
+                                {% set property = object.properties.name %}
+                                {% if search['sort'] == name %}
+                                    <option value="{{ name }}" selected="selected">{{ property.label }}</option>
+                                {% else %}
+                                    <option value="{{ name }}">{{ property.label }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        {% if result %}
+            {# <!-- don't show a newlink here --> #}
+            {{ xar_data_view({object: result}) }}
+        {% endif %}
+    </div>
+{% endblock %}

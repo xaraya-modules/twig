@@ -1,0 +1,11 @@
+{# @roles/viewtree.html.twig #}
+
+{% extends '@roles/base.html.twig' %}
+
+{% block modulespace %}
+{{ include('@roles/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Roles Tree</h2>
+        <div>{{ chart }}</div>
+    </div>
+{% endblock %}

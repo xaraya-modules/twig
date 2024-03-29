@@ -1,0 +1,50 @@
+{# @categories/admin/modifyconfighook.html.twig #}
+
+{% block modifyconfighook %}
+<fieldset class="xar-norm">
+        <legend>
+            <strong>
+                Categories
+            </strong>
+        </legend>
+        {{ xar_data_input({type: "categorypicker", name: "basecid", module: modname, itemtype: itemtype}) }}
+    </fieldset>
+    {# <!--  TODO: Remove
+    <fieldset class="formelements xar-norm">
+        <legend>
+            <strong>
+                
+                    Categories
+                
+                {% if newcat %}
+                    [ <a href="&xar-modurl-categories-admin-modify;">
+                        
+                            Add
+                        
+                    </a> ]
+                {% endif %}
+            </strong>
+        </legend>
+        <div class="xar-form-input-wrapper">
+            <label for="number_of_categories" class="xar-form-label help" title="{{ xar_translate('Enter the number of possible categories that this itemtype will use') }}">
+                
+                    Number of possible categories
+                
+            </label> <input type="text" name="number_of_categories" id="number_of_categories" size="3" maxlength="2" value="{{ numcats }}"/>
+        </div>
+        {% set cidlist = '|split(')) %}
+        {% if cidlist is not null and cidlist %}
+            {% for cid in cidlist %}
+                <div class="xar-form-input-wrapper">
+                    <label for="number_of_categories" class="xar-form-label help" title="{{ xar_translate('Base category') }}">
+                        
+                            Base category for
+                        
+                    </label>
+                    {{ xar_data_input({type: "categories", cid: "1", name_prefix: "config_", maximum_depth: "4", show_edit: "true"}) }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </fieldset>
+    --> #}
+{% endblock %}

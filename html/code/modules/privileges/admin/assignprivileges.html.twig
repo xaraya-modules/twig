@@ -1,0 +1,236 @@
+{# @privileges/admin/assignprivileges.html.twig #}
+
+{% block assignprivileges %}
+{% set options = xar_coremethod('xarPrivileges', 'getPrivileges', [{'module': tab}]) %}
+    {{ include('@privileges/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            <h2>            
+                Assign Privileges            
+            </h2>
+            {{ include('@privileges/includes/headerconfig.html.twig') }}
+        </div>
+        <div class="xar-mod-page-body">
+            <h3>
+                Privilege Assignments for {{ tabmodule }}
+            </h3>
+            <form id="groupassignments" method="post" action="{{ xar_moduleurl('privileges','admin','assignprivileges') }}" enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <legend>
+                        Privileges on groups
+                        {% if groupassignments|length == 0 %}
+                            :&#160;None assigned
+                        {% endif %}
+                    </legend>
+                    {% if groupassignments|length > 0 %}
+                        <table class="xar-table xar-items" border="0" name="list" id="list">
+                            <tr>
+                                <th>
+                                    Privilege
+                                </th>
+                                <th>
+                                    Role
+                                </th>
+                                <th>
+                                    Component
+                                </th>
+                                <th>
+                                    Access
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+
+                            {% if groupassignments|length == 0 %}
+                                <tr>
+                                    <td colspan="5">No assignments to display</td>
+                                </tr>
+                            {% else %}
+                                {% for loop_key1, loop_item1 in groupassignments %}{% set loop_index1 = loop.index %}
+                                    {% if ((loop_index1 + 1) % 2) %}
+                                        {% set displayclass = 'xar-norm' %}
+                                    {% else %}
+                                        {% set displayclass = 'xar-accent' %}
+                                    {% endif %}
+                                    {% set row = loop_item1 %}
+                                    {{ include('@privileges/includes/assignmentrow.html.twig') }}
+                                </xar:loop>
+                            {% endif %}
+                        </table>
+                    {% endif %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Assign a privilege to a user or group' %}
+                            <label title="{{ label }}">
+                                Add an assignment
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "dropdown", name: "privilege", options: options, firstline: "Select a privilege"}) }} 
+                            to 
+                            {{ xar_data_input({type: "grouplist", name: "role", firstline: "Select a group"}) }}    
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                        </div>
+                        <div class="xar-col">
+                            {% set label = 'Update Assignments' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </div>
+                    </div>
+                    <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                    <input type="hidden" name="phase" id="phase" value="update"/>
+                    <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                    <input type="hidden" name="tabmodule" id="tabmodule" value="{{ tabmodule }}"/>
+                </fieldset>
+            </form>
+            <form id="anonassignments" method="post" action="{{ xar_moduleurl('privileges','admin','assignprivileges') }}" enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <legend>
+                        Privileges on the anonymous user
+                        {% if anonassignments|length == 0 %}
+                        :   &#160;None assigned
+                        {% endif %}
+                    </legend>
+                    {% if anonassignments|length > 0 %}
+                        <table class="xar-table" border="0" name="list" id="list" width="100%" cellpadding="2" cellspacing="2">
+                            <tr>
+                                <th>
+                                    Privilege
+                                </th>
+                                <th>
+                                    Role
+                                </th>
+                                <th>
+                                    Component
+                                </th>
+                                <th>
+                                    Access
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+
+                            {% if anonassignments|length == 0 %}
+                                <tr>
+                                    <td colspan="5" style="text-align: center">No assignments to display</td>
+                                </tr>
+                            {% else %}
+                                {% for loop_key2, loop_item2 in anonassignments %}{% set loop_index2 = loop.index %}
+                                    {% if ((loop_index1 + 1) % 2) %}
+                                        {% set displayclass = 'xar-norm' %}
+                                    {% else %}
+                                        {% set displayclass = 'xar-accent' %}
+                                    {% endif %}
+                                    {% set row = loop_item1 %}
+                                    {{ include('@privileges/includes/assignmentrow.html.twig') }}
+                                {% endfor %}
+                            {% endif %}
+                        </table>
+                    {% endif %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Assign a privilege to the anonymous user' %}
+                            <label title="{{ label }}">
+                                Add an assignment
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "dropdown", name: "privilege", options: options, firstline: "Select a privilege"}) }} &#160;
+                            to the Anonymous (unregistered) user
+                            {% set anon = xar_coremethod('xarConfigVars', 'get', [null,'Site.User.AnonymousUID']) %}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                        </div>
+                        <div class="xar-col">
+                            {% set label = 'Update Assignments' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </div>
+                    </div>
+                    <input type="hidden" name="role" value="{{ anon }}"/>    
+                    <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                    <input type="hidden" name="phase" id="phase" value="update"/>
+                    <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                    <input type="hidden" name="tabmodule" id="tabmodule" value="{{ tabmodule }}"/>
+                </fieldset>
+            </form>
+            <form id="userassignments" method="post" action="{{ xar_moduleurl('privileges','admin','assignprivileges') }}" enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <legend>
+                        Privileges on other users
+                        {% if userassignments|length == 0 %}
+                        :   &#160;None assigned
+                        {% endif %}
+                    </legend>
+                    {% if userassignments|length > 0 %}
+                        <table class="xar-table" border="0" name="list" id="list" width="100%" cellpadding="2" cellspacing="2">
+                            <tr>
+                                <th>
+                                    Privilege
+                                </th>
+                                <th>
+                                    Role
+                                </th>
+                                <th>
+                                    Component
+                                </th>
+                                <th>
+                                    Access
+                                </th>
+                                <th style="text-align: center;">
+                                    Action
+                                </th>
+                            </tr>
+
+                            {% if userassignments|length == 0 %}
+                                <tr>
+                                    <td colspan="5" style="text-align: center">No assignments to display</td>
+                                </tr>
+                            {% else %}
+                                <xar:loop name="$userassignments">
+                                    {% if ((loop_index1 + 1) % 2) %}
+                                        {% set displayclass = 'xar-norm' %}
+                                    {% else %}
+                                        {% set displayclass = 'xar-accent' %}
+                                    {% endif %}
+                                    {% set row = loop_item1 %}
+                                    {{ include('@privileges/includes/assignmentrow.html.twig') }}
+                                {% endfor %}
+                            {% endif %}
+                        </table>
+                    {% endif %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Assign a privilege to other users' %}
+                            <label title="{{ label }}">
+                                Add an assignment
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "dropdown", name: "privilege", options: options, firstline: "Select a privilege"}) }}&#160;
+                            to
+                            <input type="text" name="rolename" value="Enter a user name" />    
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                        </div>
+                        <div class="xar-col">
+                            {% set label = 'Update Assignments' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </div>
+                    </div>
+                    <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                    <input type="hidden" name="phase" id="phase" value="update"/>
+                    <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                    <input type="hidden" name="tabmodule" id="tabmodule" value="{{ tabmodule }}"/>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}

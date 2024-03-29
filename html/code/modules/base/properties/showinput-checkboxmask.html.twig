@@ -1,0 +1,23 @@
+{# @base/properties/showinput-checkboxmask.html.twig #}
+
+{% block showinput_checkboxmask %}
+{% if options|length > 0 %}
+        {% for key, option in options %}
+            {% if key == 0 %}
+                {% set theID = id %}
+            {% else %}
+                {% set theID = id ~ '_' ~ key %}
+            {% endif %}
+
+            {% if option['id'] in value %}
+                <input type="checkbox" name="{{ name }}[]" id="{{ theID }}" value="{{ option['id'] }}" checked="true"/>
+            {% else %}
+                <input type="checkbox" name="{{ name }}[]" id="{{ theID }}" value="{{ option['id'] }}"/>
+            {% endif %}
+            <label for="{{ theID }}">{{ option['name'] }} </label>
+        {% endfor %}
+    {% else %}
+        No options specified for CheckBox Mask in the configuration.
+    {% endif %}
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

@@ -1,0 +1,34 @@
+{# @modules/errors.html.twig #}
+
+{% extends '@modules/base.html.twig' %}
+
+{% block modulespace %}
+{{ include('@modules/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <fieldset>
+            <legend>Problem Installing</legend>
+            {% set label = 'System Message' %}
+            {{- xar_image({scope: "theme", file: "user-error.png", class: "xar-module-icon", alt: label}) -}}
+            {% if layout is null %}
+                <div style="margin-top: 20px">No error message is available. 
+                <br />Please contact the system administrator.</div>
+            {% elseif layout == 'general' %}
+                <div style="margin-top: 20px">{{ message }}</div>
+            {% elseif layout == 'invalid_core' %}
+                <div style="margin-top: 20px">The current Xaraya core {{ xarCore..VERSION_NUM }} is not compatible with the module {{ modname }}</div>
+            {% else %}
+                <div style="margin-top: 20px">No error message is available. 
+                <br />Please contact the system administrator.</div>
+            {% endif %}
+        </fieldset>
+        <div class="xar-form-actions">
+            <div class="xar-row">
+                <div class="xar-col"></div>
+                <div class="xar-col">
+                    {% set label = 'Go back' %}
+                    {{- xar_button({type: "cancel", label: label}) -}}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

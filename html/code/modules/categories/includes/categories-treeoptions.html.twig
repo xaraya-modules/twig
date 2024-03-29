@@ -1,0 +1,87 @@
+{# @categories/includes/categories-treeoptions.html.twig #}
+
+{% block categories_treeoptions %}
+{% set already_passed = false %}
+    {% set current_id = 0 %}
+    {% set lastindent = 0 %}
+
+    {# <!-- TODO: remove use of xar:continue tags --> #}
+
+    {% set ismulti = 0 %}
+    
+    {% for node in nodes %}
+        {% set nodeid = node.id %}
+        {# <!-- check if the top level is a virtual node --> #}
+        {% if nodeid == 0 %}
+            {% set ismulti = 1 %}
+            <xar:continue/>
+        {% endif %}
+    
+        {% if nodeid == 1 %}
+            {% if not include_all_cats %}
+                <xar:continue/>
+            {% endif %}
+            {% set nodename = 'All categories' %}
+        {% else %}
+            {% set nodename = node.name %}
+        {% endif %}
+
+        {% set childobject = node.child_object %}
+
+        {% set level = node.getLevel() %}
+        {% if ismulti %}
+            {% set level = level - 1 %}
+        {% endif %}
+        {% if not include_self %}
+            {% set level = level - 1 %}
+        {% endif %}
+
+        {% if not nodeid or (nodeid != nodename) %}
+             {% if value is not null and value is iterable and nodeid in value %}
+                <option style="padding-left: {{ level }}em;" value="{{ nodeid }}" selected="selected">
+                    {{ nodename }}
+                </option>
+            {% else %}
+                <option style="padding-left: {{ level }}em;" value="{{ nodeid }}">
+                    {{ nodename }}
+                </option>
+            {% endif %}
+        {% elseif nodeid in value %}
+            <option style="padding-left: {{ level }}em;" selected="selected">
+                {{ nodename }}
+            </option>
+        {% else %}
+            <option style="padding-left: {{ level }}em;">
+                {{ nodename }}
+            </option>
+        {% endif %}
+        {% if childobject %} 
+            {% set childlist = DataObjectFactory..getObjectList({'name': childobject}) %}
+            {% set childitems = childlist.getItems({'sort': 'name'}) %}
+            {% for childitem in childitems %}
+                {% set fulllink = nodeid ~ "." ~ childitem['id'] %}
+                {% if fulllink in value %}
+                    {% set level1 = level + 1 %}
+                    <option style="padding-left: {{ level1 }}em;" value="{{ fulllink }}" selected="selected">
+                        {# <!-- assume we might not have a name field for the moment --> #}
+                        {% if childitem.name %} 
+                            {{ childitem.name }}
+                        {% else %}
+                            Item {{ childitem.id }}
+                        {% endif %}
+                    </option>
+                {% else %}
+                    {% set level1 = level + 1 %}
+                    <option style="padding-left: {{ level1 }}em;" value="{{ fulllink }}">
+                        {# <!-- assume we might not have a name field for the moment --> #}
+                        {% if childitem.name %} 
+                            {{ childitem.name }}
+                        {% else %}
+                            Item {{ childitem.id }}
+                        {% endif %}
+                    </option>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}

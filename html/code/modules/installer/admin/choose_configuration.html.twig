@@ -1,0 +1,40 @@
+{# @installer/admin/choose_configuration.html.twig #}
+
+{% block choose_configuration %}
+<link rel='icon' href="favicon.ico"/>
+    {% set active_step = 7 %}
+    <div id="main_right">
+        {{ include('@installer/includes/status.html.twig') }}
+    </div>
+    <div id="main_left">
+        <h1>Choose a Configuration</h1>
+        <form action="{{ xar_moduleurl('installer','admin','confirm_configuration') }}" method="post">
+            <h3>Available Configurations</h3>
+            {% if warning is not null %}
+                {{ warning }} 
+            {% else %}
+                {% set configsize = names|length %}
+                <select id="configuration" name="configuration" size="{{ configsize }}">
+                    {% for loop_key1, loop_item1 in names %}{% set loop_index1 = loop.index %}
+                        {% if loop_item1['selected'] %}
+                            <option value="{{ loop_item1['value'] }}" selected="selected">
+                            {{ loop_item1['display'] }}</option>
+                        {% else %}
+                            <option value="{{ loop_item1['value'] }}">{{ loop_item1['display'] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            {% endif %}
+            <p>
+                Each configuration will load a predefined set of modules, menus, hooks etc. as
+                well as create an initial configuration of the security system. On the next page
+                you can change some of the options of your chosen configuration.
+            </p>
+            <div class="xar-form-actions" style="margin: 2em 0;">
+                {% set label = 'Continue' %}
+                {{- xar_button({type: "submit", label: label, name: "create", id: "create"}) -}}
+                <input type="hidden" name="install_language" id="install_language" value="{{ language }}"/>
+            </div>
+        </form>
+    </div>
+{% endblock %}

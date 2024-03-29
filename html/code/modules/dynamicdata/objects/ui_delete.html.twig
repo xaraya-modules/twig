@@ -1,0 +1,55 @@
+{# @dynamicdata/objects/ui_delete.html.twig #}
+
+{% block ui_delete %}
+{{ include('@dynamicdata/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% set viewlink = object.getActionURL('view') %}
+        {% set displaylink = object.getActionURL('display', object.itemid) %}
+        <h2>
+            Delete Item {{ object.itemid }} in {{ object.label }}&#160;
+            <a href="{{ viewlink }}" title="View {{ object.label }}">
+                {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+            </a>&#160;
+            <a href="{{ displaylink }}" title="Display {{ object.label }}">
+                {{- xar_image({scope: "theme", file: "icons/display.png", class: "xar-icon", alt: "display"}) -}}
+            </a>
+        </h2>
+        <h3 class="xar-align-center">Confirm Deleting This Item?</h3>
+        <fieldset>
+            <legend>Preview</legend>
+            {{ xar_data_display({object: object}) }}
+        </fieldset>
+        {% if object.visibility != 'public' %}
+            <h3 class="xar-align-center">Warning! This is a <em>{{ object.visibility }}</em> object used
+            internally by the {{ xar_coremethod('xarMod', 'getName', [object.moduleid]) }} module.<br/>
+            Trying to delete this item here may break the module. Please proceed with caution.</h3>
+        {% endif %}
+        {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}
+        {% set postlink = object.getActionURL('delete') %}
+        <form method="post" action="{{ postlink }}">
+            <fieldset class="xar-form-actions">
+                {# <!-- if we use the current URL, the object is already specified --> #}
+                {% if object.linktype != 'current' %}
+                    <input type="hidden" name="object" id="object" value="{{ object.name }}"/>
+                {% endif %}
+                <input type="hidden" name="method" id="method" value="delete"/>
+                <input type="hidden" name="itemid" id="itemid" value="{{ object.itemid }}"/>
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                {% if object.join %}
+                    <input type="hidden" name="join" id="join" value="{{ object.join }}"/>
+                {% endif %}
+                {% if object.table %}
+                    <input type="hidden" name="table" id="table" value="{{ object.table }}"/>
+                {% endif %}
+                <input type="hidden" name="notfresh" id="notfresh" value="true"/>
+                {% if return_url %}
+                    <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                {% endif %}
+                {% set label = 'Cancel' %}
+                {{- xar_button({type: "submit", label: label, name: "cancel", id: "cancel"}) -}}
+                {% set label = 'Delete' %}
+                {{- xar_button({type: "submit", label: label, name: "confirm", id: "confirm"}) -}}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

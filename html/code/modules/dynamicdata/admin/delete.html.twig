@@ -1,0 +1,62 @@
+{# @dynamicdata/admin/delete.html.twig #}
+
+{% block delete %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if object.objectid %}
+            {% set viewlink = xar_moduleurl('dynamicdata','admin','view',{'itemid': object.objectid}) %}
+        {% else %}
+            {% set viewlink = xar_moduleurl('dynamicdata','admin','view',{'table': object.table}) %}
+        {% endif %}
+        <h2>
+            {% if objectid and objectid == 1 %}
+                Delete DataObject {{ object.properties.label.value }}&#160;
+                <a href="{{ viewlink }}" title="Back to DataObjects">
+                    {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "home"}) -}}
+                </a>
+            {% else %}
+                Delete Item {{ object.itemid }} in {{ object.label }}&#160;
+                <a href="{{ viewlink }}" title="View {{ object.label }}">
+                    {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+                </a>
+            {% endif %}
+        </h2>
+        {% if object.visibility != 'public' %}
+            <h3 class="xar-align-center">Warning! This is a <em>{{ object.visibility }}</em> object used
+            internally by the {{ xar_coremethod('xarMod', 'getName', [object.moduleid]) }} module.<br/>
+            Trying to delete this item here may break the module. Please proceed with caution.</h3>
+        {% endif %}
+        {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}
+        {% if related %}
+            <p>{{ related }}</p>
+        {% endif %}
+        <h3 class="xar-align-center">Confirm Deleting This Item?</h3>
+        {{ xar_data_display({object: object}) }}
+        <div style="clear:both">&#160;</div>
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','delete') }}">
+            <div class="xar-row">
+                <div class="xar-col">
+                </div>
+                <div class="xar-col">
+                    <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                    <input type="hidden" name="objectid" id="objectid" value="{{ object.objectid }}"/>
+                    {% if object.join %}
+                        <input type="hidden" name="join" id="join" value="{{ object.join }}"/>
+                    {% endif %}
+                    {% if object.table %}
+                        <input type="hidden" name="table" id="table" value="{{ object.table }}"/>
+                    {% endif %}
+                    <input type="hidden" name="itemid" id="itemid" value="{{ object.itemid }}"/>
+                    <input type="hidden" name="tplmodule" id="tplmodule" value="{{ tplmodule }}"/>
+                    {% if return_url %}
+                        <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                    {% endif %}
+                    {% set label = 'Cancel' %}
+                    {{- xar_button({type: "cancel", label: label, name: "noconfirm", id: "noconfirm"}) -}}
+                    {% set label = 'Delete' %}
+                    {{- xar_button({type: "submit", label: label, name: "confirm", id: "confirm"}) -}}
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{# @dynamicdata/properties/showhidden.html.twig #}
+
+{% block showhidden %}
+<input type="hidden" name="{{ name }}" id="{{ id }}" value="{{ value }}"/>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

@@ -1,0 +1,75 @@
+{# @dynamicdata/includes/newproperty.html.twig #}
+
+{% block newproperty %}
+<fieldset>
+        <legend>New Property</legend>
+        {% if objectinfo is null or (objectinfo['datastore'] == 'relational') %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label for="dd_source_0" class="xar-form-label">
+                        {{ propertyfields['source']['label'] }}:
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({type: "dropdown", class: "dd-norm", name: "dd_source[0]", options: sources}) }}
+                </div>
+            </div>
+        {% elseif objectinfo['datastore'] == 'dynamicdata' %}
+            {{ xar_data_input({type: "dropdown", class: "dd-norm", name: "dd_source[0]", options: sources, value: "dynamicdata", hidden: "hidden"}) }}
+        {% else %}
+            {{ xar_data_input({type: "dropdown", class: "dd-norm", name: "dd_source[0]", options: sources, hidden: "hidden"}) }}
+        {% endif %}
+        <div class="xar-row">
+            <div class="xar-col">
+                <label for="dd_label_0" class="xar-form-label">
+                    {{ propertyfields['label']['label'] }}:
+                </label>
+            </div>
+            <div class="xar-col">
+                <input type="text" name="dd_label[0]" id="dd_label_0" class="xar-form-text-medium"/>
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                <label for="dd_type_0" class="xar-form-label">
+                    {{ propertyfields['type']['label'] }}:
+                </label>
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({property: fieldtypeprop, name: "dd_type[0]", id: "dd_type_0", value: "1"}) }}
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                <label for="dd_default_0" class="xar-form-label">
+                    {{ propertyfields['defaultvalue']['label'] }}:
+                </label>
+            </div>
+            <div class="xar-col">
+                <input type="text" name="dd_default[0]" id="dd_default_0" class="xar-form-textmedium"/>
+            </div>
+        </div>
+{# <!-- Uncomment this to show the configuration
+        <div class="xar-row">
+            <div class="xar-col">
+                <label for="dd_configuration_0" class="xar-form-label">
+                  {{ propertyfields['configuration']['label'] }}:
+                </label>
+            </div>
+            <div class="xar-col">
+                <input type="text" name="dd_configuration[0]" id="dd_validation_0" class="xar-form-textmedium"/>
+            </div>
+        </div>
+--> #}
+        <div class="xar-row">
+            <div class="xar-col">
+                <label for="dd_status_0" class="xar-form-label">
+                    {{ propertyfields['status']['label'] }}:
+                </label>
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({property: fieldstatusprop, name: "dd_status[0]", id: "dd_status_0", value: "1"}) }}
+            </div>
+        </div>
+    </fieldset>
+{% endblock %}

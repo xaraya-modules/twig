@@ -1,0 +1,27 @@
+{# @privileges/admin/deleterealm.html.twig #}
+
+{% block deleterealm %}
+{{ include('@privileges/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {{ include('@privileges/includes/admin-realms.html.twig') }}
+        <form action="{{ xar_moduleurl('privileges','admin','deleteealm') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="xar-form-actions">
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                <input type="hidden" name="confirmed" id="confirmed" value="1"/>
+                <p>
+                    <span class="xar-title">Confirm the deletion of all instances of the realm
+                    '{{ name }}'</span>
+                </p>
+                <br />
+                {% set label = 'Confirm' %}
+                {{- xar_button({type: "submit", label: label, tabindex: "1"}) -}}
+                <br />
+                <p>
+                    <a href="{{ xar_moduleurl('privileges','admin','viewrealms') }}">Cancel the deletion</a>
+                </p>
+            </div>
+        </form>
+    </div>
+    {# <!-- mod body --> #}
+{% endblock %}

@@ -1,0 +1,58 @@
+{# @themes/css/render.html.twig #}
+
+{% block render %}
+{% if styles and styles is iterable %}
+    {% for methods in styles %}
+        {# <!-- Begin methods --> #}
+        {% for scopes in methods %}
+            {% if not scopes %}
+                {% set scopes = [] %}
+            {% endif %}
+            {# <!-- Begin scopes --> #}             
+            {% for style in scopes %}
+                {% if not style %}
+                {% else %}
+
+                    {% if comments %}
+    {#   The following styles were supplied from {{ style['method'] }} method {{ style['scope'] }} scope  #}
+                    {% endif %}
+                    {# <!-- Import method --> #}
+                    {% if style['method'] == 'import' %}
+                        {% if style['condition'] != '' %}
+    {#  iecondition="{{ style['condition'] }}" <style type="{{ style['type'] }}" media="{{ style['media'] }}">@import url("{{ style['url'] }}"); {{ style['media'] }};</style> #}
+                        {% else %}
+    <style type="{{ style['type'] }}" media="{{ style['media'] }}">@import url({{ style['url'] }}); {{ style['media'] }};</style>
+                        {% endif %}
+                    {# <!-- Link method --> #}
+                    {% elseif style['method'] == 'link' %}
+                        {% if style['title'] %}
+                            {% if style['condition'] != '' %}
+{#  iecondition="{{ style['condition'] }}" <link rel="{{ style['rel'] }}" type="{{ style['type'] }}" href="{{ style['url'] }}" media="{{ style['media'] }}" title="{{ style['title'] }}"/> #}
+                            {% else %}
+<link rel="{{ style['rel'] }}" type="{{ style['type'] }}" href="{{ style['url'] }}" media="{{ style['media'] }}" title="{{ style['title'] }}"/>
+                            {% endif %}
+                        {% else %}
+                            {% if style['condition'] != '' %}
+{#  iecondition="{{ style['condition'] }}" <link rel="{{ style['rel'] }}" type="{{ style['type'] }}" href="{{ style['url'] }}" media="{{ style['media'] }}"/> #}
+                            {% else %}
+<link rel="{{ style['rel'] }}" type="{{ style['type'] }}" href="{{ style['url'] }}" media="{{ style['media'] }}"/>
+                            {% endif %}
+                        {% endif %}
+                    {# <!-- Embed method --> #}
+                    {% elseif style['method'] == 'embed' %}
+                        {% if style['condition'] != '' %}
+{#  iecondition="{{ style['condition'] }}" <style type="{{ style['type'] }}" media="{{ style['media'] }}">{{ style['source'] }}</style> #}
+                        {% else %}
+<style type="{{ style['type'] }}" media="{{ style['media'] }}">{{ style['source'] }}</style>
+                        {% endif %}
+                    {% endif %}
+                    
+                {% endif %}
+            {% endfor %}
+            {# <!-- End scope --> #}
+        {% endfor %}
+        {# <!-- End method --> #}
+    {% endfor %}
+{% endif %}       
+      
+{% endblock %}

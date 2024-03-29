@@ -1,0 +1,28 @@
+{# @base/properties/showinput-webpage.html.twig #}
+
+{% block showinput_webpage %}
+{# <!--
+        Don't display the select box unless there are options to be displayed, as per xhtml
+    --> #}
+    {% if options|length > 0 %}
+        <select name="{{ name }}" id="{{ id }}" tabindex="{{ tabindex }}">
+            {% for option in options %}
+                {% if not option['id'] or option['id'] != option['name'] %}
+                    {% if option['id'] == value %}
+                        <option value="{{ option['id'] }}" selected="selected">
+                        {{ option['name'] }}</option>
+                    {% else %}
+                        <option value="{{ option['id'] }}">{{ option['name'] }}</option>
+                    {% endif %}
+                {% elseif option['id'] == value %}
+                    <option selected="selected">{{ option['name'] }}</option>
+                {% else %}
+                    <option>{{ option['name'] }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    {% else %}
+        <span id="{{ id }}">No web pages specified in configuration field.</span>
+    {% endif %} 
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

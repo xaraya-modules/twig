@@ -1,0 +1,10 @@
+{# @roles/properties/showoutput-aim.html.twig #}
+
+{% block showoutput_aim %}
+{% set aim = 'AIM' %}
+    {% if link %}
+        <a href="{{ link }}">
+            <img src="{{ image }}" alt="{{ aim }}" width="18" height="18"/>
+        </a>
+    {% endif %}
+{% endblock %}

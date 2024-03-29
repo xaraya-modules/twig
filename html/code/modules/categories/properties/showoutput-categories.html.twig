@@ -1,0 +1,13 @@
+{# @categories/properties/showoutput-categories.html.twig #}
+
+{% block showoutput_categories %}
+{% if layout == 'default' or layout == 'horizontal' or not layout %}
+       {% for category in value %}
+            {{ category['name'] }}&#160;
+        {% endfor %}
+    {% else %}
+        {% for category in value %}
+            {{ category['name'] }}<br />
+        {% endfor %}
+    {% endif %}
+{% endblock %}

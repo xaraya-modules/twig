@@ -1,0 +1,366 @@
+{# @base/blocks/config-menu.html.twig #}
+
+{% block config_menu %}
+{# <!--
+        We know that blocks.css file is already included by admin-modify_instance.xd, so no need to do it twice
+    --> #}
+    <div class="xar-row">
+        <div class="xar-col">
+            <label for="marker" title="{{ xar_translate('When Xaraya is generating the menu, we can mark the current page. Use this to configure the marker for that display.') }}" class="xar-form-label">
+            Marker:
+            </label>
+        </div>
+        <div class="xar-col">
+            <input type="text" name="marker" id="marker" value="{{ xar_prep_display(marker) }}" maxlength="255" class="xar-form-textshort"/>
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            <label for="showback" title="{{ xar_translate('Select if you would like Xaraya to generate a link to the back end for administrative users at the bottom of the menu.') }}" class="xar-form-label">
+                Display Admin Link to Back End
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "showback", id: "showback", checked: showback}) }}&#160;
+            <br/><label for="backlabel" title="{{ xar_translate('Set the label for the link to the back end') }}">Label</label>:
+            {{ xar_data_input({type: "textbox", class: "xar-form-textmedium", name: "backlabel", id: "backlabel", maxlength: "255", value: backlabel}) }}&#160;
+            <br/><label for="backtitle" title="{{ xar_translate('Set the title for the link to the back end') }}">Title</label>:
+            {{ xar_data_input({type: "textbox", class: "xar-form-textlong", name: "backtitle", id: "backtitle", maxlength: "255", value: backtitle}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            <label for="showlogout" title="{{ xar_translate('Select if you would like Xaraya to generate a logout link for non-administrative users at the bottom of the menu.') }}" class="xar-form-label">
+                Display Logout
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "showlogout", checked: showlogout}) }}&#160;
+            <br/><label for="logoutlabel" title="{{ xar_translate('Set the label for the logout link') }}">Label</label>:
+            {{ xar_data_input({type: "textbox", class: "xar-form-textmedium", name: "logoutlabel", id: "logoutlabel", maxlength: "255", value: logoutlabel}) }}&#160;
+            <br/><label for="logouttitle" title="{{ xar_translate('Set the title for the logout link') }}">Title</label>:
+            {{ xar_data_input({type: "textbox", class: "xar-form-textlong", name: "logouttitle", id: "logouttitle", maxlength: "255", value: logouttitle}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            <label for="displayprint" title="{{ xar_translate('Select if you would like Xaraya to generate a link to your print page at the bottom of the menu.') }}" class="xar-form-label">
+                Display Print Link
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "displayprint", checked: displayprint}) }}&#160;
+            <br/><label for="printlabel" title="{{ xar_translate('Set the label for the print link') }}">Label</label>:
+            {{ xar_data_input({type: "textbox", class: "xar-form-textmedium", name: "printlabel", id: "printlabel", maxlength: "255", value: printlabel}) }}&#160;
+            <br/><label for="printtitle" title="{{ xar_translate('Set the title for the print link') }}">Title</label>:
+            {{ xar_data_input({type: "textbox", class: "xar-form-textlong", name: "printtitle", id: "printtitle", maxlength: "255", value: printtitle}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            <label for="displayrss" title="{{ xar_translate('Select if you would like Xaraya to generate a link to your RSS at the bottom of the menu.') }}" class="xar-form-label">
+                Display RSS Link
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "displayrss", checked: displayrss}) }}&#160;
+            <br/><label for="rsslabel" title="{{ xar_translate('Set the label for the rss link') }}">Label</label>:
+            {{ xar_data_input({type: "textbox", class: "xar-form-textmedium", name: "rsslabel", id: "rsslabel", maxlength: "255", value: rsslabel}) }}&#160;
+            <br/><label for="rsstitle" title="{{ xar_translate('Set the title for the rss link') }}">Title</label>:
+            {{ xar_data_input({type: "textbox", class: "xar-form-textlong", name: "rsstitle", id: "rsstitle", maxlength: "255", value: rsstitle}) }}
+        </div>
+    </div>
+
+    {% if userlinks %}
+        {% set visibleicon = xar_imageurl('icons/enabled.png', 'theme') %}
+        {% set invisibleicon = xar_imageurl('icons/disabled.png', 'theme') %}
+        {% set visibletitle = 'Link is visible in the menu' %}
+        {% set invisibletitle = 'Link is not visible in the menu' %}
+        {% set imgup = xar_imageurl('icons/go-up.png', 'theme') %}
+        {% set imgdown = xar_imageurl('icons/go-down.png', 'theme') %}
+        {% set imgupalt = 'Up' %}
+        {% set imgdownalt = 'Down' %}
+        {% set imguptitle = 'Move this link up' %}
+        {% set imgdowntitle = 'Move this link down' %}
+        {% set wwwicon = xar_imageurl('icons/www-url.png', 'theme') %}
+        {% set wwwcheck = 'Check the URL of this link' %}
+        {% set wwwnone = 'URL is empty' %}
+        {% set wwwalt = 'Check URL' %}
+        <table id="menulinks_{{ blockid }}" class="xar-table xar-items">
+            <caption class="xar-align-left xar-margin-thickbottom xar-margin-nonetop">
+                <strong>Menu Links</strong>
+            </caption>
+            <thead>
+                <tr>
+                    <th>&#160;</th>
+                    <th>Label</th>
+                    <th>Title</th>
+                    <th>URL</th>
+                    <th>&#160;</th>
+                    <th class="xar-align-center">State</th>
+                    <th class="xar-align-right">Select</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for linkid, link in userlinks %}
+                    {% set link_id = 'userlinks_' ~ linkid %}
+                    {% set link_name = 'userlinks[' ~ linkid ~ ']' %}
+                    <tr>
+                        <td>|---</td>
+                        <td>
+                            {% set label_id = link_id ~ '_label' %}
+                            {% set label_name = link_name ~ '[label]' %}
+                            {{ xar_data_input({type: "textbox", class: "xar-form-textmedium", name: label_name, id: label_id, maxlength: "255", value: link['label']}) }}
+                        </td>
+                        <td>
+                            {% set title_id = link_id ~ '_title' %}
+                            {% set title_name = link_name ~ '[title]' %}
+                            {{ xar_data_input({type: "textbox", class: "xar-form-textlong", name: title_name, id: title_id, maxlength: "255", value: link['title']}) }}
+                        </td>
+                        <td>
+                            {% set url_id = link_id ~ '_url' %}
+                            {% set url_name = link_name ~ '[url]' %}
+                            {{ xar_data_input({type: "textbox", class: "xar-form-textlong", name: url_name, id: url_id, maxlength: "255", value: link['url']}) }}
+                        </td>
+                        <td>
+                            {% if link['url'] %}
+                                <a href="{{ link['checkurl'] }}" title="{{ wwwcheck }}">
+                                    <img src="{{ wwwicon }}" alt="{{ wwwalt }}" class="xar-icon"/>
+                                </a>
+                            {% else %}
+                                <img src="{{ wwwicon }}" alt="{{ wwwalt }}" title="{{ wwwnone }}" class="xar-icon-disabled"/>
+                            {% endif %}
+                        </td>
+                        <td class="xar-align-center">
+                            {% if link['visible'] %}
+                                <img src="{{ visibleicon }}" alt="visible" title="{{ visibletitle }}" class="xar-icon"/>
+                            {% else %}
+                                <img src="{{ invisibleicon }}" alt="hidden" title="{{ invisibletitle }}" class="xar-icon-disabled"/>
+                            {% endif %}
+                        </td>
+                        <td class="xar-align-right xar-nowrap">
+                            {% if link['upurl'] %}
+                                <a href="{{ link['upurl'] }}" title="{{ imguptitle }}" class="xar-icon">
+                                <img src="{{ imgup }}" alt="{{ imgupalt }}" class="xar-icon xar-padding-thinright"/>
+                                </a>
+                            {% else %}
+                                <img src="{{ imgup }}" alt="{{ imgupalt }}" class="xar-icon-disabled xar-padding-thinright"/>
+                            {% endif %}
+                            {% if link['downurl'] %}
+                                <a href="{{ link['downurl'] }}" title="{{ imgdowntitle }}" class="xar-icon">
+                                <img src="{{ imgdown }}" alt="{{ imgdownalt }}" class="xar-icon xar-padding-thinright"/>
+                                </a>
+                            {% else %}
+                                <img src="{{ imgdown }}" alt="{{ imgdownalt }}" class="xar-icon-disabled xar-padding-thinright"/>
+                            {% endif %}
+                            {% set select_id = link_id ~ '_select' %}
+                            {% set select_name = link_name ~ '[select]' %}
+                            {{ xar_data_input({type: "checkbox", id: select_id, name: select_name}) }}
+                        </td>
+                    </tr>
+                    {% if link['menulinks'] %}
+                        {% for sublinkid, sublink in link['menulinks'] %}
+                        <tr>
+                            {% set sub_id = link_id ~ '_menulinks_' ~ sublinkid %}
+                            {% set sub_name = link_name ~ '[menulinks][' ~ sublinkid ~ ']' %}
+                            <td>
+                                &#160;&#160;|-
+                            </td>
+                            <td>
+                                {% set label_id = sub_id ~ '_label' %}
+                                {% set label_name = sub_name ~ '[label]' %}
+                                {{ xar_data_input({type: "textbox", class: "xar-form-textmedium", name: label_name, id: label_id, maxlength: "255", value: sublink['label']}) }}
+                            </td>
+                            <td>
+                                {% set title_id = sub_id ~ '_title' %}
+                                {% set title_name = sub_name ~ '[title]' %}
+                                {{ xar_data_input({type: "textbox", class: "xar-form-textlong", name: title_name, id: title_id, maxlength: "255", value: sublink['title']}) }}
+                            </td>
+                            <td>
+                                {% set url_id = sub_id ~ '_url' %}
+                                {% set url_name = sub_name ~ '[url]' %}
+                                {{ xar_data_input({type: "textbox", class: "xar-form-textlong", name: url_name, id: url_id, maxlength: "255", value: sublink['url']}) }}
+                            </td>
+                            <td>
+                                {% if sublink['url'] %}
+                                    <a href="{{ sublink['checkurl'] }}" title="{{ wwwcheck }}">
+                                        <img src="{{ wwwicon }}" alt="{{ wwwalt }}" class="xar-icon"/>
+                                    </a>
+                                {% else %}
+                                    <img src="{{ wwwicon }}" alt="{{ wwwalt }}" title="{{ wwwnone }}" class="xar-icon-disabled"/>
+                                {% endif %}
+                            </td>
+                            <td class="xar-align-center">
+                                {% if sublink['visible'] %}
+                                    {# <!-- visible only if parent is visible, has a label, and has a url --> #}
+                                    {% if link['visible'] and link['url'] and link['label'] %}
+                                        {% set icontitle = visibletitle %}
+                                        {% set iconclass = 'xar-icon' %}
+                                    {% else %}
+                                        {% set icontitle = invisibletitle %}
+                                        {% set iconclass = 'xar-icon-disabled' %}
+                                    {% endif %}
+                                    <img src="{{ visibleicon }}" alt="visible" title="{{ icontitle }}" class="{{ iconclass }}"/>
+                                {% else %}
+                                    <img src="{{ invisibleicon }}" alt="invisible" title="{{ invisibletitle }}" class="xar-icon-disabled"/>
+                                {% endif %}
+                            </td>
+                            <td class="xar-align-right xar-nowrap">
+                                {% if sublink['upurl'] %}
+                                    <a href="{{ sublink['upurl'] }}" title="{{ imguptitle }}" class="xar-icon">
+                                    <img src="{{ imgup }}" alt="{{ imgupalt }}" class="xar-icon xar-padding-thinright"/>
+                                    </a>
+                                {% else %}
+                                    <img src="{{ imgup }}" alt="{{ imgupalt }}" class="xar-icon-disabled xar-padding-thinright"/>
+                                {% endif %}
+                                {% if sublink['downurl'] %}
+                                    <a href="{{ sublink['downurl'] }}" title="{{ imgdowntitle }}" class="xar-icon">
+                                    <img src="{{ imgdown }}" alt="{{ imgdownalt }}" class="xar-icon xar-padding-thinright"/>
+                                    </a>
+                                {% else %}
+                                    <img src="{{ imgdown }}" alt="{{ imgdownalt }}" class="xar-icon-disabled xar-padding-thinright"/>
+                                {% endif %}
+                                {% set select_id = sub_id ~ '_select' %}
+                                {% set select_name = sub_name ~ '[select]' %}
+                                {{ xar_data_input({type: "checkbox", id: select_id, name: select_name}) }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="7" class="xar-align-right">
+                        {% set link_selects = [
+                            {'id': 'none', 'name': '--- do nothing ---'},
+                            {'id': 'show', 'name': 'Make Visible'},
+                            {'id': 'hide', 'name': 'Make Invisible'},
+                            {'id': 'delete', 'name': 'Delete'},
+                        ] %}
+                        <label for="links_select">With selected links</label>:&#160;
+                        {{ xar_data_input({type: "dropdown", name: "links_select", id: "links_select", options: link_selects}) }}
+                    </td>
+                </tr>
+            </tfoot>
+         </table>
+        <table class="xar-table xar-items">
+            <caption class="xar-align-left xar-margin-thickbottom xar-margin-thicktop">
+                <strong>Insert New Menu Link</strong>
+            </caption>
+            <thead>
+                <tr>
+                    <th>&#160;</th>
+                    <th>Label</th>
+                    <th>Title</th>
+                    <th>Url</th>
+                    <th class="xar-align-right">options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        |---
+                    </td>
+                    <td>
+                        {% set new_label_id = 'links_new_label' %}
+                        {{ xar_data_input({type: "textbox", class: "xar-form-textmedium", name: new_label_id, id: new_label_id, maxlength: "255"}) }}
+                    </td>
+                    <td>
+                        {% set new_title_id = 'links_new_title' %}
+                        {{ xar_data_input({type: "textbox", class: "xar-form-textlong", name: new_title_id, id: new_title_id, maxlength: "255"}) }}
+                    </td>
+                    <td>
+                        {% set new_url_id = 'links_new_url' %}
+                        {{ xar_data_input({type: "textbox", class: "xar-form-textlong", name: new_url_id, id: new_url_id, maxlength: "255"}) }}
+                    </td>
+                    <td class="xar-align-right xar-nowrap">
+                        {% set new_blank_id = 'links_new_blank' %}
+                        <label for="{{ new_blank_id }}">Insert Blank</label>&#160;
+                        {{ xar_data_input({type: "checkbox", name: new_blank_id, id: new_blank_id}) }}
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="xar-align-center">
+                        {% set new_relation_id = 'links_new_relation' %}
+                        <label for="{{ new_relation_id }}">In Relation To</label>&#160;
+                        {{ xar_data_input({type: "dropdown", name: new_relation_id, id: new_relation_id, options: userlinks}) }}&#160;&#160;
+                        {% set new_position_id = 'links_new_position' %}
+                        {% set positions = [
+                            {'id': 0, 'name': 'Right before, in the same level': },
+                            {'id': 1, 'name': 'Right after, in the same level': },
+                            {'id': 2, 'name': 'The first child link'},
+                            {'id': 3, 'name': 'The last child link'},
+                        ] %}
+                        <label for="{{ new_position_id }}">Position</label>&#160;
+                        {{ xar_data_input({type: "dropdown", name: new_position_id, id: new_position_id, options: positions}) }}
+                    </td>
+                </tr>
+            </tfoot>
+         </table>
+    {% endif %}
+
+    <table class="xar-table xar-items">
+        <caption class="xar-align-left xar-margin-thickbottom xar-margin-nonetop">
+            <strong>Module Links</strong>
+        </caption>
+        <thead>
+            <tr>
+                <th class="xar-align-left">
+                    Module
+                </th>
+                <th class="xar-align-left">
+                    Alias
+                </th>
+                <th class="xar-align-left">
+                    Required Access Group or Level
+                </th>
+                <th class="xar-align-center">
+                    Visible
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for module in modules %}
+            <tr>
+                <td>
+                    {{ module['name'] }}
+                </td>
+                <td>
+                    {% if modulelist[module['name']]['aliases'] %}
+                        {% set inputname = "modulelist[" ~ module['name'] ~ "][alias_name]" %}
+                        {% set inputid = "modulelist_" ~ module['name'] ~ "_alias_name" %}
+                        {% set inputval = modulelist[module['name']]['alias_name'] ? modulelist[module['name']]['alias_name'] : module['name'] %}
+                        {% set inputfirst = {'id': module['name'], 'name': module['displayname']} %}
+                        {{ xar_data_input({type: "dropdown", name: inputname, id: inputid, firstline: inputfirst, options: modulelist[module['name']]['aliases'], value: inputval}) }}
+                    {% else %}
+                        [none]
+                    {% endif %}
+                </td>
+                <td>
+                    {% set inputid = "modulelist_" ~ module['name'] ~ "_view_access" %}
+                    {% if modulelist[module['name']]['view_access'] is not null %}
+                        {% set inputval = modulelist[module['name']]['view_access'] %}
+                    {% else %}
+                        {% set inputval = {
+                                'group': 0,
+                                'level': 100,
+                                'failure': 0
+                            } %}
+                    {% endif %}
+                    {{ xar_data_input({type: "access", name: inputid, layout: "horizontal", failure: "1", value: inputval}) }}
+                </td>
+                <td class="xar-align-center">
+                    {% set inputname = "modulelist[" ~ module['name'] ~ "][visible]" %}
+                    {% set inputid = "modulelist_" ~ module['name'] ~ "_visible" %}
+                    {% set inputval = modulelist[module['name']]['visible'] %}
+                    {{ xar_data_input({type: "checkbox", name: inputname, id: inputid, value: inputval}) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

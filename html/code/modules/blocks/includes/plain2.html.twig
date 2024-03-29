@@ -1,0 +1,73 @@
+{# @blocks/includes/plain2.html.twig #}
+
+{% block plain2 %}
+<div>
+        {{ xar_pager({startnum: startnum, itemsperpage: itemsperpage, total: total}) }}
+    </div>
+            {{ pager }}
+<table class="xar-table xar-items">
+    <tr>
+            <th>Name</th>
+            <th>Groups</th>
+            <th>Module</th>
+            <th>Type</th>
+            <th>Template</th>
+            <th>Status</th>
+            <th>Actions</th>
+    </tr>
+    {% for loop_key1, loop_item1 in blocks %}{% set loop_index1 = loop.index %}
+        <tr>
+            <td>
+                {% if not loop_item1['title'] %}
+                    {{ loop_item1['name'] }}
+                    {% else %}
+                        <span title="{{ xar_prep_display(loop_item1['title']) }}">
+                        {{ loop_item1['name'] }}
+                    </span>
+                {% endif %}
+            </td>
+            <td>
+                {% if loop_item1.groups %}
+                        {% for loop_key2, loop_item2 in loop_item1.groups %}{% set loop_index2 = loop.index %}{% set loop_groups_index = loop_index2 %}{% set loop_groups_item = loop_item2 %}{% set loop_groups_key = loop_key2 %}
+                        <a href="{{ xar_moduleurl('blocks','admin','modify_group') }}&amp;id={{ loop_groups_item.id }}">
+                            {{ loop_groups_item.name }}
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                        [ none ]
+                    {% endif %}
+            </td>
+                <td>{{ loop_item1['module'] }}</td>
+            <td>
+                <a href="{{ loop_item1['typeurl'] }}" title="{{ xar_translate('View block type details') }}">
+                    {{ loop_item1['type'] }}
+                </a>
+            </td>
+            <td>
+                {% if loop_item1['template'] != NULL %}
+                    {{ loop_item1['template'] }} &#160;
+                    {% else %}
+                        {% if not loop_item1['group_template'] %}
+                            [ default ]
+                        {% else %}
+                            {{ loop_item1['group_template'] }} &#160;
+                        {% endif %}
+                    {% endif %}
+            </td>
+                <td class="xar-align-center">{{ state_desc[loop_item1['state']] }}</td>
+            <td class="xar-align-center">
+                    <a href="{{ xar_moduleurl('blocks','admin','modify_instance') }}&amp;bid={{ loop_item1.bid }}">
+                        Edit
+                    </a>|
+                    <a href="{{ loop_item1['deleteurl'] }}">
+                        Delete
+                    </a>
+                </td>
+        </tr>
+    {% endfor %}
+</table>
+    <div>
+        {{ xar_pager({startnum: startnum, itemsperpage: itemsperpage, total: total}) }}
+    </div>
+            {{ pager }}
+{% endblock %}

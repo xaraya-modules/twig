@@ -1,0 +1,145 @@
+{# @modules/admin/install.html.twig #}
+
+{% block install %}
+{{ include('@modules/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {# <!-- This section deals with dependancies. --> #}
+        {% if moduledependencies['unsatisfiable'] %}
+            <h2>Module Installation: Unsatisfied Dependencies</h2>
+            <p>
+                The module {{ displayname }} you are trying to install depends on additional components. Please review the listing below:
+            </p>
+            <form action="{{ xar_moduleurl('modules','admin','install') }}" method="post" enctype="application/x-www-form-urlencoded">
+                <div>
+                    <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                    <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                    <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                    {% if propdependencies['satisfied'] is not null and propdependencies['satisfied']|length != 0 %}
+                        <h3>Property dependencies already satisfied:</h3>
+                        <ul>
+                            {% for name in propdependencies['satisfied'] %}
+                                <li>{{ name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if propdependencies['unsatisfied'] is not null and propertydependencies['unsatisfiable']|length != 0 %}
+                        <h3>Property dependencies which cannot be satisfied:</h3>
+                        <ul>
+                            {% for name in propertydependencies['unsatisfiable'] %}
+                                <li>{{ name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if moduledependencies['satisfied']|length != 0 %}
+                        <h3>Module dependencies already satisfied:</h3>
+                        <ul>
+                            {% for modInfo in moduledependencies['satisfied'] %}
+                                <li>{{ xar_translate(modInfo['displayname']) }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if moduledependencies['satisfiable']|length != 0 %}
+                        <h3>Module dependencies which can be satisfied:</h3>
+                        <ul>
+                            {% for modInfo in moduledependencies['satisfiable'] %}
+                                <li>
+                                    {% if modInfo['regid'] != id %}
+                                        {{ modInfo['displayname'] }} 
+                                    {% else %}
+                                        {{ modInfo.displayname }} (id {{ id }}), the module you are trying to install
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if moduledependencies['unsatisfiable']|length != 0 %}
+                        <h3>Module dependencies which cannot be satisfied</h3>
+                        <ul>
+                            {% for modInfo in moduledependencies['unsatisfiable'] %}                                
+                                {% if modInfo is iterable and (modInfo['displayname'] != {{ xar_translate('Unknown') }} and modInfo['displayname']) %}
+                                    Missing a module {{ modInfo['displayname'] }}. 
+                                    <br />Install this module first, then try this installation again. 
+                                {% elseif modInfo is iterable and (modInfo['displayname'] == {{ xar_translate('Unknown') }} or not modInfo['displayname']) %}
+                                    <li>
+                                        {% if dependencyinfo[modInfo['regid']] is not null and not dependencyinfo[modInfo['regid']] is numeric %}
+                                            Missing a module {{ modInfo['name'] }} (ID {{ modInfo['regid'] }}). 
+                                        {% else %}
+                                            <a href="http://www.xaraya.com/index.php/release/{{ modInfo['regid'] }}.html">
+                                                Missing a module with ID {{ modInfo['regid'] }}. Click this line to get information on this missing module.
+                                            </a>
+                                        {% endif %}
+                                        <br />Install this module first, then try this installation again. 
+                                    </li>
+                                {% elseif modInfo['regid'] is not null and modInfo['regid'] is numeric %}
+                                    <li>
+                                        {% if dependencyinfo[modInfo['regid']] is not null %}
+                                        Missing a module {{ dependencyinfo[modInfo['regid']['name']] }} (ID {{ modInfo['regid'] }}). 
+                                        {% else %}
+                                            <a href="http://www.xaraya.com/index.php/release/{{ modInfo }}.html">
+                                                Missing a module with name {{ modInfo['displayname'] }}. Click this line to get information on this missing module.
+                                            </a>
+                                        {% endif %}
+                                        <br />Install this module first, then try this installation again. 
+                                    </li>
+                                {% elseif modInfo is numeric and dependencyinfo[modInfo] is not null %}
+                                    <li>
+                                        Missing a module "{{ dependencyinfo[modInfo]['name'] }}" (ID {{ modInfo }}). 
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        Missing a module {{ modInfo }}. 
+                                        <br />Install this module first, then try this installation again. 
+                                        {# <!--
+                                        <a href="http://www.php.net/manual-lookup.php?pattern={{ modInfo }}">
+                                            Get Information for the missing PHP extension {{ modInfo }}
+                                        </a>
+                                        --> #}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                        <div class="xar-alert">
+                            The installation cannot proceed. You need to first make available the module(s) that represent unsatisfiable dependencies.
+                        </div>
+                    {% else %}
+                        {% set label = 'Install All' %}
+                        {{- xar_button({type: "submit", label: label, name: "command", id: "command", tabindex: "9"}) -}}
+                    {% endif %}
+                </div>
+            </form>
+        {% endif %}
+        {% if propdependencies['unsatisfiable'] is not null and propdependencies['unsatisfiable']|length != 0 %}
+            <form action="{{ xar_moduleurl('modules','admin','install') }}" method="post" enctype="application/x-www-form-urlencoded">
+                <h3>Property dependencies that are not satisfied</h3>
+                <ul>
+                    {% for propInfo in propdependencies['unsatisfiable'] %}                                
+                        <li>
+                            {{ propInfo }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if not moduledependencies['unsatisfiable'] %}
+                    <div class="xar-alert">
+                        The installation can complete, but the missing properties may lead to unexpected results when running the module.
+                        You can however add the missing properties at any time after this installation is complete.
+                    </div>
+                    <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                    <input type="hidden" name="ignore_properties" id="ignore_properties" value="1"/>
+                    <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                    {% set label = 'Continue' %}
+                    {{- xar_button({type: "submit", label: label, name: "command", id: "command", tabindex: "9"}) -}}
+                {% else %}
+                    <div class="xar-alert">
+                        The missing properties may lead to unexpected results when running the installed module.
+                        You can however add the missing properties at any time after this installation is complete.
+                    </div>
+                {% endif %}
+            </form>
+        {% endif %}
+        {# <!-- This section deals with install errors. --> #}
+        {{ include('@modules/includes/install-errors.html.twig') }}
+        <p>
+            <a href="{{ xar_moduleurl('modules','admin','view') }}">Go back to the modules list</a>
+        </p>
+    </div>
+{% endblock %}

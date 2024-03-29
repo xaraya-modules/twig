@@ -1,0 +1,41 @@
+{# @roles/account.html.twig #}
+
+{% extends '@roles/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">Account Information</span>
+    </div>
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            {{ include('@roles/includes/user-menu.html.twig') }}
+        </div>
+        <div class="xar-mod-page-body">
+            {% if (not tab or tab == 'profile') and not moduleload %}
+                {# <!-- display this users account data - see roles/xartemplates/objects/showdisplay-account.xt --> #}
+                {{ xar_data_display({object: object, fieldlist: "name,uname,state,regdate"}) }}
+            {% else %}
+                {% if object.label %}
+                    {% set enc_type = 'multipart/form-data' %}
+                {% else %}
+                    {% set enc_type = 'application/x-www-form-urlencoded' %}
+                {% endif %}
+                <form method="post" action="{{ formaction }}" enctype="{{ enc_type }}">
+                    {{ xar_data_form({object: object, formdata: formdata}) }}
+                    <div class="xar-form-actions">
+                        <div class="xar-row">
+                            <div class="xar-col"></div>
+                            <div class="xar-col">
+                                <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                                <input type="hidden" name="moduleload" id="moduleload" value="{{ moduleload }}"/>
+                                <input type="hidden" name="returnurl" id="returnurl" value="{{ returnurl }}"/>
+                                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                                {{- xar_button({type: "submit", label: submitlabel}) -}}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            {% endif %}
+         </div>
+	 </div>
+{% endblock %}

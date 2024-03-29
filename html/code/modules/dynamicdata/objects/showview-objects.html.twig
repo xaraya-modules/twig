@@ -1,0 +1,149 @@
+{# @dynamicdata/objects/showview-objects.html.twig #}
+
+{% block showview_objects %}
+{# <!-- TODO: multi-column output --> #}
+    <div class="xar-mod-page-head">
+        {{ xar_style({scope: "module", module: "dynamicdata", file: "dd"}) }}
+        {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', ['categories',modname,itemtype]) %}
+            {{ include('@dynamicdata/includes/catnavigation.html.twig') }}
+        {% endif %}
+    
+        {% if not layout %}
+            {% set layout = 'default' %}
+        {% endif %}
+        <fieldset>
+            <legend>Filter</legend>
+            {{ xar_guifunc("dynamicdata", "user", "filtertag", {main: "false", object: object, fieldlist: "name"}) }}
+        </fieldset>
+        {% if not object.itemcount %}
+            {# <!-- if we don't have an item total show prev / next links --> #}
+            <div>
+                {% if object.startnum > 1 %}
+                    <div class="xar-halfwidth xar-floatleft">
+                        {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: object.startnum, urltemplate: object.pagerurl, template: "multipageprev"}) }}
+                    </div>
+                {% endif %}
+                {% if object.items|length == object.numitems %}
+                    <div class="xar-halfwidth xar-floatright xar-align-right">
+                        {% set newtotal = object.startnum + object.numitems %}
+                        {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: newtotal, urltemplate: object.pagerurl, template: "multipagenext"}) }}
+                    </div>
+                {% endif %}
+                <br class="xar-clearboth"/>
+            </div>
+        {% elseif object.itemcount > object.numitems %}
+            {# <!-- show the pager --> #}
+            <div class="xar-align-center">
+                {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: object.itemcount, urltemplate: object.pagerurl}) }}
+            </div>
+        {% endif %}
+    </div>{# <!--/xar-mod-page-head--> #}
+    <div class="xar-mod-page-body">
+        <table class="xar-table xar-items">
+            <tr>
+                {% for name in properties|keys %}
+                    <th class="xar-form-textlong">
+                        <a href="{{ sorturl }}={{ name }}">
+                            {{ xar_data_label({property: properties[name]}) }}
+                        </a>
+                    </th>
+                {% endfor %}
+                {% if not linkfield %}
+                    <th class="xar-form-textlong" style="text-align: center;">Actions</th>
+                {% endif %}
+            </tr>
+            {% set adminlistserial = xar_modvar('dynamicdata', 'administrators') %}
+            {% set adminrole = xar_modvar('roles', 'admin') %}
+            {% if adminlistserial %}
+                {% set adminlist = array_merge(unserialize(adminlistserial),[xar_username(adminrole, 'uname')]) %}
+            {% else %}
+                {% set adminlist = >[xarUser::getVar('uname',$adminrole)]< %}
+            {% endif %}
+            {% set username = xar_uservar('uname') %}
+            {% set issuperadmin = username in adminlist %}
+            {% set item_no = 0 %}
+            {% for itemid, fields in items %}
+                {% if not issuperadmin and (itemid <= 3) %}
+                {% else %}
+                {% set item_no = item_no+1 %}
+                {% set rowclass = 'xar-norm' %}
+                {% if item_no % 2 == 0 %}
+                    {% set rowclass = 'xar-alt' %}
+                {% endif %}
+                <tr class="{{ rowclass }}">
+                    {# <!-- we could use xar:data-display here too, instead of looping over fields ourselves --> #}
+                    {% for name in properties|keys %}
+                        <td>
+                            {% if not fields[name] %}&#160;
+                        {% elseif linkfield and linkfield == name %}
+                            <a href="{{ xar_moduleurl(urlmodule,linktype,linkfunc,{'itemtype': itemtype, (urlparam): itemid}) }}">
+                                {{ xar_data_output({property: properties[name], value: fields[name]}) }}
+                            </a>
+                        {% else %}
+                            {{ xar_data_output({property: properties[name], value: fields[name]}) }}{% endif %}
+                        </td>
+                    {% endfor %}
+                    {% if not linkfield %}
+                        <td class="xar-align-center">
+                            {% if links[itemid] and links[itemid]|length > 0 %}
+                                {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                                    {% for otype, option in links[itemid] %}
+                                        {% if otype == 'display' %}
+                                            {# <!-- skip display for dataobjects --> #}
+                                        {% elseif option['olink'] %}
+                                            {% if option['oicon'] %}
+                                                {% set imgfile = 'icons/' ~ option['oicon'] %}
+                                                <a href="{{ option['olink'] }}" title="{{ option['otitle'] }}">{{- xar_image({scope: "theme", file: imgfile, class: "xar-icon", alt: otype}) -}}</a>&#160;
+                                            {% else %}
+                                                {{ option['ojoin'] }}
+                                                <a href="{{ option['olink'] }}">{{ option['otitle'] }}</a>
+                                            {% endif %}
+                                        {% else %}
+                                            {{ option['ojoin'] }} {{ option['otitle'] }}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    {% for otype, option in links[itemid] %}
+                                        {% if option['olink'] %}
+                                            {{ option['ojoin'] }}
+                                            <a href="{{ option['olink'] }}">{{ option['otitle'] }}</a>
+                                        {% else %}
+                                            {{ option['ojoin'] }} {{ option['otitle'] }}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% else %}
+                                &#160;
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+	</div>{# <!--/xar-mod-page-body--> #}
+	<div class="xar-mod-page-foot">
+        {% if not object.itemcount %}
+            {# <!-- if we don't have an item total show prev / next links --> #}
+            <div>
+                {% if object.startnum > 1 %}
+                    <div class="xar-halfwidth xar-floatleft">
+                        {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: object.startnum, urltemplate: object.pagerurl, template: "multipageprev"}) }}
+                    </div>
+                {% endif %}
+                {% if object.items|length == object.numitems %}
+                    <div class="xar-halfwidth xar-floatright xar-align-right">
+                        {% set newtotal = object.startnum + object.numitems %}
+                        {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: newtotal, urltemplate: object.pagerurl, template: "multipagenext"}) }}
+                    </div>
+                {% endif %}
+                <br class="xar-clearboth"/>
+            </div>
+        {% elseif object.itemcount > object.numitems %}
+            {# <!-- show the pager --> #}
+            <div class="xar-align-center">
+                {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: object.itemcount, urltemplate: object.pagerurl}) }}
+            </div>
+        {% endif %}
+    </div>{# <!--/xar-mod-page-foot--> #}
+{% endblock %}

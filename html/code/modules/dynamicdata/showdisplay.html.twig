@@ -1,0 +1,25 @@
+{# @dynamicdata/showdisplay.html.twig #}
+
+{% extends '@dynamicdata/base.html.twig' %}
+
+{% block modulespace %}
+{% if not layout or layout == 'default' %}
+        <table class="xar-table" border="0" cellspacing="0" cellpadding="4">
+            {% for field in fields %}
+                <tr class="xar-align-left xar-valign-middle">
+                    <td class="xar-align-right">
+                        <strong>{{ field['label'] }} :</strong>
+                    </td>
+                    <td class="xar-align-left">
+                        {% set fieldname = 'dd_' ~ field['id'] %}
+                        {{ xar_data_output({type: field['type'], name: fieldname, value: field['value']}) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>Specify your own layout here...</p>
+        <p>You can also specify a separate template, e.g. if you want to handle individual fields
+        differently for a particular module / itemtype</p>
+    {% endif %}
+{% endblock %}

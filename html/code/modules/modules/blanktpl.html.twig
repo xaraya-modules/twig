@@ -1,0 +1,15 @@
+{# @modules/blanktpl.html.twig #}
+
+{% extends '@modules/base.html.twig' %}
+
+{% block modulespace %}
+{{ include('@modules/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Function</h2>
+        <h3>Header</h3>
+        <p>Maintext</p>
+    </div>
+    <div class="xar-mod-foot xar-align-center xar-padding-thick">
+        <p>Footer</p>
+    </div>
+{% endblock %}

@@ -1,0 +1,138 @@
+{# @dynamicdata/admin/view_static.html.twig #}
+
+{% block view_static %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Utilities - Manage Tables</h2>
+        {{ include('@dynamicdata/includes/utility-menu.html.twig') }}
+        {% set firstline = 'Choose a table' %}
+        {% set firstline = "0,firstline" %}
+        <form action="{{ xar_currenturl() }}" method="post">
+            <div class="xar-form-actions">
+                New Table:
+                &#160;
+                {{ xar_data_input({type: "textbox", name: "newtable"}) }}
+                &#160;
+                {% set label = 'Add a new table' %}
+                {{- xar_button({type: "submit", label: label}) -}}
+            </div>
+            <div>
+                Current Table:&#160;
+                {{ xar_data_input({type: "dropdown", name: "table", options: tables, value: table, firstline: firstline, onchange: "submit()"}) }}
+            </div>
+        </form>
+        <div style="clear: both">&#160;</div>
+        {% if not export %}
+            {% for table, fields in tabledata %}
+                <h3>{{ table }}</h3>
+                <p>
+                {# <!--
+                    <a href="{{ xar_moduleurl('dynamicdata','admin','relations',{'module_id': fmodule_id}) }}">Add
+                    Relation</a>
+                --> #}
+                    <a href="{{ xar_moduleurl('dynamicdata','admin','new_static',{'table': table}) }}" style="float:left">
+                        Add a field to this table
+                    </a>
+                    <a href="{{ xar_moduleurl('dynamicdata','admin','delete_static_table',{'table': table}) }}" style="float:right">
+                        Delete this table:
+                    </a>
+                    <a href="{{ xar_moduleurl('dynamicdata','admin','rename_static_table',{'table': table}) }}" style="float:right">
+                        Rename this table:&#160;|&#160;
+                    </a>
+                </p>
+                <table class="xar-table xar-items">
+                    <tr>
+                        <th>Name</th>
+                        <th>Label</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Source</th>
+                        <th>Configuration</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for field in fields %}
+                        <tr>
+                            <td>
+                                <a href="{{ xar_moduleurl('dynamicdata','admin','modify_static') }}&amp;table={{ table }}&amp;field={{ field['name'] }}">
+                                    {{ field['name'] }} 
+                                </a>
+                            </td>
+                            <td>
+                                {{ field['label'] }} 
+                            </td>
+                            <td>
+                                {{ xar_data_output({type: "fieldtype", name: "dummy", value: field['type']}) }}
+                            </td>
+                            <td>
+                                {{ field['defaultvalue'] }} 
+                            </td>
+                            <td>
+                                {{ field['source'] }} 
+                            </td>
+                            <td>
+                                {{ field['configuration'] }} 
+                            </td>
+                            <td>
+                                <a href="{{ xar_moduleurl('dynamicdata','admin','delete_static') }}&amp;table={{ table }}&amp;field={{ field['name'] }}">
+                                    Delete 
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                            {# <!--
+                <form method="post" action="{{ xar_moduleurl('dynamicdata','util','importprops') }}">
+                    <fieldset class="xar-form-actions">
+                        <input type="hidden" name="authid" value="{{ authid }}"/>
+                        <input type="hidden" name="module_id" value="{{ module_id }}"/>
+                        <input type="hidden" name="itemtype" value="{{ itemtype }}"/>
+                        <input type="hidden" name="table" value="{{ table }}"/>
+                        {% set label = 'Import Table' %}
+                        <input type="submit" value=" {{ label }} {{ table }} "/>
+                    </fieldset>
+                </form>
+                            --> #}
+            {% endfor %}
+            {# <!--
+            <div class="xar-align-center">
+                <a href="{{ xar_moduleurl('dynamicdata','admin','static',{'export': 1, 'module_id': module_id}) }}">
+                Export to XML</a>
+            </div>
+            --> #}
+            {% else %}
+            <form>
+                <fieldset>
+                    <legend>Static table definitions for module {{ module }}</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label class="xar-form-label">Definition</label>
+                        </div>
+                        <div class="xar-col">
+                            <div class="xar-form-container-after">
+                                <textarea name="xml" class="xar-form-textarealarge">&lt;objects&gt; 
+                                {% for table, fields in tables %}&lt;object
+                                name="{{ table }}"&gt; &lt;label&gt;{{ table }}&lt;/label&gt;
+                                &lt;moduleid&gt;182&lt;/moduleid&gt;
+                                &lt;itemtype&gt;-1&lt;/itemtype&gt;
+                                &lt;urlparam&gt;itemid&lt;/urlparam&gt; &lt;maxid&gt;0&lt;/maxid&gt;
+                                &lt;config&gt;&lt;/config&gt; &lt;isalias&gt;0&lt;/isalias&gt;
+                                &lt;properties&gt; 
+                                {% for name, field in fields %}&lt;property
+                                name="{{ name }}"&gt; 
+                                {% for key, value in field %}
+                                    {% if key != 'name' %}
+                                    &lt;{{ key }}&gt;{{ value }}&lt;/{{ key }}&gt;{% endif %}
+                                {% endfor %}&lt;/property&gt;{% endfor %}&lt;/properties&gt;
+                                &lt;/object&gt;{% endfor %}&lt;/objects&gt;</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            <div class="xar-align-center">
+                <a href="{{ xar_moduleurl('dynamicdata','admin','static',{'module_id': module_id}) }}">Show Table
+                Definitions</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{# @authsystem/errors.html.twig #}
+
+{% extends '@authsystem/base.html.twig' %}
+
+{% block modulespace %}
+{{ include('@authsystem/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <fieldset>
+            <legend>Problem Logging In</legend>
+            {% set label = 'System Message' %}
+            {{- xar_image({scope: "theme", file: "user-error.png", class: "xar-module-icon", alt: label}) -}}
+            {% if layout is null %}
+                <div style="margin-top: 20px">No error message is available. 
+                <br />Please contact the system administrator.</div>
+            {% elseif layout == 'no_cookies' %}
+                <div style="margin-top: 20px">You must enable cookies on your browser to run
+                Xaraya. 
+                <br />Check the browser configuration options to make sure cookies are
+                enabled.</div>
+            {% elseif layout == 'locked_out' %}
+                <div style="margin-top: 20px">
+                   {{ xar_translate('Your account has been locked for #(1) minutes.', lockouttime) }}
+                </div>
+            {% elseif layout == 'bad_data' %}
+                <div style="margin-top: 20px">The username or password entered is not valid. 
+                <br />Try logging in again or contact the system administrator if you think this is
+                an error.</div>
+            {% elseif layout == 'missing_data' %}
+                <div style="margin-top: 20px">You need to enter both a username or password to log in.. 
+                <br />Try logging in again or contact the system administrator if you think this is
+                an error.</div>
+            {% elseif layout == 'account_deleted' %}
+                <div style="margin-top: 20px">Your account has been terminated at your request or 
+                <br />at the adminstrator&#39;s discretion.</div>
+            {% elseif layout == 'account_inactive' %}
+                <div style="margin-top: 20px">Your account has been marked as inactive. 
+                <br />Contact the system adminstrator for further details.</div>
+            {% elseif layout == 'bad_try' %}
+                <div style="margin-top: 20px">
+                    The username or password entered is not valid. 
+                    <br />
+                   {{ xar_translate('You have tried to log in #(1) times.', attempts) }}
+                </div>
+            {% elseif layout == 'bad_tries_exceeded' %}
+                <div style="margin-top: 20px">
+                    The username or password entered is not valid. 
+                    <br />
+                   {{ xar_translate('Your account has been locked for #(1) minutes.', lockouttime) }}
+                </div>
+            {% elseif layout == 'account_pending' %}
+                <div style="margin-top: 20px">Your account has not yet been activated 
+                <br />Contact the system adminstrator for further details.</div>
+            {% elseif layout == 'site_locked' %}
+                <div style="margin-top: 20px">{{ message }}</div>
+            {% else %}
+                <div style="margin-top: 20px">No error message is available. 
+                <br />Please contact the system administrator.</div>
+            {% endif %}
+        </fieldset>
+        <div class="xar-form-actions">
+            <div class="xar-row">
+                <div class="xar-col"></div>
+                <div class="xar-col">
+                    {% set label = 'Go back' %}
+                    {{- xar_button({type: "cancel", label: label}) -}}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

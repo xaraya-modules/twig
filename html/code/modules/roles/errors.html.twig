@@ -1,0 +1,98 @@
+{# @roles/errors.html.twig #}
+
+{% extends '@roles/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">User Error</span>
+    </div>
+    <div class="xar-mod-body">
+        <fieldset>
+            <legend>Roles Problem</legend>
+            {% set label = 'System Message' %}
+            {{- xar_image({scope: "theme", file: "user-error.png", class: "xar-module-icon", alt: label}) -}}
+            {% if layout is null %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    No error message is available.
+                    <br />
+                    Please contact the system administrator.
+                </div>                    
+            {% elseif layout == 'remove_sole_parent' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    The user has one parent group, removal is not allowed.
+                </div>
+            {% elseif layout == 'remove_defaultusergroup' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    You are trying to remove the default group for new users ({{ group }}). To do so first change the appropriate configuration setting and make another group the default user group.
+                </div>
+            {% elseif layout == 'remove_siteadmin' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    The user {{ user }} is the designated site administrator. If you want to remove this user change the site admin in the roles configuration setting first.
+                </div>
+            {% elseif layout == 'remove_nonempty_group' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    The group {{ group }} has children. If you want to remove this group you have to delete the children first.
+                </div>
+            {% elseif layout == 'self_assignment' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    This assignment is not possible.
+                </div>
+            {% elseif layout == 'duplicate_assignment' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    This assignment already exists.
+                </div>
+            {% elseif layout == 'circular_assignment' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    The parent is already a descendant of the specified child. The assignment is not permitted.
+                </div>
+            {% elseif layout == 'remove_active_session' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    The user "{{ user }}" has an active session and can not be removed at this time.
+                </div>
+            {% elseif layout == 'purge_active_user' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    Purging active users is not allowed.
+                </div>
+            {% elseif layout == 'remove_privilege' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    Removing this privilege from this user or group is not allowed.
+                </div>
+            {% elseif layout == 'bad_userhome' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    {{ message }}
+                </div>
+            {% elseif layout == 'no_registration_module' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    {{ message }}
+                    <br />Please contact the system administrator.
+                </div>
+            {% elseif layout == 'bad_validation' %}
+                <div style="margin-top: 20px">Your validation code is not recognized. 
+                    <br />Try logging in again or contact the system administrator if you think this is an error.
+                </div>
+            {% elseif layout == 'mail_failed' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    {% if badmails %}
+                        Could not send {{ badmails }} emails.
+                    {% else %}
+                        One or more emails could not be sent.
+                    {% endif %}                
+                </div>
+            {% else %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    No error message is available.
+                    <br />Please contact the system administrator.
+                </div>                    
+            {% endif %}                
+        </fieldset>
+        <div class="xar-form-actions">
+            <div class="xar-row">
+                <div class="xar-col"></div>
+                <div class="xar-col">
+                    {% set label = 'Go back' %}
+                    {{- xar_button({type: "cancel", label: label}) -}}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{# @modules/admin/remove.html.twig #}
+
+{% block remove %}
+{{ include('@modules/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Module Removal with dependents still not removed</h2>
+        {% if dependencies['active']|length != 0 %}
+            <h3>Dependents still Active</h3>
+            <ul>
+                {% for modInfo in dependencies['active'] %}
+                    <li>{{ xar_translate(modInfo['displayname']) }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if dependencies['initialised']|length != 0 %}
+            <h3>Dependents still Initialised (Inactive)</h3>
+            <ul>
+                {% for modInfo in dependencies['initialised'] %}
+                    <li>{{ xar_translate(modInfo['displayname']) }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {# <!-- The form for editting the module settings and hooks --> #}
+        <form action="{{ xar_moduleurl('modules','admin','remove') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="xar-form-actions">
+                <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                {% set label = 'Remove All' %}
+                {{- xar_button({type: "submit", label: label, name: "command", id: "command"}) -}}
+                {% set label = 'Go back to the modules list' %}
+                {{- xar_button({type: "submit", label: label, name: "return", id: "return"}) -}}
+            </div>
+        </form>
+    </div>
+{% endblock %}

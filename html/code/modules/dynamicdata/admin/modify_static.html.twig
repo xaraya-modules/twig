@@ -1,0 +1,36 @@
+{# @dynamicdata/admin/modify_static.html.twig #}
+
+{% block modify_static %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Modify Item {{ object.itemid }} in {{ object.label }}</h2>
+
+        {% if preview is not null %}
+            <fieldset>
+                <legend>Preview</legend>
+                {{ xar_data_display({object: object}) }}
+            </fieldset>
+        {% endif %}
+
+        <form method="post" action="{{ xar_currenturl() }}">
+          <fieldset>
+            <legend>Modify item details</legend>
+            {{ xar_data_form({object: object}) }}
+          </fieldset>
+          <div class="xar-form-actions">
+            <div class="xar-row">
+                <div class="xar-col"></div>
+                <div class="xar-col">
+                    <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                    <input type="hidden" name="table" id="table" value="{{ table }}"/>
+                    <input type="hidden" name="itemid" id="itemid" value="{{ object.itemid }}"/>
+                    <input type="hidden" name="oldname" id="oldname" value="{{ oldname }}"/>
+                    <input type="hidden" name="confirm" id="confirm" value="true"/>
+                    {% set label = 'Update' %}
+                    {{- xar_button({type: "submit", label: label}) -}}
+                </div>
+            </div>
+          </div>
+        </form>
+    </div>
+{% endblock %}

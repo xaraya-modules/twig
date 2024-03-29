@@ -1,0 +1,62 @@
+{# @privileges/errors.html.twig #}
+
+{% extends '@privileges/base.html.twig' %}
+
+{% block modulespace %}
+{{ include('@privileges/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <fieldset>
+            <legend>Privileges Problem</legend>
+            {% set label = 'System Message' %}
+            {{- xar_image({scope: "theme", file: "user-error.png", alt: label, width: "96", height: "96", class: "xar-module-icon"}) -}}
+            {% if layout is null %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    No error message is available.
+                    <br />
+                    Please contact the system administrator.
+                </div>                    
+            {% elseif layout == 'bad_author' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    The operation you are attempting is not allowed in the current situation.
+                </div>
+            {% elseif layout == 'no_privileges' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    You don't have the correct privileges for this operation.
+                    <br />
+                    Contact the system administrator if you think this is an error.
+                </div>
+                {% if redirecturl is not null %}
+                    <input type="hidden" name="redirecturl" id="returnurl" value="{{ redirecturl }}"/>
+                {% endif %}
+                {% if not xar_coremethod('xarUser', 'isLoggedIn') %}
+                    <div style="margin-top: 20px; margin-left: 20px">
+                        {% set label = 'Log in' %}
+                        {% set link = xar_moduleurl('authsystem', 'user', 'showloginform') %}
+                        {{- xar_button({type: "link", target: link, label: label}) -}}
+                    </div>
+                {% endif %}
+            {% elseif layout == 'no_block_privileges' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    You don't have the correct privileges to view this block.
+                    <br />
+                    Contact the system administrator if you think this is an error.
+                </div>
+            {% else %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    No error message is available.
+                    <br />
+                    Please contact the system administrator.
+                </div>                    
+            {% endif %}                
+        </fieldset>
+        <div class="xar-form-actions">
+            <div class="xar-row">
+                <div class="xar-col"></div>
+                <div class="xar-col">
+                    {% set label = 'Go back' %}
+                    {{- xar_button({type: "cancel", label: label}) -}}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

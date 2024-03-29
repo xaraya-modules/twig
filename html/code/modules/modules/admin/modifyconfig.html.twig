@@ -1,0 +1,30 @@
+{# @modules/admin/modifyconfig.html.twig #}
+
+{% block modifyconfig %}
+{{ include('@modules/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Modify Modules Configuration</h2>
+        <form method="post" action="{{ xar_currenturl() }}">
+            <fieldset>
+                <legend>General options</legend>
+                {{ xar_data_form({object: module_settings}) }}
+            </fieldset>
+            <fieldset>
+                <legend>Configuration settings</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Disable the display by default of all module overview pages.' %}
+                        <label for="disableoverview" title="{{ label }}" class="xar-form-label">
+                            Disable overviews
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set checked = xar_modvar('modules', 'disableoverview') %}
+                        {{ xar_data_input({type: "checkbox", name: "disableoverview", checked: checked}) }}&#160;(disable the display by default of the module overview pages)
+                    </div>
+                </div>
+            </fieldset>
+            {{ include('@base/includes/update-button.html.twig') }}
+        </form>
+    </div>
+{% endblock %}

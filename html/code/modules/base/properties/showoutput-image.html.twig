@@ -1,0 +1,21 @@
+{# @base/properties/showoutput-image.html.twig #}
+
+{% block showoutput_image %}
+{% if not class %}
+        {% set class = '' %}
+    {% endif %}
+    {% if not style %}
+        {% set style = '' %}
+    {% endif %}
+    {% if value %}
+        {% if title %}
+            <img src="{{ value }}" alt="{{ title }}" class="{{ class }}" style="{{ style }}"/>
+        {% else %}
+            <img src="{{ value }}" alt="{{ imagealt }}" class="{{ class }}" style="{{ style }}"/>
+        {% endif %}
+    {% else %}
+        <span class="{{ class }}" style="{{ style }}">
+            {{ imagetext }}
+        </span>
+    {% endif %}
+{% endblock %}

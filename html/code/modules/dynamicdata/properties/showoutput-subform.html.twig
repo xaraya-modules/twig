@@ -1,0 +1,64 @@
+{# @dynamicdata/properties/showoutput-subform.html.twig #}
+
+{% block showoutput_subform %}
+{% if not style or style == 'serialized' %}
+        {% if object %}
+            <div style="clear:both">&#160;</div>
+            {% if object is iterable %}
+                {% if layout and layout == 'table' %}
+                    <table class="xar-table xar-items">
+                    {% set i = 0 %}
+                    {% for key, item in object %}
+                        {% if not i %}
+                            <tr>
+                                <td></td>
+                                {% for name in item.fieldlist %}
+                                    {# <!-- CHECKME: syntax for property doesn't work with : and . ? --> #}
+                                    <td>{{ xar_data_label({property: item.properties[name]}) }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endif %}
+                        {% set i = i+1 %}
+                        <tr>
+                            {% if key and not key is numeric %}
+                                <td>{{ key }}</td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                            {% for name in item.fieldlist %}
+                                {# <!-- CHECKME: syntax for property doesn't work with : and . ? --> #}
+                                <td>{{ xar_data_output({property: item.properties[name]}) }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </table>
+                {% else %}
+                    {% for key, item in object %}
+                        {% if key and not key is numeric %}
+                            <label>{{ key }}:</label>
+                        {% endif %}
+                        {{ xar_data_display({object: item}) }}
+                    {% endfor %}
+                {% endif %}
+            {% elseif object is object %}
+                {{ xar_data_display({object: object}) }}
+            {% else %}
+                {{ object }}
+            {% endif %}
+        {% else %}
+            {{ value }}
+        {% endif %}
+    {% elseif style == 'itemid' %}
+        {% if object %}
+            {{ xar_data_display({object: object}) }}
+            {% else %}
+            {{ value }}
+        {% endif %}
+    {% elseif style == 'childlist' or style == 'parentid' %}
+        {% if object %}
+            {{ xar_data_view({object: object, layout: "subform"}) }}
+        {% else %}
+            {{ value }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

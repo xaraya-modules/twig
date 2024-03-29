@@ -1,0 +1,19 @@
+{# @themes/blocks/skin.html.twig #}
+
+{% block skin %}
+<form action="{{ xar_moduleurl('themes', 'user', 'switch_theme') }}" method="post">
+        <div>
+            {% set default_theme_id = 'default_theme_'.blockid %}
+            <label for="default_theme" id="{{ default_theme_id }}">Select Theme</label>
+        </div>
+        <div class="xar-align-center">
+            {{ xar_data_input({type: "dropdown", name: "default_theme", id: default_theme_id, value: default_theme, options: user_themes}) }}
+        </div>
+        <div class="xar-align-right">
+            <input type="hidden" name="return_url" id="return_url_{{ blockid }}" value="{{ return_url }}"/>
+            <input type="hidden" name="phase" id="phase_{{ blockid }}" value="update"/>         
+            {% set submitLabel = 'Switch' %}
+            {{- xar_button({type: "submit", label: submitlabel}) -}}
+        </div>
+    </form>
+{% endblock %}

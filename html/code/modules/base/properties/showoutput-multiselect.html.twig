@@ -1,0 +1,11 @@
+{# @base/properties/showoutput-multiselect.html.twig #}
+
+{% block showoutput_multiselect %}
+{% set join = "" %}
+    {% for option in options %}
+        {% if option['id'] in value %}
+              {{ join }} {{ option['name'] }}
+              {% set join = "|" %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}

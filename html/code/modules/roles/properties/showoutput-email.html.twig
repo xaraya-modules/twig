@@ -1,0 +1,13 @@
+{# @roles/properties/showoutput-email.html.twig #}
+
+{% block showoutput_email %}
+{# <!--{% if link %}
+        <a href="mailto:{{ value }}">{{ value }}</a>
+    {% else %}
+        {{ value }}
+    {% endif %}
+    --> #}
+    <a href="mailto:{{ value }}">
+        {{ value }}
+    </a>
+{% endblock %}

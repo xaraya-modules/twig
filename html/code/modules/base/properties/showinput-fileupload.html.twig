@@ -1,0 +1,20 @@
+{# @base/properties/showinput-fileupload.html.twig #}
+
+{% block showinput_fileupload %}
+{% if value %}
+        {# <!-- we're using a hidden field to keep track of any previously uploaded file here --> #}
+        <span id="{{ id }}_text">Uploaded file: 
+        {{ value }}&#160;
+        {% set label = 'Clear' %}
+        {% set onclick = "document.getElementById('" ~ id ~ "_hidden').value='';document.getElementById('" ~ id  ~ "_text').innerHTML='';" %}
+        <input type="button" onClick="{{ onclick }}" value="{{ label }}"/>
+        <br /></span>
+        <input type="hidden" name="{{ name }}" id="{{ id }}_hidden" value="{{ value }}"/>
+    {% endif %}
+    {% if file_extensions %}
+        <br />Allowed file types : {{ file_extensions }}
+    {% endif %}
+    <input type="hidden" name="MAX_FILE_SIZE" value="{{ max_file_size }}"/>
+    <input type="file" name="{{ name }}" size="{{ size }}" id="{{ id }}" tabindex="{{ tabindex }}"/>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

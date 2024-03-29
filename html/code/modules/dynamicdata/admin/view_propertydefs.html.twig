@@ -1,0 +1,72 @@
+{# @dynamicdata/admin/view_propertydefs.html.twig #}
+
+{% block view_propertydefs %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Configure Property Types</h2>
+        <p>Click Flush Property Cache to clear the DynamicData Property Definitions cache and to
+        reload the properties definitions from the file system.</p>
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','update_propertydefs') }}">
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        {% set label = 'Flush Property Cache' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </div>
+            <p class="xar-note">The following property types are predefined in Xaraya and may be used in your own
+                dynamic properties.</p>
+                <table class="xar-table xar-items">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Display Name</th>
+                        <th>Input Format</th>
+                        <th>{{ labels['configuration'] }}</th>
+                    </tr>
+                    {% set lastmod = '' %}
+                    {% for field in fields %}
+                        {% if field['requiresmodule'] != lastmod %}
+                            <tr>
+                                <th colspan="5">{{ field['requiresmodule'] }} 
+                                {% set lastmod = field['requiresmodule'] %}</th>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td class="xar-align-right">{{ field['id'] }}</td>
+                            <td>{{ field['name'] }}</td>
+                            <td>
+                                <input type="text" name="label[{{ field['id'] }}]" id="label_{{ field['id'] }}" value="{{ field['label'] }}" class="xar-form-textmedium"/>
+                            </td>
+                            <td>
+                                {{ xar_data_output({property: fieldtypeprop, value: field['format']}) }}
+                            </td>
+                            <td>
+                                {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                                    <a href="{{ xar_moduleurl('dynamicdata','admin','showpropval',{'proptype': field['name']}) }}" title="Edit">
+                                        {{- xar_image({scope: "theme", file: "icons/modify-config.png", class: "xar-icon", alt: "modify-config"}) -}}
+                                    </a>
+                                {% else %}
+                                    {{ field.configuration }}
+                                    <a href="{{ xar_moduleurl('dynamicdata','admin','showpropval',{'proptype': field['name']}) }}">Edit</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <div class="xar-form-actions">
+                    <div class="xar-row">
+                        <div class="xar-col"></div>
+                        <div class="xar-col">
+                            <input type="hidden" name="flushPropertyCache" value="true"/>
+                            <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                            {% set label = 'Flush Property Cache' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </div>
+                    </div>
+                </div>
+            </form>
+    </div>{# <!--/xar-mod-body--> #}
+{% endblock %}

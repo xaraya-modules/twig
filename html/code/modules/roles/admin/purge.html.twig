@@ -1,0 +1,216 @@
+{# @roles/admin/purge.html.twig #}
+
+{% block purge %}
+{{ xar_javascript({scope: "theme", filename: "checkall.js", position: "head"}) }}
+    {{ xar_style({scope: "module", file: "privileges"}) }}
+    {{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Recall / Purge</h2>
+        {% set xmldata = 'purge' %}
+        {{ include('@base/includes/admin-menu-skel.html.twig') }}
+        {% if operation == 'recall' %}
+            <h3>Recall Deleted Groups and Users</h3>
+            <form method="post" action="{{ xar_moduleurl('roles','admin','purge') }}" enctype="application/x-www-form-urlencoded">
+                {# <!-- Module List Sort and Filter Controls table --> #}
+                <table class="xar-table xar-fullwidth">
+                    <tr>
+                        <th>
+                            {% set label = 'Search for users with either their real name, login name or email matching the string' %}
+                            <label for="recallsearch" title="{{ label }}">
+                                Search
+                            </label>
+                        </th>
+                        <th class="xar-nowrap">
+                            {% set label = 'Assign recalled users to this group' %}
+                            <label for="groupid" title="{{ label }}">
+                                Attach Recalled Groups/Users To
+                            </label>
+                        </th>
+                        <th class="xar-nowrap">
+                            {% set label = 'Assign recalled users to this status' %}
+                            <label for="groupid" title="{{ label }}">
+                                Set Recalled Users To
+                            </label>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="xar-align-center">
+                            <input type="text" name="recallsearch" id="recallsearch" value="{{ recallsearch }}" maxlength="255" class="xar-form-textmedium xar-margin-thickright"/>
+                            {% set label = 'Search' %}
+                            {{- xar_button({type: "submit", label: label, name: "search", id: "search"}) -}}
+                        </td>
+                        <td class="xar-align-center">
+                            <select name="groupid" id="groupid">
+                                {% for i in range(0, groups|length - 1) %}
+                                    {% if groups[i]['id'] == groupid %}
+                                        <option value="{{ groups[i]['id'] }}" selected="selected">
+                                        {{ groups[i]['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ groups[i]['id'] }}">
+                                        {{ groups[i]['name'] }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td class="xar-align-center">
+                            {% set options = [
+                                {'id': xarRoles..ROLES_STATE_ACTIVE, 'name': 'Active'},
+                                {'id': xarRoles..ROLES_STATE_INACTIVE, 'name': 'Inactive'},
+                                {'id': xarRoles..ROLES_STATE_NOTVALIDATED, 'name': 'Not Validated'},
+                                {'id': xarRoles..ROLES_STATE_PENDING, 'name': 'Pending'},
+                                ] %}
+                            {{ xar_data_input({type: "dropdown", name: "recallstate", options: options, value: recallstate}) }}
+                            </td>
+                        </tr>
+                    </table>
+                    {% if recallroles|length == 0 %}
+                    <p>{{ recallmessage }}
+                    {% if recallsearch != '' %}matching '{{ recallsearch }}'{% endif %}</p>
+                    {% else %}
+                        <table class="xar-table xar-fullwidth">
+                            <tr>
+                                <th>Real name</th>
+                                <th>User Name</th>
+                                <th>Email</th>
+                                <th>Date Registered</th>
+                                <th>Type</th>
+                                <th>Recall</th>
+                            </tr>
+                            {% for loop_key1, loop_item1 in recallroles %}{% set loop_index1 = loop.index %}
+                                {% if loop_item1['unique'] == 1 %}
+                                {% set recallclass = 'xar-norm-outline' %}
+                                {% else %}
+                                {% set recallclass = 'xar-partial' %}
+                                {% endif %}
+                                <tr class="{{ recallclass }}">
+                                <td>{{ loop_item1['name'] }}</td>
+                                <td>{{ loop_item1['uname'] }}</td>
+                                <td>{{ loop_item1['email'] }}</td>
+                                    <td class="xar-align-center">
+                                {{ xar_coremethod('xarLocale', 'formatDate', ['%m/%d/%Y',loop_item1['date_reg']]) }}</td>
+                                <td>{{ loop_item1['itemtype'] }}</td>
+                                    <td class="xar-align-center">
+                                        {% if loop_item1['unique'] == 1 %}
+                                             <input type="checkbox" name="recallids[{{ loop_item1['id'] }}]" id="recallids_{{ loop_item1['id'] }}"/>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {# <!-- end loop over users --> #}
+                        </table>
+                        <div class="xar-align-center">
+                            <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                            <input type="hidden" name="operation" id="operation" value="recall"/>
+                            {% set label = 'Recall' %}
+                            {{- xar_button({type: "submit", label: label, name: "confirmation"}) -}}
+                        </div>
+                        {# <!-- if there is a pager show it in the last row --> #}
+                        <div class="xar-align-center">
+                            {{ xar_pager({startnum: startnum, itemsperpage: itemsperpage, total: totalselect, urltemplate: urltemplate, urlitemmatch: urlitemmatch}) }}
+                        </div>
+                    {% endif %}
+            </form>
+            <p>
+                Note: Groups/users without checkboxes cannot be recalled because another group/user of the same name already exists (or same email, if the admin restricted emails to be unique).
+            </p>
+        {% else %}
+            <h3>Purge Users</h3>
+            <p>Note: Purged users cannot be recalled. Groups and some special users cannot be purged.</p>
+            <form method="post" action="{{ xar_moduleurl('roles','admin','purge') }}" enctype="application/x-www-form-urlencoded" name="purge">
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                <input type="hidden" name="operation" id="operation" value="purge"/>
+                {# <!-- Roles List Sort and Filter Controls table --> #}
+                <table class="xar-table xar-fullwidth">
+                    <tr>
+                        <th>
+                            {% set label = 'Search for users with either their real name, login name or email matching the string' %}
+                            <label for="purgesearch" title="{{ label }}">
+                                Search Users
+                            </label>
+                        </th>
+                        <th>
+                            {% set label = 'Search for all users of a given status' %}
+                            <label for="purgestate" title="{{ label }}">
+                                Select users based on their status
+                            </label>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="xar-align-center">
+                            <input type="text" name="purgesearch" id="purgesearch" value="{{ purgesearch }}" maxlength="255" class="xar-form-textmedium xar-margin-thickright"/>
+                            {% set label = 'Search' %}
+                            {{- xar_button({type: "submit", label: label, name: "search", id: "search_user"}) -}}
+                        </td>
+                        <td class="xar-align-center">
+                            {% set options = [
+                                    {'id': -1, 'name': ''},
+                                    {'id': xarRoles..ROLES_STATE_ACTIVE, 'name': 'Active'},
+                                    {'id': xarRoles..ROLES_STATE_DELETED, 'name': 'Deleted'},
+                                    {'id': xarRoles..ROLES_STATE_INACTIVE, 'name': 'Inactive'},
+                                    {'id': xarRoles..ROLES_STATE_NOTVALIDATED, 'name': 'Not Validated'},
+                                    {'id': xarRoles..ROLES_STATE_PENDING, 'name': 'Pending'},
+                                ] %}
+                            {{ xar_data_input({type: "dropdown", name: "purgestate", options: options, value: purgestate}) }}
+                            {% set label = 'Search' %}
+                            {{- xar_button({type: "submit", label: label, name: "search", id: "search_state"}) -}}
+                        </td>
+                    </tr>
+                </table>
+                {% if purgeusers|length == 0 %}
+                    <p>
+                    {{ purgemessage }}
+                        {% if purgesearch != '' %}
+                            matching
+                            {% if purgestatetext != '' %}
+                                '{{ purgesearch }} / {{ purgestatetext }}'
+                            {% else %}
+                                '{{ purgesearch }}'
+                            {% endif %}
+                        {% endif %}
+                    </p>
+                {% else %}
+                    <table class="xar-table xar-fullwidth">
+                        <tr>
+                            <th>Real name</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Date Registered</th>
+                            <th>Status</th>
+                            <th>Purge?</th>
+                        </tr>
+                        {% for purgeuser in purgeusers %}
+                            <tr class="xar-norm-outline">
+                                <td>{{ xar_data_output({type: "name", value: purgeuser['name']}) }}</td>
+                                <td>{{ xar_data_output({type: "name", value: purgeuser['uname']}) }}</td>
+                                <td>{{ xar_data_output({type: "name", value: purgeuser['email']}) }}</td>
+                                <td class="xar-align-center">
+                                    {{ xar_coremethod('xarLocale', 'formatDate', ['%m/%d/%Y',purgeuser['date_reg']]) }}
+                                </td>
+                                <td>{{ purgeuser['state'] }}</td>
+                                <td class="xar-align-center">
+                                    <input type="checkbox" name="purgeids[{{ purgeuser['id'] }}]" id="purgeids_{{ purgeuser['id'] }}" value="1"/>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {# <!-- end loop over users --> #}
+                    </table>
+                    <div class="xar-align-right">
+                        <a href="javascript:void(0);" onclick="xar_base_checkall(document.forms['purge'],true);return false;">
+                            Check All
+                        </a>|
+                        <a href="javascript:void(0);" onclick="xar_base_checkall(document.forms['purge'],false);return false;">
+                            Uncheck All
+                        </a>
+                    </div>
+                    <div class="xar-align-center">
+                        {% set label = 'Purge' %}
+                        {{- xar_button({type: "submit", label: label, name: "confirmation"}) -}}
+                    </div>
+                    <div class="xar-align-center">
+                        {{ xar_pager({startnum: startnum, itemsperpage: itemsperpage, total: totalselect, urltemplate: urltemplate, urlitemmatch: urlitemmatch}) }}
+                    </div>
+                {% endif %}
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

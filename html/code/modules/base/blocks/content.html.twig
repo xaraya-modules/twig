@@ -1,0 +1,59 @@
+{# @base/blocks/content.html.twig #}
+
+{% block content %}
+{# <!--
+        Content type is text.
+        Convert all HTML characters to entities and honour newlines with a break.
+        Alternatively, the raw text is available in $content_text.
+    --> #}
+    {% if content_type == 'text' and custom_format == '' %}
+        <div>
+            {% for loop_key1, loop_item1 in content_lines %}{% set loop_index1 = loop.index %}
+            {% if loop_index1 > 0 %}
+                <br />
+            {% endif %}{{ xar_prep_display(loop_item1) }}</xar:loop>
+        </div>
+    {% endif %}
+    {# <!--
+        Content type is Blocklayout.
+        Display the content as-is - we assume it is entered by an admin and so can be trusted.
+    --> #}
+    {% if content_type == 'bl' and custom_format == '' %}
+        <div>{{ content_text }}</div>
+    {% endif %}
+    {# <!--
+        Content type is html.
+        Display the content as-is - we assume it is entered by an admin and so can be trusted.
+    --> #}
+    {% if content_type == 'html' and custom_format == '' %}
+        <div>{{ content_text }}</div>
+    {% endif %}
+    {# <!--
+        Content type is php.
+        Display the content as-is - we assume it is entered by an admin and so can be trusted.
+    --> #}
+    {% if content_type == 'php' and custom_format == '' %}
+        <div>{{ content_text }}</div>
+    {% endif %}
+    {# <!--
+        Content type is data.
+        Here the block PHP content can return structured data, e.g. return and associative array;
+        which provides the custom variables as keys.
+    --> #}
+    {% if content_type == 'data' and custom_format == '' %}
+        {# <!-- --> #}
+    {% endif %}
+    {# <!--
+        Custom handling.
+        This example: execute content as PHP, then treat the output as text.
+        Matches 'content type' = 'php' and 'custom format' = 'text'
+    --> #}
+    {% if content_type == 'php' and custom_format == 'text' %}
+        <div>
+            <xar:loop name="$content_lines">
+            {% if loop_index1 > 0 %}
+                <br />
+            {% endif %}{{ xar_prep_display(loop_item1) }}{% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

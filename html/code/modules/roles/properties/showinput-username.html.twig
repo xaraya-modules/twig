@@ -1,0 +1,36 @@
+{# @roles/properties/showinput-username.html.twig #}
+
+{% block showinput_username %}
+{% if class %}
+    {% elseif not size %}
+        {% set class = 'xar-form-textlong' %}
+    {% elseif size > 48 %}
+        {% set class = 'xar-form-textxlong' %}
+    {% elseif size < 12 %}
+        {% set class = 'xar-form-textshort' %}
+    {% elseif size < 30 %}
+        {% set class = 'xar-form-textmedium' %}
+    {% else %}
+        {% set class = 'xar-form-textlong' %}
+    {% endif %}
+    {% if style is null %}
+        {% set style = '' %}
+    {% endif %}
+    
+    {# <!-- On focus event --> #}
+    {% if onfocus is null %}
+      {% set onfocus = 'return true;' %}
+    {% endif %}
+    
+
+{# <!--
+FIXME:  The target="" needs to be replaced by something that works in xhtml.
+    {% if linkurl %}
+        {{ value }} [ <a href="{{ linkurl }}" target="{{ preview }}">{{ profile }}</a> ]
+    {% else %}
+        {{ value }}
+    {% endif %}
+--> #}
+    <input type="text" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" size="{{ size }}" maxlength="{{ maxlength }}" tabindex="{{ tabindex }}" class="{{ class }}" onfocus="{{ onfocus }}"/>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

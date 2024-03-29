@@ -1,0 +1,47 @@
+{# @blocks/admin/modifyconfig.html.twig #}
+
+{% block modifyconfig %}
+{{ include('@blocks/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            <h2>Modify Blocks Configuration</h2>
+            <xar:ajax-form form="modifyconfig-form"/>
+            {% set xmldata = 'modifyconfig' %}
+            {{ include('@base/includes/admin-menu-skel.html.twig') }}
+        </div>
+        <div class="xar-mod-page-body">
+            {# <!--
+                - - - - - - - - - - - Begin General Options - - - - - - - - - - -
+            --> #}
+            {% if tab == 'general' %}
+                <form id="modifyconfig-form" action="{{ xar_currenturl() }}" method="post" enctype="application/x-www-form-urlencoded">
+                    <fieldset>
+                        <legend>General options</legend>
+                        {{ xar_data_form({object: module_settings}) }}
+                    </fieldset>
+                    <fieldset>
+                        <legend>Exception handling</legend>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label for="noexceptions">Exception Handling</label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_data_input({type: "radio", name: "noexceptions", options: exceptionoptions, value: noexceptions}) }}
+                            </div>
+                        </div>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                            </div>
+                            <div class="xar-col">
+    By default the blocks module suppresses exceptions it encounters when displaying blocks. <br/>
+    When developing blocks or block template over-rides for your site it may be useful to see those exceptions.<br/> 
+    Exception messages are only visible to the debug administrators, which are defined <a href="{{ xar_moduleurl('roles','admin','modifyconfig',{'tab': 'debugging'}) }}">here</a>.
+                            </div>
+                        </div>
+                    </fieldset>
+                    {{ include('@base/includes/update-button.html.twig') }}
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

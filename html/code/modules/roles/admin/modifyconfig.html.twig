@@ -1,0 +1,256 @@
+{# @roles/admin/modifyconfig.html.twig #}
+
+{% block modifyconfig %}
+{{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            <h2>Modify Roles Configuration</h2>
+            {% set xmldata = 'modifyconfig' %}
+            {{ include('@base/includes/admin-menu-skel.html.twig') }}
+        </div>
+            {# <!--
+                - - - - - - - - - - - - - - - - - - - Begin General Options - - - - - - - - - - - - - - - - - - - - -
+            --> #}
+        <div class="xar-mod-page-body">
+            {% if tab == 'general' %}
+                <form method="post" action="{{ xar_currenturl() }}" enctype="application/x-www-form-urlencoded">
+                    <fieldset>
+                        <legend>General options</legend>
+                        {{ xar_data_form({object: module_settings}) }}
+                    </fieldset>
+                    <fieldset class="table">
+                        <legend>Default Group and Site Administrator</legend>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                {% set label = 'Select the admin user that cannot be deleted' %}
+                                <label for="siteadmin" title="{{ label }}" class="xar-form-label">Designated Site Admin:</label>
+                            </div>
+                            <div class="xar-col">
+                                <select name="siteadmin" id="siteadmin">
+                                    {% for loop_key1, loop_item1 in siteadmins %}{% set loop_index1 = loop.index %}
+                                        {% if loop_item1['id'] == xar_modvar('roles', 'admin') %}
+                                            <option name="{{ loop_item1['id'] }}" id="{{ loop_item1['id'] }}" value="{{ loop_item1['id'] }}" selected="selected">
+                                                {{ loop_item1['name'] }}
+                                            </option>
+                                        {% else %}
+                                            <option name="{{ loop_item1['id'] }}" id="{{ loop_item1['id'] }}" value="{{ loop_item1['id'] }}">
+                                                {{ loop_item1['name'] }}
+                                            </option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                {% set label = 'New Users automatically get assigned to this Group' %}
+                                <label for="defaultgroup" title="{{ label }}" class="xar-form-label">Default Group For New Users:</label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_data_input({type: "grouplist", name: "defaultgroup", id: "defaultgroup", value: defaultgroup}) }}
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Default Authentication &amp; Registration Modules</legend>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                {% set label = 'Select the module that manages authentication of users' %}
+                                <label for="defaultauthmodule" title="{{ label }}" class="xar-form-label">Authentication:</label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_data_input({type: "module", name: "defaultauthmodule", class: "Authentication", value: defaultauthmod, validation: "name", firstline: "Choose a module"}) }}
+                            </div>
+                        </div>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                {% set label = 'Select the module that manages registration of users' %}
+                                <label for="defaultregmodule" title="{{ label }}" class="xar-form-label">Registration:</label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_data_input({type: "module", name: "defaultregmodule", class: "Registration", value: defaultregmod, validation: "name", firstline: "Choose a module"}) }}
+                            </div>
+                        </div>
+                    </fieldset>
+                    <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                    {{ include('@base/includes/update-button.html.twig') }}
+                </form>
+                {# <!--
+                    - - - - - - - - - - - - - - - - - Begin User Variable Options - - - - - - - - - - - - - - - - - - -
+                --> #}
+                {% elseif tab == 'duvs' %}
+                    <form method="post" action="{{ xar_moduleurl('roles','admin','modifyconfig') }}" enctype="application/x-www-form-urlencoded">
+                        <fieldset>
+                        <legend>Basic User Variables</legend>
+                        <p>Always available in a user role, and can be retrieved as
+                        <strong>xarUser::getVar('varname')</strong></p>
+                            <table class="xar-table">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                                <tr>
+                                    <td>uname</td>
+                                    <td>The handle or nick under which the user is
+                                    known to the site. The uname is unique to each user.</td>
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+                                    <td>The user's display name, as shown in the
+                                    members list and other displays. The name need not be unique.</td>
+                                </tr>
+                                <tr>
+                                    <td>email</td>
+                                    <td>The user's email address. The email address
+                                    can be defined by the site administrator to be unique or not.</td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                        <fieldset>
+                        <legend>Dynamic Roles Variables</legend>
+                        <p>Optional in a user role. Once activated they can be retrieved as
+                        <strong>xarModUserVars::get('roles','varname','id')</strong></p>
+                            {{ xar_data_form({object: user_settings, tplmodule: "roles", template: "usermenu", layout: "nolabels", fieldlist: "duvsettings"}) }}
+                            <table class="xar-table">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                                <tr>
+                                    <td>userhome</td>
+                                    <td>The role's home page, which is initially
+                                    displayed when the user logs in. The home page can be role/user
+                                    specific or inherited from the direct parent group. The home page is
+                                    specified in a similar manner to user menu item shortcuts in the modify
+                                    or edit role page.</td>
+                                </tr>
+                                <tr>
+                                    <td>primaryparent</td>
+                                    <td>The role's primary parent group. A primary
+                                    parent take precendence over other parent groups for realm and user
+                                    role home settings.</td>
+                                </tr>
+                                <tr>
+                                    <td>passwordupdate</td>
+                                    <td>Shows the date and time this role's password was
+                                    last changed in their user account.</td>
+                                </tr>
+                                <tr>
+                                    <td>userlastlogin</td>
+                                    <td>Shows the date and time this role last logged
+                                    in.</td>
+                                </tr>
+                                <tr>
+                                    <td>usertimezone</td>
+                                    <td>Shows this role's timezone and allows the role to set their timezone.</td>
+                                </tr>
+                                <tr>
+                                    <td>useremailformat</td>
+                                    <td>Allow the role to set their preferred email format (text or
+                                    html).</td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                        <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                        {{ include('@base/includes/update-button.html.twig') }}
+                    </form>
+                {# <!--
+                    - - - - - - - - - - - - - - - - - Begin User Hooks Options - - - - - - - - - - - - - - - - - - -
+                --> #}
+                {% elseif tab == 'hooks' %}
+                {% if hooks %}
+                    <form method="post" action="{{ xar_moduleurl('roles','admin','modifyconfig') }}" enctype="application/x-www-form-urlencoded">
+                       <fieldset>
+                            <legend>Default Hooks For Users</legend>
+                            {% for hookmodule in hooks|keys %}
+                                {{ hooks[hookmodule] }}
+                            {% endfor %}
+                        </fieldset>
+                        <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                        {{ include('@base/includes/update-button.html.twig') }}
+                    </form>
+                {% else %}
+                    <p>No hooks are enabled for Users.</p>
+                {% endif %}
+                {# <!--
+                    - - - - - - - - - - - - - - - - - Begin Group Hooks Options - - - - - - - - - - - - - - - - - - -
+                --> #}
+                {% elseif tab == 'grouphooks' %}
+                {% if hooks %}
+                    <form method="post" action="{{ xar_moduleurl('roles','admin','modifyconfig') }}" enctype="application/x-www-form-urlencoded">
+                    enctype="application/x-www-form-urlencoded">
+                        <fieldset>
+                            <legend>Default Hooks For Groups</legend>
+                            {% for hookmodule in hooks|keys %}
+                            {{ hooks[hookmodule] }}{% endfor %}
+                        </fieldset>
+                        <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                        {{ include('@base/includes/update-button.html.twig') }}
+                    </form>
+                {% else %}
+                    <p>No hooks are enabled for Groups.</p>
+                {% endif %}
+                {# <!--
+                    - - - - - - - - - - - - - - - - - Begin Manage Hooks Options - - - - - - - - - - - - - - - - - - -
+                --> #}
+                {% elseif tab == 'managehooks' %}
+                    <fieldset>
+                        <legend>
+                            Configure Roles Hooks
+                        </legend>
+                        {% set url = xar_moduleurl('roles','admin','modifyconfig',{'tab': 'managehooks'}) %}
+                        {{ xar_guifunc("modules", "admin", "hooks", {main: "false", curhook: "roles", return_url: url}) }}
+                    </fieldset>
+                {# <!--
+                    - - - - - - - - - - - - - - - - - Begin Member Options - - - - - - - - - - - - - - - - - - -
+                --> #}
+                {% elseif tab == 'memberlist' %}
+                <form method="post" action="{{ xar_moduleurl('roles','admin','modifyconfig') }}" enctype="application/x-www-form-urlencoded">
+                    {# <!-- display the default settings properties --> #}
+                    {{ xar_data_form({object: user_settings, tplmodule: "roles", template: "usermenu", layout: "admin"}) }}
+                    {# <!-- if you add more roles_user_settings properties you can display them
+                        using the $user_settings object and specifying the fieldlist of
+                        your properties, see example below
+                    --> #}
+                    {# <!--
+                        {% set mylist = >['foo','bar']< %}
+                        <h4>More Settings</h4>
+                        {{ xar_data_form({object: user_settings, tplmodule: "roles", template: "usermenu", layout: "default", fieldlist: mylist}) }}
+                    --> #}
+                    <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                    {{ include('@base/includes/update-button.html.twig') }}
+                </form>
+                {# <!--
+                    - - - - - - - - - - - - - - - - - Begin Debugging Options - - - - - - - - - - - - - - - - - - -
+                --> #}
+                {% elseif tab == 'debugging' %}
+                <form method="post" action="{{ xar_moduleurl('roles','admin','modifyconfig') }}" enctype="application/x-www-form-urlencoded">
+                    <fieldset>
+                        <legend>
+                            Debug Administrators
+                        </legend>
+                        <div class="xar-row">
+                            <div class="xar-col" style="padding-bottom: 10px;">
+                                Debug administrtors will see exceptions and error messages when debug mode in a given module is activated.<br/>
+                                Enter a list of user names separated by commas. Incorrect user names  will be ignored.<br />
+                            </div>
+                        </div>
+                        <div class="xar-row">
+                            <div class="xar-col" style="padding-bottom: 10px;">
+                                {% set label = 'These users can see the Query debug messages' %}
+                                <label for="debugadmins" title="{{ label }}" class="xar-form-label">
+                                    Debug Mode Admins:
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_data_input({type: "textarea", name: "debugadmins", value: debugadmins}) }}
+                            </div>
+                        </div>
+                    </fieldset>
+                    <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                    {{ include('@base/includes/update-button.html.twig') }}
+                </form>
+            {% endif %}
+        </div>{# <!--xar-mod-page-body--> #}
+    </div>{# <!--/xar-mod-body--> #}
+{% endblock %}

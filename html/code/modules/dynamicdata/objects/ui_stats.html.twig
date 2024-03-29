@@ -1,0 +1,171 @@
+{# @dynamicdata/objects/ui_stats.html.twig #}
+
+{% block ui_stats %}
+{{ include('@dynamicdata/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% set viewlink = object.getActionURL('view') %}
+        {% set statslink = object.getActionURL('stats') %}
+        {% set reportlink = object.getActionURL('report') %}
+        <h2>
+            Statistics for {{ object.label }}&#160;
+            <a href="{{ viewlink }}" title="View {{ object.label }}">
+                {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+            </a>&#160;
+            <a href="{{ statslink }}" title="Reset Statistics">
+                {{- xar_image({scope: "theme", file: "icons/view-refresh.png", class: "xar-icon", alt: "reset"}) -}}
+            </a>&#160;
+            <a href="{{ reportlink }}" title="View Reports">
+                {{- xar_image({scope: "theme", file: "icons/accessories-calculator.png", class: "xar-icon", alt: "report"}) -}}
+            </a>
+        </h2>
+        {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}
+        <form method="post" action="{{ statslink }}">
+            <fieldset>
+                {# <!-- if we use the current URL, the object is already specified --> #}
+                {% if object.linktype != 'current' %}
+                    <input type="hidden" name="object" id="object" value="{{ object.name }}"/>
+                {% endif %}
+                <input type="hidden" name="method" id="method" value="stats"/>
+                {% if object.join %}
+                    <input type="hidden" name="join" id="join" value="{{ object.join }}"/>
+                {% endif %}
+                {% if object.table %}
+                    <input type="hidden" name="table" id="table" value="{{ object.table }}"/>
+                {% endif %}
+                {% if return_url %}
+                    <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                {% endif %}
+                <legend>Selection Criteria</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label class="xar-form-label-short" for="group_0" title="Select the properties you want to group the items by">Group By</label>
+                    </div>
+                    <div class="xar-col">
+                        {% for i in range(0, 2) %}
+                            &#160;
+                            <select name="group[{{ i }}]" id="group_{{ i }}">
+                                <option value=""></option>
+                                {% for value, label in stats.grouplist %}
+                                    {% if stats['group'][i] and stats['group'][i] == value %}
+                                        <option value="{{ value }}" selected="selected">{{ label }}</option>
+                                    {% else %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endfor %}
+                    </div>
+                </div>
+{# <!--
+                <div class="xar-row">
+                    <div class="xar-col">
+                        Operation
+                    </div>
+                    <div class="xar-col">
+                        {#  only show properties with status ACTIVE, DISPLAYONLY and VIEWONLY #}
+                        {% set filterstatus = >[1, 2, 4]< %}
+                        {% set show_props = [] %}
+                        {% for name, property in object.properties %}
+                            {% set displaystatus = property.getDisplayStatus() %}
+                            {% if displaystatus not in filterstatus %}
+                            {% else %}
+                            {% set dummy = array_push(show_props, name) %}
+                            {% endif %}
+                        {% endfor %}
+                        {#  show properties in three columns to save screen space #}
+                        {% set size = floor((show_props|length - 0.5) / 3) + 1 %}
+                        {% set columns = array_chunk(show_props,size) %}
+                        <table class="xar-table">
+                            <tr>
+                            {% for proplist in columns %}
+                                <td valign="top">
+                                {% for name in proplist %}
+                                    {% set property = object.properties.name %}
+                                    <label for="field_{{ name }}">{{ property.label }}</label><br/>
+                                {% endfor %}
+                                </td>
+                                <td valign="top">
+                                {% for name in proplist %}
+                                    {% set property = object.properties.name %}
+                                    {#  CHECKME: could the dummy datastore actually do something here ? #}
+                                    {% if property.datastore == '_dummy_' %}
+                                        N/A
+                                       <xar:continue/>
+                                    {% endif %}
+                                    <select name="field[{{ name }}]" id="field_{{ name }}">
+                                        {% for value, label in stats.options %}
+                                            {% if (value == 'sum' or value == 'avg') and not is_a(property, 'NumberBoxProperty') %}
+                                                <option value="{{ value }}" disabled="disabled">{{ label }}</option>
+                                            {% elseif stats['field'][name] and stats['field'][name] == value %}
+                                                <option value="{{ value }}" selected="selected">{{ label }}</option>
+                                            {% else %}
+                                                <option value="{{ value }}">{{ label }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select><br/>
+                                {% endfor %}
+                                </td>
+                            {% endfor %}
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+--> #}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label class="xar-form-label-short" for="field" title="Select the operation you want to apply to each property">Operation</label>
+                    </div>
+                </div>
+                {#  only show properties with status ACTIVE, DISPLAYONLY and VIEWONLY #}
+                {% set filterstatus = >[1, 2, 4]< %}
+                {% for name, property in object.properties %}
+                    {% set displaystatus = property.getDisplayStatus() %}
+                    {% if displaystatus not in filterstatus %}
+                    {% else %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label class="xar-form-label" for="field_{{ name }}">{{ property.label }}</label>
+                        </div>
+                        <div class="xar-col">
+                            {#  CHECKME: could the dummy datastore actually do something here ? #}
+                            {% if property.datastore == '_dummy_' %}
+                                N/A
+                                <xar:continue/>
+                            {% endif %}
+                            <select name="field[{{ name }}]" id="field_{{ name }}">
+                                {% for value, label in stats.options %}
+                                    {% if (value == 'sum' or value == 'avg') and not is_a(property, 'NumberBoxProperty') %}
+                                        <option value="{{ value }}" disabled="disabled">{{ label }}</option>
+                                    {% elseif stats['field'][name] and stats['field'][name] == value %}
+                                        <option value="{{ value }}" selected="selected">{{ label }}</option>
+                                    {% else %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </fieldset>
+            <fieldset class="xar-form-actions">
+                {% set label = 'Show Statistics' %}
+                {{- xar_button({type: "submit", label: label}) -}}
+            </fieldset>
+            {% if object.checkAccess('config') %}
+                <fieldset class="xar-form-actions">
+                    <label class="xar-form-label" for="report" title="Specify a name for this report if you want to save it">Save Report As</label>
+                    <input type="text" name="report" id="report" value="{{ stats['report'] }}"/>
+                    {% set label = 'Save Report' %}
+                    {{- xar_button({type: "submit", label: label, name: "save"}) -}}
+                </fieldset>
+            {% endif %}
+        </form>
+        {% if result %}
+            {# <!-- don't show a newlink here --> #}
+            {{ xar_data_view({object: object, tplmodule: "dynamicdata", layout: "stats"}) }}
+        {% elseif object.itemcount %}
+            <p>There are {{ object.itemcount }} items in {{ object.label }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{# @base/properties/showoutput-urlicon.html.twig #}
+
+{% block showoutput_urlicon %}
+{% if not label %}
+        {% set label = 'Icon' %}
+    {% endif %}
+    {% if title %}
+        <a href="{{ link }}" title="{{ title }}">
+            <img src="{{ icon }}" alt="{{ label }}" width="16" height="16"/>
+        </a>
+    {% else %}
+        <a href="{{ link }}">
+            <img src="{{ icon }}" alt="{{ label }}" width="16" height="16"/>
+        </a>
+    {% endif %}
+{% endblock %}

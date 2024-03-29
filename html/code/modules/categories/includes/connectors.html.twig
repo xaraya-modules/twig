@@ -1,0 +1,24 @@
+{# @categories/includes/connectors.html.twig #}
+
+{% block connectors %}
+{% for mapitem in map %}
+        {% if mapitem == 'o_connector' %}
+            <img style="vertical-align: top; border: 0" height="21" src="modules/categories/xarimages/n_nosub.gif" alt="0" width="9"/>
+        {% elseif mapitem == 'p_connector' %}
+            <img style="vertical-align: top; border: 0" height="21" src="modules/categories/xarimages/n_sub.gif" alt="P" width="9"/>
+        {% elseif mapitem == 't_connector' %}
+            <img style="vertical-align: top; border: 0" height="21" src="modules/categories/xarimages/n_sub_branch_t.gif" alt="t" width="12"/>
+        {% elseif mapitem == 'l_connector' %}
+            <img style="vertical-align: top; border: 0" height="21" src="modules/categories/xarimages/n_sub_branch_l.gif" alt="L" width="12"/>
+        {% elseif mapitem == 'i_connector' %}
+            <img style="vertical-align: top; border: 0" height="21" src="modules/categories/xarimages/n_sub_line.gif" alt="|" width="12"/>
+        {% elseif mapitem == 'blank_connector' %}
+            <img style="vertical-align: top; border: 0" height="21" src="modules/categories/xarimages/n_spacer.gif" alt="&#160;" width="12"  />
+        {% elseif mapitem == 'dash_connector' %}
+            <img style="vertical-align: top; border: 0" height="21" src="modules/categories/xarimages/n_sub_end.gif" alt="_" width="9"/>
+        {% elseif mapitem == 'cutoff_connector' %}
+            <img style="vertical-align: top; border: 0" height="21" src="modules/categories/xarimages/n_sub_cutoff.gif" alt="--&gt;" width="9"/>
+        {% else %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}

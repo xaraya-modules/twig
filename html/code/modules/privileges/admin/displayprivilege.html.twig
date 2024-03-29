@@ -1,0 +1,150 @@
+{# @privileges/admin/displayprivilege.html.twig #}
+
+{% block displayprivilege %}
+{{ xar_style({scope: "module", file: "privtree"}) }}
+    {{ xar_javascript({scope: "module", module: "privileges", filename: "xarTree.js"}) }}
+    <script type="javascript">
+    {# <!--
+        var oldOnLoadFunction = (window.onload) ? window.onload : new Function("","return true;");
+        function doOnLoad() {
+        oldOnLoadFunction();
+        xarTree_init('PrivilegesTree');
+        }
+        var oldOnUnloadFunction = (window.onunload) ? window.onunload : new Function("","return true;");
+        function doOnUnload() {
+        oldOnUnloadFunction();
+        xarTree_init('PrivilegesTree');
+        }
+
+        window.onload = doOnLoad;
+        window.onunload = doOnUnload;
+
+        function setaction(target){
+        document.forms['privilegeform'].action = target;
+        document.forms['privilegeform'].submit();}
+    // --> #}
+    </script>
+    {{ include('@privileges/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Display Privilege: {{ pname }}</h2>
+        {% if parents|length != 0 %}
+            <div>
+                <ul class="xar-tabs xar-alt xar-norm-outline">
+                    {% set title = 'These are the privileges that contain {{ pname }} as a component' %}
+                    {% set label = 'Used in' %}
+                    <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                    {% set prevgroup = "" %}
+                    {% for i in range(0, parents|length - 1) %}
+                        {% if prevgroup != parents[i]['parentname'] %}
+                            <li class="xar-tab">
+                                {% set label = 'Show this privilege' %}
+                                <a href="{{ xar_moduleurl('privileges','admin','displayprivilege',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                    {{ parents[i]['parentname'] }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% set prevgroup = parents[i]['parentname'] %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <div>
+            <ul class="xar-tabs xar-alt xar-norm-outline">
+                {% set title = 'Choose an action to perform on this privilege' %}
+                {% set label = 'Manage privilege' %}
+                <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                <li class="xar-tab-active">
+                    <a href="{{ xar_moduleurl('privileges','admin','displayprivilege',{'id': ppid}) }}" class="xar-accent xar-accent-outline">
+                     Display
+                     </a>
+                </li>
+                <li class="xar-tab">
+                    <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': ppid}) }}" class="xar-norm xar-norm-outline">
+                        Modify
+                    </a>
+                </li>
+                <li class="xar-tab">
+                    <a href="{{ xar_moduleurl('privileges','admin','deleteprivilege',{'id': ppid}) }}" class="xar-norm xar-norm-outline">
+                        Delete
+                    </a>
+                </li>
+                <li class="xar-tab">
+                    <a href="{{ xar_moduleurl('privileges','admin','viewroles',{'id': ppid}) }}" class="xar-norm xar-norm-outline">
+                        Groups/Users
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <fieldset>
+            <legend>Privilege properties</legend>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">Name:</label>
+                </div>
+                <div class="xar-col">
+                    <span>{{ pname }}</span>
+                </div>
+            </div>
+            {% if ptype == null %}
+                <p>This is an empty container for other privileges.</p>
+            {% endif %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">Realm:</label>
+                </div>
+                <div class="xar-col">
+                    <span>{{ prealm }}</span>
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">Module:</label>
+                </div>
+                <div class="xar-col">
+                    <span>{{ pmodule }}</span>
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">Component:</label>
+                </div>
+                <div class="xar-col">
+                    <span>{{ pcomponent }}</span>
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">Level:</label>
+                </div>
+                <div class="xar-col">
+                    <span>
+                        {% if plevel == 0 %}None 
+                        {% elseif plevel == 100 %}Overview 
+                        {% elseif plevel == 200 %}Read 
+                        {% elseif plevel == 300 %}Comment 
+                        {% elseif plevel == 400 %}Moderate 
+                        {% elseif plevel == 500 %}Edit 
+                        {% elseif plevel == 600 %}Add 
+                        {% elseif plevel == 700 %}Delete 
+                        {% elseif plevel == 800 %}Admin{% endif %}
+                    </span>
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">Instances:</label>
+                </div>
+                <div class="xar-col">
+                    <span>{{ instance }}</span>
+                </div>
+            </div>
+        </fieldset>
+        {# <!--
+        <br class="xar-clearboth"/>
+        <fieldset>
+            <legend>The Components of '{{ pname }}':</legend>
+                  {{ xar_data_input({type: "privilegestree", show: "All"}) }} 
+        </fieldset>
+        --> #}
+    </div>
+{% endblock %}

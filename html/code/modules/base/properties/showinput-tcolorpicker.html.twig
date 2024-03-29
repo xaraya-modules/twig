@@ -1,0 +1,17 @@
+{# @base/properties/showinput-tcolorpicker.html.twig #}
+
+{% block showinput_tcolorpicker %}
+<script type="text/javascript">
+        var TCP_picker_page = "{{ xar_coremethod('sys', 'code') }}modules/base/xartemplates/scripts/tcolorpicker.html";
+        var TCP_picker_pixel = "{{ xar_coremethod('sys', 'code') }}modules/base/xartemplates/includes/img/tcolorpicker_pixel.gif";
+    </script>
+    {{ xar_javascript({scope: "module", module: "base", filename: "tcolorpicker.js"}) }}
+    {% set alttext = 'Click to select a color' %}
+
+    <input type="text" name="{{ name }}" id="{{ id }}" value="{{ value }}" size="{{ size }}" maxlength="{{ maxlength }}" style="background-color:{{ value }}"/>
+
+    <a href="javascript:TCP.popup(document.getElementById('{{ id }}'), 1)">
+        {{- xar_image({scope: "module", module: "base", file: "tcolorpicker.gif", class: "xar-icon", alt: alttext}) -}}
+    </a>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

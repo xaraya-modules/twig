@@ -1,0 +1,106 @@
+{# @roles/admin/modifynotice.html.twig #}
+
+{% block modifynotice %}
+{{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            <a href="{{ xar_moduleurl('roles','admin','createmail') }}">Messaging System:</a> Modify Notification Options
+        </h2>
+        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set tab = request.2 %}
+        {% set xmldata = 'mail' %}
+        {{ include('@base/includes/admin-menu-skel.html.twig') }}
+
+        <form method="post" action="{{ xar_moduleurl('roles','admin','modifynotice') }}" enctype="application/x-www-form-urlencoded">
+            <fieldset>
+                <legend>Notification Email :</legend>
+                <div class="xar-col xar-padding-thick">
+                    Admin will be prompted to send an email to an existing user if the user status is changed to any of the following checked options. Admin will also be notified when status is changed automatically by the system (eg when an account is set to pending and requires approval):
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'When user state is changed to 'pending'' %}
+                        <label for="askpendingemail" title="{{ label }}">
+                            Pending
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set checked = xar_var({scope: "module", module: "roles", name: "askpendingemail"}) %}
+                        {{ xar_data_input({type: "checkbox", name: "askpendingemail", id: "askpendingemail", checked: checked}) }}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'When user state is changed to 'active'' %}
+                        <label for="askwelcomeemail" title="{{ label }}">
+                            Active
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set checked = xar_var({scope: "module", module: "roles", name: "askwelcomeemail"}) %}
+                        {{ xar_data_input({type: "checkbox", name: "askwelcomeemail", id: "askwelcomeemail", checked: checked}) }}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'When user state is changed to 'inactive'' %}
+                        <label for="askdeactivationemail" title="{{ label }}">
+                            Inactive
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set checked = xar_var({scope: "module", module: "roles", name: "askdeactivationemail"}) %}
+                        {{ xar_data_input({type: "checkbox", name: "askdeactivationemail", id: "askdeactivationemail", checked: checked}) }}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'When user state is changed to 'not validated'' %}
+                        <label for="askvalidationemail" title="{{ label }}">
+                            Not Validated
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set checked = xar_var({scope: "module", module: "roles", name: "askvalidationemail"}) %}
+                        {{ xar_data_input({type: "checkbox", name: "askvalidationemail", id: "askvalidationemail", checked: checked}) }}
+                    </div>
+                </div>
+                <div class="xar-col xar-padding-thick">
+                    Ask about sending a notification when an administrator:
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'When administrator changes a user's password' %}
+                        <label for="askpasswordemail" title="{{ label }}">
+                            Changes A User's Password
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set checked = xar_var({scope: "module", module: "roles", name: "askpasswordemail"}) %}
+                        {{ xar_data_input({type: "checkbox", name: "askpasswordemail", id: "askpasswordemail", checked: checked}) }}
+                    </div>
+                </div>
+                {# <!-- jojodee - we already have user hooks in the modifyconfig user hooks sections,
+                     so comment out until we know if there is another good reason to have them here as well --> #}
+                {# <!--
+                {% if hooks %}
+                    {% for module, output in hooks %}
+                        {{ output }}
+                    {% endfor %}
+                {% endif %}
+                --> #}
+            </fieldset>
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                        <input type="hidden" name="phase" id="phase" value="update"/>
+                        {% set label = 'Update Notification Configuration' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

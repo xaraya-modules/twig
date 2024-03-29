@@ -1,0 +1,51 @@
+{# @modules/blocks/sidemenu.html.twig #}
+
+{% block sidemenu %}
+{% if menustyle is not null %}
+        {{ menustyle }}
+    {% endif %}
+    {% if not catmods or catmods is not iterable %}
+        <ul class="xar-menu-section">
+            {% for mod in adminmods %}
+                <li class="xar-menu-item">
+                    <a href="{{ mod['link'] }}">{{ mod['label'] }}</a> 
+                    {% if indlinks is not null and indlinks|length > 0 and mod['modactive'] == 1 %}
+                        <ul class="xar-menu-subitem">
+                            <xar:foreach in="$indlinks" value="$sublinks" key="$sublink">
+                                <li class="xar-menu-subitem">
+                                    <a href="{{ sublinks['adminlink'] }}" title="{{ sublinks['admintitle'] }}">{{ sublinks['adminlabel'] }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        {% for catname, cats in catmods %}
+            <ul class="xar-menu-section">
+                <li class="xar-menu-section">
+                    {{ catname }} 
+                    <ul class="xar-menu-item">
+                        <xar:foreach in="$cats" value="$mod" key="$modname">
+                            <li class="xar-menu-item">
+                                <a href="{{ mod[0]['link'] }}">{{ mod['features']['label'] }}</a> 
+                                {% if mod['indlinks'] is not null and mod['indlinks']|length > 0 %}
+                                    <ul class="xar-menu-subitem">
+                                        <xar:foreach in="$mod['indlinks']" value="$sublinks" key="$sublink">
+                                            <li class="xar-menu-subitem">
+                                                <a href="{{ sublinks['adminlink'] }}" title="{{ sublinks['admintitle'] }}">{{ sublinks['adminlabel'] }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        {% endfor %}
+    {% endif %}
+    {# <!-- Logout --> #}
+    [<a href="{{ xar_moduleurl('modules','admin','confirmlogout') }}">Admin logout</a>]
+{% endblock %}

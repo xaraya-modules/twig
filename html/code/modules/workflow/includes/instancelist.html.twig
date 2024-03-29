@@ -1,0 +1,144 @@
+{# @workflow/includes/instancelist.html.twig #}
+
+{% block instancelist %}
+{% if items and items|length > 0 %}
+    {% if offset is null %}{% set offset = 0 %}{% endif %}
+    {% if find is null %}{% set find = '' %}{% endif %}
+    {% if where is null %}{% set where = '' %}{% endif %}
+    {% if sort_mode is null %}{% set sort_mode = 'procname_asc' %}{% endif %}
+
+    {% set fieldlabel = {'procname': 'Process', 'version': 'Version', 'instanceId': 'Inst', 'owner': 'Owner', 'started': 'Start', 'ended': 'End', 'status': 'Status', 'name': 'Activity', 'user': 'User'} %}
+    {% if fieldlist is null %}
+        {% set fieldlist = >['procname', 'instanceId', 'owner', 'name', 'user', 'started']< %}
+    {% endif %}
+    {% set actionlabel = {'run': 'Run', 'send': 'Send', 'exception': 'Except', 'resume': 'Resume', 'abort': 'Abort', 'release': 'Release', 'remove': 'Seen'} %}
+    {% if actionlist is null %}
+        {% set actionlist = >['run', 'send', 'exception', 'resume', 'abort', 'release']< %}
+    {% endif %}
+
+    <table style="border-collapse: separate; width: 99%">
+      <tr>
+        {% for field in fieldlist %}
+          {% if sort_mode == field . '_desc' %}
+            <th><a href="{{ xar_currenturl({'sort_mode': field ~ '_asc'}) }}">{{ fieldlabel[field] }}</a></th>
+          {% else %}
+            <th><a href="{{ xar_currenturl({'sort_mode': field ~ '_desc'}) }}">{{ fieldlabel[field] }}</a></th>
+          {% endif %}
+        {% endfor %}
+        {% if actionlist %}
+          <th>Actions</th>
+          {# <!--
+          {% for action in actionlist %}
+            <th>{{ actionlabel[action] }}</th>
+          {% endfor %}
+          --> #}
+        {% endif %}
+      </tr>
+      {% for item in items %}
+        <tr>
+          <form method="post" action="{{ xar_moduleurl('workflow','user','instances') }}">
+            {% for field in fieldlist %}
+              {% if field == 'procname' %}
+                <td>{{ item[field] }}</td>
+              {% elseif field == 'version' or field == 'instanceId' %}
+                <td style="text-align: center;">{{ item[field] }}</td>
+              {% elseif field == 'user' or field == 'owner' %}
+                {% if item[field] and item[field] is numeric %}
+                  <td>{{ xar_username(item[field]) }}</td>
+                {% else %}
+                  <td>{{ item[field] }}</td>
+                {% endif %}
+              {% elseif field == 'started' or field == 'ended' %}
+                {% if item[field] and item[field] is numeric %}
+                  {# <!-- you can choose how to display the date and time here, e.g. show
+                       the time for the last 12 hours and the date for anything older --> #}
+                  {% if item[field] > time() - 12*60*60 %}
+                    <td>{{ xar_localedate(item[field], '', 'short') }}</td>
+                  {% else %}
+                    <td>{{ xar_localedate(item[field], 'medium', '') }}</td>
+                  {% endif %}
+                {% else %}
+                  <td>{{ item[field] }}</td>
+                {% endif %}
+              {% elseif field == 'status' %}
+                <td>
+                  {% if item['status'] == 'active' %}
+                    <span style="color:green;">{{ item['status'] }}</span>
+                  {% elseif item['status'] == 'completed' %}
+                    <span style="color:black;">{{ item['status'] }}</span>
+                  {% elseif item['status'] == 'aborted' %}
+                    <span style="color:grey;">{{ item['status'] }}</span>
+                  {% elseif item['status'] == 'exception' %}
+                    <span style="color:red;">{{ item['status'] }}</span>
+                  {% else %}
+                    {{ item['status'] }}
+                  {% endif %}
+                </td>
+              {% elseif field == 'name' %}
+                <td>
+                  {# <!-- Get an image for the activity --> #}
+                  {{ include('@workflow/includes/activity_image.html.twig') }}
+                  {{ item['name'] }}
+                </td>
+              {% else %}
+                <td>{{ field }} ?</td>
+              {% endif %}
+            {% endfor %}
+            {% if actionlist %}
+              <td>
+                <input type="hidden" name="iid" value="{{ item['instanceId'] }}"/>
+                <input type="hidden" name="aid" value="{{ item['activityId'] }}"/>
+                <input type="hidden" name="return_url" value=""/>
+              {# <!-- Caution: action checks differ between instancelist and workflowlist --> #}
+              {# <!-- We do know that the current user has the right role here --> #}
+                {% for action in actionlist %}
+                  {# <!-- Get an input image for the action --> #}
+                  {% set info = {'action': action} %}
+                  {% if action == 'run' %}
+                    {% if item['isInteractive'] == 1 and item['status'] == 'active' %}
+                      <input type="hidden" name="activityId" value="{{ item['activityId'] }}"/>
+                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                    {% endif %}
+                  {% elseif action == 'send' %}
+                    {% if item['isAutoRouted'] == 0 and item['actstatus'] == 'completed' %}
+                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                    {% endif %}
+                  {% elseif action == 'exception' %}
+                    {% if item['status'] != 'aborted' and item['status'] != 'exception' and item['user'] == userId %}
+                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                    {% endif %}
+                  {% elseif action == 'resume' %}
+                    {% if item['status'] == 'exception' and item['user'] == userId %}
+                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                    {% endif %}
+                  {% elseif action == 'abort' %}
+                    {% if item['status'] != 'aborted' and item['user'] == userId %}
+                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                    {% endif %}
+                  {% elseif action == 'release' %}
+                    {% if item['user'] == '*' and item['status'] == 'active' %}
+                      {# <!-- reverse current action --> #}
+                      {% set info = {'action': 'grab'} %}
+                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                    {% elseif item['status'] == 'active' %}
+                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                    {% endif %}
+                  {% elseif action == 'remove' %}
+                    {% if item['status'] == 'completed' or item['status'] == 'aborted' %}
+                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                    {% endif %}
+                  {% else %}
+                    {{ action }} ?
+                  {% endif %}
+                {% endfor %}
+              </td>
+            {% endif %}
+          </form>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    No instances found
+  {% endif %}
+
+{% endblock %}

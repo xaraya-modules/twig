@@ -1,0 +1,40 @@
+{# @base/properties/showinput-orderselect.html.twig #}
+
+{% block showinput_orderselect %}
+{{ xar_javascript({scope: "theme", filename: "orderitem.js", position: "head"}) }}
+    <script type="text/javascript">
+        xar_base_reorder_warn = '{{ xar_translate('You must select an option to move.') }}';
+    </script>
+
+    {% if options|length > 10 %}
+        {% set size = 10 %}
+    {% else %}
+        {% set size = options|length %}
+    {% endif %}
+
+    {% if options|length > 0 %}
+        <div class="xar-floatleft">
+            <div class="xar-floatleft">
+                {% set label = 'Move Up' %}
+                <button id="{{ id }}_up" onclick="return xar_base_reorder('{{ id }}', true, '{{ id }}_order');" title="{{ label }}" class="xar-displayblock xar-margin-thickbottom">
+                    {% set label = 'Up Arrow' %}
+                    {{- xar_image({scope: "module", module: "base", file: "up.gif", alt: label, class: "xar-icon"}) -}}
+                </button>
+                {% set label = 'Move Down' %}
+                <button id="{{ id }}_down" onclick="return xar_base_reorder('{{ id }}', false, '{{ id }}_order');" title="{{ label }}" class="xar-displayblock xar-margin-thicktop">
+                    {% set label = 'Down Arrow' %}
+                    {{- xar_image({scope: "module", module: "base", file: "down.gif", alt: label, class: "xar-icon"}) -}}
+                </button>
+            </div>
+            {{ xar_data_input({type: "multiselect", name: name, size: size, options: options, tabindex: tabindex, class: "xar-margin-thickleft"}) }}
+            <input type="hidden" name="{{ name }}_order" id="{{ id }}_order" value="{{ order }}"/>
+        </div>
+    {% else %}
+        {{ xar_translate('No options specified') }}
+    {% endif %}
+    <div style="clear: both"></div>
+
+    {% if invalid %}
+        <span class="xar-error">{{ invalid }}</span>
+    {% endif %}
+{% endblock %}

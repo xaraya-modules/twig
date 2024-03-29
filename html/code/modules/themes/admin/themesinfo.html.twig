@@ -1,0 +1,155 @@
+{# @themes/admin/themesinfo.html.twig #}
+
+{% block themesinfo %}
+{{ include('@themes/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+    	<div class="xar-mod-page-head">
+	        {% set itemid = theme.properties['id'].value %}
+	        {% set name = theme.properties['name'].value %}
+	        <h2>Information for Theme {{ name }}</h2>
+       	</div>
+       	<div class="xar-mod-page-body">
+	        <fieldset>
+	            <legend>Detailed Theme Information</legend>
+	            {# <!-- Theme Name --> #}
+	            <div class="table">
+		            <div class="xar-row">
+		                <div class="xar-col">
+		                    <label>Registered Name:</label>
+		                </div>
+		                <div class="xar-col">
+		                	{{ themename }}
+		                </div>
+		            </div>
+		           
+		            {# <!-- Description --> #}
+		            <div class="xar-row">
+		                <div class="xar-col">
+		                    <label>Description:</label>
+		                </div>
+		                <div class="xar-col">
+		                    {{ themedescr }}
+		                </div>
+		            </div>
+		            
+		            {# <!-- Theme Directory --> #}
+		            <div class="xar-row">
+		                <div class="xar-col">
+		                    <label>Directory:</label>
+		                </div>
+		                <div class="xar-col">
+		                    {{ themedir }}
+		                </div>
+		            </div>
+		            {# <!-- Theme ID --> #}
+		            <div class="xar-row">
+		                <div class="xar-col">
+		                    <label>Registered ID:</label>
+		                </div>
+		                <div class="xar-col">
+		                    {{ themeid }}
+		                </div>
+		            </div>
+		            {# <!-- Theme Class --> #}
+		            <div class="xar-row">
+		                <div class="xar-col">
+		                    <label>Class:</label>
+		                </div>
+		                <div class="xar-col">
+		                        {{ themeclass }} 
+		                        {% if themeclass == 0 %}(system theme) 
+		                        {% elseif themeclass == 1 %} (utility theme) 
+		                        {% elseif themeclass == 2 %} (user selectable) 
+		                        {% else %}(unknown class){% endif %}
+		                </div>
+		            </div>
+		            {# <!-- Theme Version --> #}
+		            <div class="xar-row">
+		                <div class="xar-col">
+		                    <label>Version:</label>
+		                </div>
+		                <div class="xar-col">
+		                    {{ themever }}
+		                </div>
+		            </div>
+		            {# <!-- Theme Author --> #}
+		            <div class="xar-row">
+		                <div class="xar-col">
+		                    <label>Author(s):</label>
+		                </div>
+		                <div class="xar-col">
+		                    {{ themeauthor }}
+		                </div>
+		            </div>
+		            {# <!-- Theme Dependency --> #}
+		            <div class="xar-row">
+		                <div class="xar-col">
+		                    <label>Dependency:</label>
+		                </div>
+		                <div class="xar-col">
+		                    {{ themedependency }}
+		                </div>
+		            </div>
+		        
+		            {# <!-- Theme Preview --> #}
+		            <div class="xar-row">
+		                <div class="xar-col">
+		                    <label>Quick Preview:</label>
+		                </div>
+		                <div class="xar-col">
+	                        {% if themestate == 3 %}
+	                            <select onchange="window.open(this.options[this.selectedIndex].value,'_blank')">
+	                                <option value="?">Choose a page to preview..</option>
+	                                <option value="{{ xar_moduleurl() }}?theme={{ themedir }}">Default Front Page</option>
+	                                <option value="{{ xar_moduleurl('base','admin','main',{'theme': themedir}) }}">Base
+	                                (admin)</option>
+	                                <option value="{{ xar_moduleurl('base','user','main',{'theme': themedir}) }}">Base
+	                                (user)</option>
+	                                <option value="{{ xar_moduleurl('blocks','admin','main',{'theme': themedir}) }}">Blocks
+	                                (admin)</option>
+	                                <option value="{{ xar_moduleurl('modules','admin','main',{'theme': themedir}) }}">
+	                                Modules (admin)</option>
+	                                <option value="{{ xar_moduleurl('themes','admin','main',{'theme': themedir}) }}">Themes
+	                                (admin)</option>
+	                                <option value="{{ xar_moduleurl('dynamicdata','admin','main',{'theme': themedir}) }}">
+	                                Dynamicdata (admin)</option>
+	                                <option value="{{ xar_moduleurl('privileges','admin','main',{'theme': themedir}) }}">
+	                                Privileges (admin)</option>
+	                                <option value="{{ xar_moduleurl('roles','admin','main',{'theme': themedir}) }}">Roles
+	                                (admin)</option>
+	                                <option value="{{ xar_moduleurl('themes','admin','themesinfo',{'theme': themedir, 'id': themeid}) }}">
+	                                This Page</option>
+	                            </select>
+	                            <noscript>
+                                    {% set label = 'Go' %}
+                                    {{- xar_button({type: "submit", label: label}) -}}
+	                            </noscript>
+	                        {% else %}
+	                            Theme not active, activate it first.
+	                        {% endif %}
+		                </div>
+		            </div>
+				</div>
+	        </fieldset>
+	        <form method="post" action="{{ xar_moduleurl('themes','admin','themesinfo') }}">
+	            <fieldset>
+	                <legend>Theme Configuration</legend>
+	                {{ xar_data_input({property: properties['configuration']}) }}
+	            </fieldset>
+	            <div class="xar-form-actions">
+                    <div class="xar-row">
+                        <div class="xar-col"></div>
+                        <div class="xar-col">
+                            <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                            <input type="hidden" name="id" id="id" value="{{ themeid }}"/>
+                            {% set label = 'Update' %}
+                            {{- xar_button({type: "submit", label: label, name: "confirm"}) -}}&#160;
+                            {% set label = 'Update and Exit' %}
+                            {{- xar_button({type: "submit", label: label, name: "exit"}) -}}
+                        </div>
+                    </div>
+	            </div>
+	        </form>
+	    </div>
+    </div>
+{% endblock %}

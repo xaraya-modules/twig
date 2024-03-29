@@ -1,0 +1,106 @@
+{# @base/blocks/config-adminmenu.html.twig #}
+
+{% block config_adminmenu %}
+{# <!--
+    <div class="xar-row">
+        <div class="xar-col">
+            <label class="xar-form-label" for="showhelp{{ bid }}" title="{{ label }}">
+                Show A Help Link
+            </label>
+            {{ xar_data_input({type: "checkbox", name: "showhelp", checked: showhelp}) }}
+        </div>
+        <div class="xar-col">
+            {% set label = 'By checking this box a help link will be shown in the panel instance.' %}
+        </div>
+    </div>
+    --> #}
+    <div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'By checking this box a link to the front end will be shown in the panel instance.' %}
+            <label class="xar-form-label" for="showfront{{ bid }}" title="{{ label }}">
+                Marker:
+            </label>
+        </div>
+        <div class="xar-col">
+            <input type="text" name="marker" id="marker" value="{{ xar_prep_display(marker) }}" maxlength="255" class="xar-form-textshort"/>
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'By checking this box a logout link will be shown in the panel instance.' %}
+            <label class="xar-form-label" for="showlogout{{ bid }}" title="{{ label }}">
+                Show A Logout Link
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "showlogout", checked: showlogout}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            <label class="xar-form-label" for="showfront{{ bid }}" title="{{ xar_translate('By checking this box a link to the front end will be shown in the panel instance.') }}">
+                Show Link to Front End
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "showfront", checked: showfront}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'How should the menu items be ordered?' %}
+            <label for="menustyle" title="{{ label }}" class="xar-form-label">
+                Sort Admin Menu Items:
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "dropdown", name: "menustyle", id: "menustyle", options: sortorder, value: menustyle}) }}
+        </div>
+    </div>
+    <table class="xar-table xar-items">
+        <thead>
+            <tr>
+                <th class="xar-align-left">
+                    Module
+                </th>
+                <th title="{{ xar_translate('Use current module name or alias in menus') }}">
+                    Alias
+                </th>
+                {# <!--
+                <th class="xar-align-left">
+                    Required Access Group or Level
+                </th>
+                --> #}
+                <th class="xar-align-center" title="{{ xar_translate('Display link to this module in the menu') }}">
+                    Visible
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for module in modules %}
+            <tr>
+                <td>
+                    {{ module['displayname'] }}
+                </td>
+                <td>
+                    {% if modulelist[module['name']]['aliases'] %}
+                        {% set inputname = "modulelist[" ~ module['name'] ~ "][alias_name]" %}
+                        {% set inputid = "modulelist_" ~ module['name'] ~ "_alias_name" %}
+                        {% set inputval = modulelist[module['name']]['alias_name'] ? modulelist[module['name']]['alias_name'] : module['name'] %}
+                        {% set inputfirst = {'id': module['name'], 'name': module['displayname']} %}
+                        {{ xar_data_input({type: "dropdown", name: inputname, id: inputid, firstline: inputfirst, options: modulelist[module['name']]['aliases'], value: inputval}) }}
+                    {% else %}
+                        [none]
+                    {% endif %}
+                </td>
+                <td class="xar-align-center">
+                    {% set inputname = "modulelist[" ~ module['name'] ~ "][visible]" %}
+                    {% set inputid = "modulelist_" ~ module['name'] ~ "_visible" %}
+                    {% set inputval = modulelist[module['name']]['visible'] %}
+                    {{ xar_data_input({type: "checkbox", name: inputname, id: inputid, value: inputval}) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

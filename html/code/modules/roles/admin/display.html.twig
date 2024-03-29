@@ -1,0 +1,133 @@
+{# @roles/admin/display.html.twig #}
+
+{% block display %}
+{{ include('@roles/includes/admin-mod-head.html.twig') }}
+    {# <!--
+    <div class="xar-mod-head">
+        <span class="xar-mod-title">{{ object.label }} Information</span>
+        {{ include('@roles/includes/admin-menu.html.twig') }}
+    </div>
+    --> #}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            {% if itemtype == xarRoles..ROLES_USERTYPE %}
+                {% set thisname = object.properties['uname'].getValue() %}
+            {% else %}
+                {% set thisname = object.properties['name'].getValue() %}
+            {% endif %}
+            <h2>Manage {{ object.label }} '{{ thisname }}':</h2>
+            {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+            {% set activetab = request.2 %}
+            {% set xmldata = 'showusers' %}
+            {% set urlargs = {'id': id, 'reload': 'reload'} %}
+            {{ include('@base/includes/admin-menu-skel.html.twig') }}
+            {% if parents|length != 0 %}
+                <ul class="xar-tabs">
+                    {% set title = 'These are the groups that {{ name }} is a member of' %}
+                    {% set label = 'Parent Groups' %}
+                    <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                    {% set prevgroup = "" %}
+                    {% for i in range(0, parents|length - 1) %}
+                        {% if prevgroup != parents[i]['parentname'] %}
+                            <li class="xar-tab">
+                                {% set label = 'Show this group' %}
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i}['parentid']]) }}" title="{{ label }}">{{ parents[i]['parentname'] }}</a>
+                            </li>
+                        {% endif %}
+                        {% set prevgroup = parents[i]['parentname'] %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="xar-mod-page-body">
+            <fieldset>
+                <legend>Role properties</legend>
+                {% set fields = >['id','name','uname','email','state','regdate']< %}
+                {{ xar_data_display({object: object, fieldlist: fields}) }}
+                {% if itemtype == xarRoles..ROLES_USERTYPE %}
+                    {% set settings = '|split(')) %}
+                    {% if 'userhome' in settings %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label class="xar-form-label">
+                                    Home:
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_coremethod('xarModUserVars', 'get', ['roles','userhome',id]) }}&#160;
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if 'primaryparent' in settings %}
+                        {% if not phome and parenthome %}
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label class="xar-form-label">
+                                        Primary Parent Home:
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    {% set value = xar_coremethod('xarModUserVars', 'get', ['roles','primaryparent',id]) %}
+                                    {{ xar_data_output({type: "grouplist", value: value, tabindex: "8"}) }}
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                {% set label = 'Primary parent group' %}
+                                <label for="duvs_primaryparent" title="{{ label }}" class="xar-form-label">
+                                    Primary Parent Group:
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {% set value = xar_apifunc('roles','user','getprimaryparent',{'itemid': id}) %}
+                                {% set options = xar_apifunc('roles','user','getancestors',{'id': id, 'parents': 1}) %}
+                                {{ xar_data_output({type: "dropdown", name: "duvs[primaryparent]", id: "duvs_primaryparent", options: options, value: value, tabindex: "8"}) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if 'userlastlogin' in settings %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label class="xar-form-label">
+                                    Last Login:
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_localedate(xarModUserVars..get('roles', 'medium', '')) }}
+                                {{ xar_localedate(xarModUserVars..get('roles', '', 'medium')) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if 'passwordupdate' in settings %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label class="xar-form-label">
+                                    Password last updated:
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_localedate(xarModUserVars..get('roles', 'medium', '')) }}
+                                {{ xar_localedate(xarModUserVars..get('roles', '', 'medium')) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if 'usertimezone' in settings %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label class="xar-form-label">
+                                    User Timezone:
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {% set value = xar_coremethod('xarModUserVars', 'get', ['roles','usertimezone',id]) %}
+                                {{ xar_data_input({type: "timezone", name: "duvs[usertimezone]", id: "duvs_usertimezone", value: value}) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+                {% for module, output in hooks %}{{ output }}{% endfor %}
+            </fieldset>
+        </div>
+	</div>
+{% endblock %}

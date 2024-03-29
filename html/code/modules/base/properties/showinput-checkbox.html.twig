@@ -1,0 +1,26 @@
+{# @base/properties/showinput-checkbox.html.twig #}
+
+{% block showinput_checkbox %}
+{% if style is null %}
+      {% set style = '' %}
+    {% endif %}
+    {% if onchange is not null %}
+      {% set evt_change = onchange %}
+    {% else %}
+     {% set evt_change = 'return true;' %}
+    {% endif %}
+    {% if disabled is not null %}
+        {% if checked %}
+          <input type="checkbox" onchange="{{ evt_change }}" name="{{ name }}" value="1" id="{{ id }}" tabindex="{{ tabindex }}" checked="checked" disabled="disabled" style="{{ style }}"/>
+        {% else %}
+          <input type="checkbox" onchange="{{ evt_change }}" name="{{ name }}" value="1" id="{{ id }}" tabindex="{{ tabindex }}" disabled="disabled" style="{{ style }}"/>
+        {% endif %}
+    {% else %}
+        {% if checked %}
+          <input type="checkbox" onchange="{{ evt_change }}" name="{{ name }}" value="1" id="{{ id }}" tabindex="{{ tabindex }}" checked="checked" style="{{ style }}"/>
+        {% else %}
+          <input type="checkbox" onchange="{{ evt_change }}" name="{{ name }}" value="1" id="{{ id }}" tabindex="{{ tabindex }}" style="{{ style }}"/>
+        {% endif %}
+    {% endif %}
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

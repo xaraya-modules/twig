@@ -1,0 +1,11 @@
+{# @base/properties/showoutput-countrylisting.html.twig #}
+
+{% block showoutput_countrylisting %}
+{% if option.name %}
+        {% if option.link %}
+            <a href="{{ option.link }}">{{ option.name }}</a>
+        {% else %}
+            {{ option.name }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

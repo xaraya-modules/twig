@@ -1,0 +1,93 @@
+{# @dynamicdata/admin/showlist.html.twig #}
+
+{% block showlist %}
+{% if not layout or layout == 'default' %}
+        <table class="xar-table" width="100%" border="1" cellspacing="0" cellpadding="4">
+            <tr>
+                {% for item in labels %}
+                    <th class="xar-align-center">{{ item['label'] }}</th>
+                {% endfor %}
+                <th class="xar-align-center">Options</th>
+            </tr>
+            {% for item in items %}
+                <tr>
+                    {# <!-- we don't use xar:data-form or xar:data-input here, because this
+                 is typically not an input form --> #}
+                    {% for field in item['fields'] %}
+                        <td>
+                            {% set fieldname = 'dd_' ~ field['id'] %}
+                            {{ xar_data_output({type: field['type'], name: fieldname, value: field['value']}) }}
+                        </td>
+                    {% endfor %}
+                    <td>
+                        {% for option in item['options'] %}{{ option['join'] }} 
+                        <a href="{{ option['link'] }}">{{ option['title'] }}</a>{% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+            {% if newlink %}
+                <tr>
+                    {% for item in labels %}
+                        <td>&#160;</td>
+                    {% endfor %}
+                    <td>
+                        <a href="{{ newlink }}">New</a>
+                    </td>
+                </tr>
+            {% endif %}
+        </table>
+        {% if prevurl or nexturl %}
+            <br />
+            <div class="xar-align-center">
+                {% if prevurl %}
+                    <a href="{{ prevurl }}">&lt;&lt;</a>
+                {% else %}---{% endif %}&#160;&#160;&#160; 
+                {% if nexturl %}
+                    <a href="{{ nexturl }}">&gt;&gt;</a>
+                {% else %}---{% endif %}
+            </div>
+        {% endif %}
+    {% elseif layout == 'cells' %}
+        <table class="xar-table" width="100%" border="1" cellspacing="0" cellpadding="4">
+            <tr>
+                {% for item in labels %}
+                    <th class="xar-align-center">{{ item['label'] }}</th>
+                {% endfor %}
+            </tr>
+            {% for item in items %}
+                <tr>
+                    {% for field in item['fields'] %}
+                        <td>
+                            {% set fieldname = 'dd_' ~ field['id'] %}
+                            {{ xar_data_input({type: field['type'], name: fieldname, value: field['value'], size: "15"}) }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            {% if newlink %}
+                <tr>
+                    {% for item in labels %}
+                        <td>&#160;</td>
+                    {% endfor %}
+                    <td>
+                        <a href="{{ newlink }}">New</a>
+                    </td>
+                </tr>
+            {% endif %}
+        </table>
+        {% if prevurl or nexturl %}
+            <div class="xar-align-center">
+                {% if prevurl %}
+                    <a href="{{ prevurl }}">&lt;&lt;</a>
+                {% else %}---{% endif %}&#160;&#160;&#160; 
+                {% if nexturl %}
+                    <a href="{{ nexturl }}">&gt;&gt;</a>
+                {% else %}---{% endif %}
+            </div>
+        {% endif %}
+    {# <!-- TODO: multi-column output --> #}
+    {% else %}Specify your own layout here... 
+        <br />
+        <br />You can also specify a separate template, e.g. if you want to handle individual fields differently for a particular module / itemtype
+    {% endif %}
+{% endblock %}

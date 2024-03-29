@@ -1,0 +1,76 @@
+{# @blocks/includes/instance-info.html.twig #}
+
+{% block instance_info %}
+<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
+    {% if block %}
+        {# <!-- show basic information about this instance --> #}
+        <fieldset>
+            <legend>Block Instance</legend>
+            <div class="xar-row">
+                <div class="xar-col">Block ID:</div>
+                <div class="xar-col">{{ block['block_id'] }}</div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">Block Type:</div>
+                <div class="xar-col">{{ block['type'] }}</div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">Parent Module:</div>
+                <div class="xar-col">
+                    {% if block['module'] %}
+                        {{ block['module'] }}
+                   {% else %}
+                        [ none ]
+                    {% endif %}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">Name:</div>
+                <div class="xar-col">{{ block['name'] }}</div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">Title:</div>
+                <div class="xar-col">{{ block['title'] }}</div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">Status:</div>
+                <div class="xar-col">
+                    {% if block['type_state'] != xarBlock..TYPE_STATE_ACTIVE %}
+                        <a href="{{ xar_currenturl({'interface': 'display', 'block_method': 'status'}) }}">{{ type_states[block['type_state']]['name'] }}</a>
+                    {% else %}
+                        {{ instance_states[block['state']]['name'] }}
+                    {% endif %}
+                </div>
+            </div>
+            {% if block['type_category'] != 'group' %}
+                <div class="xar-row">
+                    <div class="xar-col">Instance Groups:</div>
+                    <div class="xar-col">
+                        {% if instance_groups %}
+                            {% for loop_key1, loop_item1 in instance_groups %}{% set loop_index1 = loop.index %}
+                                <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_instance', {'block_id': loop_item1.block_id}) }}">{{ loop_item1.name }}</a>
+                                {% if loop_index1 < instance_groups|length %},&#160;{% endif %}
+                            </xar:loop>
+                        {% else %}
+                            [ none ]
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="xar-row">
+                    <div class="xar-col">Group Instances:</div>
+                    <div class="xar-col">
+                        {% if group_instances %}
+                            <xar:loop name="$group_instances">
+                                <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_instance', {'block_id': loop_item1.block_id}) }}">{{ loop_item1.name }}</a>
+                                {% if loop_index1 < group_instances|length %},&#160;{% endif %}
+                            {% endfor %}
+                        {% else %}
+                            [ none ]
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </fieldset>
+    {% endif %}
+{% endblock %}

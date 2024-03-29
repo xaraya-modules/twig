@@ -1,0 +1,84 @@
+{# @blocks/blocks/config-blockgroup.html.twig #}
+
+{% block config_blockgroup %}
+{% if instances %}
+        {% set imgup = xar_imageurl('icons/go-up.png', 'theme') %}
+        {% set imgdown = xar_imageurl('icons/go-down.png', 'theme') %}
+        {% set imgupalt = 'Up' %}
+        {% set imgdownalt = 'Down' %}
+        {% set imguptitle = 'Move this block up' %}
+        {% set imgdowntitle = 'Move this block down' %}
+        {% set imgmodify = xar_imageurl('icons/modify.png', 'theme') %}
+        {% set imgmodifyalt = 'Modify' %}
+        {% set imgmodifytitle = 'Modify this block instance' %}
+        <table class="xar-table xar-items">
+            <caption class="xar-align-left xar-padding-thickends" id="group_members">Blockgroup Members</caption>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    {# <!--
+                    <th>Template</th>
+                    --> #}
+                    <th>State</th>
+                    <th class="xar-align-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for instance in instances %}
+                <tr>
+                    <td>{{ instance.name }}</td>
+                    <td>{{ instance.type }}</td>
+                    {# <!--
+                    <td>
+                        {% if instance['template'] != NULL %}
+                            {{ instance.template }}
+                        {% else %}
+                            {% if not instance['group_template'] %}
+                                [ default ]
+                            {% else %}
+                                {{ instance.group_template }}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    --> #}
+                    <td>{{ state_desc[instance['state']]['name'] }}</td>
+                    <td class="xar-align-right">
+                        <a href="{{ instance['modifyurl'] }}" title="{{ imgmodifytitle }}" class="xar-icon">
+                            <img src="{{ imgmodify }}" alt="{{ imgmodifyalt }}" class="xar-icon"/>
+                        </a>
+                        {% if instance['upurl'] %}
+                            <a href="{{ instance['upurl'] }}" title="{{ imguptitle }}" class="xar-icon">
+                            <img src="{{ imgup }}" alt="{{ imgupalt }}" class="xar-icon"/>
+                            </a>
+                        {% else %}
+                            <img src="{{ imgup }}" alt="{{ imgupalt }}" class="xar-icon-disabled"/>
+                        {% endif %}
+                        {% if instance['downurl'] %}
+                            <a href="{{ instance['downurl'] }}" title="{{ imgdowntitle }}" class="xar-icon">
+                            <img src="{{ imgdown }}" alt="{{ imgdownalt }}" class="xar-icon"/>
+                            </a>
+                        {% else %}
+                            <img src="{{ imgdown }}" alt="{{ imgdownalt }}" class="xar-icon-disabled"/>
+                        {% endif %}
+                        {% set removename = 'remove_block['.instance['block_id'].']' %}
+                        {% set removeid = 'remove_block_'.instance['block_id'] %}
+                        {% set removetitle = 'Remove the block from this blockgroup' %}
+                        &#160;<label for="{{ removeid }}" title="{{ removetitle }}">Remove</label>&#160;
+                        {{ xar_data_input({type: "checkbox", name: removename, id: removeid}) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    <div class="xar-row">
+        <div class="xar-col">
+            {% set addtitle = 'Add a block instance to this blockgroup' %}
+            <label for="add_block" title="{{ addtitle }}" class="xar-form-label">Add a block to this group:</label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "dropdown", name: "add_block", id: "add_block", options: block_options}) }}
+        </div>
+    </div>
+{% endblock %}

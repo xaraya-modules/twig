@@ -1,0 +1,149 @@
+{# @base/includes/modifyconfig-display.html.twig #}
+
+{% block modifyconfig_display %}
+<fieldset>
+        <legend>General Options</legend>
+        {{ xar_data_form({object: module_settings}) }}
+    </fieldset>
+    <fieldset>
+        <legend>Site Default Front Page Settings</legend>
+        <p class="xar-note">
+            The Default Module supplies the main entry (front) page to your site. The Default Module Function below provides the template for this frontpage. You can customize and override this template in your theme.</p>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'The default module to be loaded on your base url.' %}
+                <label for="defaultmodule" title="{{ label }}" class="xar-form-label">Default Module:</label>
+            </div>
+            <div class="xar-col">
+                {% if xar_modvar('modules', 'defaultmoduletype') == 'admin' %}
+                    {% set filter = {'AdminCapable': 1} %}
+                {% else %}
+                    {% set filter = {'UserCapable': 1} %}
+                {% endif %}
+                {% set value = xar_var({scope: "module", module: "modules", name: "defaultmodule"}) %}
+                {{ xar_data_input({type: "module", name: "defaultmodule", id: "defaultmodule", filter: filter, value: value, store_prop: "name"}) }}
+            </div>
+        </div>
+        {% if xar_modvar('modules', 'defaultmodule') == xar_coremethod('xarMod', 'getID', ['base']) %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'Use an alternate default page template.' %}
+                    <label for="alternatepagetemplate" title="{{ label }}" class="xar-form-label">
+                        Use Alternate Page Template
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set checked = xar_var({scope: "module", module: "base", name: "UseAlternatePageTemplate"}) %}
+                    {{ xar_data_input({type: "checkbox", name: "alternatepagetemplate", id: "alternatepagetemplate", checked: checked}) }}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'The name of the alternate page template to use.' %}
+                    <label for="alternatepagetemplatename" title="{{ label }}" class="xar-form-label">
+                        Alt. Page Template Name:
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set value = xar_var({scope: "module", module: "base", name: "AlternatePageTemplateName"}) %}
+                    <input type="text" id="alternatepagetemplatename" name="alternatepagetemplatename" value="{{ value }}" class="xar-form-textlong"/>
+                </div>
+            </div>
+        {% endif %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'The default type of module to be loaded.' %}
+                <label for="defaulttype" title="{{ label }}" class="xar-form-label">
+                    Default Module Type:
+                </label>
+           </div>
+           <div class="xar-col">
+                {% set options = [ 
+                        {'id': 'admin', 'name': 'admin'}, 
+                        {'id': 'user', 'name': 'user'}, 
+                    ] %}
+                {% set value = xar_var({scope: "module", module: "modules", name: "defaultmoduletype"}) %}
+                {{ xar_data_input({type: "dropdown", name: "defaulttype", id: "defaulttype", options: options, value: value}) }}
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'The default function of module to be loaded.' %}
+                <label for="defaultfunction" title="{{ label }}" class="xar-form-label">
+                    Default Module Function:
+                </label>
+            </div>
+            <div class="xar-col">
+                {% set value = xar_var({scope: "module", module: "modules", name: "defaultmodulefunction"}) %}
+                <input type="text" id="defaultfunction" name="defaultfunction" value="{{ value }}" maxlength="100" class="xar-form-textlong"/>
+            </div>
+        </div>
+    </fieldset>
+    {# <!-- General place to put extra module data and code. Hide it for now as it's not used
+    <fieldset>
+        <legend>
+            Module Data Path
+        </legend>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'The path to the library where the module's data is held.' %}
+                <label for="defaultdatapath" title="{{ label }}" class="xar-form-label">
+                    Path to Module Data:
+                </label>
+            </div>
+            <div class="xar-col">
+                {% set value = xar_var({scope: "module", module: "modules", name: "defaultdatapath"}) %}
+                <input type="text" id="defaultdatapath" name="defaultdatapath" value="{{ value }}" maxlength="100" class="xar-form-textlong"/>
+            </div>
+        </div>
+   </fieldset>
+   --> #}
+    <fieldset>
+        <legend>URL Scheme</legend>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Enable short url support throughout Xaraya.' %}
+                <label for="shorturl" title="{{ label }}" class="xar-form-label">
+                    Default Route
+                </label>
+            </div>
+            <div class="xar-col">
+                {% set value = xar_var({scope: "config", name: "Site.Core.EnableShortURLsSupport"}) %}
+                {% set firstline = 'Automatic' %}
+                {% set firstline = "'',firstline" %}
+                {% set options = [
+                        {'id': '', 'name': {{ xar_translate('Automatic') }}},
+                        {'id': 'default', 'name': {{ xar_translate('Xaraya URLs') }}},
+                        {'id': 'short', 'name': {{ xar_translate('Short URLs') }}},
+                    ] %}
+                {{ xar_data_input({type: "dropdown", name: "shorturl", id: "shorturl", value: value, options: options}) }}
+                &#160;
+                <a href="{{ xar_moduleurl('base','admin','htaccess') }}">Edit the htaccess file</a>
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'The web server allows forwards slashes in URLs' %}
+                <label for="allowsslashes" title="{{ label }}" class="xar-form-label">
+                    Web server allows slashes
+                </label>
+            </div>
+            <div class="xar-col">
+                {% set checked = xar_var({scope: "config", name: "Site.Core.WebserverAllowsSlashes"}) %}
+                {{ xar_data_input({type: "checkbox", name: "allowsslashes", id: "allowsslashes", checked: checked}) }}
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Change HTML Entities to readible entities.' %}
+                <label for="htmlentites" title="{{ label }}" class="xar-form-label">
+                    HTML Entities
+                </label>
+            </div>
+            <div class="xar-col">
+                {% set checked = xar_var({scope: "config", name: "Site.Core.FixHTMLEntities"}) %}
+                {{ xar_data_input({type: "checkbox", name: "htmlentites", id: "htmlentites", checked: checked}) }} Fix HTML Entities
+            </div>
+        </div>
+    </fieldset>
+{% endblock %}

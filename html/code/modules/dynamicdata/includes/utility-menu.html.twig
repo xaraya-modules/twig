@@ -1,0 +1,10 @@
+{# @dynamicdata/includes/utility-menu.html.twig #}
+
+{% block utility_menu %}
+{# <!-- Common Administration menu--> #}
+    {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+    {% set activetab = request.2 %}
+    {% set activetype = request.1 %}
+    {% set xmldata = 'utilities' %}
+    {{ include('@base/includes/admin-menu-skel.html.twig') }}
+{% endblock %}

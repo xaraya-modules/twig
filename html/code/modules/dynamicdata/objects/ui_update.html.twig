@@ -1,0 +1,76 @@
+{# @dynamicdata/objects/ui_update.html.twig #}
+
+{% block ui_update %}
+{{ include('@dynamicdata/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% set viewlink = object.getActionURL('view') %}
+        {% set displaylink = object.getActionURL('display', object.itemid) %}
+        <h2>
+            Modify Item {{ object.itemid }} in {{ object.label }}&#160;
+            <a href="{{ viewlink }}" title="View {{ object.label }}">
+                {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+            </a>&#160;
+            <a href="{{ displaylink }}" title="Display {{ object.label }}">
+                {{- xar_image({scope: "theme", file: "icons/display.png", class: "xar-icon", alt: "display"}) -}}
+            </a>
+        </h2>
+        {% if preview is not null %}
+            <fieldset>
+                <legend>Preview</legend>
+                {{ xar_data_display({object: object}) }}
+            </fieldset>
+        {% endif %}
+        {% set isupload = object.upload %}
+        {% if isupload %}
+            {% set enc_type = 'multipart/form-data' %}
+        {% else %}
+            {% set enc_type = 'application/x-www-form-urlencoded' %}
+        {% endif %}
+        {% if object.visibility != 'public' %}
+            <h3 class="xar-align-center">Warning! This is a <em>{{ object.visibility }}</em> object used
+            internally by the {{ xar_coremethod('xarMod', 'getName', [object.moduleid]) }} module.<br/>
+            Trying to modify this item here may break the module. Please proceed with caution.</h3>
+        {% endif %}
+        {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}
+        {% set postlink = object.getActionURL('update') %}
+        <form method="post" action="{{ postlink }}" enctype="{{ enc_type }}">
+            <fieldset>
+                <legend>Item Details</legend>
+                {{ include('@dynamicdata/includes/showinvalids.html.twig') }}
+                {{ xar_data_form({object: object}) }}
+                {% if hooks %}
+                    {% for module, output in hooks %}
+                        {{ output }}
+                    {% endfor %}
+                {% endif %}
+            </fieldset>
+            <fieldset class="xar-form-actions">
+                {# <!-- if we use the current URL, the object is already specified --> #}
+                {% if object.linktype != 'current' %}
+                    <input type="hidden" name="object" id="object" value="{{ object.name }}"/>
+                {% endif %}
+                <input type="hidden" name="method" id="method" value="update"/>
+                <input type="hidden" name="itemid" id="itemid" value="{{ object.itemid }}"/>
+                {% if object.fieldlist|length < object.properties|length %}
+                    {% set fieldlist = array_values(object.fieldlist|join(',')) %}
+                    <input type="hidden" name="fieldlist" id="fieldlist" value="{{ fieldlist }}"/>
+                {% endif %}
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                {% if object.join %}
+                    <input type="hidden" name="join" id="join" value="{{ object.join }}"/>
+                {% endif %}
+                {% if object.table %}
+                    <input type="hidden" name="table" id="table" value="{{ object.table }}"/>
+                {% endif %}
+                <input type="hidden" name="notfresh" id="notfresh" value="true"/>
+                {% if return_url %}
+                    <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                {% endif %}
+                {% set label = 'Preview' %}
+                {{- xar_button({type: "submit", label: label, name: "preview"}) -}}
+                {% set label = 'Update' %}
+                {{- xar_button({type: "submit", label: label, name: "confirm"}) -}}
+          </fieldset>
+        </form>
+    </div>
+{% endblock %}

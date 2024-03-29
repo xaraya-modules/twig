@@ -1,0 +1,16 @@
+{# @dynamicdata/properties/showinput.html.twig #}
+
+{% block showinput %}
+{% if type is null %}
+        {% set type = xar_translate('[unknown type]') %}
+    {% endif %}
+    {% if template is null or not template %}
+        {% set template = xar_translate('[unspecified template]') %}
+    {% endif %}
+    <span class="xar-error">Warning: the template showinput-{{ type }}.xt or showinput-{{ template }}.xt
+    in module {{ tplmodule }} is missing for the property!</span>
+    <br />
+    <input type="text" id="{{ id }}" name="{{ name }}" value="{{ value }}"/>
+    {% if invalid %}&#160; 
+    <span class="xar-error">{{ invalid }}</span>{% endif %}
+{% endblock %}

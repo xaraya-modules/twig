@@ -1,0 +1,76 @@
+{# @blocks/admin/delete_instance.html.twig #}
+
+{% block delete_instance %}
+{{ include('@blocks/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Delete Block Instance</h2>
+        <form method="post" action="{{ xar_moduleurl('blocks', 'admin', 'delete_instance') }}">
+            <fieldset>
+                <legend>Confirm deleting this block instance</legend>
+                <div class="xar-row">
+                    <div class="xar-col">Block ID:</div>
+                    <div class="xar-col">{{ instance['block_id'] }}</div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">Block Type:</div>
+                    <div class="xar-col">{{ instance['type'] }}</div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">Parent Module:</div>
+                    <div class="xar-col">
+                        {% if instance['module'] %}
+                            {{ instance['module'] }}
+                        {% else %}
+                            [ none ]
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">Name:</div>
+                    <div class="xar-col">{{ instance['name'] }}</div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">Title:</div>
+                    <div class="xar-col">{{ instance['title'] }}</div>
+                </div>
+                {% if instance_groups %}
+                    <div class="xar-row">
+                        <div class="xar-col">Block Groups:</div>
+                        <div class="xar-col">
+                            <p class="xar-note">This instance belongs to the following block groups</p>
+                            {% for loop_key1, loop_item1 in instance_groups %}{% set loop_index1 = loop.index %}
+                                <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_instance', {'block_id': loop_item1.block_id}) }}">{{ loop_item1.name }}</a>
+                                {% if loop_index1 < instance_groups|length %},&#160;{% endif %}
+                            </xar:loop>
+                        </div>
+                    </div>
+                {% elseif group_instances %}
+                    <div class="xar-row">
+                        <div class="xar-col">Group Instances:</div>
+                        <div class="xar-col">
+                            <p class="xar-note">The following instances belong to this block group</p>
+                            <xar:loop name="$group_instances">
+                                <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_instance', {'block_id': loop_item1.block_id}) }}">{{ loop_item1.name }}</a>
+                                {% if loop_index1 < group_instances|length %},&#160;{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </fieldset>
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                        <input type="hidden" name="confirm" id="confirm" value="true"/>
+                        <input type="hidden" name="block_id" id="block_id" value="{{ instance['block_id'] }}"/>
+                        {% set label = 'Cancel' %}
+                        {{- xar_button({type: "cancel", label: label}) -}}&#160;
+                        {% set label = 'Delete Block' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{# modules/search/user-main.xml.twig #}
+
+{% block user_main %}
+{% if query %}
+        <item>
+            <title>Search term : {{ query }}</title>
+            <author>{{ name }}</author>
+            <description>{{ output }}</description>
+        </item>
+    {% endif %}
+{% endblock %}

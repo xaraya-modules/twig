@@ -1,0 +1,157 @@
+{# @roles/admin/modifyemail.html.twig #}
+
+{% block modifyemail %}
+{# <!-- @todo make this editor configurable --> #}
+    {% if xar_modvar('base', 'editor') == 'htmlarea' %}
+        {{ include('@htmlarea/includes/htmlarea_insert.html.twig') }}
+    {% endif %}
+    {% set messagetitle = 'Write this string in the message body or subject to display the corresponding information' %}
+    {{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            <a href="{{ xar_moduleurl('roles','admin','createmail') }}">Messaging System:</a> Modify Notification Template: {{ mailtype }}
+        </h2>
+        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set tab = request.2 %}
+        {% set xmldata = 'mail' %}
+        {{ include('@base/includes/admin-menu-skel.html.twig') }}
+
+        <form method="post" action="{{ xar_moduleurl('roles','admin','modifyemail') }}">
+            <fieldset>
+                <legend>Select Template</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Select the template to edit' %}
+                        <label for="mailtype" title="{{ label }}" class="xar-form-label">
+                            Template:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <select name="mailtype" id="mailtype" size="1" tabindex="5" onchange="this.form.submit()">
+                            {% for loop_key1, loop_item1 in templates %}{% set loop_index1 = loop.index %}
+                                {% if mailtype == loop_item1['key'] %}
+                                    <option value="{{ loop_item1['key'] }}" selected="selected">
+                                    {{ loop_item1['value'] }}</option>
+                                {% else %}
+                                    <option value="{{ loop_item1['key'] }}">{{ loop_item1['value'] }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <p>
+                    {% if mailtype == 'validation' %}
+                        This email will be sent to users when they re-validate their account (i.e. change email address). 
+                    {% elseif mailtype == 'confirmation' %}
+                        This email will be sent to users to complete their registration by a link in the email. 
+                    {% elseif mailtype == 'welcome' %}
+                        This email will be sent to users to welcome them. 
+                    {% elseif mailtype == 'reminder' %}
+                        This email will be sent to users who use the lost password option. 
+                    {% elseif mailtype == 'pending' %}
+                        This email will be sent to users when their accounts are pending approval. 
+                    {% elseif mailtype == 'deactivation' %}
+                        This email will be sent to users when their accounts are deactivated. 
+                    {% elseif mailtype == 'password' %}
+                        This email will be sent to users when an administrator changes their password. 
+                    {% else %}
+                        This email will be sent to users when an administrator changes their password.
+                    {% endif %}
+                </p>
+            </fieldset>
+        </form>
+        <form action="{{ xar_moduleurl('roles','admin','modifyemail') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <fieldset>
+                <legend>Email</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Title of the notification' %}
+                        <label for="subject" title="{{ label }}" class="xar-form-label">
+                            Subject:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" name="subject" id="subject" value="{{ xar_prep_display(subject) }}" maxlength="150" class="xar-form-textxlong"/>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Body of the notification' %}
+                        <label for="message" title="{{ label }}" class="xar-form-label">
+                            Message:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <textarea name="message" id="message" class="xar-form-textareaxlarge">{{ xar_prep_display(message) }}</textarea>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                        <input type="hidden" name="phase" id="phase" value="update"/>
+                        <input type="hidden" name="mailtype" id="mailtype" value="{{ mailtype }}"/>
+                        {% set label = 'Update' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </div>
+            <p>The following variables will be replaced in the text with specific information:</p>
+            {% if mailtype == 'confirmation' or mailtype == 'validation' %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <span title="{{ messagetitle }}" class="xar-form-label xar-align-right xar-padding-thickright">
+                            {{ #password }}{{ </span>
+                        <span class="xar-padding-thickleft">Password of the user</span>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <span title=" }}$messagetitle{{ " class="xar-form-label xar-align-right xar-padding-thickright"> }}{{ validationlink }}{{ </span>
+                        <span class="xar-padding-thickleft">Validation link for the user</span>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <span title=" }}$messagetitle{{ " class="xar-form-label xar-align-right xar-padding-thickright"> }}{{ valcode }}{{ </span>
+                        <span class="xar-padding-thickleft">Validation code for the user</span>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <span title=" }}$messagetitle{{ " class="xar-form-label xar-align-right xar-padding-thickright"> }}{{ ipaddress }}{{ </span>
+                        <span class="xar-padding-thickleft">IP address of the user</span>
+                    </div>
+                </div>
+            {% elseif mailtype == 'password' or mailtype == 'reminder' %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <span title=" }}$messagetitle{{ " class="xar-form-label xar-align-right xar-padding-thickright"> }}{{ password }}{{ </span>
+                        <span class="xar-padding-thickleft">Password of the user</span>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    <span title=" }}$messagetitle{{ " class="xar-form-label xar-align-right xar-padding-thickright"> }}{{ name }}{{ </span>
+                    <span class="xar-padding-thickleft">Name of the user</span>
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <span title=" }}$messagetitle{{ " class="xar-form-label xar-align-right xar-padding-thickright"> }}{{ username }}{{ </span>
+                    <span class="xar-padding-thickleft">Username of the user</span>
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <span title=" }}$messagetitle{{ " class="xar-form-label xar-align-right xar-padding-thickright"> }}{{ email }}#
+                    </span>
+                    <span class="xar-padding-thickleft">Email address of the user</span>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

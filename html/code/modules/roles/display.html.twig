@@ -1,0 +1,19 @@
+{# @roles/display.html.twig #}
+
+{% extends '@roles/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">{{ itemtypename }} {{ uname }} Information</span>
+    </div>
+    <div class="xar-mod-body">
+        {% if uname|lower != 'anonymous' and object is not null %}
+            {{ xar_data_display({object: object, fieldlist: "name,uname,state,regdate"}) }}
+        {% endif %}
+        {% if hooks %}
+            {% for module, output in hooks %}
+                {{ output }}
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

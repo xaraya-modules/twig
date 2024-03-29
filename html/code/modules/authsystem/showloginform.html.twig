@@ -1,0 +1,71 @@
+{# @authsystem/showloginform.html.twig #}
+
+{% extends '@authsystem/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">Login to an existing account</span>
+    </div>
+    <div class="xar-mod-body">
+        {% if xar_coremethod('xarUser', 'isLoggedIn') %}
+            <fieldset>
+                <legend>Logged In</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            You are already logged in. What do you want to do?
+                        </div>
+                        <div class="xar-col">
+                            <a href="{{ xar_moduleurl('authsystem','user','logout') }}">Log out</a>
+                            &#160;&#160;
+                            <a href="{{ redirecturl }}">Continue</a>
+                        </div>
+                    </div>
+            </fieldset>
+        {% else %}
+            <form action="{{ xar_moduleurl('authsystem','user','login') }}" method="post" enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <legend>Login</legend>
+                    {{ xar_data_input({type: "hidden", name: "redirecturl", id: "returnurl", value: redirecturl}) }}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="username" class="xar-form-label">Username</label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "textbox", name: "uname", id: "username", maxlength: "255", size: "20", tabindex: "1"}) }}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="password" class="xar-form-label">Password</label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "password", name: "pass", id: "password", maxlength: "64", size: "20", tabindex: "2"}) }}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <a href="{{ xar_moduleurl('roles','user','lostpassword') }}">Request a new password</a>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "checkbox", name: "rememberme", id: "remembermeform", value: "1", tabindex: "3"}) }}&#160;
+                            <label for="remembermeform">Remember me</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="xar-form-actions">
+                    <div class="xar-row">
+                        <div class="xar-col"></div>
+                        <div class="xar-col">
+                            {% set label = 'Log In' %}
+                            {{- xar_button({type: "submit", label: label, tabindex: "4"}) -}}
+                            <input type="hidden" name="redirecturl" id="returnurl" value="{{ redirecturl }}"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <script type="text/javascript">
+                document.getElementById('username').focus();
+            </script>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,137 @@
+{# @mail/admin/template.html.twig #}
+
+{% block template %}
+{% if xar_modvar('base', 'editor') == 'htmlarea' %}
+        {{ include('@htmlarea/includes/htmlarea_insert.html.twig') }}
+    {% endif %}
+    {% set messagetitle = xar_translate('Write this string in the message body or subject to display the corresponding information') %}
+    {{ include('@mail/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Configure Notification Template</h2>
+        {% if settings %}
+            <p>
+                {% set hookurl = xar_moduleurl('modules','admin','hooks', {'hook': 'mail'}) %}
+                {% set hooktitle = 'Configure mail hooks' %}
+                {% set hooklinktext = 'Hook the mail module to content types' %}
+                <a href="{{ hookurl }}" title="{{ hooktitle }}">{{ hooklinktext }}</a>to receive notifications
+                on add, edit or delete.
+            </p>
+            <p>The mail module is currently hooked to the following modules :</p>
+            <ul>
+                {% for modname, config in settings %}
+                    <li>
+                        <a href="{{ config.link }}">{{ config.modname }} 
+                        {% if config.type %}: {{ config.type }}{% endif %}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>The mail module is currently not hooked to any module</p>
+        {% endif %}
+        <form method="post" action="{{ xar_moduleurl('mail','admin','template') }}">
+            <fieldset>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Select the template to edit' %}
+                        <label for="mailtype" title="{{ label }}" class="xar-form-label">Name:</label>
+                    </div>
+                    <div class="xar-col">
+                        <select name="mailtype" id="mailtype" onchange="this.form.submit()">
+                            {% for loop_key1, loop_item1 in templates %}{% set loop_index1 = loop.index %}
+                                {% if mailtype == loop_item1['key'] %}
+                                    <option value="{{ loop_item1['key'] }}" selected="selected">
+                                    {{ loop_item1['value'] }}</option>
+                                {% else %}
+                                    <option value="{{ loop_item1['key'] }}">{{ loop_item1['value'] }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <p>
+                    {% if mailtype == 'createhook' %}
+                        This email will be sent to 
+                        {{ xar_var({scope: "module", module: "mail", name: "adminname"}) }}[ 
+                        {{ xar_var({scope: "module", module: "mail", name: "adminmail"}) }}] when a hooked item
+                        is created. 
+                    {% elseif mailtype == 'changehook' %}
+                        This email will be sent to 
+                        {{ xar_var({scope: "module", module: "mail", name: "adminname"}) }}[ 
+                        {{ xar_var({scope: "module", module: "mail", name: "adminmail"}) }}] when a hooked item
+                        is updated. 
+                    {% elseif mailtype == 'deletehook' %}
+                        This email will be sent to 
+                        {{ xar_var({scope: "module", module: "mail", name: "adminname"}) }}[ 
+                        {{ xar_var({scope: "module", module: "mail", name: "adminmail"}) }}] when a hooked item
+                        is deleted. 
+                    {% else %}This email will be sent to 
+                        {{ xar_var({scope: "module", module: "mail", name: "adminname"}) }}[ 
+                        {{ xar_var({scope: "module", module: "mail", name: "adminmail"}) }}].
+                    {% endif %}
+                </p>
+            </fieldset>
+        </form>
+        <form action="{{ xar_moduleurl('mail','admin','template') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <fieldset>
+                <legend>Template Details</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Title of the notification' %}
+                        <label for="subject" title="{{ label }}" class="xar-form-label">Subject:</label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" name="subject" id="subject" value="{{ xar_prep_display(subject) }}" maxlength="150" class="xar-form-textxlong"/>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Body of the notification' %}
+                        <label for="message" title="{{ label }}" class="xar-form-label">Message:</label>
+                    </div>
+                    <div class="xar-col">
+                        <textarea name="message" id="message" class="xar-form-textareaxlarge">{{ xar_prep_display(message) }}</textarea>
+                    </div>
+                </div>
+                <p>
+                    The following variables will be replaced in the text with specific information:
+                </p>
+                <p>
+                    <span class="xar-form-label" title="{{ messagetitle }}">$sitename</span>Name of the site
+                </p>
+                <p>
+                    <span class="xar-form-label" title="{{ messagetitle }}">$siteslogan</span>Slogan of the site
+                </p>
+                <p>
+                    <span class="xar-form-label" title="{{ messagetitle }}">$siteurl</span>URL of the site ( {{ xar_baseurl() }} )
+                </p>
+                <p>
+                    <span class="xar-form-label" title="{{ messagetitle }}">$siteadmin</span>Name of the administrator
+                </p>
+                <p>
+                    <span class="xar-form-label" title="{{ messagetitle }}">$adminmail</span>Email address of the administrator
+                </p>
+                <p>
+                    <span class="xar-form-label" title="{{ messagetitle }}">$modulename</span>Name of the module
+                </p>
+                <p>
+                    <span class="xar-form-label" title="{{ messagetitle }}">$objectid</span>ID of the created/updated/deleted item
+                </p>
+                <p class="xar-align-center">
+                Note: other variables may be available depending on the module
+                </p>
+            </fieldset>
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                        <input type="hidden" name="phase" id="phase" value="update"/>
+                        <input type="hidden" name="mailtype" id="mailtype" value="{{ mailtype }}"/>
+                        {% set label = 'Update' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

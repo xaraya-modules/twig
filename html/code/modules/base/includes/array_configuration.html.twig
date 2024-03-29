@@ -1,0 +1,81 @@
+{# @base/includes/array_configuration.html.twig #}
+
+{% block array_configuration %}
+<table class="xar-table xar-border-none xar-margin-thicktop">
+        <thead>
+            <tr>
+                <th class="xar-align-left">Column</th>
+                {% for j in range(0, column_titles|length - 1) %}
+                    <th class="xar-align-left">
+                        <label>{{ column_titles[j] }}</label>
+                    </th>
+                {% endfor %}
+                <th class="xar-align-left">Actions</th>
+            </tr>        
+        </thead>
+        <tbody>
+            {# <!-- $i == row values --> #}
+            {% for i in range(0, rows - 1) %}
+                {% set row_number = i+1 %}
+                <tr>
+                    <td>
+                        {{ row_number }}
+                    </td>
+                    {# <!-- $j == column values = 4 --> #}
+                    {% for j in range(0, column_titles|length - 1) %}
+                        <td>
+                            {% set propname = name ~ '[' ~ i ~ '][' ~ j ~ ']' %}
+                            {% set propid = id ~ '_' ~ i ~ '_' ~ j %}
+                            {% if value[i][j] is null %}
+                                No value found at row {{ row_number }} col {{ j }}<br/>
+                                The value variable contains
+                                <pre>
+                                    {% set dummy = var_dump(value) %}
+                                </pre>
+                                <xar:break/>
+                            {% endif %}
+                            {% if value[i][j] %}
+                                {% set propvalue = value[i][j] %}
+                                {{ xar_data_input({type: column_types[j], name: propname, id: propid, value: propvalue}) }}
+                            {% else %}
+                                {{ xar_data_input({type: column_types[j], name: propname, id: propid}) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                    {% if value[i][j-1] is not null %}
+                        <td>
+                            <a href="{{ xar_moduleurl('dynamicdata','admin','showpropval',{'proptype': value[i}[1]]) }}"><img src="{{ xar_imageurl('icons/document-properties.png', 'base') }}"/></a>
+                        </td>
+                    {% endif %}
+                    <td class="xar-align-right">&#160;</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>
+                    {% set extendedrows = rows %}
+                    New
+                </td>
+                {% for k in range(0, column_titles|length-1 - 1) %}
+                    <td>
+                        {% set propname = name ~ '[' ~ extendedrows ~ '][' ~ k ~ ']' %}
+                        {% set propid = id ~ '_' ~ extendedrows ~ '_' ~ k %}
+                        {# <!-- Force the fieldtype to a textbox --> #}
+                        {% if k == 1 %}
+                            {{ xar_data_input({type: column_types[k], name: propname, id: propid, value: "2"}) }}
+                        {% else %}
+                            {{ xar_data_input({type: column_types[k], name: propname, id: propid}) }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                <td>
+                    {% set propname = name ~ '[' ~ extendedrows ~ '][' ~ k ~ ']' %}
+                    {% set propid = id ~ '_' ~ extendedrows ~ '_' ~ k %}
+                    {{ xar_data_input({type: column_types[k], name: propname, id: propid, rows: "2", cols: "20"}) }}
+                </td>
+                <td>
+                    <a href="{{ xar_moduleurl('dynamicdata','admin','showpropval',{'proptype': 2}) }}"><img src="{{ xar_imageurl('icons/document-properties.png', 'base') }}"/></a>
+                </td>
+            </tr>                    
+        </tbody>
+    </table>
+{% endblock %}

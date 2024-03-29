@@ -1,0 +1,14 @@
+{# @themes/includes/showimg.html.twig #}
+
+{% block showimg %}
+{% if preview_img %}
+    {% set img_alt = 'Preview image for this theme' %}
+    {% if xar_coremethod('xarMod', 'isAvailable', ['images']) %}
+        <xar:image-resize src="$preview_img" label="$img_alt" width="250px" height="187px" constrain="true" class="xar-alt-outline"/>
+    {% else %}
+        <img src="{{ preview_img }}" title="{{ img_alt }}" width="250px" height="187px"/>
+    {% endif %}
+{% else %}
+    No preview available
+{% endif %} 
+{% endblock %}

@@ -1,0 +1,130 @@
+{# @blocks/admin/delete_type.html.twig #}
+
+{% block delete_type %}
+{{ include('@blocks/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if type['type_state'] == xarBlock..TYPE_STATE_MISSING or type['type_state'] == xarBlock..TYPE_STATE_MOD_UNAVAILABLE %}
+            <h2>Delete Block Type</h2>
+            <form method="post" action="{{ xar_moduleurl('blocks', 'admin', 'delete_type') }}">
+                <fieldset>
+                    <legend>Confirm deleting this block type</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">Type ID:</div>
+                        <div class="xar-col">{{ type['type_id'] }}</div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">Type</div>
+                        <div class="xar-col">{{ type['type'] }}</div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">Module</div>
+                        <div class="xar-col">
+                        {% if type['module'] %}
+                            {{ type['module'] }}
+                         {% else %}
+                            [none]
+                         {% endif %}
+                         </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">Version</div>
+                        <div class="xar-col">
+                        {% if type['xarversion'] %}
+                            {{ type['xarversion'] }}
+                        {% else %}
+                            [unknown]
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">Status</div>
+                        <div class="xar-col">
+                            {% if type['type_state'] != xarBlock..TYPE_STATE_ACTIVE %}
+                                <a href="{{ xar_currenturl({'tab': 'status'}) }}">{{ type_states[type['type_state']]['name'] }}        </a>
+                            {% else %}
+                        {{ type_states[type['type_state']]['name'] }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if type_instances %}
+                    <div class="xar-row">
+                        <div class="xar-col">Type Instances:</div>
+                        <div class="xar-col">
+                            <p class="xar-note">The following block instances will also be removed</p>
+                            {% for loop_key1, loop_item1 in type_instances %}{% set loop_index1 = loop.index %}
+                                <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_instance', {'block_id': loop_item1.block_id}) }}">{{ loop_item1.name }}</a>
+                                {% if loop_index1 < type_instances|length %},&#160;{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </fieldset>
+                <fieldset>
+                    <div class="xar-form-actions xar-align-center">
+                    <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                    <input type="hidden" name="confirm" id="confirm" value="true"/>
+                    <input type="hidden" name="type_id" id="type_id" value="{{ type['type_id'] }}"/>
+                    {% set label = 'Delete Block Type' %}
+                    {{- xar_button({type: "submit", label: label}) -}}
+                    {% set label = 'Cancel' %}
+                    {{- xar_button({type: "cancel", label: label}) -}}
+                    </div>
+                </fieldset>
+            </form>
+        {% else %}
+            <h2>Block Type Cannot Be Removed</h2>
+            <p class="xar-info">This block type cannot be removed in its current state</p>
+            <fieldset>
+                <legend>Unable to delete this block type</legend>
+                <div class="xar-row">
+                    <div class="xar-col">Type ID:</div>
+                    <div class="xar-col">{{ type['type_id'] }}</div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">Type</div>
+                    <div class="xar-col">{{ type['type'] }}</div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">Module</div>
+                    <div class="xar-col">
+                    {% if type['module'] %}
+                            {{ type['module'] }}
+                     {% else %}
+                            [none]
+                     {% endif %}
+                     </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">Version</div>
+                    <div class="xar-col">
+                    {% if type['xarversion'] %}
+                            {{ type['xarversion'] }}
+                    {% else %}
+                            [unknown]
+                    {% endif %}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">Status</div>
+                    <div class="xar-col">
+                        {% if type['type_state'] != xarBlock..TYPE_STATE_ACTIVE %}
+                            <a href="{{ xar_currenturl({'tab': 'status'}) }}">{{ type_states[type['type_state']]['name'] }}    </a>
+                        {% else %}
+                        {{ type_states[type['type_state']]['name'] }}
+                        {% endif %}
+                    </div>
+                </div>
+            </fieldset>
+            <p class="xar-info">
+                If you really want to remove this block type, 
+                you must first delete its files from the file system.
+            </p>                
+            <fieldset>
+                <div class="xar-form-actions xar-align-center">
+                {% set label = 'Cancel' %}
+                {{- xar_button({type: "cancel", label: label}) -}}
+                </div>
+            </fieldset>
+        {% endif %}
+    </div>
+{% endblock %}

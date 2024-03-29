@@ -1,0 +1,13 @@
+{# @base/properties/showoutput-imagelist.html.twig #}
+
+{% block showoutput_imagelist %}
+{% if srcpath != '' %}
+        {# <!--
+            {% set size = getimagesize(basedir ~ '/' ~ value) %}
+            <img src="{{ basedir }}/{{ value }}" width="{{ size[0] }}" height="{{ size[1] }}" alt="{{ value }}"/>
+        --> #}
+        <img src="{{ srcpath }}" alt=""/>
+    {% else %}
+        {{ imagetext }}
+    {% endif %}
+{% endblock %}

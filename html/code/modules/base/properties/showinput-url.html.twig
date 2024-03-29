@@ -1,0 +1,11 @@
+{# @base/properties/showinput-url.html.twig #}
+
+{% block showinput_url %}
+{% set check = 'check' %}
+    {% set preview = 'preview' %}
+    <input class="xar-form-textlong" type="text" name="{{ name }}" value="{{ value }}" size="{{ size }}" maxlength="{{ maxlength }}" id="{{ id }}" tabindex="{{ tabindex }}"/>
+    {% if value and (value != 'http.//') %}
+        [<a href="{{ value }}" target="{{ preview }}">{{ check }}</a>]
+    {% endif %}
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

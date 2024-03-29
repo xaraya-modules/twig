@@ -1,0 +1,27 @@
+{# @modules/admin/deactivate.html.twig #}
+
+{% block deactivate %}
+{{ include('@modules/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Module Deactivation with dependents still active</h2>
+        <h3>Dependents still Active</h3>
+        {% if dependencies['active']|length != 0 %}
+            <ul>
+                {% for modInfo in dependencies['active'] %}
+                    <li>{{ xar_translate(modInfo['displayname']) }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form action="{{ xar_moduleurl('modules','admin','deactivate') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="xar-form-actions">
+                <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                
+                {% set label = 'Deactivate All' %}
+                {{- xar_button({type: "submit", label: label, name: "command", id: "command"}) -}}
+                {% set label = 'Go back to the modules list' %}
+                {{- xar_button({type: "cancel", label: label, name: "return", id: "return"}) -}}
+            </div>
+        </form>
+    </div>
+{% endblock %}

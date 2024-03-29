@@ -1,0 +1,18 @@
+{# @base/properties/showinput-countrylisting.html.twig #}
+
+{% block showinput_countrylisting %}
+<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
+    {# <!--
+        Override this template by creating custom options and/or firstline, such as
+        {% set options = array(
+                ...
+            ) %}
+
+        {% set firstline = 'Choose a country' %}
+        {% set firstline = {'id': 0, 'name': firstline} %}
+
+        {{ xar_data_input({type: "dropdown", options: options, name: name, value: value, firstline: firstline}) }}
+    --> #}
+    
+    {{ xar_data_input({type: "dropdown", name: name, id: id, options: options, value: value}) }}
+{% endblock %}

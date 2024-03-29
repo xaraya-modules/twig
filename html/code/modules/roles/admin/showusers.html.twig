@@ -1,0 +1,310 @@
+{# @roles/admin/showusers.html.twig #}
+
+{% block showusers %}
+{% set statelist = xar_apifunc('roles','user','getstates') %}
+    {% set modstatus = xar_coremethod('xarSession', 'getVar', ['statusmsg']) %}
+    {{ xar_javascript({scope: "theme", filename: "checkall.js", position: "head"}) }}
+    {{ xar_javascript({scope: "module", module: "roles", filename: "xarTree.js", position: "head"}) }}
+    {{ xar_style({scope: "theme", file: "tree"}) }}
+
+    {% set icon_password = xar_imageurl('icons/user-password.png','theme') %}
+    {% set icon_info = xar_imageurl('icons/info.png','theme') %}
+    {% set icon_privileges = xar_imageurl('icons/privileges.png','theme') %}
+    {% set icon_delete = xar_imageurl('icons/delete.png','theme') %}
+    {% set icon_modify = xar_imageurl('icons/modify.png','theme') %}
+    {% set icon_none = xar_imageurl('icons/none.png','theme') %}
+    {% set icon_test = xar_imageurl('icons/test.png','theme') %}
+
+    {{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+    <div class="xar-mod-page-head">
+        <h2>{{ xar_prep_display(title) }}:
+            {% set label = 'Modify role' %}
+            <a href="{{ xar_moduleurl('roles','admin','modify',{'id': groupid}) }}" title="{{ label }}">
+                {{ xar_prep_display(groupname) }}
+            </a>
+            {% if search != '' %}&#160;matching
+                '{{ xar_prep_display(search) }}'
+            {% endif %}({{ totalselect }})
+        </h2>
+        {% set itemtype = xarRoles..ROLES_GROUPTYPE %}
+        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set activetab = request.2 %}
+        {% set xmldata = 'showusers' %}
+        {% set urlargs = {'id': id, 'reload': 'reload'} %}
+        {{ include('@base/includes/admin-menu-skel.html.twig') }}
+        {% if selstyle == '0' %}
+        {% elseif selstyle == '1' %}
+            <fieldset>
+                <legend>Role hierarchy</legend>
+                <div name="tree" id="tree" class="tree">
+                    {{ xar_data_input({type: "rolestree"}) }}
+                </div>
+            </fieldset>
+        {% elseif selstyle == '2' %}
+            <ul class="xar-tabs">
+                {% set title = 'Click on a group tab to display users from that group' %}
+                {% set label = 'Help' %}
+                <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                {% if groupid == 0 %}
+                        <li class="xar-tab-active">
+                        <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': 0, 'state': state, 'order': order, 'search': search, 'reload': 'reload'}) }}" class="xar-accent xar-accent-outline">
+                            All Users ({{ totalusers }})
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="xar-tab">
+                        <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': 0, 'state': state, 'order': order, 'search': search, 'reload': 'reload'}) }}" class="xar-norm xar-norm-outline">
+                            All Users ({{ totalusers }})
+                        </a>
+                    </li>
+                {% endif %}
+                {% set prevgroup = "" %}
+                {% for i in range(0, groups|length - 1) %}
+                    {% if prevgroup != groups[i]['name'] %}
+                        {% if groupid == groups[i]['id'] %}
+                            <li class="xar-tab-active">
+                                {% set label = 'Display the users in this group' %}
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': groups[i}['id'],'state'=>state,'order'=>order,'search'=>search,'reload'=>'reload']) }}" title="{{ label }}" class="xar-accent xar-accent-outline">
+                                    {{ xar_prep_display(groups[i]['name']) }} ({{ groups[i]['users'] }})
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="xar-tab">
+                                {% set label = 'Display the users in this group' %}
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': groups[i}['id'],'state'=>state,'order'=>order,'search'=>search,'reload'=>'reload']) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                    {{ xar_prep_display(groups[i]['name']) }} ({{ groups[i]['users'] }})
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                    {% set prevgroup = xar_prep_display(groups[i]['name']) %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+        </div>{# <!--/xar-mod-page-head--> #}
+        <div class="xar-mod-page-body">
+        <form method="post" action="{{ xar_moduleurl('roles','admin','showusers',{'reload': 'reload'}) }}">
+            {# <!-- User List Sort and Filter Controls table (taken from the modules module) @todo make this general --> #}
+            <table class="xar-table xar-items-controls">
+                <tr>
+                    <th>
+                        {% set label = 'Select display type' %}
+                        <label for="selstyle" title="{{ label }}">Style</label>
+                    </th>
+                    <th>
+                        {% set label = 'Select a group to display its users' %}
+                        <label for="groupid" title="{{ label }}">Groups</label>
+                    </th>
+                    <th>
+                        {% set label = 'Select the state of users' %}
+                        <label for="state" title="{{ label }}">
+                        State</label>
+                    </th>
+                    <th>
+                        {% set label = 'Search for users with either their real name, login name or email matching the string' %}
+                        <label for="search" title="{{ label }}">
+                        Search</label>
+                    </th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>
+                        <select name="selstyle" id="selstyle" onchange="this.form.submit()">
+                            {% for key, value in style %}
+                                {% if key == selstyle %}
+                                    <option value="{{ key }}" selected="selected">{{ value }}</option>
+                                {% else %}
+                                    <option value="{{ key }}">{{ value }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        {% set prevgroup = "" %}
+                        <select name="id" id="groupid" onchange="this.form.submit()">
+                            {% if groupid == 0 %}
+                                <option value="0" selected="selected">All Users -
+                                {{ totalusers }}</option>
+                            {% else %}
+                                <option value="0">All Users - {{ totalusers }}</option>
+                            {% endif %}
+                            {% for i in range(0, groups|length - 1) %}
+                                {% if prevgroup != groups[i]['name'] %}
+                                    {% if groups[i]['id'] == groupid %}
+                                        <option value="{{ groups[i]['id'] }}" selected="selected">
+                                        {{ xar_prep_display(groups[i]['name']) }} -
+                                        {{ groups[i]['users'] }}</option>
+                                    {% else %}
+                                        <option value="{{ groups[i]['id'] }}">
+                                        {{ xar_prep_display(groups[i]['name']) }} -
+                                        {{ groups[i]['users'] }}</option>
+                                    {% endif %}
+                                {% endif %}
+                                {% set prevgroup = xar_prep_display(groups[i]['name']) %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        {% set firstline = {'id': xarRoles..ROLES_STATE_CURRENT, 'name': 'All'} %}
+                        {{ xar_data_input({type: "dropdown", name: "state", value: state, options: statelist, firstline: firstline, onchange: "this.form.submit()"}) }}
+                    </td>
+                    <td>
+                        <input type="text" name="search" id="search" value="{{ search }}" maxlength="255" class="xar-form-textshort"/>
+                    </td>
+                    <td>
+                        {% set label = 'Reload' %}
+                        {{- xar_button({type: "submit", label: label, name: "reload", id: "reload"}) -}}
+                    </td>
+                </tr>
+            </table>
+        </form>
+        {% if users|length == 0 %}
+            <p>{{ message }}
+            {% if search != '' %}&#160;matching '{{ search }}'{% endif %}</p>
+        {% else %}
+            <form method="post" action="{{ xar_moduleurl('roles','admin','updatestate') }}" name="state">
+                {# <!-- @todo: add this to the filter GUI? --> #}
+                {% set fieldlist = >['id','uname','email','regdate','state']< %}
+                {% set tmp_dd_getitems = xar_data_getitems({object: object, values: values, properties: properties, sort: order, fieldlist: fieldlist}) %}{% set properties = tmp_dd_getitems.0 %}{% set values = tmp_dd_getitems.1 %}
+                <table class="xar-table xar-items">
+                    <tr>
+                        {% for name in properties|keys %}
+                        	{% if xar_coremethod('xarController', 'getVar', ['order']) == name %}
+                            	{% set xar_status = 'xar-active ' %}
+                            {% else %}
+                            	{% set xar_status = '' %}
+                            {% endif %}
+                            <th class="{{ xar_status }} {{ name }}">
+                                <a title="Sort by {{ name }}" href="{{ xar_moduleurl('roles','admin','showusers',{'id': groupid, 'state': state, 'order': name, 'search': search, 'reload': 'reload'}) }}">
+                                    {{ xar_data_label({property: properties[name]}) }}
+                                </a>
+                            </th>
+                        {% endfor %}
+                        <th>Action</th>
+                        <th>
+                    		<input type="checkbox" onclick="xar_base_checkall(document.forms['state'],true);return false;" />
+                        </th>
+                    </tr>
+                    {% for itemid, fields in values %}
+                        {% if users[itemid] is null %}
+                        {% else %}
+                        <tr>
+                            {% for name in properties|keys %}
+                            {% if xar_coremethod('xarController', 'getVar', ['order']) == name %}
+                            	{% set xar_status = 'xar-active ' %}
+                            {% else %}
+                            	{% set xar_status = '' %}
+                            {% endif %}
+                            {% if name == 'email' %}
+                            	{% set xar_linked = 'xar-link ' %}
+                            {% else %}
+                            	{% set xar_linked = '' %}
+                            {% endif %}
+                                <td class="{{ xar_status }} {{ xar_linked }} {{ name }}">
+                                    {% if fields[name] %}
+                                        {% if name == 'name' and users[itemid]['frozen'] %}
+                                            <strong>{{ xar_prep_display(fields['name']) }}</strong>
+                                        {% elseif name == 'uname' and users[itemid]['frozen'] %}
+                                            {{ xar_prep_display(fields['uname']) }}
+                                        {% elseif name == 'email' and users[itemid]['frozen'] %}
+                                            None
+                                        {% else %}
+                                            {{ xar_data_output({property: properties[name], value: fields[name]}) }}
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            <td>
+                                {% if not users[itemid]['frozen'] %}
+                                    {% if xar_modvar('roles', 'askpasswordemail') %}
+                                        {% set label = 'Generate a new password for this User' %}
+                                        <a href="{{ xar_moduleurl('roles','admin','createpassword',{'id': fields['id'},'state'=>state,'groupid'=>groupid]) }}" title="{{ label }}">
+                                            <img src="{{ icon_password }}" class="xar-valign-middle"/>
+                                        </a>
+                                        &#160;
+                                    {% endif %}
+                                    {% set label = 'Modify this user' %}
+                                    <a href="{{ xar_moduleurl('roles','admin','modify',{'id': fields['id']}) }}" title="{{ label }}">
+                                        <img src="{{ icon_modify }}" class="xar-valign-middle"/>
+                                    </a>
+                                    &#160;
+                                    {% set label = 'Delete this User' %}
+                                    <a href="{{ xar_moduleurl('roles','admin','delete',{'id': fields['id']}) }}" title="{{ label }}">
+                                        <img src="{{ icon_delete }}" class="xar-valign-middle"/>
+                                    </a>
+                                    &#160;
+                                {% else %}
+                                    <img src="{{ icon_none }}" class="xar-valign-middle"/>&#160;
+                                    <img src="{{ icon_none }}" class="xar-valign-middle"/>&#160;
+                                    <img src="{{ icon_none }}" class="xar-valign-middle"/>&#160;
+                                {% endif %}
+                                {% set label = 'Show the Privileges assigned to this User' %}
+                                <a href="{{ xar_moduleurl('roles','admin','showprivileges',{'id': fields['id']}) }}" title="{{ label }}">
+                                    <img src="{{ icon_privileges }}" class="xar-valign-middle"/>
+                                </a>
+                                &#160;
+                                {% set label = 'Test the Privileges of this User' %}
+                                <a href="{{ xar_moduleurl('roles','admin','testprivileges',{'id': fields['id']}) }}" title="{{ label }}">
+                                    <img src="{{ icon_test }}" class="xar-valign-middle"/>
+                                </a>
+                            </td>
+                            <td>
+                                {% if not users[itemid]['frozen'] %}
+                                    <input type="checkbox" name="ids[{{ fields['id'] }}]" id="ids_{{ fields['id'] }}" value="1"/>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                    <tfoot>
+                    	<tr>
+                    		<td colspan="5">
+                    			<a href="javascript:void(0);" onclick="xar_base_checkall(document.forms['state'],true);return false;">
+			                        Check All
+			                    </a>|
+			                    <a href="javascript:void(0);" onclick="xar_base_checkall(document.forms['state'],false);return false;">
+			                        Uncheck All
+			                    </a>
+                    		</td>
+                    		<td>
+                    			<input type="checkbox" readonly="readonly" onclick="xar_base_checkall(document.forms['state'],false);return false;" />
+                    		</td>
+                    	</tr>
+                    </tfoot>
+                </table>
+                
+                <fieldset>
+                	<div class="xar-row">
+                		<div class="xar-col">
+	                    	{% set label = 'Change the state of the users who have been selected below' %}
+		                    <label for="status" title="{{ label }}" class="xar-form-label">
+		                        Change state of selected users:
+		                    </label>
+	                   	</div>
+	                   	<div class="xar-col">
+		                    {{ xar_data_input({type: "dropdown", name: "status", id: "status", options: statelist}) }}
+		                    <input type="hidden" name="groupid" id="groupid" value="{{ groupid }}"/>
+		                    <input type="hidden" name="state" id="state" value="{{ state }}"/>
+		                    <input type="hidden" name="order" id="order" value="{{ order }}"/>
+		                    <input type="hidden" name="search" id="search" value="{{ xar_prep_display(search) }}"/>
+		                    <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+		                    {% set label = 'Change Status' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+		                </div>
+                    </div>
+                </fieldset>
+            </form>
+        {% endif %}
+        
+    </div>{# <!--/xar-mod-page--> #}
+    	<div class="xar-mod-page-foot">
+    	{{ xar_pager({startnum: startnum, itemsperpage: itemsperpage, total: totalselect, urltemplate: urltemplate, urlitemmatch: urlitemmatch}) }}
+    		<ul class="xar-mod-actions">
+            {% set label = 'Add a new user' %}
+            <li><a href="{{ xar_moduleurl('roles','admin','new',{'ptype': 0, 'pparentid': groupid}) }}" title="{{ label }}">Add user to group</a></li>
+            <li><a href="{{ xar_moduleurl('roles','admin','createmail') }}">Email group</a></li>
+        </ul>
+    	</div>
+    </div>{# <!--/xar-mod-body--> #}
+{% endblock %}

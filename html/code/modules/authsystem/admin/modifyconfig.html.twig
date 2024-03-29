@@ -1,0 +1,81 @@
+{# @authsystem/admin/modifyconfig.html.twig #}
+
+{% block modifyconfig %}
+{{ xar_javascript({type: "lib", lib: "jquery"}) }}
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />  
+    {{ include('@authsystem/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            <h2 class="xar-mod-pagetitle">Modify Authsystem Configuration</h2>
+            <xar:ajax-form form="modifyconfig-form"/>
+        </div>
+        <div class="xar-mod-page-body">
+            <form id="modifyconfig-form" method="post" action="{{ xar_currenturl() }}" enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <legend>General options</legend>
+                    {{ xar_data_form({object: module_settings}) }}
+                </fieldset>
+                <fieldset>
+                    <legend>Redirects</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="uselockout" class="xar-form-label" title="If logged in redirect to this page">
+                                Forwarding page
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_modvar('authsystem', 'forwarding_page') %}
+                            {{ xar_data_input({type: "textbox", name: "forwarding_page", value: value}) }}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="uselockout" class="xar-form-label" title="Ask the user whether to redirect">
+                                Ask forward
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set checked = xar_modvar('authsystem', 'ask_forward') %}
+                            {{ xar_data_input({type: "checkbox", name: "ask_forward", checked: checked}) }}
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Login Security Options</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="uselockout" class="xar-form-label" title="Lock a user out after a number of failed logins">
+                                Enable lockout option?
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set checked = xar_modvar('authsystem', 'uselockout') %}
+                            {{ xar_data_input({type: "checkbox", name: "uselockout", id: "uselockout", checked: checked}) }}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="lockouttries" class="xar-form-label" title="The number of attempts allowed before lockout">
+                                Allowed attempts:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "integerbox", name: "lockouttries", id: "lockouttries", value: lockouttries, size: "2", maxlength: "2"}) }}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="lockouttime" class="xar-form-label" title="The time a lockout is in effect">
+                                Lockout time (minutes) :
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "textbox", name: "lockouttime", id: "lockouttime", value: lockouttime, size: "2", maxlength: "2"}) }}
+                        </div>
+                    </div>
+                </fieldset>
+                {{ include('@base/includes/update-button.html.twig') }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

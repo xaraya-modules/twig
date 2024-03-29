@@ -1,0 +1,74 @@
+{# @roles/admin/removeprivilege.html.twig #}
+
+{% block removeprivilege %}
+{{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Remove Privilege</h2>
+        {% if parents|length != 0 %}
+            <div>
+                <ul class="xar-tabs xar-alt xar-norm-outline">
+                    {% set title = 'These are the groups that {{ rolename }} is a member of' %}
+                    {% set label = 'Parent Groups' %}
+                    <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                    {% set prevgroup = "" %}
+                    {% for i in range(0, parents|length - 1) %}
+                        {% if prevgroup != parents[i]['parentname'] %}
+                            <li class="xar-tab">
+                                {% set label = 'Show this group' %}
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                    {{ parents[i] ['parentname'] }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% set prevgroup = parents[i]['parentname'] %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <div>
+            <ul class="xar-tabs xar-alt xar-norm-outline">
+                {% set title = 'Action' %}
+                {% set label = 'Action' %}
+                <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                <li class="xar-tab">
+                    <a href="{{ xar_moduleurl('roles','admin','display',{'id': roleid}) }}" class="xar-norm xar-norm-outline">Display</a>
+                </li>
+                <li class="xar-tab">
+                    <a href="{{ xar_moduleurl('roles','admin','modify',{'id': roleid}) }}" class="xar-norm xar-norm-outline">Modify</a>
+                </li>
+                <li class="xar-tab">
+                    <a href="{{ xar_moduleurl('roles','admin','delete',{'id': roleid}) }}" class="xar-norm xar-norm-outline">Delete</a>
+                </li>
+                <li class="xar-tab-active">
+                    <a href="{{ xar_moduleurl('roles','admin','showprivileges',{'id': roleid}) }}" class="xar-accent xar-accent-outline">
+                    Privileges</a>
+                </li>
+                {% if ptype == xarRoles..ROLES_GROUPTYPE %}
+                    <li class="xar-tab">
+                        <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': roleid}) }}" class="xar-norm xar-norm-outline">Users</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <form method="post" action="{{ xar_moduleurl('roles','admin','removeprivilege') }}" enctype="application/x-www-form-urlencoded">
+            <div class="xar-form-actions">
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                <input type="hidden" name="roleid" id="roleid" value="{{ roleid }}"/>
+                <input type="hidden" name="privid" id="privid" value="{{ privid }}"/>
+                <input type="hidden" name="confirmation" id="confirmation" value="1"/>
+                <p>
+                    <span class="xar-title">Confirm the removal of '{{ privname }}' from&#160; 
+                    {% if ptype == xarRoles..ROLES_GROUPTYPE %}Group 
+                    {% else %}User{% endif %}&#160;'{{ rolename }}'</span>
+                </p>
+                <p>
+                    {{- xar_button({type: "submit", label: removelabel, tabindex: "1"}) -}}
+                    <br />
+                    <br />
+                    <a href="{{ xar_moduleurl('roles','admin','showprivileges',{'id': roleid}) }}">Cancel
+                    Removal</a>
+                </p>
+            </div>
+        </form>
+    </div>
+{% endblock %}

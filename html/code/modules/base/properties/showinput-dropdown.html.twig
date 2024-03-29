@@ -1,0 +1,62 @@
+{# @base/properties/showinput-dropdown.html.twig #}
+
+{% block showinput_dropdown %}
+{% if onchange is not null %}
+      {% set evt_change = onchange %}
+    {% else %}
+      {% set evt_change = 'return true;' %}
+    {% endif %}
+
+    {% if class is null %}
+        {% set class = '' %}
+    {% endif %}
+
+    {% if style is null %}
+        {% set style = '' %}
+    {% endif %}
+
+    {% if size is null %}
+        {% set size = 1 %}
+    {% endif %}
+
+    {% if previousvalue %}
+        <input type="hidden" name="previous_value_{{ name }}" value="{{ value }}"/>
+    {% endif %}
+    
+    {% if not rows or (rows and (options|length <= rows)) %}
+        <select name="{{ name }}" id="{{ id }}" tabindex="{{ tabindex }}" onchange="{{ evt_change }}" size="{{ size }}" class="{{ class }}" style="{{ style }}">
+            {% for option in options %}
+                {% if option['id'] is not null %}
+                    {% if option['id'] == value %}
+                        <option value="{{ option['id'] }}" selected="selected">{{ option['name'] }}</option>
+                    {% else %}
+                        <option value="{{ option['id'] }}">{{ option['name'] }}</option>
+                    {% endif %}
+                {% else %}
+                    {% if option['name'] == value %}
+                        <option selected="selected">{{ option['name'] }}</option>
+                    {% else %}
+                        <option>{{ option['name'] }}</option>
+                    {% endif %}
+                {% endif %}
+                {# <!-- this doesn't work if eg id=1, name=1st
+                {% if not option['id'] or option['id'] != option['name'] %}
+                    {% if option['id'] == value %}
+                        <option value="{{ option['id'] }}" selected="selected">{{ option['name'] }}</option>
+                    {% else %}
+                        <option value="{{ option['id'] }}">{{ option['name'] }}</option>
+                    {% endif %}
+                {% elseif option['id'] == value %}
+                    <option selected="selected">{{ option['name'] }}</option>
+                {% else %}
+                    <option>{{ option['id'] }} {{ option['name'] }}</option>
+                {% endif %}
+                --> #}
+            {% endfor %}
+        </select>
+    {% else %}
+        {{ xar_data_input({type: "textbox", name: name, value: value, tabindex: tabindex, style: style}) }}
+    {% endif %}
+    
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

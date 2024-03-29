@@ -1,0 +1,122 @@
+{# @dynamicdata/showview.html.twig #}
+
+{% extends '@dynamicdata/base.html.twig' %}
+
+{% block modulespace %}
+{% if not layout or layout == 'default' %}
+        <table class="xar-table" border="0" cellspacing="0" cellpadding="4">
+            {% for item in items %}
+                <tr>
+                    <td>
+                        <table class="xar-table" border="0" cellspacing="0" cellpadding="4">
+                            {% for field in item['fields'] %}
+                                <tr>
+                                    <td class="xar-align-right">
+                                        <strong>{{ field['label'] }} :</strong>
+                                    </td>
+                                    <td>
+                                        {% set fieldname = 'dd_' ~ field['id'] %}
+                                        {{ xar_data_output({type: field['type'], name: fieldname, value: field['value']}) }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {% if item['options'] and item['options']|length > 0 %}
+                                <tr>
+                                    <td>&#160;</td>
+                                    <td>
+                                        {% for option in item['options'] %}
+                                        {{ option['ojoin'] }} 
+                                        <a href="{{ option['olink'] }}">
+                                        {{ option['otitle'] }}</a>{% endfor %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&#160;</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% if prevurl or nexturl %}
+            <div class="xar-align-center">
+            {% if prevurl %}
+            <a href="{{ prevurl }}">&lt;&lt;</a>
+            {% else %}---{% endif %}&#160;&#160;&#160;
+            {% if nexturl %}
+            <a href="{{ nexturl }}">&gt;&gt;</a>
+            {% else %}---{% endif %}</div>
+        {% endif %}
+        {% elseif layout == 'list' %}
+        <table class="xar-table" border="0" cellspacing="0" cellpadding="4">
+            <tr>
+                {% for item in labels %}
+                    <th class="xar-align-center">{{ item['label'] }}</th>
+                {% endfor %}
+                <th>&#160;</th>
+            </tr>
+            {% for item in items %}
+                <tr>
+                    {# <!-- we could use xar:data-display here too, instead of looping over fields ourselves --> #}
+                    {% for field in item['fields'] %}
+                        <td class="xar-valign-top">
+                            {% set fieldname = 'dd_' ~ field['id'] %}
+                            {{ xar_data_output({type: field['type'], name: fieldname, value: field['value']}) }}
+                        </td>
+                    {% endfor %}
+                    <td class="xar-align-center xar-valign-top">
+                        {% if item['options'] and item['options']|length > 0 %}
+                        {% for option in item['options'] %}{{ option['ojoin'] }}
+                        <a href="{{ option['olink'] }}">{{ option['otitle'] }}</a>{% endfor %}
+                        {% else %}&#160;{% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% if prevurl or nexturl %}
+            <div class="xar-align-center">
+            {% if prevurl %}
+            <a href="{{ prevurl }}">&lt;&lt;</a>
+            {% else %}---{% endif %}&#160;&#160;&#160;
+            {% if nexturl %}
+            <a href="{{ nexturl }}">&gt;&gt;</a>
+            {% else %}---{% endif %}</div>
+        {% endif %}
+        {% elseif layout == 'bullet' %}
+        <ul>
+            {% for item in items %}
+                <li>
+                    {% for field in item['fields'] %}
+                    {# <!-- CHECKME: where does $field['flink'] come from ? --> #}
+                        {% set fieldname = 'dd_' ~ field['id'] %}
+                        {% if field['flink'] %}
+                            <a href="{{ field['flink'] }}">
+                                {{ xar_data_output({type: field['type'], name: fieldname, value: field['value']}) }}
+                            </a>
+                            {% else %}
+                            {{ xar_data_output({type: field['type'], name: fieldname, value: field['value']}) }}
+                        {% endif %}
+                    {% endfor %}
+                    {% if item['options'] and item['options']|length > 0 %}[
+                    {% for option in item['options'] %}{{ option['ojoin'] }}
+                    <a href="{{ option['olink'] }}">{{ option['otitle'] }}</a>{% endfor %}]{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% if prevurl or nexturl %}
+            <div class="xar-align-left">
+            {% if prevurl %}
+            <a href="{{ prevurl }}">&lt;&lt;</a>
+            {% else %}---{% endif %}&#160;&#160;&#160;
+            {% if nexturl %}
+            <a href="{{ nexturl }}">&gt;&gt;</a>
+            {% else %}---{% endif %}</div>
+        {% endif %}
+        {# <!-- TODO: multi-column output --> #}
+        {% else %}
+        <p>Specify your own layout here...</p>
+        <p>You can also specify a separate template, e.g. if you want to handle individual fields
+        differently for a particular module / itemtype</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,73 @@
+{# @dynamicdata/objects/ui_report.html.twig #}
+
+{% block ui_report %}
+{{ include('@dynamicdata/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% set viewlink = object.getActionURL('view') %}
+        {% set searchlink = object.getActionURL('search') %}
+        {% set reportlink = object.getActionURL('report') %}
+        {% set statslink = object.getActionURL('stats') %}
+        <h2>
+            {% if report['report'] %}
+                {{ report['report'] }} for {{ object.label }}&#160;
+            {% else %}
+                Reports for {{ object.label }}&#160;
+            {% endif %}
+            <a href="{{ viewlink }}" title="View {{ object.label }}">
+                {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+            </a>&#160;
+            <a href="{{ reportlink }}" title="Reset Report">
+                {{- xar_image({scope: "theme", file: "icons/view-refresh.png", class: "xar-icon", alt: "reset"}) -}}
+            </a>&#160;
+            <a href="{{ statslink }}&amp;report={{ report['report'] }}" title="Edit Report">
+                {# <!-- img src="{{ xar_imageurl('icons/accessories-calculator.png', 'base') }}" width="16" height="16" alt="stats"/--> #}
+                {{- xar_image({scope: "theme", file: "icons/modify.png", class: "xar-icon", alt: "stats"}) -}}
+            </a>
+        </h2>
+        {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}
+        <form method="post" action="{{ reportlink }}">
+            <fieldset>
+                {# <!-- if we use the current URL, the object is already specified --> #}
+                {% if object.linktype != 'current' %}
+                    <input type="hidden" name="object" id="object" value="{{ object.name }}"/>
+                {% endif %}
+                <input type="hidden" name="method" id="method" value="report"/>
+                {% if object.join %}
+                    <input type="hidden" name="join" id="join" value="{{ object.join }}"/>
+                {% endif %}
+                {% if object.table %}
+                    <input type="hidden" name="table" id="table" value="{{ object.table }}"/>
+                {% endif %}
+                {% if return_url %}
+                    <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                {% endif %}
+                <legend>Select Report</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label class="xar-form-label" for="report" title="Select the report">Available Reports</label>
+                    </div>
+                    <div class="xar-col">
+                        <select name="report" id="report" onchange="javascript:submit();">
+                            <option value=""></option>
+                            {% for label in report.reportlist %}
+                                {% if report['report'] and report['report'] == label %}
+                                    <option value="{{ label }}" selected="selected">{{ label }}</option>
+                                {% else %}
+                                    <option value="{{ label }}">{{ label }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        {% set label = 'Select' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        {% if result %}
+            {# <!-- don't show a newlink here --> #}
+            {{ xar_data_view({object: object, tplmodule: "dynamicdata", layout: "stats"}) }}
+        {% elseif object.itemcount %}
+            <p>There are {{ object.itemcount }} items in {{ object.label }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

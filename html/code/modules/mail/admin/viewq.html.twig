@@ -1,0 +1,109 @@
+{# @mail/admin/viewq.html.twig #}
+
+{% block viewq %}
+{{ include('@mail/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Mail Queue</h2>
+                  
+       {# <!--
+           We want to show this option so people know it is available.
+           We only show this if we can use it eg scheduler is installed and hooked to mail
+       --> #}
+        {% if xar_coremethod('xarMod', 'isAvailable', ['scheduler']) and xar_coremethod('xarModHooks', 'isHooked', ['mail','scheduler']) %}
+            {# <!-- We only show this if we can use it eg scheduler is installed and hooked to mail --> #}
+            {% if log %}
+                <pre>
+{{ log }}
+</pre>
+                {% elseif mail %}
+                    <table class="xar-table">
+                        <tr>
+                            <td>Mail ID</td>
+                            <td>{{ xar_prep_display(id) }}</td>
+                        </tr>
+                        <tr>
+                            <td>From</td>
+                            <td>{{ xar_prep_display(mail['fromname']) }}
+                            &lt;{{ xar_prep_display(mail['from']) }}&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>To</td>
+                            <td>
+                                {% if mail['recipients'] %}
+                                    {% for k, v in mail['recipients'] %}
+                                        {% if not k is numeric %}
+                                        {{ xar_prep_display(k) }}{% endif %}
+                                        {% if not v is numeric %}
+                                        {{ xar_prep_display(v) }}{% endif %}
+                                        <br />
+                                    {% endfor %}
+                                {% elseif mail['info'] %}
+                                    {% if mail['name'] %}
+                                        {{ xar_prep_display(mail['name']) }}
+                                    {% endif %}
+                                    &lt;{{ xar_prep_display(mail['info']) }}&gt;
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Subject</td>
+                            <td>{{ xar_prep_display(mail['subject']) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Queued</td>
+                            <td>{{ xar_localedate(mail['queued'], 'medium', '') }}
+                            {{ xar_localedate(mail['queued'], '', 'medium') }}</td>
+                        </tr>
+                        <tr>
+                            <td>Send After</td>
+                            <td>{{ xar_localedate(mail['when'], 'medium', '') }}
+                            {{ xar_localedate(mail['when'], '', 'medium') }}</td>
+                        </tr>
+                    </table>
+                {% endif %}
+                <form method="post" action="{{ xar_moduleurl('mail','admin','viewq') }}">
+                    <input type="hidden" name="authid" value="{{ authid }}"/>
+                    <input type="hidden" name="action" value="process"/>
+                    {% set label = 'Process Queue' %}
+                    {{- xar_button({type: "submit", label: label}) -}}
+                </form>
+                <table class="xar-table" width="100%" border="0" cellspacing="0" cellpadding="2">
+                    <tr>
+                        <th>Mail ID</th>
+                        <th>Send After</th>
+                        <th>Action</th>
+                    </tr>
+                    {% if items|length > 0 %}
+                        {% for id, when in items %}
+                            <tr>
+                                <td>{{ id }}</td>
+                                <td>
+                                    {{ xar_localedate(when, 'medium', '') }}
+                                    {{ xar_localedate(when, '', 'medium') }}
+                                </td>
+                                <td>
+                                <a href="{{ xar_moduleurl('mail','admin','viewq',{'id': id, 'action': 'view', 'authid': authid}) }}">
+                                View</a>| 
+                                <a href="{{ xar_moduleurl('mail','admin','viewq',{'id': id, 'action': 'delete', 'authid': authid}) }}">
+                                Delete</a></td>
+                            </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="xar-align-left">
+                                <br />
+                                <strong>No mails scheduled to be sent later</strong>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
+            {% else %}
+                <p>
+                    {% set hookmailurl = xar_moduleurl('modules','admin','hooks', {'hook': 'mail'}) %}
+                    {% set hookmailtitle = 'Hook mail to scheduler to activate queue processing' %}
+                    {% set hookmaillinktext = 'hook mail to scheduler' %}
+                    You can schedule mail for sending later by installing and using the Scheduler module. Install Sche option.
+                </p>
+        {% endif %}
+    </div>
+{% endblock %}

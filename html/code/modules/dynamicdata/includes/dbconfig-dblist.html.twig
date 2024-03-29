@@ -1,0 +1,46 @@
+{# @dynamicdata/includes/dbconfig-dblist.html.twig #}
+
+{% block dbconfig_dblist %}
+<ul>
+        <li>Xaraya: (0) <a href="{{ xar_moduleurl('dynamicdata', 'admin', 'dbconfig', {'db': 'default'}) }}">default</a></li>
+        {% for module, info in dbconfigs %}
+            <li>
+                {{ module }}:
+                <ol>
+                    <li>
+                        Databases:
+                        <ul>
+                            {% for name, config in info['databases'] %}
+                                <li>
+                                    {% set dbname = module ~ '.' ~ name %}
+                                    <a href="{{ xar_moduleurl('dynamicdata', 'admin', 'dbconfig', {'db': dbname}) }}">{{ name }}</a>:
+                                    {{ config['description'] }}
+                                    {% if config['external'] %}
+                                        ({{ strtoupper(config['external']) }})
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                            {% set dbname = module ~ '.*' %}
+                            <li><a href="{{ xar_moduleurl('dynamicdata', 'admin', 'dbconfig', {'db': dbname}) }}">Add new database</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        Objects:
+                        <ul>
+                            {% for name, config in info['objects'] %}
+                                <li>
+                                    {% set dbname = module ~ '.' ~ name %}
+                                    <a href="{{ xar_moduleurl('dynamicdata', 'admin', 'dbconfig', {'obj': dbname}) }}">{{ name }}</a>:
+                                    {{ config['datastore'] }} ({{ config['dbConnIndex'] }}) {{ config['dbConnArgs'] }}
+                                </li>
+                            {% endfor %}
+                            {% set dbname = module ~ '.*' ~ name %}
+                            <li><a href="{{ xar_moduleurl('dynamicdata', 'admin', 'dbconfig', {'obj': dbname}) }}">Configure other objects</a></li>
+                        </ul>
+                    </li>
+                </ol>
+            </li>
+        {% endfor %}
+    </ul>
+    <p>Note: For more details on how to use DB Connections, see the <a href="https://github.com/xaraya/core/blob/com.xaraya.core.bermuda/html/code/modules/dynamicdata/README.md">DD README</a> on GitHub or <a href="code/modules/dynamicdata/README.md">here</a></p>
+{% endblock %}

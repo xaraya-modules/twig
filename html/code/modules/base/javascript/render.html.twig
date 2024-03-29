@@ -1,0 +1,37 @@
+{# @base/javascript/render.html.twig #}
+
+{% block render %}
+{# <!--  Process only if there is JavaScript present --> #}
+    {% if javascript is iterable %}
+        {# <!-- Loop for each item (could be an array of positions, or an array of items for a position) --> #}
+        {% for loop_key1, loop_item1 in javascript %}{% set loop_index1 = loop.index %}{% set loop_top_index = loop_index1 %}{% set loop_top_item = loop_item1 %}{% set loop_top_key = loop_key1 %}
+            {# <!-- Array of items for a given position --> #}
+            {% if position and loop_top_item is iterable %}
+                {% if loop_top_item.type == 'code' and (not type or type == 'code') %}
+                    <script type="text/javascript">
+                    {{ loop_top_item.data }}
+                    </script>
+                {% endif %}
+                {% if loop_top_item.type == 'src' and (not type or type == 'src') %}
+
+                    <script type="text/javascript" src="{{ loop_top_item.data }}">&#160;</script>
+                {% endif %}
+            {% endif %}
+            {# <!-- Array of positions (all positions) so a sub-loop is needed --> #}
+            {% if not position and loop_top_item is iterable %}
+                {% for loop_key2, loop_item2 in loop_top_item %}{% set loop_index2 = loop.index %}{% set loop_detail_index = loop_index2 %}{% set loop_detail_item = loop_item2 %}{% set loop_detail_key = loop_key2 %}
+                    {% if loop_detail_item.type == 'code' and (not type or type == 'code') %}
+                        <script type="text/javascript">
+                        {{ loop_detail_item.data }}
+                        </script>
+                    {% endif %}
+                    {% if loop_detail_item.type == 'src' and (not type or type == 'src') %}
+
+                        <script type="text/javascript" src="{{ loop_detail_item.data }}">
+                        &#160;</script>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{# @themes/properties/showoutput-themeconfiguration.html.twig #}
+
+{% block showoutput_themeconfiguration %}
+<fieldset>
+        {% if configs|length == 0 %}
+            No configuration options defined. Define some <a href="{{ xar_moduleurl('dynamicdata','admin','new',{'name': 'themes_configurations'}) }}">here</a>.
+        {% else %}
+            {% for key, init in configs %}
+                {% set fieldname = name ~ '[' ~ key ~ ']' %}
+                {% set fieldid = id ~ '_' ~ key %}
+                {% if init['configuration'] is not null %}
+                    {% set configuration = init['configuration'] %}
+                {% else %}
+                    {% set configuration = '' %}
+                {% endif %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="{{ fieldid }}" title="{{ init['description'] }}" class="xar-form-label">
+                            {{ init['label'] }}
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_output({type: init['property_id'], name: fieldname, id: fieldid, configuration: configuration, value: init['value']}) }}
+                        &#160;({{ key }})
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </fieldset>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

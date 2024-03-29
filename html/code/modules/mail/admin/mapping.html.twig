@@ -1,0 +1,20 @@
+{# @mail/admin/mapping.html.twig #}
+
+{% block mapping %}
+{{ include('@mail/includes/mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% set active_tab = 'mapping' %}
+        {{ include('@mail/includes/queue-tabs.html.twig') }}
+        <fieldset>
+            <legend>Map items to queues</legend>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label" for="qlist">Show rules for queue:</label>
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({type: "checkboxmask", id: "qlist", name: "showq", options: qlist}) }}
+                </div>
+            </div>
+        </fieldset>
+    </div>
+{% endblock %}

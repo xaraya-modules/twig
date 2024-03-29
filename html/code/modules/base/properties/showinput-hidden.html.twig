@@ -1,0 +1,6 @@
+{# @base/properties/showinput-hidden.html.twig #}
+
+{% block showinput_hidden %}
+<input type="hidden" name="{{ name }}" id="{{ id }}" value="{{ value }}"/>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

@@ -1,0 +1,11 @@
+{# @base/blocks/waitingcontent.html.twig #}
+
+{% block waitingcontent %}
+{% if not output %}
+        Waiting Content has not been configured
+    {% else %}
+        {% for module, hookoutput in output %}
+            {{ hookoutput }}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

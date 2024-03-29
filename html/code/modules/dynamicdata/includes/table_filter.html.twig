@@ -1,0 +1,61 @@
+{# @dynamicdata/includes/table_filter.html.twig #}
+
+{% block table_filter %}
+{% set proptypes = DataPropertyMaster..getPropertyTypes() %}
+    {% set currenturl = xar_currenturl() %}
+    {% set itemcount = object.itemcount ?. items|length %}
+    {% set where = object.where ?. [] %}
+    <tr>
+        <form method="post" action="{{ currenturl }}">
+            {% for name, property in properties %}
+                {% set proptype = proptypes[property.type] %}
+                {% set curvalue = where[name] ? where[name] : '' %}
+                <th class="xar-form-textlong">
+                    {% if proptype['name'] == 'itemid' %}
+                        - 
+                    {% elseif proptype['name'] == 'calendar' %}
+                        &#160; 
+                    {% elseif proptype['name'] in ['dropdown' %}
+                        {% set dummy = property.initialization_firstline = {'id': '', 'name': ''} %}
+                        {% set ddname = 'dd_' ~ property.id %}
+                        {{ xar_data_input({property: property, name: "where[" ~ name], value: curvalue}) }}
+                    {% elseif proptype['name'] in ['textbox' %}
+                        {% set values = [] %}
+                        {% for itemid, fields in items %}
+                            {% set values[$fields[$name]] = 1 %}
+                        {% endfor %}
+                        {% set dummy = ksort(values) %}
+                        {% set options = [] %}
+                        {% set dummy = options[] = {'id': '', 'name': ''} %}
+                        {% for option, dummy in values %}
+                            {% if proptype['name'] == 'username' %}
+                                {% set option = xar_username(option, 'uname') %}
+                                {% set dummy = options[] = {'id': option, 'name': option} %}
+                            {% else %}
+                                {% set dummy = options[] = {'id': option, 'name': option} %}
+                            {% endif %}
+                        {% endfor %}
+                        {% set ddname = 'dd_' ~ property.id %}
+                        {% if itemcount < 10 or options|length < itemcount / 2 %}
+                            {{ xar_data_input({type: "dropdown", name: "where[" ~ name], options: options, value: curvalue}) }}
+                        {% else %}
+                            {# <!-- xar:data-input type="textbox" name="where[$name]" value="$curvalue"/ --> #}&#160;
+                        {% endif %}
+                    {% else %}
+                        {{ xar_data_input({property: property, value: curvalue}) }}
+                        {{ proptype['name'] }}
+                    {% endif %}
+                </th>
+            {% endfor %}
+            {% if not linkfield or true %}
+                <th class="xar-form-textlong" style="text-align: center;">
+                    {% set src =  xar_image({scope: "theme", file: "icons/system-search.png"})  %}
+                    {{- xar_button({type: "submit", name: "filter", src: src, submittotarget: currenturl, title: "Filter", style: "vertical-align: text-bottom;"}) -}}&#160;
+                    <a href="{{ currenturl }}" title="Reset Filter">
+                        {{- xar_image({scope: "theme", file: "icons/view-refresh.png", class: "xar-button", style: "vertical-align: text-bottom;", alt: "reset"}) -}}
+                    </a>
+                </th>
+            {% endif %}
+        </form>
+    </tr>
+{% endblock %}

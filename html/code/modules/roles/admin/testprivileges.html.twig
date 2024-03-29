@@ -1,0 +1,163 @@
+{# @roles/admin/testprivileges.html.twig #}
+
+{% block testprivileges %}
+{{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if itemtype == xarRoles..ROLES_USERTYPE %}
+            {% set pname = object.properties['uname'].getValue() %}
+        {% else %}
+            {% set pname = object.properties['name'].getValue() %}
+        {% endif %}
+        <h2>Test Privileges of {{ itemtypename }} '{{ pname }}':</h2>
+        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set activetab = request.2 %}
+        {% set xmldata = 'showusers' %}
+        {% set urlargs = {'id': id, 'reload': 'reload'} %}
+        {{ include('@base/includes/admin-menu-skel.html.twig') }}
+        {% if parents|length != 0 %}
+            <div>
+                <ul class="xar-tabs xar-alt xar-norm-outline">
+                    {% set title = 'These are the groups that {{ name }} is a member of' %}
+                    {% set label = 'Parent Groups' %}
+                    <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                    {% set prevgroup = "" %}
+                    {% for i in range(0, parents|length - 1) %}
+                        {% if prevgroup != parents[i]['parentname'] %}
+                            <li class="xar-tab">
+                                {% set label = 'Show this group' %}
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                    {{ parents[i]['parentname'] }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% set prevgroup = parents[i]['parentname'] %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <form action="{{ xar_moduleurl('roles','admin','testprivileges') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <fieldset>
+                <legend>Scope</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Choose the module to test privileges against.' %}
+                        <label for="pmodule" title="{{ label }}" class="xar-form-label">
+                            Registered Masks For Module:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set onchange = 'this.form.submit();' %}
+                        {{ xar_data_input({type: "module", name: "pmodule", id: "pmodule", value: pmodule, firstline: "Choose", onchange: onchange}) }}
+                        <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                        {% set label = 'Test Privileges' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        {% if not pmodule %}Choose a module from the list and click "Test
+            Privileges". 
+        {% elseif masks|length == 0 %}
+            <h3>No masks registered for this module.</h3>
+        {% else %}
+            <fieldset>
+                <legend>Click On The Mask You Want To Test Privileges Against:</legend>
+                <table class="xar-table xar-fullwidth">
+                    <tr>
+                        <th>Mask</th>
+                        {% if xar_modvar('privileges', 'showrealms') %}
+                            <th>Realm</th>
+                        {% endif %}
+                        <th>Module</th>
+                        <th>Component</th>
+                        <th>Instance</th>
+                        <th>Level</th>
+                    </tr>
+                    {% for mask in masks %}
+                        <tr>
+                            <td>
+                                <a href="{{ xar_moduleurl('roles','admin','testprivileges',{'id': xarVar('id'), 'name': mask.getName(), 'test': true}) }}">
+                                {{ mask.getName() }}</a>
+                            </td>
+                            {% if xar_modvar('privileges', 'showrealms') %}
+                                <td>{{ mask.getRealm() }}</td>
+                            {% endif %}
+                            <td>{{ mask.getModule() }}</td>
+                            <td>{{ mask.getComponent() }}</td>
+                            <td>{{ mask.getInstance() }}</td>
+                            <td class="xar-nowrap">{{ mask.getLevel() }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </fieldset>
+        {% endif %}
+        {% if test %}
+            <fieldset>
+                <legend>Masks:</legend>
+                <table class="xar-table xar-fullwidth">
+                    <tr>
+                        <th>Mask</th>
+                        {% if xar_modvar('privileges', 'showrealms') %}
+                            <th>Realm</th>
+                        {% endif %}
+                        <th>Module</th>
+                        <th>Component</th>
+                        <th>Instance</th>
+                        <th>Level</th>
+                    </tr>
+                    {% for loop_key1, loop_item1 in testmasks %}{% set loop_index1 = loop.index %}
+                        <tr>
+                            <td>{{ loop_item1['sname'] }}</td>
+                            {% if xar_modvar('privileges', 'showrealms') %}
+                                <td>{{ loop_item1['srealm'] }}</td>
+                            {% endif %}
+                            <td>{{ loop_item1['smodule'] }}</td>
+                            <td>{{ loop_item1['scomponent'] }}</td>
+                            <td>{{ loop_item1['sinstance'] }}</td>
+                            <td class="xar-nowrap">{{ loop_item1['slevel'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </fieldset>
+            <fieldset>
+                <legend>Privileges:</legend>
+                <table class="xar-table xar-fullwidth">
+                    {% if testresult != false %}
+                        <tr>
+                            <th>Privilege</th>
+                            {% if xar_modvar('privileges', 'showrealms') %}
+                                <th>Realm</th>
+                            {% endif %}
+                            <th>Module</th>
+                            <th>Component</th>
+                            <th>Instance</th>
+                            <th>Level</th>
+                        </tr>
+                        <tr>
+                            <td>{{ rname }}</td>
+                            {% if xar_modvar('privileges', 'showrealms') %}
+                                <td>{{ rrealm }}</td>
+                            {% endif %}
+                            <td>{{ rmodule }}</td>
+                            <td>{{ rcomponent }}</td>
+                            <td>{{ rinstance }}</td>
+                            <td class="xar-nowrap">{{ rlevel }}</td>
+                        </tr>
+                    {% endif %}
+                </table>
+                <p class="xar-align-center">{{ resultdisplay }}</p>
+            </fieldset>
+            <fieldset>
+                <legend>Test Result</legend>
+                <h4>
+                    {{ itemtypename }} <a href="{{ xar_moduleurl('roles','admin','modify',{'id': id}) }}">'{{ pname }}'</a>
+                    {% if testresult == false %}
+                        Is Not Permitted 
+                    {% else %}
+                        Is Permitted
+                    {% endif %}
+                </h4>
+            </fieldset>
+        {% endif %}
+    </div>
+{% endblock %}

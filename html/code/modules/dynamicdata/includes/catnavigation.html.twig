@@ -1,0 +1,30 @@
+{# @dynamicdata/includes/catnavigation.html.twig #}
+
+{% block catnavigation %}
+{# <!--  we need to see if type is admin or user here, since we don't know who called us anymore --> #}
+    {% set tmpreq = xar_coremethod('xarController', 'getRequest').getInfo() %}
+    {% if not viewfunc %}
+        {% set viewfunc = 'view' %}
+    {% endif %}
+    {% if tmpreq and tmpreq[1] == 'object' %}
+        {# <!-- from object view or display --> #}
+{# <!-- TODO: fix category selection in DD
+        {{ xar_data_output({type: "categorynavigation", layout: "trails", showchildren: "1", module: modname, itemtype: itemtype, urltype: "object", urlfunc: "main", name: name, itemid: itemid, catid: catid, showcatcount: "1"}) }}
+--> #}
+    {% elseif tmpreq and tmpreq[2] == 'view' %}
+        {# <!-- from admin-view.xt or user-view.xt --> #}
+{# <!-- TODO: fix category selection in DD
+        {{ xar_data_output({type: "categorynavigation", layout: "trails", showchildren: "1", module: modname, urltype: "{{ tmpreq[1] }}", urlfunc: viewfunc, name: name, itemid: "0", catid: catid, showcatcount: "1"}) }}
+--> #}
+    {% elseif itemid is not null %}
+        {# <!-- from user-display.xt --> #}
+{# <!-- TODO: fix category selection in DD
+        {{ xar_data_output({type: "categorynavigation", layout: "trails", showchildren: "1", module: modname, urlfunc: viewfunc, name: name, itemid: itemid, catid: catid, showcatcount: "1"}) }}
+--> #}
+    {% else %}
+        {# <!-- from elsewhere --> #}
+{# <!-- TODO: fix category selection in DD
+        {{ xar_data_output({type: "categorynavigation", layout: "trails", showchildren: "1", module: modname, urlfunc: viewfunc, name: name, catid: catid, showcatcount: "1"}) }}
+--> #}
+    {% endif %}
+{% endblock %}

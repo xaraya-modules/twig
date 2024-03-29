@@ -1,0 +1,45 @@
+{# @modules/blocks/verticallistbyname.html.twig #}
+
+{% block verticallistbyname %}
+{# <!--
+        this is a simplified version of vertical list template
+        for full comments and examples see file verticallistbycats.xd
+    --> #}
+    <ul class="xar-menu-section">
+        <li class="xar-menu-section">
+            <ul class="xar-menu-item">
+                <xar:foreach in="$adminmods" value="$mod" key="$modname">
+                    {% set menuitemclass = 'xar-menu-item' %}
+                    {% if mod['features']['modactive'] %}
+                        {% set menuitemclass = 'xar-menu-item-current' %}
+                    {% endif %}
+                    <li class="{{ menuitemclass }}">
+                        {% if mod['features']['modactive'] and not mod['features']['overview'] %}
+                            <a name="activeitem" title="{{ mod['features']['label'] }}">
+                                {{ mod['features']['label'] }}
+                            </a>
+                        {% elseif mod['features']['modactive'] and mod['features']['overview'] %}
+                            <a href="{{ mod['features']['link'] }}" title="{{ mod['features']['maintitle'] }}">
+                                {{ mod['features']['label'] }}
+                            </a>
+                        {% else %}
+                            <a href="{{ mod['features']['link'] }}" title="{{ mod['features']['maintitle'] }}">
+                                {{ mod['features']['label'] }}
+                            </a>
+                        {% endif %}
+                        {# <!-- Render the menu part --> #}
+                        <xar:template file="menu-part" subdata="['mod' => $mod]"/>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+    {% if showlogout %}
+        <ul class="xar-menu-section">
+            <li class="xar-menu-item">
+                {% set label = 'Logout as administrator' %}
+                <a title="{{ label }}" href="{{ xar_moduleurl('modules','admin','confirmlogout') }}">Admin logout</a>
+            </li>
+        </ul>
+    {% endif %}
+{% endblock %}

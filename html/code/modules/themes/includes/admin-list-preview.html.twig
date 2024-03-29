@@ -1,0 +1,175 @@
+{# @themes/includes/admin-list-preview.html.twig #}
+
+{% block admin_list_preview %}
+{% if themes %}
+    <form method="post" action="{{ xar_moduleurl('themes', 'admin', 'view') }}">
+        <table class="xar-table xar-fullwidth">
+            {% for theme in themes %}
+                <tr id="{{ theme['name'] }}">
+                    <td style="width:250px;min-height:200px;" class="xar-padding-thickends">
+                    {% set preview_img = 'themes/' ~ theme['directory'] ~ '/images/preview.jpg' %}
+                    {% if is_file(preview_img) %}
+                        {{ include('@themes/includes/showimg.html.twig') }}
+                    {% else %}
+                        <div style="height:200px;line-height:187px;vertical-align:middle;text-align:center;">
+                            <p class="xar-info">Preview unavailable</p>                        
+                        </div>
+                    {% endif %}                    
+                    </td>
+                    <td class="xar-padding-thickends">
+
+                    <div class="xar-row xar-alt xar-padding-thick" style="clear:none;">
+                        <div class="xar-col">
+                            Theme Name
+                        </div>
+                        <div class="xar-col">
+                            {{ theme['name'] }}
+                        </div>                    
+                    </div>                
+                    <div class="xar-row xar-norm xar-padding-thick">
+                        <div class="xar-col">
+                            Description
+                        </div>
+                        <div class="xar-col">
+                            {{ theme['description'] }}
+                        </div>                    
+                    </div>
+                    <div class="xar-row xar-alt xar-padding-thick">
+                        <div class="xar-col">
+                            Class
+                        </div>
+                        <div class="xar-col">
+                            {{ classes[theme['class']]['name'] }}
+                        </div>                    
+                    </div>
+                    <div class="xar-row xar-norm xar-padding-thick">
+                        <div class="xar-col">
+                            State
+                        </div>
+                        <div class="xar-col">
+                            {{ states[theme['state']]['name'] }}
+                        </div>                    
+                    </div>
+                    {% if theme['class'] == 2 and theme['state'] == xarTheme..STATE_ACTIVE %}
+                        {% set themename = strtolower(theme['name']) %}
+                        <div class="xar-row xar-alt xar-padding-thick">
+                            <div class="xar-col">
+                                User Default
+                            </div>
+                            <div class="xar-col">
+                                {% if themename == user_theme %}
+                                    <input type="radio" name="user_theme" id="user_theme" value="{{ themename }}" checked="checked"/>
+                                {% else %}
+                                    <input type="radio" name="user_theme" id="user_theme" value="{{ themename }}"/>
+                                {% endif %}                                 
+                            </div>                    
+                        </div>
+                        <div class="xar-row xar-norm xar-padding-thick">
+                            <div class="xar-col">
+                                Admin Default
+                            </div>
+                            <div class="xar-col">
+                                {% if themename == admin_theme %}
+                                    <input type="radio" name="admin_theme" id="admin_theme" value="{{ themename }}" checked="checked"/>
+                                {% elseif not admin_theme and themename == user_theme %}
+                                    <input type="radio" name="admin_theme" id="admin_theme" value="{{ themename }}" checked="checked"/>
+                                {% else %}
+                                    <input type="radio" name="admin_theme" id="admin_theme" value="{{ themename }}"/>
+                                {% endif %}                                
+                            </div>                    
+                        </div>
+                    {% else %}
+                        <div class="xar-row xar-alt xar-padding-thick">
+                            <div class="xar-col">
+                                User Default
+                            </div>
+                            <div class="xar-col">
+                                <input type="radio" name="user_theme" id="user_theme" disabled="disabled"/>
+                            </div>                    
+                        </div>
+                        <div class="xar-row xar-norm xar-padding-thick">
+                            <div class="xar-col">
+                                Admin Default
+                            </div>
+                            <div class="xar-col">
+                                <input type="radio" name="admin_theme" id="admin_theme" disabled="disabled"/>
+                            </div>                    
+                        </div>                    
+                    {% endif %}
+                    <div class="xar-row xar-alt xar-padding-thick">
+                        <div class="xar-col">
+                            Actions
+                        </div>
+                        <div class="xar-col">
+                            {% if not useicons %}
+                                <a href="{{ theme['info_url'] }}" title="{{ infotitle }}">{{ infolabel }}</a>&#160;
+                                {% if theme['init_url'] %}
+                                    <a href="{{ theme['init_url'] }}" title="{{ inittitle }}">{{ initlabel }}</a>
+                                {% elseif theme['activate_url'] %}
+                                    <a href="{{ theme['activate_url'] }}" title="{{ activatetitle }}">{{ activatelabel }}</a> 
+                                {% elseif theme['deactivate_url'] %}
+                                    <a href="{{ theme['deactivate_url'] }}" title="{{ deactivatetitle }}">{{ deactivatelabel }}</a>
+                                {% elseif theme['upgrade_url'] %}
+                                    <a href="{{ theme['upgrade_url'] }}" title="{{ upgradetitle }}">{{ upgradelabel }}</a>
+                                {% elseif theme['state'] == xarTheme..STATE_ACTIVE %}
+                                    {{ nonelabel }}
+                                {% elseif theme['class'] == 4 %}
+                                    {{ nonelabel }}
+                                {% else %}
+                                    {{ errorlabel }}
+                                {% endif %}&#160;
+                                {% if theme['remove_url'] %}
+                                    <a href="{{ theme['remove_url'] }}" class="xar-icon" title="{{ removetitle }}">{{ removelabel }}</a> 
+                                {% elseif theme['state'] == xarTheme..STATE_ACTIVE %}
+                                    {{ nonelabel }}
+                                {% else %}
+                                    {{ nonelabel }}
+                                {% endif %}      
+                            {% else %}
+                                <a href="{{ theme['info_url'] }}" title="{{ infotitle }}"><img src="{{ infoicon }}" class="xar-icon" alt="{{ infolabel }}"/></a>&#160;
+                                {% if theme['init_url'] %}
+                                    <a href="{{ theme['init_url'] }}" class="xar-icon" title="{{ inittitle }}"><img src="{{ initicon }}" class="xar-icon" alt="{{ initlabel }}"/></a>
+                                {% elseif theme['activate_url'] %}
+                                    <a href="{{ theme['activate_url'] }}" class="xar-icon" title="{{ activatetitle }}"><img src="{{ activateicon }}" class="xar-icon" alt="{{ activatelabel }}"/></a> 
+                                {% elseif theme['deactivate_url'] %}
+                                    <a href="{{ theme['deactivate_url'] }}" class="xar-icon" title="{{ deactivatetitle }}"><img src="{{ deactivateicon }}" class="xar-icon" alt="{{ deactivatelabel }}"/></a>
+                                {% elseif theme['upgrade_url'] %}
+                                    <a href="{{ theme['upgrade_url'] }}" class="xar-icon" title="{{ upgradetitle }}"><img src="{{ upgradeicon }}" class="xar-icon" alt="{{ upgradelabel }}"/></a>
+                                {% elseif theme['state'] == xarTheme..STATE_ACTIVE %}
+                                    <img src="{{ deactivateicon }}" class="xar-icon-disabled" alt="{{ deactivatelabel }}" title="{{ deactivatetitle }}"/>
+                                {% elseif theme['class'] == 4 %}
+                                    <img src="{{ noneicon }}" class="xar-icon" alt="{{ nonelabel }}" title="{{ nonetitle }}"/>
+                                {% else %}
+                                    <img src="{{ erroricon }}" class="xar-icon" alt="{{ errorlabel }}" title="{{ errortitle }}"/>
+                                {% endif %}&#160;
+                                {% if theme['remove_url'] %}
+                                    <a href="{{ theme['remove_url'] }}" class="xar-icon" title="{{ removetitle }}"><img src="{{ removeicon }}" class="xar-icon" alt="{{ removelabel }}"/></a> 
+                                {% elseif theme['state'] == xarTheme..STATE_ACTIVE %}
+                                    <img src="{{ removeicon }}" class="xar-icon-disabled" alt="{{ removelabel }}" title="{{ removetitle }}"/>
+                                {% else %}
+                                    <img src="{{ noneicon }}" class="xar-icon" alt="{{ nonelabel }}" title="{{ nonetitle }}"/>
+                                {% endif %}                            
+                            {% endif %}                            
+                        </div>                    
+                    </div>                    
+                    </td>            
+                </tr>
+            {% endfor %}
+        </table>
+        {% if class > 1 %}
+            {% set submitLabel = 'Update Themes' %}
+        {% endif %}
+        {% if submitLabel %}
+        <fieldset>
+            <div class="xar-align-center">
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                <input type="hidden" name="phase" id="phase" value="update"/>
+                {{- xar_button({type: "submit", label: submitLabel}) -}}
+            </div>
+        </fieldset>
+        {% endif %}
+    </form>
+{% else %}
+    <p class="xar-info">No themes found matching selection</p> 
+{% endif %}
+{% endblock %}

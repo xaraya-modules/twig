@@ -1,0 +1,93 @@
+{# @roles/includes/tree.html.twig #}
+
+{% block tree %}
+{% if treenode %}
+        <ul>
+            {% set lastnode = max(0,treenode|length-1) %}
+            {% for i in range(0, lastnode) %}
+                {% set childrennode = treenode[i]['children'] %}
+                {% set node = treenode[i]['parent'] %}
+                {% set drawchildren = true %}
+                {% if i == lastnode %}
+                    {% set islast = "lastnode" %}
+                {% else %}
+                    {% set islast = "" %}
+                {% endif %}
+                {% if childrennode %}
+                    {% set children = "children" %}
+                {% else %}
+                    {% set children = "" %}
+                {% endif %}
+                <li class="leaf {{ islast }} {{ children }}">
+                    {#  Placeholder spans #}
+                    <span class="a {{ islast }} {{ children }}">
+                        <span class="b">
+                            <span class="c">
+                                {#  Tree branch and description #}
+                                <span class="treeattributes">
+                                    {% if drawchildren == false %}
+                                        <span style="padding-left: 1em">
+                                        <strong>{{ node['name'] }}</strong>see the entry above</span>
+                                    {% else %}
+                                        {% set numofsubgroups = count(xar_coremethod('xarRoles', 'getsubgroups', [node['id']])) %}
+                                        {% set numofsubgroups = 1 %}
+                                        {% set subgroups = numofsubgroups == 1 ? {{ xar_translate('subgroup') }} : {{ xar_translate('subgroups') }} %}
+                                        {% set users = node['users'] == 1 ? {{ xar_translate('user') }} : {{ xar_translate('users') }} %}
+                                        {% set description = numofsubgroups ~ " " ~ subgroups ~ ' | ' ~ node['users'] ~ " " ~ users %}
+                                        {% set label = 'Modify this Group' %}
+                                        <a href="{{ xar_moduleurl('roles', 'admin', 'modify', {'id': node['id']}) }}" title="{{ label }}" style="margin: 0 0.25em 0 0.25em;">
+                                            {{ node['name'] }}
+                                        </a> 
+                                        {{ description }}
+                                    {% endif %}
+                                    {# <!-- Delete item --> #}>
+                                    {% set seccheck = xar_security_check('ManageRoles',0,'Roles',node['name']) %}
+                                    {% if (seccheck == false) or (node['users'] > 0) or (drawchildren == false) %}
+                                    {% else %}
+                                        {% set label = 'Delete this Group' %}
+                                        <a href="{{ xar_moduleurl('roles', 'admin', 'delete', {'id': node['id']}) }}" title="{{ label }}" style="margin: 0 0.25em 0 0.25em;">
+                                            {{- xar_image({scope: "theme", file: "icons/delete.png", class: "xar-icon"}) -}}
+                                        </a>
+                                    {% endif %}
+                                    {# <!-- Users item --> #}
+                                    {% if (node['users'] > 0) and (drawchildren) %}
+                                        {% set label = 'Show the Users in this Group' %}
+                                        <a href="{{ xar_moduleurl('roles', 'admin', 'showusers', {'id': node['id'}, 'reload' => 1]) }}" title="{{ label }}" style="margin: 0 0.25em 0 0.25em;">
+                                            {{- xar_image({scope: "theme", file: "icons/system-users.png", class: "xar-icon"}) -}}
+                                        </a>
+                                    {% endif %}
+                                    {# <!-- Email item --> #}
+                                    {% if (node['users'] > 0) and (drawchildren) %}
+                                    {% else %}
+                                        {% set label = 'Email the Users in this Group' %}
+                                        <a href="{{ xar_moduleurl('roles', 'admin', 'createmail', {'id': node['id']}) }}" title="{{ label }}" style="margin: 0 0.25em 0 0.25em;">
+                                            {{- xar_image({scope: "theme", file: "icons/mail.png", class: "xar-icon"}) -}}
+                                        </a>
+                                    {% endif %}
+                                    {# <!-- Show privileges item --> #}
+                                    {% if drawchildren %}
+                                        {% set label = 'Show the Privileges assigned to this Group' %}
+                                        <a href="{{ xar_moduleurl('roles', 'admin', 'showprivileges', {'id': node['id']}) }}" title="{{ label }}" style="margin: 0 0.25em 0 0.25em;">
+                                            {{- xar_image({scope: "theme", file: "icons/privileges.png", class: "xar-icon"}) -}}
+                                        </a>
+                                    {% endif %}
+                                    {# <!-- Test privileges item --> #}
+                                    {% if drawchildren %}
+                                        {% set label = 'Test this Groups's Privileges' %}
+                                        <a href="{{ xar_moduleurl('roles', 'admin', 'testprivileges', {'id': node['id']}) }}" title="{{ label }}" style="margin: 0 0.25em 0 0.25em;">
+                                            {{- xar_image({scope: "theme", file: "icons/test.png", class: "xar-icon"}) -}}
+                                        </a>
+                                    {% endif %}
+                                </span>
+                            </span>
+                        </span>
+                    </span>
+                    {# <!-- Now do the children --> #}
+                    {% if childrennode %}
+                        <xar:template file="tree" subdata="['treenode' => $childrennode]"/>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

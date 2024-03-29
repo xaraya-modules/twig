@@ -1,0 +1,8 @@
+{# modules/dynamicdata/user-objectdisplay.xml.twig #}
+
+{% block user_objectdisplay %}
+{% for name in properties|keys %}
+        <xar:element name="{{ properties.name.name }}">
+        {{ xar_prep_display(properties.name.value) }}</xar:element>
+    {% endfor %}
+{% endblock %}

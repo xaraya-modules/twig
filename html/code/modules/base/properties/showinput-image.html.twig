@@ -1,0 +1,19 @@
+{# @base/properties/showinput-image.html.twig #}
+
+{% block showinput_image %}
+{% if image_source == 'upload' %}
+        <input type="text" name="{{ name }}" value="{{ value }}" size="{{ size }}" maxlength="{{ maxlength }}" id="{{ id }}" tabindex="{{ tabindex }}"/>&#160; 
+        {{ xar_data_input({type: "fileupload", name: name, extensions: extensions}) }}
+    {% elseif image_source == 'url' %}
+        {{ xar_data_input({type: "url", name: name, value: value}) }}
+    {% else %}
+        {% set firstline = {'id': '', 'name': {{ xar_translate('Select Image') }}} %}
+        {{ xar_data_input({type: "filepicker", name: name, value: value, basedir: basedirectory, extensions: extensions, firstline: firstline}) }}
+        {% set showlabel = 'check' %}
+        {% if value %} 
+            [<a href="{{ basedirectory }}/{{ value }}" target="preview">{{ showlabel }}</a>]
+        {% endif %}
+    {% endif %}
+    <input type="hidden" name="{{ name }}_source" value="{{ image_source }}"/>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

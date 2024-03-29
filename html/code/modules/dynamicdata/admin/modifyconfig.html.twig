@@ -1,0 +1,62 @@
+{# @dynamicdata/admin/modifyconfig.html.twig #}
+
+{% block modifyconfig %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            <h2>            
+                Modify DynamicData Configuration            
+            </h2>
+            {% set xmldata = 'modifyconfig' %}
+            {{ include('@base/includes/admin-menu-skel.html.twig') }}
+        </div>
+        <div class="xar-mod-page-body">
+
+            {# <!-- General tab --> #}
+            {% if tab == 'general' %}
+                <form method="post" action="{{ xar_currenturl() }}" enctype="application/x-www-form-urlencoded">
+                    <fieldset>
+                        <legend>General options</legend>
+                        {{ xar_data_form({object: module_settings}) }}
+                    </fieldset>
+                    <fieldset>
+                        <legend>                    
+                            Debugging                    
+                        </legend>
+                        {{ include('@dynamicdata/includes/config_debug.html.twig') }}
+                    </fieldset>
+                    <fieldset>
+                        <legend>                    
+                            Caching                    
+                        </legend>
+                        {{ include('@dynamicdata/includes/config_caching.html.twig') }}
+                    </fieldset>
+                    <fieldset>
+                        <legend>
+                            Templating
+                        </legend>
+                        {{ include('@dynamicdata/includes/config_templating.html.twig') }}
+                    </fieldset>
+                    {# <!--
+                    <fieldset>
+                        <legend>                    
+                            Display                    
+                        </legend>
+                        {{ include('@dynamicdata/includes/config_display.html.twig') }}
+                    </fieldset>
+                    --> #}
+                    {{ include('@base/includes/update-button.html.twig') }}
+                </form>
+            {% elseif tab == 'managehooks' %}
+                {# <!-- Hooks tab --> #}
+                <fieldset>
+                    <legend>
+                        Configure Dynamicdata Hooks
+                    </legend>
+                    {% set url = xar_moduleurl('dynamicdata','admin','modifyconfig',{'tab': 'managehooks'}) %}
+                    {{ xar_guifunc("modules", "admin", "hooks", {main: "false", curhook: "dynamicdata", return_url: url}) }}
+                </fieldset>
+            {% endif %}
+        </div>{# <!--/xar-mod-page-body--> #}
+    </div>
+{% endblock %}

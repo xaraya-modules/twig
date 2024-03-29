@@ -1,0 +1,235 @@
+{# @modules/admin/view.html.twig #}
+
+{% block view %}
+{{ include('@modules/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            <h2>View Modules</h2>
+        </div>
+        <div class="xar-mod-page-body">
+
+            <form method="post" action="{{ xar_currenturl() }}">
+                <table class="xar-table xar-items-controls">
+                    <thead>
+                        <tr>
+                            <th><label for="state">State</label></th>
+                            <th><label for="modtype">Type</label></th>
+                            <th><label for="apply"></label></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {{ xar_data_input({type: "dropdown", name: "state", id: "state", value: state, options: states, onchange: "this.form.submit();"}) }}
+                            </td>
+                            <td>
+                                {{ xar_data_input({type: "dropdown", name: "modtype", id: "modtype", value: modtype, options: modtypes, onchange: "this.form.submit();"}) }}
+                            </td>
+                            <td>
+                                {% set applyLabel = 'Apply Filter' %}
+                                {# <!-- {{- xar_button({type: "submit", name: "apply", id: "apply", label: applyLabel}) -}} --> #}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+
+            {% set admintitle = 'View administration options for this module' %}
+
+            {% set infotitle = 'View detail information about this module' %}
+            {% set infolabel = 'Info' %}
+
+            {% set inittitle = 'Initialize this module' %}
+            {% set initlabel = 'Initialize' %}
+
+            {% set activatetitle = 'Activate this module' %}
+            {% set activatelabel = 'Activate' %}
+
+            {% set deactivatetitle = 'Deactivate this module' %}
+            {% set deactivatelabel = 'Deactivate' %}
+
+            {% set upgradetitle = 'Upgrade this module' %}
+            {% set upgradelabel = 'Upgrade' %}
+
+            {% set nonetitle = 'Option not available' %}
+            {% set nonelabel = 'n/a' %}
+
+            {% set errortitle = 'Module version error' %}
+            {% set errorlabel = 'Error' %}
+
+            {% set removetitle = 'Remove this module' %}
+            {% set removelabel = 'Remove' %}
+
+            {% set hookstitle = 'Manage hooks to this module' %}
+            {% set hookslabel = 'Hooks' %}
+
+            {% if useicons %}
+                {% set infoicon = xar_imageurl('icons/info.png','theme') %}
+                {% set initicon = xar_imageurl('icons/initialize.png','theme') %}
+                {% set activateicon = xar_imageurl('icons/activate.png','theme') %}
+                {% set deactivateicon = xar_imageurl('icons/deactivate.png','theme') %}
+                {% set upgradeicon = xar_imageurl('icons/software-upgrade.png','theme') %}
+                {% set noneicon = xar_imageurl('icons/none.png','theme') %}
+                {% set erroricon = xar_imageurl('icons/dialog-error.png','theme') %}
+                {% set removeicon = xar_imageurl('icons/remove.png','theme') %}
+                {% set hooksicon = xar_imageurl('icons/hooks.png','theme') %}
+            {% endif %}
+
+            {% if sort == 'ASC' %}
+                {% set sorturl = xar_currenturl({'sort': 'DESC'}) %}
+                {% set sortimg = xar_imageurl('arrow_down.gif', 'module', 'base') %}
+                {% set sortlbl = 'Sort by name descending' %}
+            {% else %}
+                {% set sorturl = xar_currenturl({'sort': 'ASC'}) %}
+                {% set sortimg = xar_imageurl('arrow_up.gif', 'module', 'base') %}
+                {% set sortlbl = 'Sort by name ascending' %}
+            {% endif %}
+
+            <div class="xar-align-center">
+                {{ xar_pager({startnum: startnum, itemsperpage: items_per_page, total: total}) }}
+            </div>
+            <table class="xar-table xar-items">
+                <thead>
+                    <tr>
+                        <th>
+                            <a href="{{ sorturl }}" title="{{ sortlbl }}">Name</a>
+                            <a href="{{ sorturl }}" title="{{ sortlbl }}"><img src="{{ sortimg }}" class="xar-icon" alt="{{ sort }}"/></a>
+                        </th>
+                        <th>Display Name</th>
+                        <th>Version</th>
+                        <th>Status</th>
+                        <th class="xar-align-right">Actions</th>
+                    </tr>
+                </thead>
+                {% if searched %}
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="xar-align-center">{{ searched }}</td>
+                        </tr>
+                    </tfoot>
+                {% endif %}
+                <tbody>
+                    {% if items %}
+                        {% for item in items %}
+                            <tr id="{{ item['name'] }}">
+                                <td>
+                                    {% if item['admin_url'] %}
+                                        <a href="{{ item['admin_url'] }}" title="{{ admintitle }}">{{ item['name'] }}</a>
+                                    {% else %}
+                                        {{ item['name'] }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ item['displayname'] }}</td>
+                                <td>{{ item['version'] }}</td>
+                                <td>
+                                    {% if item['error_url'] %}
+                                        <a href="{{ item['error_url'] }}">{{ states[item['state']]['name'] }}</a>
+                                    {% else %}
+                                        {{ states[item['state']]['name'] }}
+                                    {% endif %}
+                                </td>
+                                <td class="xar-align-right">
+                                    {% if useicons %}
+                                        <a href="{{ item['info_url'] }}" title="{{ infotitle }}" class="xar-icon"><img src="{{ infoicon }}" class="xar-icon" alt="{{ infolabel }}"/></a>&#160;
+                                        {% if item['hooks_url'] %}
+                                            <a href="{{ item['hooks_url'] }}" title="{{ hookstitle }}" class="xar-icon"><img src="{{ hooksicon }}" class="xar-icon" alt="{{ hookslabel }}"/></a>
+                                        {% else %}
+                                            <img src="{{ hooksicon }}" class="xar-icon-disabled" alt="{{ hookslabel }}"/>
+                                        {% endif %}&#160;
+                                        {% if item['iscore'] %}
+                                            <img src="{{ noneicon }}" class="xar-icon" alt="{{ nonelabel }}" title="{{ nonetitle }}"/>
+                                        {% elseif item['init_url'] %}
+                                            <a href="{{ item['init_url'] }}" class="xar-icon" title="{{ inittitle }}"><img src="{{ initicon }}" class="xar-icon" alt="{{ initlabel }}"/></a>
+                                        {% elseif item['activate_url'] %}
+                                            <a href="{{ item['activate_url'] }}" class="xar-icon" title="{{ activatetitle }}"><img src="{{ activateicon }}" class="xar-icon" alt="{{ activatelabel }}"/></a>
+                                        {% elseif item['deactivate_url'] %}
+                                            <a href="{{ item['deactivate_url'] }}" class="xar-icon" title="{{ deactivatetitle }}"><img src="{{ deactivateicon }}" class="xar-icon" alt="{{ deactivatelabel }}"/></a>
+                                        {% elseif item['upgrade_url'] %}
+                                            <a href="{{ item['upgrade_url'] }}" class="xar-icon" title="{{ upgradetitle }}"><img src="{{ upgradeicon }}" class="xar-icon" alt="{{ upgradelabel }}"/></a>
+                                        {% elseif item['error_url'] %}
+                                            <a href="{{ item['error_url'] }}"><img src="{{ erroricon }}" class="xar-icon" alt="{{ errorlabel }}" title="{{ errortitle }}"/></a>
+                                        {% else %}
+                                            <img src="{{ noneicon }}" class="xar-icon" alt="{{ nonelabel }}" title="{{ nonetitle }}"/>
+                                        {% endif %}
+                                        &#160;
+                                        {% if item['iscore'] %}
+                                            <img src="{{ noneicon }}" class="xar-icon" alt="{{ nonelabel }}" title="{{ nonetitle }}"/>
+                                        {% elseif item['remove_url'] %}
+                                            <a href="{{ item['remove_url'] }}" class="xar-icon" title="{{ removetitle }}"><img src="{{ removeicon }}" class="xar-icon" alt="{{ removelabel }}"/></a>
+                                        {% elseif item['state'] == xarMod..STATE_ACTIVE %}
+                                            <img src="{{ removeicon }}" class="xar-icon-disabled" alt="{{ removelabel }}" title="{{ removetitle }}"/>
+                                        {% else %}
+                                            <img src="{{ noneicon }}" class="xar-icon" alt="{{ nonelabel }}" title="{{ nonetitle }}"/>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{{ item['info_url'] }}" title="{{ infotitle }}">{{ infolabel }}</a>&#160;
+                                        {% if item['hooks_url'] %}
+                                            <a href="{{ item['hooks_url'] }}" title="{{ hookstitle }}" class="xar-icon">{{ hookslabel }}</a>
+                                        {% else %}
+                                            {{ nonelabel }}
+                                        {% endif %}&#160;
+                                        {% if item['iscore'] %}
+                                            {{ nonelabel }}
+                                        {% elseif item['init_url'] %}
+                                            <a href="{{ item['init_url'] }}" class="xar-icon" title="{{ inittitle }}">{{ initlabel }}</a>
+                                        {% elseif item['activate_url'] %}
+                                            <a href="{{ item['activate_url'] }}" class="xar-icon" title="{{ activatetitle }}">{{ activatelabel }}</a>
+                                        {% elseif item['deactivate_url'] %}
+                                            <a href="{{ item['deactivate_url'] }}" class="xar-icon" title="{{ deactivatetitle }}">{{ deactivatelabel }}</a>
+                                        {% elseif item['upgrade_url'] %}
+                                            <a href="{{ item['upgrade_url'] }}" class="xar-icon" title="{{ upgradetitle }}">{{ upgradelabel }}</a>
+                                        {% elseif item['error_url'] %}
+                                            <a href="{{ item['error_url'] }}">{{ errorlabel }}</a>
+                                        {% else %}
+                                            {{ nonelabel }}
+                                        {% endif %}
+                                        &#160;
+                                        {% if item['iscore'] %}
+                                            {{ nonelabel }}
+                                        {% elseif item['remove_url'] %}
+                                            <a href="{{ item['remove_url'] }}" class="xar-icon" title="{{ removetitle }}">{{ removelabel }}</a>
+                                        {% elseif item['state'] == xarMod..STATE_ACTIVE %}
+                                            {{ nonelabel }}
+                                        {% else %}
+                                            {{ nonelabel }}
+                                        {% endif %}
+                                    {% endif %}
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <td colspan="5">
+                            <p class="xar-info">No modules found matching selection</p>
+                        </td>
+                    {% endif %}
+                </tbody>
+            </table>
+            <div class="xar-align-center">
+                {{ xar_pager({startnum: startnum, itemsperpage: items_per_page, total: total}) }}
+            </div>
+        </div>
+    </div>
+    {% if useicons %}
+        <div class="xar-mod-foot">
+            <dl class="xar-legend">
+                <dt>Legend</dt>
+                <dd><img src="{{ infoicon }}" class="xar-icon" alt="{{ infolabel }}"/>
+                {{ infolabel }}</dd>
+                <dd><img src="{{ initicon }}" class="xar-icon" alt="{{ initlabel }}"/>
+                {{ initlabel }}</dd>
+                <dd><img src="{{ activateicon }}" class="xar-icon" alt="{{ activatelabel }}"/>
+                {{ activatelabel }}</dd>
+                <dd><img src="{{ deactivateicon }}" class="xar-icon" alt="{{ deactivatelabel }}"/>
+                {{ deactivatelabel }}</dd>
+                <dd><img src="{{ upgradeicon }}" class="xar-icon" alt="{{ upgradelabel }}"/>
+                {{ upgradelabel }}</dd>
+                <dd><img src="{{ removeicon }}" class="xar-icon" alt="{{ removelabel }}"/>
+                {{ removelabel }}</dd>
+                <dd><img src="{{ erroricon }}" class="xar-icon" alt="{{ errorlabel }}"/>
+                {{ errorlabel }}</dd>
+            </dl>
+        </div>
+    {% endif %}
+
+{% endblock %}

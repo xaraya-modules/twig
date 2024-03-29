@@ -1,0 +1,63 @@
+{# @privileges/admin/showroles.html.twig #}
+
+{% block showroles %}
+<script type="text/javascript" src="{{ xar_coremethod('sys', 'code') }}modules/privileges/xartemplates/xarTree.js"></script>
+    <script type="text/javascript">
+        var oldOnLoadFunction = (window.onload) ? window.onload : new
+        Function("","return true;"); function doOnLoad() { oldOnLoadFunction();
+        xarTree_init('PrivilegesTree'); } var oldOnUnloadFunction = (window.onunload) ? window.onunload
+        : new Function("","return true;"); function doOnUnload() { oldOnUnloadFunction();
+        xarTree_init('PrivilegesTree'); } window.onload = doOnLoad; window.onunload =
+        doOnUnload;
+    </script>
+    {{ include('@privileges/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Assignment</h2>
+        <table class="xar-table" border="0" width="100%" cellpadding="2">
+            {% if roles|length == 0 %}
+                <tr>
+                    <td colspan="3">This privilege is not assigned to any user or group.</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td>Type</td>
+                    <td>Name</td>
+                    <td>&#160;</td>
+                </tr>
+                {% for loop_key1, loop_item1 in roles %}{% set loop_index1 = loop.index %}
+                    <tr>
+                        <td width="150">
+                            {% if loop_item1['itemtype'] == 2 %}User 
+                            {% else %}Group{% endif %}
+                        </td>
+                        <td width="150">{{ loop_item1['name'] }}</td>
+                        <td class="xar-align-right">
+                            {% set tmptitleremove = 'Remove this Privilege assignment' %}
+                            <a href="{{ removeurl }}&amp;roleid={{ roleid }}" title="{{ tmptitleremove }}">
+                                Remove
+                            </a>
+                        </td>
+                    </tr>
+                </xar:loop>
+            {% endif %}
+        </table>
+        <table class="xar-table" border="0" width="100%">
+            <tr>
+                <th class="xar-align-center">Current Privileges</th>
+            </tr>
+        </table>
+        <table class="xar-table" border="0" cellspacing="5" width="100%">
+            <tr>
+                <td>
+                    <a href="{{ xar_moduleurl('privileges','admin','newprivilege') }}">Add Privilege</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <hr />
+                </td>
+            </tr>
+        </table>
+        <xar:loop name="$trees">{{ loop_item1['tree'] }}{% endfor %}
+    </div>
+{% endblock %}

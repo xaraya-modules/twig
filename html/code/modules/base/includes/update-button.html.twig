@@ -1,0 +1,15 @@
+{# @base/includes/update-button.html.twig #}
+
+{% block update_button %}
+<div class="xar-form-actions">
+        <div class="xar-row">
+            <div class="xar-col"></div>
+            <div class="xar-col">
+                {{ xar_data_input({type: "hidden", name: "phase", id: "phase", value: "update"}) }}
+                <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                {% set label = 'Update' %}
+                {{- xar_button({type: "submit", label: label}) -}}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{# @base/includes/user-menu-skel.html.twig #}
+
+{% block user_menu_skel %}
+{# <!-- Common user menu --> #}
+    {% if xar_modvar('themes', 'userpagemenu') %}
+        {% if xmldata is null %}
+            {% set xmldata = '' %}
+        {% endif %}
+        {% if phpdata is null %}
+            {% set phpdata = '' %}
+        {% endif %}
+        {% if urlargs is null %}
+            {% set urlargs = [] %}
+        {% endif %}
+        {# <!-- loadmenuarray function does all the hard work for us :) --> #}
+        {% set tabs = xar_apifunc('base', 'admin', 'loadmenuarray', {'layout': 'tabs', 'xmldata': xmldata, 'phpdata': phpdata, 'urlargs': urlargs}) %}
+        {# <!-- only display if we found some links --> #}
+        {% if tabs['menulinks'] %}
+            <ul class="xar-tabs xar-alt xar-norm-outline">
+                {% if tabs['title'] %}
+                    <li class="xar-tabs-label" title="{{ tabs.title }}">{{ tabs.label }}:</li>
+                {% else %}
+                    <li class="xar-tabs-label">{{ tabs.label }}</li>
+                {% endif %}
+                {# <!-- Get the value of the variable if it exists --> #}
+                {% if tabs['variable'] is not null and {tabs['variable']} is not null %}
+                    {% set variable = {tabs['variable']} %}
+                {% endif %}
+                
+                {% for tab in tabs['menulinks'] %}
+                    {# <!-- Compare each tab value to the value of the variable if it exists --> #}
+                    {% if tab['value'] is not null and variable is not null %}
+                        {% if tab['value'] == variable %}
+                            {% set tabclass = 'xar-tab-active' %}
+                            {% set linkclass = 'xar-accent xar-accent-outline' %}
+                        {% else %}
+                            {% set tabclass = 'xar-tab' %}
+                            {% set linkclass = 'xar-norm xar-norm-outline' %}
+                        {% endif %}
+                    {% else %}
+                        {% if tab['isactive'] %}
+                            {% set tabclass = 'xar-tab-active' %}
+                            {% set linkclass = 'xar-accent xar-accent-outline' %}
+                        {% else %}
+                            {% set tabclass = 'xar-tab' %}
+                            {% set linkclass = 'xar-norm xar-norm-outline' %}
+                        {% endif %}
+                    {% endif %}
+                    <li class="{{ tabclass }}">
+                        {% if tab['url'] %}
+                            <a href="{{ tab['url'] }}" class="{{ linkclass }}" title="{{ tab['title'] }}">
+                                {{ tab['label'] }}
+                            </a>
+                        {% else %}
+                            <a class="{{ linkclass }}" title="{{ tab['title'] }}">
+                                {{ tab['label'] }}
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
+{% endblock %}

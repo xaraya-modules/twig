@@ -1,0 +1,28 @@
+{# @dynamicdata/displayhook.html.twig #}
+
+{% extends '@dynamicdata/base.html.twig' %}
+
+{% block modulespace %}
+{# <!--
+        Note: display hooks are currently disabled by default in DD - you should use
+        the corresponding xar:data-* BL tags directly in your templates instead
+    --> #}
+    {# <!--
+        You can use different user-displayhook-[objectname].xd templates for different objects
+    --> #}
+    <table class="xar-table" width="100%" border="0" cellspacing="0" cellpadding="4">
+        {% for name, property in properties %}
+            {% if properties[name].getDisplayStatus() != DataPropertyMaster..DD_DISPLAYSTATE_DISABLED %}
+
+                <tr class="xar-align-left">
+                    <td>
+                        {{ xar_data_label({property: properties[name]}) }}
+                    </td>
+                    <td>
+                        {{ xar_data_output({property: properties[name]}) }}
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% endblock %}

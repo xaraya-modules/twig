@@ -1,0 +1,95 @@
+{# @categories/blocks/nav-trails.html.twig #}
+
+{% block nav_trails %}
+{% if catdescr %}
+    <table class="xar-table" border="0" cellpadding="2" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top">
+            <h3>{{ catdescr }}</h3>
+        </td>
+    </tr>
+    </table>
+    <br />
+    {% endif %}
+
+    <table class="xar-table" border="0" cellpadding="2" cellspacing="0" width="100%">
+    <tr>
+        <td valign="top">
+            {{ cattitle }} :
+        </td>
+        <td valign="top">
+            {% for loop_key1, loop_item1 in cattrails %}{% set loop_index1 = loop.index %}{% set loop_trails_index = loop_index1 %}{% set loop_trails_item = loop_item1 %}{% set loop_trails_key = loop_key1 %}
+                {% for loop_key2, loop_item2 in loop_trails_item['catitems'] %}{% set loop_index2 = loop.index %}{% set loop_catitems_index = loop_index2 %}{% set loop_catitems_item = loop_item2 %}{% set loop_catitems_key = loop_key2 %}
+                    {{ loop_catitems_item['catjoin'] }}
+                    {% if not loop_catitems_item['catlink'] %}
+                        {{ loop_catitems_item['catlabel'] }}
+                    {% else %}
+                        <a href="{{ loop_catitems_item['catlink'] }}">{{ loop_catitems_item['catlabel'] }}</a>
+                    {% endif %}
+                </xar:loop>
+                {% if loop_trails_item['catcount'] %}
+                    ({{ loop_trails_item['catcount'] }})
+                {% endif %}
+                <br />
+            {% endfor %}
+        </td>
+    </tr>
+    </table>
+
+    {% if catimage %}
+    <br />
+    <table class="xar-table" border="0" cellpadding="2" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top">
+            <img src="{{ catimage }}" border="0" alt="{{ catname }}"/>
+        </td>
+    </tr>
+    </table>
+    {% endif %}
+
+    {% if caticons and caticons|length > 0 %}
+        <br />
+        <table class="xar-table" border="0" cellpadding="2" cellspacing="0" width="100%">
+            {% for i in range(0, caticons|length) %}
+                {% set j = 0 %}
+                <xar:while condition="1">
+                    <tr>
+                        <td align="center" valign="middle">
+                            <a href="{{ caticons[i]['catlink'] }}"><img src="{{ caticons[i]['catimage'] }}" border="0" alt="{{ caticons[i]['catlabel'] }}"/><br />{{ caticons[i]['catlabel'] }}</a>
+                            {% if caticons[i]['catcount'] %}
+                                ({{ caticons[i]['catcount'] }})
+                            {% endif %}
+                        </td>
+                        {% set j = j + 1 %}
+                        {% if i % 2 == 0 %}
+                            <xar:break />
+                        {% endif %}
+                    </tr>
+                </xar:while>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if catlines and catlines|length > 0 %}
+    <br />
+    <table class="xar-table" border="0" cellpadding="2" cellspacing="0" width="100%">
+    <tr>
+        <td valign="top">
+        <xar:loop id="catlines" name="$catlines">
+            {{ loop.catlines.item['beforetags'] }}
+            <a href="{{ loop.catlines.item['catlink'] }}">{{ loop.catlines.item['catlabel'] }}</a>
+            {% if loop.catlines.item['catcount'] %}
+                ({{ loop.catlines.item['catcount'] }})
+            {% endif %}
+            {% if loop.catlines.item['catdescr'] %}
+                : {{ loop.catlines.item['catdescr'] }}
+            {% endif %}
+            {{ loop.catlines.item['aftertags'] }}
+        {% endfor %}
+        </td>
+    </tr>
+    </table>
+    {% endif %}
+
+    <br />
+{% endblock %}

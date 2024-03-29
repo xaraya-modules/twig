@@ -1,0 +1,11 @@
+{# @base/properties/showoutput-statelisting.html.twig #}
+
+{% block showoutput_statelisting %}
+{% if option['name'] %}
+        {% if option['link'] %}
+            <a href="{{ option.link }}">{{ option.name }}</a>
+        {% else %}
+            {{ option.name }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

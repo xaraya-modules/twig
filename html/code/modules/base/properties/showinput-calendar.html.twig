@@ -1,0 +1,13 @@
+{# @base/properties/showinput-calendar.html.twig #}
+
+{% block showinput_calendar %}
+{{ xar_javascript({scope: "module", module: "base", filename: "calendar.js"}) }}
+    {% set alttext = 'Click Here to Pick up the date' %}
+    {% if not tabindex %}
+        <input class="xar-form-textlong" type="text" name="{{ name }}" id="{{ id }}_input" value="{{ xar_coremethod('xarLocale', 'formatDate', [dateformat,value]) }}" size="20" maxlength="19"/>
+    {% else %}
+        <input class="xar-form-textlong" type="text" name="{{ name }}" id="{{ id }}_input" value="{{ xar_coremethod('xarLocale', 'formatDate', [dateformat,value]) }}" size="20" maxlength="19" tabindex="{{ tabindex }}"/>
+    {% endif %}
+    &#160;<a href="javascript:xar_base_calendar_init('{{ id }}','{{ baseuri }}')">{{- xar_image({scope: "module", module: "base", file: "calendar.gif", class: "xar-icon", alt: alttext}) -}}</a>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

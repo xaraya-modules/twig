@@ -1,0 +1,22 @@
+{# @modules/includes/menu-part.html.twig #}
+
+{% block menu_part %}
+{% if mod['indlinks'] is not null and mod['indlinks']|length > 0 %}
+        <ul class="xar-menu-subitem">
+            <xar:foreach in="$mod['indlinks']" value="$sublinks" key="$sublink">
+                {# <!-- determine and indicate current states of module functions display --> #}
+                {% if sublinks['funcactive'] %}
+                    <li class="xar-menu-subitem-current">
+                        <a name="activesubitem" title="{{ sublinks['adminlabel'] }}">
+                        {{ sublinks['adminlabel'] }}</a>
+                    </li>
+                    {% else %}
+                    <li class="xar-menu-subitem">
+                        <a href="{{ sublinks['adminlink'] }}" title="{{ sublinks['admintitle'] }}">
+                        {{ sublinks['adminlabel'] }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

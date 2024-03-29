@@ -1,0 +1,26 @@
+{# @base/properties/showoutput-array_of_props.html.twig #}
+
+{% block showoutput_array_of_props %}
+{% if value %}
+        {% if value is iterable %}
+        <div class="xar-form-container-after">
+            {% for key, val in value %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                    {% if associative_array == 1 %}
+                        <label for="{{ key }}_value" title="" style="">{{ key }}:</label>&#160;
+                    {% endif %}
+                    {% if not property %}
+                        {{ val }}
+                    {% else %}
+                        {{ xar_data_output({property: property, value: val}) }}
+                    {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            {{ value }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

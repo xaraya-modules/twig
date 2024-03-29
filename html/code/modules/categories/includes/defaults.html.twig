@@ -1,0 +1,64 @@
+{# @categories/includes/defaults.html.twig #}
+
+{% block defaults %}
+{% if tabmodule != 'categories' %}
+        {% set regid = xar_coremethod('xarMod', 'getRegID', [tabmodule]) %}
+    {% else %}
+        {% set regid = 0 %}
+    {% endif %}
+    <div class="xar-row">
+        <div class="xar-col">
+            <label for="items_per_page" title="{{ xar_translate('Object to use to model a category') }}" class="xar-form-label">
+                Categories object:
+            </label>
+        </div>
+        <div class="xar-col">
+            {% set value = xar_var({scope: "module", module: "categories", name: "categoriesobject"}) %}
+            {{ xar_data_input({type: "object", name: "categoriesobject", value: value, store_prop: "name"}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            <label for="bar" title="{{ xar_translate('The categories can be navigated in an explorer style interface.') }}" class="xar-form-label">
+                Windows Explorer style tree
+            </label>
+        </div>
+        <div class="xar-col">
+            {% set checked = xar_coremethod('xarModItemVars', 'get', ['categories', 'usejsdisplay', regid]) %}
+            {{ xar_data_input({type: "checkbox", name: "usejsdisplay", checked: checked}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            <label for="bar" title="{{ xar_translate('Specify how many links you want to see per page.') }}" class="xar-form-label">
+                Links shown in statistics            
+            </label>
+        </div>
+        <div class="xar-col">
+            {% set value = xar_coremethod('xarModItemVars', 'get', ['categories', 'numstats', regid]) %}
+            <input type="text" name="numstats" id="numstats" value="{{ value }}"/>
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            <label for="bar" title="{{ xar_translate('In many cases, you can see the item title if you want.') }}" class="xar-form-label">
+                Show the item title in statistics
+            </label>
+        </div>
+        <div class="xar-col">
+            {% set checked = xar_coremethod('xarModItemVars', 'get', ['categories', 'showtitle', regid]) %}
+            {{ xar_data_input({type: "checkbox", name: "showtitle", checked: checked}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            <label for="bar" title="{{ xar_translate('Make the batch processing option visible') }}" class="xar-form-label">
+                Allow batch processing
+            </label>
+        </div>
+        <div class="xar-col">
+            {% set checked = xar_coremethod('xarModItemVars', 'get', ['categories', 'allowbatch', regid]) %}
+            {{ xar_data_input({type: "checkbox", name: "allowbatch", checked: checked}) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{# @dynamicdata/includes/config_templating.html.twig #}
+
+{% block config_templating %}
+<div class="xar-row">
+        <div class="xar-col" style="padding-bottom: 10px;">
+            {% set label = 'This lets you try out the Twig template engine for DD objects' %}
+            <label for="caching" title="{{ label }}" class="xar-form-label">
+                Enable Twig template engine for DD objects <span style="color: red">(experimental)</span>
+            </label>
+        </div>
+        <div class="xar-col">
+            {% set value = xar_modvar('dynamicdata', 'twig_support') %}
+            {{ xar_data_input({type: "checkbox", name: "twig_support", value: value}) }}
+            <span style="color: red">This requires converting the DD object templates you want to use first, see <a href="https://github.com/xaraya/core/tree/com.xaraya.core.bermuda/html/lib/xaraya/bridge#blocklayout-converter">Blocklayout Converter</a></span>
+        </div>
+    </div>
+{% endblock %}

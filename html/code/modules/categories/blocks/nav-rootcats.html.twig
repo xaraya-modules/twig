@@ -1,0 +1,24 @@
+{# @categories/blocks/nav-rootcats.html.twig #}
+
+{% block nav_rootcats %}
+<table class="xar-table" border="0" cellpadding="2" cellspacing="0" width="100%">
+    <tr>
+        <td valign="top">
+            {{ cattitle }} :
+        </td>
+        <td valign="top">
+            [
+            {% for loop_key1, loop_item1 in catitems %}{% set loop_index1 = loop.index %}
+                {{ loop_item1['catjoin'] }}
+                {% if not loop_item1['catlink'] %}
+                    {{ loop_item1['catlabel'] }}
+                {% else %}
+                    <a href="{{ loop_item1['catlink'] }}">{{ loop_item1['catlabel'] }}</a>
+                {% endif %}
+            {% endfor %}
+            ]
+        </td>
+    </tr>
+    </table>
+    <br />
+{% endblock %}

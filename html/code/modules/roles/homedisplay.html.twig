@@ -1,0 +1,36 @@
+{# @roles/homedisplay.html.twig #}
+
+{% extends '@roles/base.html.twig' %}
+
+{% block modulespace %}
+{# <!--
+    Generic page for display of URL in an IFrame.
+     Variables: title - string, title of page
+                page - full url of the page to be displayed
+    --> #}
+    <script type="text/javascript">
+    function IntegrateIt() {
+        var here = document.getElementById('integratordiv');
+        var where = window.frames[0].document.body.innerHTML;
+        where.innerHTML = here
+    }
+    </script>
+    {% if title is null %}
+        {% set title = 'External Page' %}
+    {% endif %}
+    {% if xar_coremethod('xarUser', 'isLoggedIn') and xar_security_check('ReadBase') %}
+        <div class="xar-mod-head">
+            <span class="xar-mod-title">{{ title }}</span>
+        </div>
+        <div id="integratordiv">
+            <iframe onload="IntegrateIt();" id="integrator" src="{{ page }}" frameborder="no" class="xar-fullwidth" height="600" scrolling="auto">
+            </iframe>
+        </div>
+    {% if hooks %}
+        <br />
+        {% for hookmodule in hooks|keys %}{{ hooks[hookmodule] }}{% endfor %}
+    {% endif %}
+    {% else %}
+        You do not have permission to access this page.
+    {% endif %}
+{% endblock %}

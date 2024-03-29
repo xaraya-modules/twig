@@ -1,0 +1,90 @@
+{# @roles/properties/showinput-rolestree.html.twig #}
+
+{% block showinput_rolestree %}
+{% if nodes %}
+        {% set deleteicon = xar_imageurl('icons/delete.png', 'theme') %}
+        {% set usersicon = xar_imageurl('icons/system-users.png','theme') %}
+        {% set mailicon = xar_imageurl('icons/mail-message-new.png','theme') %}
+        {% set privsicon = xar_imageurl('icons/privileges.png','theme') %}
+        {% set testicon = xar_imageurl('icons/test.png','theme') %}
+        {% set blankicon = xar_imageurl('icons/blank.png','theme') %}
+
+        <ul class="xar-tree">
+            {% set nodecount = nodes.size() %}
+            {% for node in nodes %}
+                {% set children = node-&gt;children %}
+                {% set level = node-&gt;getLevel() %}
+                {% set users = node-&gt;users %}
+                {% set id = node-&gt;id %}
+                {% set drawchildren = true %}
+                {% set seccheck = xar_security_check('ManageRoles',0,'Roles',node-&gt;name) %}
+
+                <li class="leaf">
+                    <div class="leaf-actions">
+                        {% set label = 'Delete' %}
+                        {% if (seccheck == false) or (users > 0) or (drawchildren == false) %}
+                            <img src="{{ blankicon }}" alt="{{ label }}"/>
+                        {% else %}
+                            {% set label1 = 'Delete this Group' %}
+                            <a href="{{ xar_moduleurl('roles', 'admin', 'delete', {'id': id}) }}" title="{{ label1 }}">
+                                <img src="{{ deleteicon }}" alt="{{ label }}"/>
+                            </a>
+                        {% endif %}
+                        {% set label = 'Users' %}
+                        {% if (users > 0) and (drawchildren) %}
+                            {% set label1 = 'Show the Users in this Group' %}
+                            <a href="{{ xar_moduleurl('roles', 'admin', 'showusers', {'id': id, 'reload': 1}) }}" title="{{ label1 }}">
+                                <img src="{{ usersicon }}" alt="{{ label }}"/>
+                            </a>
+                        {% else %}
+                            <img src="{{ blankicon }}" alt="{{ label }}"/>
+                        {% endif %}
+                        {% set label = 'Mail' %}
+                        {% if (users > 0) and (drawchildren) %}
+                            <img src="{{ blankicon }}" alt="{{ label }}"/>
+                        {% else %}
+                            {% set label1 = 'Email the Users in this Group' %}
+                            <a href="{{ xar_moduleurl('roles', 'admin', 'createmail', {'id': id}) }}" title="{{ label1 }}">
+                                <img src="{{ mailicon }}" alt="{{ label }}"/>
+                            </a>
+                        {% endif %}
+                        {% set label = 'Privileges' %}
+                        {% if drawchildren %}
+                            {% set label1 = 'Show the Privileges assigned to this Group' %}
+                            <a href="{{ xar_moduleurl('roles', 'admin', 'showprivileges', {'id': id}) }}" title="{{ label1 }}">
+                                <img src="{{ privsicon }}" alt="{{ label }}"/>
+                            </a>
+                        {% else %}
+                            <img src="{{ blankicon }}" alt="{{ label }}"/>
+                        {% endif %}
+                        {% set label = 'Test' %}
+                        {% if drawchildren %}
+                            {% set label1 = 'Test this Groups's Privileges' %}
+                            <a href="{{ xar_moduleurl('roles', 'admin', 'testprivileges', {'id': id}) }}" title="{{ label1 }}">
+                                <img src="{{ testicon }}" alt="{{ label }}"/>
+                            </a>
+                        {% else %}
+                            <img src="{{ blankicon }}" alt="{{ label }}"/>
+                        {% endif %}
+                    </div>
+                    {% set indent = level * 1.5 %}
+                    <div class="leaf-body" style="padding-left: {{ indent }}em;">
+                        {% if drawchildren == false %}
+                            {{ node-&gt;name }} <strong>see the entry above</strong>
+                        {% else %}
+                            {% set numofsubgroups = children|length %}
+                            {% set subgroups = numofsubgroups == 1 ? {{ xar_translate('subgroup') }} : {{ xar_translate('subgroups') }} %}
+                            {% set numofusers = users == 1 ? {{ xar_translate('user') }} : {{ xar_translate('users') }} %}
+                            {% set description = numofsubgroups ~ " " ~ subgroups ~ ' | ' ~ users ~ " " ~ numofusers %}
+                            {% set label = 'Modify this Group' %}
+                            <a href="{{ xar_moduleurl('roles', 'admin', 'modify', {'id': id}) }}" title="{{ label }}">
+                                {{ node-&gt;name }}
+                            </a>
+                            {{ description }}
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+{% endblock %}

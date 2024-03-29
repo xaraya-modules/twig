@@ -1,0 +1,30 @@
+{# @themes/blocks/meta.html.twig #}
+
+{% block meta %}
+{# <!-- meta data tags set in the meta block are rendered via the xar:place-meta tag
+         this also renders any meta tags added dynamically by the xar:meta tag --> #} 
+    {{ xar_place_meta() }}
+
+    {# <!-- render link tags from meta block for Mozilla and related browsers --> #}
+    {% if linktags %}
+        {% for linktag in linktags %}
+            <link rel="{{ linktag.rel }}" href="{{ linktag.url }}" title="{{ linktag.title }}" type="{{ linktag.type }}"/>
+        {% endfor %}
+    {% endif %}
+
+    {# <!-- render additional link tags --> #} 
+    {# <!-- first and last come from the pager, if it's active --> #}
+    {% if first %}
+        <link rel="first" type="text/html" href="{{ first }}"/>
+    {% endif %}
+    {% if last %}
+        <link rel="last" type="text/html" href="{{ last }}"/>
+    {% endif %}
+    {# <!--
+        The XMLRPC-server module takes case of filling the RSD information 
+    {% if xar_coremethod('xarMod', 'isAvailable', ['xmlrpcserver']) %}
+        <link rel="EditURI" type="application/rsd+xml" title="RSD" href="{{ xar_moduleurl('xmlrpcserver','user','main') }}"/>
+    {% endif %}
+    --> #}
+    
+{% endblock %}

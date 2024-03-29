@@ -1,0 +1,16 @@
+{# @categories/includes/categories-select.html.twig #}
+
+{% block categories_select %}
+{% set selectname = name ~ "[categories][" ~ index ~ "][]" %}
+    {% set selectid = id ~ "_categories_" ~ index %}
+    <select name="{{ selectname }}" id="{{ selectid }}" tabindex="{{ tabindex }}" onchange="{{ evt_change }}" style="{{ style }}">
+        {% if include_no_cat %}
+            {% if not value[index] %}
+                <option value="0" selected="selected">No category</option>
+            {% else %}
+                <option value="0">No category</option>
+            {% endif %}
+        {% endif %}
+        <xar:template module="categories" file="categories-treeoptions" subdata="['nodes' => $nodes, 'value' => $value, 'include_all_cats' => $include_all_cats, 'include_self' => $include_self]"/>
+    </select>
+{% endblock %}

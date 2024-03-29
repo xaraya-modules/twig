@@ -1,0 +1,70 @@
+{# @dynamicdata/objects/ui_create.html.twig #}
+
+{% block ui_create %}
+{{ include('@dynamicdata/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% set viewlink = object.getActionURL('view') %}
+        <h2>
+            Create New Item in {{ object.label }}&#160;
+            <a href="{{ viewlink }}" title="View {{ object.label }}">
+                {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+            </a>
+        </h2>
+        {% if preview is not null %}
+            <fieldset>
+                <legend>Preview</legend>
+                {{ xar_data_display({object: object}) }}
+            </fieldset>
+        {% endif %}
+        {% set isupload = object.upload %}
+        {% if isupload %}
+            {% set enc_type = 'multipart/form-data' %}
+        {% else %}
+            {% set enc_type = 'application/x-www-form-urlencoded' %}
+        {% endif %}
+        {% if object.visibility != 'public' %}
+            <h3 class="xar-align-center">Warning! This is a <em>{{ object.visibility }}</em> object used
+            internally by the {{ xar_coremethod('xarMod', 'getName', [object.moduleid]) }} module.<br/>
+            Trying to create this item here may break the module. Please proceed with caution.</h3>
+        {% endif %}
+        {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}
+        {% set postlink = object.getActionURL('create') %}
+        <form method="post" action="{{ postlink }}" enctype="{{ enc_type }}">
+            <fieldset>
+                <legend>Item Details</legend>
+                {{ include('@dynamicdata/includes/showinvalids.html.twig') }}
+                {{ xar_data_form({object: object}) }}
+            {# <!-- Remove hooks from DD for now ??? chris: they show in modify, why not here --> #}
+                {% if hooks %}
+                    {% for module, output in hooks %}
+                        {{ output }}
+                    {% endfor %}
+                {% endif %}
+
+            </fieldset>
+            <fieldset class="xar-form-actions">
+                {# <!-- if we use the current URL, the object is already specified --> #}
+                {% if object.linktype != 'current' %}
+                    <input type="hidden" name="object" id="object" value="{{ object.name }}"/>
+                {% endif %}
+                <input type="hidden" name="method" id="method" value="create"/>
+                <input type="hidden" name="itemid" id="itemid" value="{{ object.itemid }}"/>
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                {% if object.join %}
+                    <input type="hidden" name="join" id="join" value="{{ object.join }}"/>
+                {% endif %}
+                {% if object.table %}
+                    <input type="hidden" name="table" id="table" value="{{ object.table }}"/>
+                {% endif %}
+                <input type="hidden" name="notfresh" id="notfresh" value="true"/>
+                {% if return_url %}
+                    <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                {% endif %}
+                {% set label = 'Preview' %}
+                {{- xar_button({type: "submit", label: label, name: "preview"}) -}}
+                {% set label = 'Create' %}
+                {{- xar_button({type: "submit", label: label, name: "confirm"}) -}}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

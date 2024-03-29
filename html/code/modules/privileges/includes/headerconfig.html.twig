@@ -1,0 +1,35 @@
+{# @privileges/includes/headerconfig.html.twig #}
+
+{% block headerconfig %}
+<ul class="xar-tabs xar-alt xar-norm-outline">
+        {% set title = 'Module' %}
+        {% set label = 'Module' %}
+        <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+        {% if tab == 'all' %}
+            {% set tabclass = 'xar-tab-active' %}
+            {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+            {% set tabclass = 'xar-tab' %}
+            {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+            <a href="{{ xar_moduleurl('privileges', 'admin', 'assignprivileges', {'tabmodule': 'All Modules', 'tab': 'all'}) }}" class="{{ linkclass }}">
+                All modules
+            </a>
+        </li>
+        {% for tabname, thistab in moduletabs %}
+            {% if tab == tabname %}
+                {% set tabclass = 'xar-tab-active' %}
+                {% set linkclass = 'xar-accent xar-accent-outline' %}
+            {% else %}
+                {% set tabclass = 'xar-tab' %}
+                {% set linkclass = 'xar-norm xar-norm-outline' %}
+            {% endif %}
+            <li class="{{ tabclass }}">
+                <a href="{{ xar_moduleurl('privileges', 'admin', 'assignprivileges', {'tabmodule': tabname, 'tab': tabname}) }}" class="{{ linkclass }}">
+                    {{ thistab['displayname'] }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

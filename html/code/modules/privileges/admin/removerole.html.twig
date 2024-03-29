@@ -1,0 +1,29 @@
+{# @privileges/admin/removerole.html.twig #}
+
+{% block removerole %}
+{{ xar_style({scope: "module", file: "privtree"}) }}
+    {{ xar_javascript({scope: "module", module: "privileges", filename: "xarTree.js"}) }}
+    {{ include('@privileges/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Remove Privilege From Role</h2>
+        <form method="post" action="{{ xar_moduleurl('privileges','admin','removerole') }}" enctype="application/x-www-form-urlencoded">
+            {% if ptype == 1 %}
+                <h3 class="xar-align-center">Confirm the removal of Privilege '{{ privname }}' from
+                Group '{{ rolename }}'</h3>
+            {% else %}
+                <h3 class="xar-align-center">Confirm the removal of Privilege '{{ privname }}' from
+                User '{{ rolename }}'</h3>
+            {% endif %}
+            <div class="xar-form-actions">
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                <input type="hidden" name="roleid" id="roleid" value="{{ roleid }}"/>
+                <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                <input type="hidden" name="confirmation" id="confirmation" value="1"/>
+                {% set label = 'Remove Privilege' %}
+                {{- xar_button({type: "submit", label: label}) -}}
+                {% set label = 'Cancel' %}
+                {{- xar_button({type: "cancel", label: label}) -}}
+            </div>
+        </form>
+    </div>
+{% endblock %}

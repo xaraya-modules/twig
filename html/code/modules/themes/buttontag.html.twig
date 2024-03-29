@@ -1,0 +1,138 @@
+{# @themes/buttontag.html.twig #}
+
+{% extends '@themes/base.html.twig' %}
+
+{% block modulespace %}
+{% if type is null %}
+        {% set type = 'submit' %}
+    {% endif %}
+    {% if name is null %}
+        {% set name = '' %}
+    {% endif %}
+    {% if label is not null %}
+        {% set value = label %}
+    {% endif %}
+    {% if id is null %}
+        {% if name is not null %}
+            {% set id = name %}
+        {% else %}
+            {% if label is not null %}
+                {% set id = label %}
+            {% else %}
+                {% set id = '' %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    {% if value is null %}
+        {% set value = '' %}
+    {% endif %}
+    {% if style is null %}
+        {% set style = '' %}
+    {% endif %}
+    {% if class is null %}
+        {% set class = 'xar-button' %}
+    {% else %}
+        {% set class = 'xar-button ' ~ class %}
+    {% endif %}
+    {% if submittotarget is null %}
+        {% set submittotarget = '' %}
+    {% else %}
+        {% set submittotarget = "this.form.action='" ~ submittotarget ~ "';this.form.submit();" %}
+    {% endif %}
+    {% if onclick is null %}
+        {% set onclick = '' %}
+    {% endif %}
+    {% if submittotarget %}
+        {% set onclick = submittotarget %}
+    {% endif %}
+    
+    {% if type == 'submit' or type == 'reset' or type == 'button' %}
+        {% if src is not null %}
+            {% if disabled is not null %}
+                {% if title is not null %}
+                    <input type="image" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" src="{{ src }}" onclick="{{ onclick }}" title="{{ title }}" disabled="{{ disabled }}"/>
+                {% else %}
+                    <input type="image" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" src="{{ src }}" onclick="{{ onclick }}" disabled="{{ disabled }}"/>
+                {% endif %}
+            {% else %}
+                {% if title is not null %}
+                    <input type="image" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" src="{{ src }}" onclick="{{ onclick }}" title="{{ title }}"/>
+                {% else %}
+                    <input type="image" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" src="{{ src }}" onclick="{{ onclick }}"/>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            {% if disabled is not null %}
+                {% if title is not null %}
+                    <input type="{{ type }}" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" onclick="{{ onclick }}" title="{{ title }}" disabled="{{ disabled }}"/>
+                {% else %}
+                    <input type="{{ type }}" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" onclick="{{ onclick }}" disabled="{{ disabled }}"/>
+                {% endif %}
+            {% else %}
+                {% if title is not null %}
+                    <input type="{{ type }}" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" onclick="{{ onclick }}" title="{{ title }}"/>
+                {% else %}
+                    <input type="{{ type }}" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" onclick="{{ onclick }}"/>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% elseif type == 'cancel' %}
+        {% if target is null %}
+            {% set target = "history.back();" %}
+        {% elseif target starts with 'back' %}
+            {% set parts = target|split(' ') %}        
+            {% if parts[1] is not null and parts[1]|trim is numeric %}
+                {% set target = "history.go(-" ~ parts[1]|trim ~ ");" %}
+            {% else %}
+                {% set target = "history.back();" %}
+            {% endif %}
+        {% else %}
+            {% set target = "this.form.action='" ~ target ~ "'" %}
+        {% endif %}
+        {% if disabled is not null %}
+            {% if title is not null %}
+                <input type="button" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" onclick="{{ target }}" title="{{ title }}" disabled="{{ disabled }}"/>
+            {% else %}
+                <input type="button" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" onclick="{{ target }}" disabled="{{ disabled }}"/>
+            {% endif %}
+        {% else %}
+            {% if title is not null %}
+                <input type="button" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" onclick="{{ target }}" title="{{ title }}"/>
+            {% else %}
+                <input type="button" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" onclick="{{ target }}"/>
+            {% endif %}
+        {% endif %}
+    {% elseif type == 'link' %}
+        {% if disabled is not null %}
+            {% if title is not null %}
+                <input type="button" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" title="{{ title }}" disabled="{{ disabled }}"/>
+            {% else %}
+                <input type="button" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" disabled="{{ disabled }}"/>
+            {% endif %}
+        {% else %}
+            {% if not target %}
+                {% if title is not null %}
+                    <input type="button" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" title="{{ title }}"/>
+                {% else %}
+                    <input type="button" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}"/>
+                {% endif %}
+            {% else %}
+                {# <!-- Resolve variables --> #}
+                {% if target starts with '' %}
+                    {% set target = target %}
+                {% endif %}
+                {% if window is null %}
+                    {% set window = "_self" %}
+					{% set onclick = "location.href = '" ~ target ~ "'" %}
+                {% else %}
+					{% set onclick = "window.open('" ~ target ~ "','" ~ window ~ "')" %}
+                {% endif %}
+                {% if title is not null %}
+                    <input type="button" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" title="{{ title }}" onclick="{{ onclick }}"/>
+                {% else %}
+                    <input type="button" name="{{ name }}" id="{{ id }}" value="{{ value }}" style="{{ style }}" class="{{ class }}" onclick="{{ onclick }}"/>
+                {% endif %}
+	       {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

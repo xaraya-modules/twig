@@ -1,0 +1,138 @@
+{# @categories/admin/privileges.html.twig #}
+
+{% block privileges %}
+{{ include('@categories/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if extcomponent == 'Link' %}
+            <h2>{{ xar_translate('Select Hooked Modules and/or Categories for Privilege \\'#(1)\\'', extname) }}</h2>
+        {% else %}
+            <h2>{{ xar_translate('Select Category for Privilege \\'#(1)\\'', extname) }}</h2>
+        {% endif %}
+        <div style="margin: auto;">
+    
+        <form method="post" action="&xar-modurl-categories-admin-privileges;">
+            <input type="hidden" name="extpid" id="extpid" value="{{ extpid }}"/>
+            <input type="hidden" name="extname" id="extname" value="{{ extname }}"/>
+            <input type="hidden" name="extrealm" id="extrealm" value="{{ extrealm }}"/>
+            <input type="hidden" name="extmodule" id="extmodule" value="{{ extmodule }}"/>
+            <input type="hidden" name="extcomponent" id="extcomponent" value="{{ extcomponent }}"/>
+    
+        <table class="xar-table" border="1" cellpadding="8" cellspacing="0">
+    
+        {% if extcomponent == 'Link' %}
+        <tr><th valign="top" align="right">
+        Hooked Module
+        </th><td>
+            <select name="moduleid" onchange="submit()">
+                <option value="0">All</option>
+                {% for modid, modname in modlist %}
+                    {% if moduleid and moduleid == modid %}
+                        <option value="{{ modid }}" selected="selected">{{ modname }}</option>
+                        {% set modulename = modname %}
+                    {% else %}
+                        <option value="{{ modid }}">{{ modname }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </td></tr>
+    
+        <tr><th valign="top" align="right">
+        Item Type
+        </th><td>
+            <select name="itemtype" onchange="submit()">
+                <option value="0">All</option>
+                {% for typeid, typename in typelist %}
+                    {% if itemtype and itemtype == typeid %}
+                        <option value="{{ typeid }}" selected="selected">{{ typename }}</option>
+                    {% else %}
+                        <option value="{{ typeid }}">{{ typename }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </td></tr>
+    
+        <tr><th valign="top" align="right">
+        Item ID
+        </th><td>
+            <input type="text" name="itemid" id="itemid" value="{{ itemid }}" size="10" onchange="submit()"/>
+            {# <!-- TODO: show dropdown box for all relevant item ids (if not too many) --> #}
+        </td></tr>
+    
+        {% endif %}
+    
+        <tr>
+            <th valign="top" align="right">
+                Category
+            </th>
+            <td>
+                {% if modulename is not null %}
+                    {{ xar_data_input({type: "categories", name: "privcategories", value: cids, module: modulename, layout: "vertical", returnitself: "true"}) }}
+                {% else %}
+                    {{ xar_data_input({type: "categories", name: "privcategories", value: cids, bases: "All", layout: "vertical", returnitself: "true"}) }}
+               {% endif %}
+            </td>
+        </tr>
+    
+        {# <!--
+            // TODO: add option to apply this privilege for all child categories too
+            //       (once privileges supports this)
+        --> #}
+    
+        <tr><th valign="top" align="right">
+        Access Level
+        </th><td>
+            <select name="extlevel" id="extlevel">
+                {% if extlevel == 0 %}
+                    <option value="0" selected="selected">No Access</option>
+                {% else %}
+                    <option value="0">No Access</option>
+                {% endif %}
+                {% if extlevel == 100 %}
+                    <option value="100" selected="selected">Overview</option>
+                {% else %}
+                    <option value="100">Overview</option>
+                {% endif %}
+                {% if extlevel == 300 %}
+                    <option value="300" selected="selected">Submit (Comment)</option>
+                {% else %}
+                    <option value="300">Submit (Comment)</option>
+                {% endif %}
+                {% if extlevel == 500 %}
+                    <option value="500" selected="selected">Modify (Edit)</option>
+                {% else %}
+                    <option value="500">Modify (Edit)</option>
+                {% endif %}
+                {% if extlevel == 700 %}
+                    <option value="700" selected="selected">Delete All</option>
+                {% else %}
+                    <option value="700">Delete All</option>
+                {% endif %}
+            </select>
+        </td></tr>
+    
+        <tr><td colspan="2" align="center">
+            {{- xar_button({type: "submit", label: refreshLabel}) -}}
+        </td></tr>
+        </table>
+    
+        {% if extcomponent == 'Link' %}
+        <br />
+        {{ xar_translate('There are #(1) category links matching these selection criteria at the moment', numitems) }}
+        {% endif %}
+    
+        <br /><hr /><br />
+        (Instance Definition {{ extinstance }})
+        <br /><br />
+        {{- xar_button({type: "submit", name: "apply", label: applyLabel}) -}}
+        </form>
+        <br />
+    
+        
+        Note : if you want to limit access to categories in general, you should use the 'Category' component
+        of categories, and if you want to limit access to articles based on pubtype/category/author/... you
+        should use the 'Article' component of articles.
+        
+    
+        </div>
+    </div>
+{% endblock %}

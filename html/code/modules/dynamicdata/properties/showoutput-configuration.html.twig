@@ -1,0 +1,29 @@
+{# @dynamicdata/properties/showoutput-configuration.html.twig #}
+
+{% block showoutput_configuration %}
+{% set settings = @unserialize(value) %}
+    {% if settings is iterable %}
+        <table class="xar-table">
+            <tr>
+                <th>Setting</th>
+                <th>Value</th>
+            </tr>
+            {% for key, setting in settings %}
+                <tr>
+                    <td>
+                        {{ key }}
+                    </td>
+                    <td>
+                        {% if setting is iterable %}
+                            Array
+                        {% else %}
+                            {{ setting }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        No settings
+    {% endif %}
+{% endblock %}

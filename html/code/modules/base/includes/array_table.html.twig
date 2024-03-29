@@ -1,0 +1,228 @@
+{# @base/includes/array_table.html.twig #}
+
+{% block array_table %}
+{% set debug = 0 %}
+    {% if debug %}
+        {% set index_display = '' %}
+        {% set key_display = '' %}
+    {% else %}
+        {% set index_display = 'none' %}
+        {% if associative_array %}
+            {% set key_display = '' %}
+        {% else %}
+            {% set key_display = 'none' %}
+        {% endif %}
+    {% endif %}
+
+    {# <!-- Import the array table js --> #}
+    {{ xar_javascript({module: "base", filename: "array.js"}) }}
+
+    <table class="xar-table xar-border-none xar-margin-thicktop">
+        <thead>
+            <tr>
+                {# <!-- This column holds the index of the respective row --> #}
+                <th style="width: 10px">
+                    Row
+                </th>
+                
+                {% for i in range(0, column_titles|length - 1) %}
+                    <th class="xar-align-left">
+                        {{ column_titles[i] }}
+                    </th>
+                {% endfor %}
+                <th class="xar-align-right">Delete/Ignore</th>        
+            </tr>        
+        </thead>
+
+        {# <!-- rows container (rows_id: 'rows' for js) --> #}
+        <tbody id="{{ id }}_rows">
+            {% for i in range(0, rows - 1) %}
+                {# <!-- name[row] --> #}
+                {% set j = i %}
+                {% set row_name = "{name}[{j}]" %}
+                {% set row_id = "{id}_{j}" %}
+                {% set col_name = "{row_name}[0]" %}
+                {% set col_id = "{row_id}_0" %}
+                <tr id="{{ row_id }}">
+                
+                    {# <!-- This column holds the index of the respective row --> #}
+                    {# <!-- By definition this is a static value (can't change via the UI) --> #}
+                    <td>
+                        <span style="display: {{ index_display }}">
+                            {% set index_name = "{row_name}[1000000]" %}
+                            {% set index_id = "{row_id}_1000000" %}
+                            {{ index_name }} {{ index_id }}
+                        </span>
+                        <input type="text" name="{{ index_name }}" id="{{ index_id }}" value="{{ i+1 }}" style="width: 15px" readonly="readonly"/>
+                    </td>
+                    
+                    {% for k in range(0, column_titles|length - 1) %}
+                        {% set col_index = k %}
+                        {# <!-- columnname[row][column] --> #}                        
+                        {% set col_name = "{row_name}[{col_index}]" %}
+                        {% set col_id = "{row_id}_{col_index}" %}
+                        {# <!-- propertyname[row][column] --> #}
+                        {% set prop_name = "{col_name}" %}
+                        {% set prop_id = "{col_id}" %}
+                        {# <!-- property[row][column] --> #}
+                        {# <!-- we need to instantiate the property this way so we can insert a default value --> #}
+                        {% if column_defaults[k] is not null %}
+                            {% set property = DataPropertyMaster..getProperty({'type': column_types[k},'defaultvalue'=>column_defaults[k]]) %}
+                        {% else %}
+                            {% set property = DataPropertyMaster..getProperty({'type': column_types[k}]) %}
+                        {% endif %}
+                        <td>
+                            {# <!-- row {{ i }} column {{ k }} --> #}
+                            <span style="display: {{ index_display }}">{{ prop_name }}</span>
+                            {% if value[i][k] is not null %}
+                                {% if column_configurations[k] is not null %}
+                                    {{ xar_data_input({property: property, name: prop_name, id: prop_id, value: value[i][k], configuration: column_configurations[k]}) }}
+                                {% else %}
+                                    {{ xar_data_input({property: property, name: prop_name, id: prop_id, value: value[i][k]}) }}
+                                {% endif %}
+                            {% else %}
+                                {% if column_configurations[k] is not null %}
+                                    {{ xar_data_input({property: property, name: prop_name, id: prop_id, configuration: column_configurations[k]}) }}
+                                {% else %}
+                                    {{ xar_data_input({property: property, name: prop_name, id: prop_id}) }}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                    <td class="xar-align-right">
+                        {# <!-- If js is available this will be replaced by a delete icon --> #}
+                        {# <!-- name[row][delete] --> #}
+                        {% set del_name = "{row_name}[delete]" %}
+                        {% set del_id = "{row_id}_delete" %}
+                        {% if (rows > minimum_rows) and (addremove == 2) %}
+                            {{ xar_data_input({type: "checkbox", name: del_name, id: del_id, value: "1"}) }}
+                        {% else %}
+                            {{ xar_data_input({type: "checkbox", name: del_name, id: del_id, value: "1", disabled: "disabled"}) }}
+                        {% endif %}
+                    </td>            
+                </tr>
+            {% endfor %}
+            {% set lastrow = i %}
+            
+{# <!--  Begin dummy line for adding rows when no js enabled --> #}
+{# <!--  NOTE: unless addremove is 0 this must always be present in the markup otherwise js will
+      fail if a row is subsequently deleted and an attempt is made to add a new one --> #}
+            {% if (addremove != 0) %}
+                {% set thisrow = lastrow %}
+                {% set row_name = "{name}[{thisrow}]" %}
+                {% set row_id = "{id}_{thisrow}" %}
+                {% set col_name = "{row_name}[0]" %}
+                {% set col_id = "{row_id}_0" %}
+                {# <!-- Hide this row if we're already at the limit 
+                     NOTE: can't rely on JS for this, it may be disabled --> #}
+                {% if rows < maximum_rows %}
+                    {% set row_display = '' %}
+                {% else %}
+                    {% set row_display = 'none' %}
+                {% endif %}
+                {# <!-- The row template (tpl_id: 'template' for js) 
+                     If JS is available it will hide this and display the add button --> #}
+                <tr id="{{ id }}_template" style="display: {{ row_display }}">
+                    <td>
+                        <span style="display: {{ index_display }}">
+                            {% set index_name = "{row_name}[1000000]" %}
+                            {% set index_id = "{row_id}_1000000" %}
+                            {{ index_name }} {{ index_id }}
+                        </span>
+                        <input type="text" name="{{ index_name }}" id="{{ index_id }}" value="{{ thisrow+1 }}" style="width: 15px" readonly="readonly"/>
+                    </td>
+                    {% for k in range(0, column_titles|length - 1) %}
+                        {% set col_index = k %}
+                        {# <!-- name[row][column] --> #}                        
+                        {% set col_name = "{row_name}[{col_index}]" %}
+                        {% set col_id = "{row_id}_{col_index}" %}
+                        {# <!-- name[row][column] --> #}
+                        {% set prop_name = "{col_name}" %}
+                        {% set prop_id = "{col_id}" %}
+                        <td>
+                            {% if column_defaults[k] is not null %}
+                                {% set col_default = column_defaults[k] %}
+                            {% else %}
+                                {% set col_default = '' %}
+                            {% endif %}
+                            {% if column_configurations[k] is not null %}
+                                {% set col_config = column_configurations[k] %}
+                            {% else %}
+                                {% set col_config = '' %}
+                            {% endif %}
+                            <span style="display: {{ index_display }}">{{ prop_name }}</span>
+                            {{ xar_data_input({type: column_types[k], name: prop_name, id: prop_id, value: col_default, configuration: col_config}) }}
+                        </td>
+                    {% endfor %}
+                    <td class="xar-align-right">
+                        {# <!-- If js is available this will be replaced by a delete icon --> #}
+                        {# <!-- name[row][delete] --> #}
+                        {% set del_name = "{row_name}[delete]" %}
+                        {% set del_id = "{row_id}_delete" %}
+                        {{ xar_data_input({type: "checkbox", name: del_name, id: del_id, value: "1", checked: "checked"}) }}
+                    </td>
+                </tr>
+            {% endif %}
+{# <!--  End dummy line for adding rows when no js enabled --> #} 
+        </tbody>
+        {% if (addremove != 0) %}
+            <tfoot>
+                <tr>
+                    {% set infospan = debug?column_titles|length+1.column_titles|length+1 %}
+                    <td colspan="{{ infospan }}">
+                    {# <!-- Row count container (count_id: 'row_count' for js)
+                         When JS is enabled and count_id is supplied this field will 
+                         be updated with the current row count --> #}  
+                        Total Rows: <span id="{{ id }}_row_count">{{ lastrow }}</span>
+                    </td>
+                    {# <!-- Add row container (add_id: 'addrow' for js) --> #}       
+                    <td id="{{ id }}_addrow" colspan="1" class="xar-align-right">
+                        {# <!-- Placeholder for the add button
+                            If JS is available the add icon will appear here --> #}    
+                    </td>            
+                </tr>        
+            </tfoot>
+        {% endif %}
+    </table>
+    {# <!-- add and delete icons are now created by the js dynamically on init 
+         set variables to pass to js (includes translated strings for icon alt and title :) )--> #} 
+    {% set del_icon = xar_imageurl("icons/delete.png", "base") %}
+    {% set del_alt = 'Remove' %}
+    {% set del_title = 'Remove this row' %}
+    {% set add_icon = xar_imageurl("icons/add.png", "base") %}
+    {% set add_alt = 'Add' %}
+    {% set add_title = 'Add a new row' %}
+    {# <!-- Create the table js object and pass in configuration params --> #}  
+    {# <!-- Set the debug option below to true to see debug info --> #}
+    <script type="text/javascript">
+//<![CDATA[ 
+        var {{ id }} = new arrayTable( {               // var name is the id of this property
+            id: '{{ id }}',                            // the id of this property
+            name: '{{ name }}',                        // the name of this property
+            min: '{{ minimum_rows }}',                 // minimum rows
+            max: '{{ maximum_rows }}',                 // maximum rows
+            addremove: '{{ addremove }}',              // addremove state [(0=None)|1=add|2=add/delete]
+            rows_id: 'rows',                        // rows container suffix
+            tpl_id: 'template',                     // row template suffix
+            add_id: 'addrow',                       // add row container suffix 
+            del_icon: '{{ del_icon }}',                // delete icon src
+            del_alt: '{{ del_alt }}',                  // delete icon alt text
+            del_title: '{{ del_title }}',              // delete icon title text
+            add_icon: '{{ add_icon }}',                // add icon src
+            add_alt: '{{ add_alt }}',                  // add icon alt text
+            add_title: '{{ add_title }}',              // add icon title text
+            icon_enabled: 'xar-icon',               // enabled icon class
+            icon_disabled: 'xar-icon-disabled',     // disabled icon class
+            count_id: 'row_count',                  // row count container suffix
+            debug: false                            // debug
+        } );
+        // initialise the object
+        {{ id }}.init();
+//]]>
+    </script>   
+{# <!-- Here we store config options for unbound properties, so checkInput knows what to do --> #}
+{# <!-- Should we support this? It's not generally supported --> #}
+{# <!--
+    <input type="hidden" name="{{ name }}[settings][lastrow]" id="{{ name }}_lastrow" value="{{ lastrow }}"/>
+    <input type="hidden" name="{{ name }}[settings][associative_array]" id="{{ name }}_associative_array" value="{{ associative_array }}"/> 
+--> #}{% endblock %}

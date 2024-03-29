@@ -1,0 +1,45 @@
+{# @dynamicdata/properties/configuration-callable.html.twig #}
+
+{% block configuration_callable %}
+{% if callable %}
+        <fieldset>
+            <legend>Callable options</legend>
+            {% for key, init in callable %}
+                {% set fieldname = name ~ '[' ~ key ~ ']' %}
+                {% set fieldid = id ~ '_' ~ key %}
+                {% if init['configuration'] is not null %}
+                    {% set configuration = init['configuration'] %}
+                {% else %}
+                    {% set configuration = '' %}
+                {% endif %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="{{ fieldid }}" title="{{ init['description'] }}">
+                            {{ init['label'] }}
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({type: init['property_id'], name: fieldname, id: fieldid, configuration: configuration, value: init['value']}) }}
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    Supported formats<br/>
+                    Note: arrays are json-encoded, use double quotes
+                </div>
+                <div class="xar-col">
+                    [$this,"method"] = call method in the current property<br/>
+                    [$this->objectref,"method"] = call method of the object referred in the property<br/>
+                    callable_function = call function in current namespace [\Xaraya\DataObject\Properties]<br/>
+                    \Namespaced\callable_function = call function including full namespace<br/>
+                    ["ClassName","staticMethod"] = call static class method in current namespace [\Xaraya\DataObject\Properties]<br/>
+                    ["\\\\Namespaced\\\\ClassName","staticMethod"] = call static class method with double backslash for namespace<br/>
+                    ...<br/>
+                </div>
+            </div>
+        </fieldset>
+    {% endif %}
+
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

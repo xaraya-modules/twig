@@ -1,0 +1,20 @@
+{# @base/blocks/adminmenu_display.html.twig #}
+
+{% block adminmenu_display %}
+{% if menustyle == byname %}
+        <p>By Name 
+        <br />{{ data }}</p>
+        {% elseif menustyle == bycat %}
+        <p>By Category 
+        <br />{{ data }}</p>
+        {% elseif menustyle == byweight %}
+        <p>By Weight 
+        <br />{{ data }}</p>
+        {% elseif menustyle == bygroup %}
+        <p>By Group 
+        <br />{{ data }}</p>
+        {% else %}
+        <p>By Category 
+        <br />{{ data }}</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{# @dynamicdata/filtertag.html.twig #}
+
+{% extends '@dynamicdata/base.html.twig' %}
+
+{% block modulespace %}
+<form method="post" action="{{ xar_moduleurl('dynamicdata','user','filtertag') }}">
+        {% set multiple = properties|length > 1 %}
+        {{ xar_data_filterform({object: object, fieldlist: fieldlist, valuelist: valuelist, oplist: oplist}) }}
+        <input type="hidden" name="return_url" value="{{ return_url }}"/>
+        {% if not multiple %}
+            {{- xar_button({type: "submit", label: button}) -}}
+        {% endif %}
+        {% if multiple %}
+            <div class="xar-row">
+                <div class="xar-col">
+                </div>
+                <div class="xar-col">
+                    {{- xar_button({type: "submit", label: button}) -}}
+                </div>
+            </div>
+        {% endif %}
+        <input type="hidden" name="objectname" value="{{ objectname }}"/>
+        <input type="hidden" name="filtername" value="{{ filtername }}"/>
+        <input type="hidden" name="filter_submitted" value="1"/>
+    </form>
+{% endblock %}

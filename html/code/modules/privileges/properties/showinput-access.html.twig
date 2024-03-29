@@ -1,0 +1,63 @@
+{# @privileges/properties/showinput-access.html.twig #}
+
+{% block showinput_access %}
+{% if layout == 'horizontal' %}
+        {% set propname = name ~ '_group' %}
+        {{ xar_data_input({type: "grouplist", name: propname, options: groupoptions, value: group}) }}
+        {% set propname = name ~ '_level' %}
+        {{ xar_data_input({type: "dropdown", name: propname, options: leveloptions, value: level}) }}
+        {% set propname = name ~ '_failure' %}
+        {% if showfailure is null %}
+            {{ xar_data_input({type: "radio", name: propname, options: failureoptions, value: failure}) }}
+        {% else %}
+            {{ xar_data_input({type: "radio", name: propname, options: failureoptions, value: failure, hidden: "hidden"}) }}
+        {% endif %}
+    {% else %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set propname = name ~ '_group' %}
+                {% set label = 'The group the current user must belong to' %}
+                <label for="{{ propname }}" title="{{ label }}" class="xar-form-label">
+                    Required Group Membership:
+                </label>
+            </div>
+            <div class="xar-col">
+                {% if group_multiselect %}
+                    {{ xar_data_input({type: "multiselect", name: propname, options: groupoptions, value: group}) }}
+                {% else %}
+                    {{ xar_data_input({type: "dropdown", name: propname, options: groupoptions, value: group}) }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set propname = name ~ '_level' %}
+                {% set label = 'The access level the current user must have' %}
+                <label for="{{ propname }}" title="{{ label }}" class="xar-form-label">
+                    Required Access Level:
+                </label>
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({type: "dropdown", name: propname, options: leveloptions, value: level}) }}&#160;
+                (applies if <em>No requirement</em> is chosen above)
+            </div>
+        </div>
+        {% set propname = name ~ '_failure' %}
+        {% if showfailure is null %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'What happens when the security check fails' %}
+                    <label for="{{ propname }}" title="{{ label }}" class="xar-form-label">
+                        Behavior on Failure:
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({type: "radio", name: propname, options: failureoptions, value: failure}) }}
+                </div>
+            </div>
+        {% else %}
+            {{ xar_data_input({type: "radio", name: propname, options: failureoptions, value: failure, hidden: "hidden"}) }}
+        {% endif %}
+    {% endif %}
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

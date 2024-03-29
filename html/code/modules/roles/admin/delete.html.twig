@@ -1,0 +1,65 @@
+{# @roles/admin/delete.html.twig #}
+
+{% block delete %}
+{{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if itemtype == xarRoles..ROLES_USERTYPE %}
+            {% set thisname = object.properties['uname'].getValue() %}
+        {% else %}
+            {% set thisname = object.properties['name'].getValue() %}
+        {% endif %}
+        <h2>Manage {{ itemtypename }} '{{ thisname }}':</h2>
+        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set activetab = request.2 %}
+        {% set xmldata = 'showusers' %}
+        {% set urlargs = {'id': id, 'reload': 'reload'} %}
+        {{ include('@base/includes/admin-menu-skel.html.twig') }}
+        {% if parents|length > 0 %}
+            <div>
+                <ul class="xar-tabs xar-alt xar-norm-outline">
+                    {% set title = 'These are the groups that {{ name }} is a member of' %}
+                    {% set label = 'Parent Groups' %}
+                    <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                    {% set prevgroup = "" %}
+                    {% for i in range(0, parents|length - 1) %}
+                        {% if prevgroup != parents[i]['parentname'] %}
+                            <li class="xar-tab">
+                                {% set label = 'Show this group' %}
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                {{ xar_prep_display(parents[i]['parentname']) }}</a>
+                            </li>
+                        {% endif %}
+                        {% set prevgroup = xar_prep_display(parents[i]['parentname']) %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if frozen %}
+            <p>You do not have the privileges to delete {{ itemtypename }} {{ name }}</p>
+        {% else %}
+            <form method="post" action="{{ xar_moduleurl('roles','admin','delete') }}" enctype="application/x-www-form-urlencoded">
+                <div class="xar-row">
+                    <div class="xar-col">
+                    </div>
+                    <div class="xar-col">
+                        <h3>Confirm the deletion of {{ itemtypename }} {{ name }}</h3>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                    </div>
+                    <div class="xar-col">
+                        <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                        <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                        <input type="hidden" name="confirmation" id="confirmation" value="1"/>
+                        <input type="hidden" name="returnurl" id="returnurl" value="{{ returnurl }}"/>
+                        {% set label = 'Delete' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                        {% set label = 'Cancel' %}
+                        {{- xar_button({type: "cancel", label: label}) -}}
+                    </div>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{# @dynamicdata/includes/view-default.html.twig #}
+
+{% block view_default %}
+{% set subitems = false %}
+    {% for property in properties %}
+        {% if property.type == 30069 %}
+            {% set subitems = true %}
+            <xar:break />
+        {% endif %}
+    {% endfor %}
+    {% if subitems %}
+        {{ include('@dynamicdata/includes/view-subitems.html.twig') }}
+    {% else %}
+        {{ include('@dynamicdata/includes/view-table.html.twig') }}
+    {% endif %}
+{% endblock %}

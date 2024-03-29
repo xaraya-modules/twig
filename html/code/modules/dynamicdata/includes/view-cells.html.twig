@@ -1,0 +1,42 @@
+{# @dynamicdata/includes/view-cells.html.twig #}
+
+{% block view_cells %}
+{% if fieldprefix %}
+        {% set fieldprefix = fieldprefix ~ '_' %}
+    {% else %}
+        {% set fieldprefix = '' %}
+    {% endif %}
+    <div class="xar-fullwidth">
+        <table class="xar-table xar-fullwidth">
+            <tr>
+                {% for name in properties|keys %}
+                    <th class="xar-form-textlong">
+                        {{ xar_data_label({property: properties[name]}) }}
+                    </th>
+                {% endfor %}
+            </tr>
+            {% for itemid, fields in items %}
+                <tr class="xar-norm">
+                    {% for name in properties|keys %}
+                        <td>
+                            {% set fieldname = fieldprefix ~ 'dd_' ~ name ~ '[' ~ itemid ~ ']' %}
+                            {% if fields[name] %}
+                                 {{ xar_data_input({property: properties[name], name: fieldname, size: "10", _itemid: itemid, value: fields[name]}) }}
+                             {% else %}
+                                {{ xar_data_input({property: properties[name], name: fieldname, size: "10", _itemid: itemid}) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            <tr>
+                {% for name in properties|keys %}
+                    <td>
+                        {% set fieldname = 'dd_' ~ name ~ '[0]' %}
+                        {{ xar_data_input({property: properties[name], size: "10", name: fieldname}) }}
+                    </td>
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,275 @@
+{# @dynamicdata/admin/meta.html.twig #}
+
+{% block meta %}
+{{ xar_style({scope: "module", file: "dd"}) }}
+    {{ xar_javascript({scope: "theme", filename: "checkall.js", position: "head"}) }}
+    {{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Utilities - Table Browser</h2>
+        {{ include('@dynamicdata/includes/utility-menu.html.twig') }}
+        {% if table %}
+            {% if not dbtype %}
+                {% set tablelink = xar_moduleurl('dynamicdata','admin','meta',{'table': table}) %}
+            {% else %}
+                {% set tablelink = xar_moduleurl('dynamicdata','admin','meta',{'dbtype': dbtype, 'db': db, 'table': table}) %}
+            {% endif %}
+        {% endif %}
+        {% if not export %}
+            {% if databases %}
+                <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','meta') }}">
+                    <fieldset>
+                        <legend>Select Database</legend>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label for="xml" class="xar-form-label">Database :</label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_data_input({type: "dropdown", name: "db", value: db, options: databases, onchange: "submit()"}) }}
+                                {% set label = 'Refresh' %}
+                                {{- xar_button({type: "submit", label: label}) -}}
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            {% endif %}
+            {% if not tables %}
+            {% elseif not table %}
+            {% if result %}
+                <fieldset>
+                    <legend>Result</legend>
+                    <pre>{{ result }}</pre>
+                </fieldset>
+            {% endif %}
+            <form method="post" id="import_tables" action="{{ xar_moduleurl('dynamicdata','admin','meta') }}">
+                <table class="xar-table">
+                    <tr>
+                        {% if dbtype %}
+                            <th>Create DD Object</th>
+                        {% endif %}
+                        <th>Properties</th>
+                        <th>View Items</th>
+                        <th>Query Table</th>
+                        <th>Object Definition</th>
+                        <th>DDL</th>
+                    </tr>
+                    {% for curtable, fields in tables %}
+                        <tr>
+                            {% if dbtype %}
+                                <td class="xar-align-center">
+                                    <input type="checkbox" name="create[{{ curtable }}]" id="create_{{ curtable }}"/>
+                                </td>
+                            {% endif %}
+                            <td>
+                                {% if not dbtype %}
+                                    {% set curlink = xar_moduleurl('dynamicdata','admin','meta',{'table': curtable}) %}
+                                {% else %}
+                                    {% set curlink = xar_moduleurl('dynamicdata','admin','meta',{'dbtype': dbtype, 'db': db, 'table': curtable}) %}
+                                {% endif %}
+                                <a href="{{ curlink }}">
+                                {{ curtable }}</a>
+                            </td>
+                            <td class="xar-align-center">
+                                <a href="{{ curlink }}&amp;export=view">
+                            View</a>
+                            </td>
+                            <td class="xar-align-center">
+                                <a href="{{ xar_moduleurl('dynamicdata','admin','query',{'table': curtable}) }}">
+                            Query</a>
+                            </td>
+                            <td class="xar-align-center">
+                                <a href="{{ curlink }}&amp;export=object">
+                            Export Object</a>
+                            </td>
+                            <td class="xar-align-center">
+                                <a href="{{ curlink }}&amp;export=ddl">
+                            Export DDL</a>
+                            {# <!--
+                                | <a href="{{ xar_moduleurl('dynamicdata','admin','relations',{'table': curtable}) }}">
+                            Add Relation</a>
+                            --> #}
+                           </td>
+                        </tr>
+                    {% endfor %}
+                    {% if dbtype %}
+                        <tr>
+                            <td class="xar-align-center">
+                    			<a href="javascript:void(0);" onclick="xar_base_checkall(document.forms['import_tables'],true);return false;">
+			                        Check All
+			                    </a>|
+			                    <a href="javascript:void(0);" onclick="xar_base_checkall(document.forms['import_tables'],false);return false;">
+			                        Uncheck All
+			                    </a>
+                            </td>
+                            <td>
+                                <input type="hidden" name="db" value="{{ db }}"/>
+                                <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                                {% set label = 'Create DD Objects' %}
+                                {{- xar_button({type: "submit", label: label}) -}}
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </form>
+            {% else %}
+                <h3>
+                    Table: {{ table }}&#160;
+                    <a href="{{ tablelink }}&amp;export=view" title="View {{ table }}">
+                        {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "items"}) -}}
+                    </a>&#160;
+                    <a href="{{ tablelink }}&amp;export=object" title="Export {{ table }}">
+                        {{- xar_image({scope: "theme", file: "icons/export-xml.png", class: "xar-icon", alt: "export"}) -}}
+                    </a>
+                </h3>
+                <p>
+                <a href="{{ tablelink }}&amp;export=view">View</a>| 
+                <a href="{{ xar_moduleurl('dynamicdata','admin','query',{'table': table}) }}">Query</a>|
+                    <a href="{{ tablelink }}&amp;export=object">
+                Export Object</a>| 
+                    <a href="{{ tablelink }}&amp;export=ddl">
+                Export DDL</a>
+                {# <!--
+                | <a href="{{ xar_moduleurl('dynamicdata','admin','relations',{'table': table}) }}">Add
+                Relation</a>
+                --> #}
+                </p>
+                <table class="xar-table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Label</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Source</th>
+                        <th>Configuration</th>
+                    </tr>
+                    {% for curtable, fields in tables %}
+                        {% if table and curtable == table %}
+                            {% for field in fields %}
+                                <tr>
+                                    <td>{{ field['name'] }}</td>
+                                    <td>{{ field['label'] }}</td>
+                                    <td>
+                                        {{ xar_data_output({property: prop, value: field['type']}) }}
+                                    </td>
+                                    <td>{{ field['defaultvalue'] }}</td>
+                                    <td>{{ field['source'] }}</td>
+                                    <td>{{ field['configuration'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            {% endif %}
+            <p class="xar-align-center">
+            <a href="{{ xar_moduleurl('dynamicdata','admin','meta',{'export': 'object'}) }}">Export all tables to
+            Objects</a>| 
+            <a href="{{ xar_moduleurl('dynamicdata','admin','meta',{'export': 'ddl'}) }}">Export all tables to
+            DDL</a>| 
+            <a href="{{ xar_moduleurl('dynamicdata','admin','meta',{'showdb': 1}) }}">Show other databases</a></p>
+        {% elseif export == 'view' %}
+            {# <!-- example of using virtual object descriptor to show database table --> #}
+            {% set dummy = xar_coremethod('sys', 'import', ['modules.dynamicdata.class.objects.virtual']) %}
+            {% set descriptor = new TableObjectDescriptor({'table': table, 'fields': tables[table}, 'dbConnIndex' => dbConnIndex]) %}
+            {% set object = new DataObjectList(descriptor) %}
+            {% set dummy = object.getItems() %}
+            <h3>
+                Table: {{ table }}&#160;
+                <a href="{{ tablelink }}" title="Properties {{ table }}">
+                    {{- xar_image({scope: "theme", file: "icons/modify-config.png", class: "xar-icon", alt: "properties"}) -}}
+                </a>&#160;
+                <a href="{{ tablelink }}&amp;export=object" title="Export {{ table }}">
+                    {{- xar_image({scope: "theme", file: "icons/export-xml.png", class: "xar-icon", alt: "export"}) -}}
+                </a>
+            </h3>
+            {{ xar_data_view({object: object, table: table, layout: "meta"}) }}
+        {% elseif export == 'display' %}
+            {# <!-- example of using virtual object descriptor to show database table --> #}
+            {% set dummy = xar_coremethod('sys', 'import', ['modules.dynamicdata.class.objects.virtual']) %}
+            {% set descriptor = new TableObjectDescriptor({'table': table, 'fields': tables[table}, 'dbConnIndex' => dbConnIndex]) %}
+            {% set object = new DataObject(descriptor) %}
+            {% set dummy = xar_coremethod('xarVar', 'fetch', ['itemid', 'notempty', itemid, 1, xarVar..NOT_REQUIRED]) %}
+            {% set dummy = object.getItem({'itemid': itemid}) %}
+            <h3>
+                Table: {{ table }}&#160;
+                <a href="{{ tablelink }}" title="Properties {{ table }}">
+                    {{- xar_image({scope: "theme", file: "icons/modify-config.png", class: "xar-icon", alt: "properties"}) -}}
+                </a>&#160;
+                <a href="{{ tablelink }}&amp;export=view" title="View {{ table }}">
+                    {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "items"}) -}}
+                </a>&#160;
+                <a href="{{ tablelink }}&amp;export=object" title="Export {{ table }}">
+                    {{- xar_image({scope: "theme", file: "icons/export-xml.png", class: "xar-icon", alt: "export"}) -}}
+                </a>
+            </h3>
+            {{ xar_data_display({object: object, table: table, layout: "meta"}) }}
+        {% else %}
+            <h3>
+                Table: {{ table }}&#160;
+                <a href="{{ tablelink }}" title="Properties {{ table }}">
+                    {{- xar_image({scope: "theme", file: "icons/modify-config.png", class: "xar-icon", alt: "properties"}) -}}
+                </a>&#160;
+                <a href="{{ tablelink }}&amp;export=view" title="View {{ table }}">
+                    {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+                </a>
+            </h3>
+            <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','import') }}">
+                <fieldset>
+                    {% if export == 'ddl' %}
+                        <legend>Data definition for {{ table }}</legend>
+                    {% else %}
+                        <legend>Object definition for {{ table }}</legend>
+                    {% endif %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="xml" class="xar-form-label">Definition:</label>
+                        </div>
+                        <div class="xar-col">
+                                    {% if export == 'ddl' %}
+                                    {# <!-- xar:template file="exportddl"/ --> #}
+                                    <textarea name="xml" id="xml" class="xar-form-textarealarge">
+                                        {{ htmlspecialchars(xml) }}
+                                    </textarea>
+                                    {% else %}
+                                    <textarea name="xml" id="xml" class="xar-form-textarealarge">
+                                    {% for curtable, fields in tables %}
+                                    {% set tablename = strtr(curtable,'.','_') %}
+                                    {% set curlen = curtable|length %}
+    &lt;object name="{{ tablename }}"&gt;
+      &lt;label&gt;{{ curtable }}&lt;/label&gt;
+      &lt;module_id&gt;182&lt;/module_id&gt;
+      &lt;itemtype&gt;-1&lt;/itemtype&gt;
+      &lt;class&gt;DataObject&lt;/class&gt;
+      &lt;filepath&gt;auto&lt;/filepath&gt;
+      &lt;urlparam&gt;itemid&lt;/urlparam&gt;
+      &lt;maxid&gt;0&lt;/maxid&gt;
+      &lt;access&gt;&lt;/access&gt;
+      &lt;isalias&gt;0&lt;/isalias&gt;
+      &lt;datastore&gt;relational&lt;/datastore&gt;
+      &lt;config&gt;&lt;/config&gt;
+      &lt;sources&gt;a:1:{s:{{ curlen }}:&quot;{{ curtable }}&quot;;a:2:{i:0;s:{{ curlen }}:&quot;{{ curtable }}&quot;;i:1;s:8:&quot;internal&quot;;}}&lt;/sources&gt;
+      &lt;properties&gt;  {% for name, field in fields %}
+        &lt;property name="{{ name }}"&gt;  {% for key, value in field %} {% if key == 'type' %}
+          &lt;{{ key }}&gt;{{ proptypes[value] }}&lt;/{{ key }}&gt; {% elseif key != 'name' %}
+          &lt;{{ key }}&gt;{{ value }}&lt;/{{ key }}&gt; {% endif %} {% endfor %}
+        &lt;/property&gt; {% endfor %}
+     &lt;/properties&gt;
+    &lt;/object&gt; {% endfor %}
+                                    </textarea>
+                                    {% endif %}
+                        </div>
+                    </div>
+                </fieldset>
+                {% if export != 'ddl' %}
+                    <div class="xar-align-center">
+                        <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                        {% set label = 'Import Object Definition' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                {% endif %}
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

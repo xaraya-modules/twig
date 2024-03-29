@@ -1,0 +1,26 @@
+{# @modules/admin/hooks.html.twig #}
+
+{% block hooks %}
+{% if not return_url %}
+        {# <!--
+            When this template is not included somewhere else, build some header
+            stuff
+        --> #}
+        {{ include('@modules/includes/admin-mod-head.html.twig') }}
+        <div class="xar-mod-body">
+            <h2>Configure Hooks</h2>
+            <p>Extend the functionality of your modules via one of the following available
+            hooks.</p>
+            <p>Select the hook module providing the extra functionality and then check the boxes of
+            the modules you would like to enable that functionality in (e.g. select "comments" and
+            then check "articles" to enable comments in the articles module).</p>
+            <h3>Hook Modules</h3>
+            {{ include('@modules/includes/hooks-mainpart.html.twig') }}
+        </div>
+    {% else %}
+        {# <!--
+            Just show the list
+        --> #}
+        {{ include('@modules/includes/hooks-mainpart.html.twig') }}
+    {% endif %}
+{% endblock %}

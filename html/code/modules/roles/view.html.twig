@@ -1,0 +1,73 @@
+{# @roles/view.html.twig #}
+
+{% extends '@roles/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-body">
+        <fieldset>
+            <legend>
+              {{ itemtypename }} List
+            </legend>
+            {% if message %}
+                <p>{{ xar_prep_display(message) }}</p>
+            {% else %}
+                <table class="xar-table" width="100%" border="1" cellspacing="0" cellpadding="2">
+                    <tr>
+                        {# <!--
+                        {% for label in itemlabels %}
+                            <th class="xar-fullwidth">
+                                    {{ label }}
+                            </th>
+                        {% endfor %}
+                        --> #}
+                            <th class="xar-fullwidth">
+                                Name
+                            </th>
+                            <th class="xar-fullwidth">
+                                User Name
+                            </th>
+                            <th class="xar-fullwidth">
+                                Email
+                            </th>
+                    </tr>
+                    {% if items|length == 0 %}
+                        {% set columns = itemlabels|length %}
+                        <tr>
+                            <td colspan="{{ columns }}">
+                              No {{ itemtypename }} to display
+                            </td>
+                        </tr>
+                    {% else %}
+                        {% for loop_key1, loop_item1 in items %}{% set loop_index1 = loop.index %}
+                            {% if ((loop_index1 + 1) % 2) %}
+                                {% set item_class = 'xar-norm' %}
+                            {% else %}
+                                {% set item_class = 'xar-accent' %}
+                            {% endif %}
+                            <tr class="{{ item_class }}">
+                                {% for field in loop_item1 %}
+                                    <td>{{ field }}</td>
+                                {% endfor %}
+                                {% set id = loop_item1['id'] %}
+                                {% for list in objectlists %}
+                                    {% set items = list.items %}
+                                    {% set properties = list.getProperties() %}
+                                    {% for key, value in properties %}
+                                        {% if items[id][key] is not null and key in ['name' %}
+                                            <td>
+                                                {{ xar_data_output({property: properties[key], value: items[id][key]}) }}
+                                            </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </table>
+                <div class="xar-align-center">
+                    {{ xar_pager({startnum: startnum, itemsperpage: itemsperpage, total: total, urltemplate: urltemplate, urlitemmatch: urlitemmatch}) }}
+                </div>
+            {% endif %}
+        </fieldset>
+    </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{# @workflow/objects/showview-workflow_tracker.html.twig #}
+
+{% block showview_workflow_tracker %}
+{# <!-- Adapted from dynamicdata/xartemplates/objects/showview.xt --> #}
+    {{ xar_style({scope: "module", module: "dynamicdata", file: "dd"}) }}
+    {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', ['categories',modname,itemtype]) %}
+        {{ include('@workflow/includes/catnavigation.html.twig') }}
+    {% endif %}
+    {# <!-- You can give a custom 'newlink' argument to showView() higher up --> #}
+    {% if isprimary and newlink %}
+        {% if object.checkAccess('create') %}
+            <div style="text-align: right;">
+                {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                    {% set newtext = xar_translate('New') %}
+                    <a href="{{ newlink }}" title="Create New {{ object.label }}">
+                        {{- xar_image({scope: "theme", file: "icons/document-new.png", class: "xar-icon", alt: newtext}) -}}
+                    </a>
+                {% else %}
+                    <a href="{{ newlink }}" title="Create New {{ object.label }}">Create New {{ object.label }}</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if not layout %}
+        {% set layout = 'default' %}
+    {% endif %}
+    {% if not userId %}
+        {% set userId = object.getContext().getUserId() ?? xar_coremethod('xarSession', 'getVar', ['role_id']) %}
+    {% endif %}
+    {{ include('@' ~ tplmodule ~ '/includes/view-' ~ layout ~ '.html.twig') }}
+    {# <!-- xar:template file="test_trackerlist"/ --> #}
+    {% if not object.itemcount %}
+        {# <!-- if we don't have an item total show prev / next links --> #}
+        <div>
+            {% if object.startnum > 1 %}
+                <div class="xar-halfwidth xar-floatleft">
+                    {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: object.startnum, urltemplate: object.pagerurl, template: "multipageprev"}) }}
+                </div>
+            {% endif %}
+            {% if object.items|length == object.numitems %}
+                <div class="xar-halfwidth xar-floatright xar-align-right">
+                    {% set newtotal = object.startnum + object.numitems %}
+                    {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: newtotal, urltemplate: object.pagerurl, template: "multipagenext"}) }}
+                </div>
+            {% endif %}
+            <br class="xar-clearboth"/>
+        </div>
+    {% elseif object.itemcount > object.numitems %}
+        {# <!-- show the pager --> #}
+        {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: object.itemcount, urltemplate: object.pagerurl}) }}
+    {% endif %}
+{% endblock %}

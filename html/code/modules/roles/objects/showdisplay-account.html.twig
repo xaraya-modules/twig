@@ -1,0 +1,100 @@
+{# @roles/objects/showdisplay-account.html.twig #}
+
+{% block showdisplay_account %}
+{% if not layout %}
+        {% set layout = 'default' %}
+    {% endif %}
+    {% set userid = object.itemid %}
+    {% set currentid = xar_uservar('id') %}
+    {% set settings = '|split(')) %}
+    {% if layout == 'default' %}
+        <h2>Profile for {{ xar_data_output({property: properties['name']}) }}</h2>
+        <fieldset>
+        {% for name, property in properties %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    {{ xar_data_label({property: properties[name], for: "id"}) }}
+                </div>
+                <div class="xar-col">
+                    {% if name == 'parent' %}
+                        {% set module_id = properties['module_id'].value %}
+                        {{ xar_data_output({property: properties[name], modid: module_id}) }}
+                    {% else %}
+                        {{ xar_data_output({property: properties[name]}) }}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        {% if 'userlastlogin' in settings %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">
+                        Last Login
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {{ xar_localedate(xarModUserVars..get('roles', 'medium', '')) }}  {{ xar_localedate(xarModUserVars..get('roles', '', 'medium')) }}
+                </div>
+            </div>
+        {% endif %}
+        {% if (bool)xar_modvar('roles', 'allowemail') and (bool)xar_coremethod('xarModUserVars', 'get', ['roles', 'allowemail', userid]) and (currentid != userid) %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">
+                        Email
+                    </label>
+                </div>
+                <div class="xar-col">
+                    <a href="{{ xar_moduleurl('roles','user','email',{'id': userid}) }}">
+                        Send an Email to {{ xar_prep_display(xar_username(userid)) }}
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        {% if xar_coremethod('xarModUserVars', 'get', ['roles', 'userhome', userid]) != '' and 'userhome' in settings %}
+            {% set homelink = xar_coremethod('xarModUserVars', 'get', ['roles', 'userhome', userid]) %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">
+                        Home Page
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set url = xar_apifunc('roles','user','parseuserhome',{'url': homelink, 'truecurrenturl': xarServer..getCurrentURL([}, false)]); %}
+                    {% set label = 'My Home Page' %}
+                    <a href="{{ url['redirecturl'] }}" title="{{ label }}" target="_blank">{{ label }}</a>
+                </div>
+            </div>
+        {% endif %}
+        {% if 'usertimezone' in settings %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">
+                        User Timezone:
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set value = xar_coremethod('xarModUserVars', 'get', ['roles','usertimezone']) %}
+                    {{ xar_data_output({type: "timezone", value: value}) }}
+                </div>
+            </div>
+        {% endif %}
+        {% if 'useremailformat' in settings %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">
+                        User Emailformat:
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% set value = xar_coremethod('xarModUserVars', 'get', ['roles','useremailformat']) %}
+                    {{ xar_data_output({type: "textbox", value: value}) }}
+                </div>
+            </div>
+        {% endif %}
+        </fieldset>
+    {% else %}
+        {# <!-- You can include your own layout here or specify a separate template, e.g. if you want to handle individual fields differently for a particular module / itemtype --> #}
+        {{ include('@' ~ tplmodule ~ '/includes/display-' ~ layout ~ '.html.twig') }}
+    {% endif %}
+{% endblock %}

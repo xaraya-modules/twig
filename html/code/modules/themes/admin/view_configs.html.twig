@@ -1,0 +1,32 @@
+{# @themes/admin/view_configs.html.twig #}
+
+{% block view_configs %}
+{{ include('@themes/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+    	<div class="xar-mod-page-head">
+	        <h2>
+	            View Configurations
+	        </h2>
+	        {% if object.checkAccess('create') %}
+                <div class="xar-mod-actions">
+                    {% if xar_modvar('themes', 'use_module_icons') %}
+                        {% set xar_icon = 'xar-icon-add' %}
+                        {# <!-- {{- xar_image({scope: "theme", file: "icons/add.png", class: "xar-icon", alt: "new"}) -}} --> #}
+                    {% else %}
+                        {% set xar_icon = '' %}
+                    {% endif %}
+                    {% set label = 'Create New Configuration Item' %}
+                    <div>
+                        <a href="{{ xar_moduleurl('themes','admin','new_config') }}" title="{{ label }}" class="#$xar-icon">New Configuration</a>
+                    </div>
+                </div>
+	        {% endif %}
+	    </div>
+		<div class="xar-mod-page-body">
+	        {% if not numitems %}
+	            {% set numitems = 30 %}
+	        {% endif %}
+	        {{ xar_data_view({object: object, tplmodule: "themes"}) }}
+        </div>
+    </div>
+{% endblock %}

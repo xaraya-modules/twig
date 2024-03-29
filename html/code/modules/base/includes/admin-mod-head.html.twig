@@ -1,0 +1,14 @@
+{# @base/includes/admin-mod-head.html.twig #}
+
+{% block admin_mod_head %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">
+            {% if xar_modvar('base', 'use_module_alias') %}
+                {{ xar_var({scope: "module", module: "base", name: "module_alias_name"}) }}
+            {% else %}
+                Base Administration
+            {% endif %}
+        </span>
+        {{ include('@base/includes/admin-menu.html.twig') }}
+    </div>
+{% endblock %}

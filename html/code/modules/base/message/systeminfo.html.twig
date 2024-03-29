@@ -1,0 +1,29 @@
+{# @base/message/systeminfo.html.twig #}
+
+{% block systeminfo %}
+{# <!--
+    ***********
+    * WARNING
+    * Modify this template at your own risk.
+    * If the template contains errors, the exception system will not be able to process
+    * it correctly, leading to unexpected results
+    ***********
+    --> #}
+    <div class="xar-mod-head">
+        <span class="xar-mod-title">System Message</span>
+    </div>
+    <div class="xar-mod-body">
+        {% set label = 'Message Icon' %}
+        {{- xar_image({scope: "theme", file: "info.png", alt: label, width: "96", height: "96", class: "xar-module-icon"}) -}}
+        <h2>{{ title }}</h2>
+        <p>{{ short }}</p>
+        {% if long != '' %}
+            <h3>Explanation:</h3>
+            <p>{{ long }}</p>
+        {% endif %}
+        {% if hint != '' %}
+            <h3>Further Information:</h3>
+            <p>{{ hint }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

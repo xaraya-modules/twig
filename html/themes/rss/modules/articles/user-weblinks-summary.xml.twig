@@ -1,0 +1,11 @@
+{# modules/articles/user-weblinks-summary.xml.twig #}
+
+{% block user_weblinks_summary %}
+<item>
+        <title>{{ title }}</title>
+        <link>{{ notes }}</link>
+        <description>{{ summary }}</description>
+        <author>{{ author }}</author>
+        <pubDate>{{ xar_coremethod('xarLocale', 'formatUTCDate', ["%a, %d %b %Y %H.%M.%S GMT",pubdate]) }}</pubDate>
+    </item>
+{% endblock %}

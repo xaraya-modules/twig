@@ -1,0 +1,35 @@
+{# @privileges/includes/admin-realms.html.twig #}
+
+{% block admin_realms %}
+{#  Common Administration menu #}
+    {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+    {% set activetab = request.2 %}
+    <h2>Manage Realms</h2>
+    <div>
+        <ul class="xar-tabs xar-alt xar-norm-outline">
+            {% set title = 'Choose an action to perform' %}
+            {% set label = 'Manage Realms' %}
+            <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+            {% if activetab == 'viewrealms' or activetab == 'modifyrealm' or activetab == 'deleterealm' %}
+                {% set tabclass = 'xar-tab-active' %}
+                {% set linkclass = 'xar-accent xar-accent-outline' %}
+            {% else %}
+                {% set tabclass = 'xar-tab' %}
+                {% set linkclass = 'xar-norm xar-norm-outline' %}
+            {% endif %}
+            <li class="{{ tabclass }}">
+                <a href="{{ xar_moduleurl('privileges','admin','viewrealms') }}" class="{{ linkclass }}">View Realms</a>
+            </li>
+            {% if activetab == 'newrealm' %}
+                {% set tabclass = 'xar-tab-active' %}
+                {% set linkclass = 'xar-accent xar-accent-outline' %}
+            {% else %}
+                {% set tabclass = 'xar-tab' %}
+                {% set linkclass = 'xar-norm xar-norm-outline' %}
+            {% endif %}
+            <li class="{{ tabclass }}">
+                <a href="{{ xar_moduleurl('privileges','admin','newrealm') }}" class="{{ linkclass }}">Add Realm</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{# @dynamicdata/admin/view.html.twig #}
+
+{% block view %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            {% if object and object.objectid == 1 %}
+                {% set label = 'DataObjects' %}
+            {% endif %}
+            {% if object and object.objectid %}
+                {% set newlink = xar_moduleurl('dynamicdata','admin','new',{'objectid': object.objectid}) %}
+            {% else %}
+                {% set newlink = xar_moduleurl('dynamicdata','admin','new',{'table': table}) %}
+            {% endif %}
+            <h2>View {{ label }}&#160;</h2>
+
+            <dl class="xar-legend" style="text-align: left">
+                {% if object.checkAccess('create') %}
+                    <dd>
+                        <a class="xar-icon xar-icon-add" href="{{ newlink }}" title="Create New Item in {{ label }}">
+                            {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                                <img src="{{ xar_imageurl('icons/document-new.png','base') }}" class="xar-icon" alt="Create New Item in {{ label }}"/>
+                            {% else %}
+                                Create New Item in {{ label }}
+                            {% endif %}
+                        </a>
+                    </dd>
+                {% endif %}
+                {% if object.checkAccess('config') %}
+                    <dd>
+                        {% set proplink = xar_moduleurl('dynamicdata','admin','modifyprop',{'itemid': object.objectid}) %}
+                        <a class="xar-icon xar-icon-modify-config" href="{{ proplink }}" title="Configure {{ label }}">
+                            {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                                <img src="{{ xar_imageurl('icons/modify-config.png','base') }}" class="xar-icon" alt="Configure {{ label }}"/>
+                            {% else %}
+                                Configure {{ label }}
+                            {% endif %}
+                        </a>
+                    </dd>
+                {% endif %}
+                {% if querylink %}
+                    <dd>
+                        <a href="{{ querylink }}">
+                            {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                                <img src="{{ xar_imageurl('icons/info.png','base') }}" class="xar-icon" alt="Query {{ label }}"/>
+                            {% else %}
+                                Query {{ label }}
+                            {% endif %}
+                        </a>
+                    </dd>
+                {% endif %}
+            </dl>
+        </div>{# <!--/xar-mod-page-head--> #}
+
+        {% if not numitems %}
+            {% set numitems = 30 %}
+        {% endif %}
+        {% if object is not null %}
+            {% if object.visibility != 'public' %}
+                <h3 class="xar-align-center">Warning! This is a <em>{{ object.visibility }}</em> object used
+                internally by the {{ xar_coremethod('xarMod', 'getName', [object.moduleid]) }} module.<br/>
+                Trying to modify items here may break the module. Please proceed with caution.</h3>
+            {% endif %}
+            {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}
+            {{ xar_data_view({layout: layout, object: object, param: urlparam}) }}
+        {% else %}
+            {{ xar_data_view({layout: layout, module: module_id, itemtype: itemtype, join: join, table: table, param: urlparam, numitems: numitems, startnum: startnum, catid: catid, sort: sort}) }}
+        {% endif %}
+    </div>
+{% endblock %}

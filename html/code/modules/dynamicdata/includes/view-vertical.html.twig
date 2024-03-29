@@ -1,0 +1,25 @@
+{# @dynamicdata/includes/view-vertical.html.twig #}
+
+{% block view_vertical %}
+{% for itemid, fields in items %}
+    {% for name in properties|keys %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {{ xar_data_label({property: properties[name], label: name}) }}: 
+            </div>
+            <div class="xar-col">
+                {% if not fields[name] %}&#160; 
+                {% elseif linkfield and linkfield == name and links[itemid]['display'] %}
+                    <a href="{{ links[itemid]['display']['olink'] }}" title="{{ links[itemid]['display']['otitle'] }}">
+                        {{ xar_data_output({property: properties[name], _itemid: itemid, value: fields[name]}) }}
+                    </a>
+                {% else %}
+                {{ xar_data_output({property: properties[name], _itemid: itemid, value: fields[name]}) }}{% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    {% if not linkfield and links[itemid] and links[itemid]|length > 0 %}
+    &#160; 
+    {% for otype, option in links[itemid] %}{{ option['ojoin'] }} 
+    <a href="{{ option['olink'] }}">{{ option['otitle'] }}</a>{% endfor %}{% endif %}&#160;{% endfor %}
+{% endblock %}

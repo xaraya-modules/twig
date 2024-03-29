@@ -1,0 +1,14 @@
+{# modules/dynamicdata/user-view.xml.twig #}
+
+{% block user_view %}
+{% set dummy = xar_coremethod('xarTpl', 'setPageTemplateName', ['header']) %}
+    {% if object %}
+        {% set objname = object.name %}
+        {% set dummy = xar_coremethod('xarVar', 'setCached', ['XML','itemname',objname]) %}
+        {{ xar_data_view({object: object}) }}
+    {% elseif modid %}
+        {% set modinfo = xar_coremethod('xarMod', 'getInfo', [modid]) %}
+        {% set dummy = xar_coremethod('xarVar', 'setCached', ['XML','itemname',modinfo['name'] ~ '_' ~ itemtype]) %}
+        {{ xar_data_view({module: modid, itemtype: itemtype, numitems: "30", startnum: startnum}) }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,239 @@
+{# @modules/includes/hooked-mainpart.html.twig #}
+
+{% block hooked_mainpart %}
+{{ xar_javascript({scope: "theme", filename: "toggle.js"}) }}
+    <h3>Configure modules hooked to {{ displayname }}</h3>
+    {% if observers %}
+        <form action="{{ xar_moduleurl('modules','admin','update') }}" method="post" enctype="application/x-www-form-urlencoded">
+            {% set toggletitle = 'Click to toggle display of available hooks for this module.' %}
+            {% for hookmod, modinfo in observers %}
+                {% set subject_id = "observers_{hookmod}_{module}" %}
+                {% set subject_name = "observers[{hookmod}][{module}]" %}
+                <fieldset>
+                    <legend>
+                        Hooks from {{ modinfo['displayname'] }}
+                        [ <a href="javascript:void(0);" title="{{ toggletitle }}" onclick="return toggleDisplay('hookdetails{{ hookmod }}');">Details</a> ]                        
+                    </legend>
+                    <div id="hookdetails{{ hookmod }}">
+                    <p>The {{ modinfo['displayname'] }} module supplies the following hooks...</p>
+                <ul>
+                    {% for scope, events in modinfo['scopes'] %}
+                        <li><h4>{{ scope }} Hooks</h4>
+                            <ul>                                
+                            {% for event, hook in events %}
+                                <li>{{ event }}</li>
+                            {% endfor %}
+                            </ul>                            
+                        </li>
+                    {% endfor %}
+                </ul>
+                    </div>
+                    {# <!-- hide hook details on page load (only if js enabled :) ) --> #}
+                    <![CDATA[                        
+                    <script type="text/javascript">
+                        setDisplayOff('hookdetails{{ hookmod }}');
+                    </script>
+                    ]]>
+                    {# <!-- hooked to none --> #}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="{{ subject_id }}_hookstate_0">Do NOT enable
+                            {{ modinfo['displayname'] }} functionality in {{ displayname }}</label>
+                        </div>                                                  
+                        <div class="xar-col">
+                            {% if modinfo['hookstate'] == 0 %}
+                                <input type="radio" id="{{ subject_id }}_hookstate_0" name="{{ subject_name }}[hookstate]" value="0" checked="checked" onclick="setDisplayOff('{{ subject_id }}_itemtypes');"/>
+                            {% else %}
+                                <input type="radio" id="{{ subject_id }}_hookstate_0" name="{{ subject_name }}[hookstate]" value="0" onclick="setDisplayOff('{{ subject_id }}_itemtypes');"/>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {# <!-- hooked to all --> #}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="{{ subject_id }}_hookstate_1">Enable
+                            {{ modinfo['displayname'] }} functionality for ALL items in {{ displayname }}</label>
+                        </div>
+                        <div class="xar-col">
+                            {% if modinfo['hookstate'] == 1 %}
+                                <input type="radio" id="{{ subject_id }}_hookstate_1" name="{{ subject_name }}[hookstate]" value="1" checked="checked" onclick="setDisplayOff('{{ subject_id }}_itemtypes');"/>
+                            {% else %}
+                                <input type="radio" id="{{ subject_id }}_hookstate_1" name="{{ subject_name }}[hookstate]" value="1" onclick="setDisplayOff('{{ subject_id }}_itemtypes');"/>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                        {% if modinfo['scopes'] %}
+                            {# <!-- hooked to some scopes, all itemtypes --> #}
+                            <div class="xar-row">
+                                 <div class="xar-col">
+                                    <label for="{{ subject_id }}_hookstate_2">Enable SOME
+                                    {{ modinfo['displayname'] }} hooks for ALL items in {{ displayname }}</label>
+                                </div>
+                               <div class="xar-col">
+                                    {% if modinfo['hookstate'] == 2 %}
+                                        <input type="radio" id="{{ subject_id }}_hookstate_2" name="{{ subject_name }}[hookstate]" value="2" checked="checked" onclick="setDisplayOff('{{ subject_id }}_itemtypes');setDisplayOn('{{ subject_id }}_itemtypes_0');"/>
+                                    {% else %}
+                                        <input type="radio" id="{{ subject_id }}_hookstate_2" name="{{ subject_name }}[hookstate]" value="2" onclick="setDisplayOff('{{ subject_id }}_itemtypes');setDisplayOn('{{ subject_id }}_itemtypes_0');"/>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <ul id="{{ subject_id }}_itemtypes_0">
+                                {% for scope in modinfo['scopes']|keys %}
+                                    {% set scopehooked = modinfo['itemtypes'][0]['scopes'][scope] %}
+                                    <li>
+                                        {% set type_id = "{subject_id}_itemtypes_0_{scope}" %}
+                                        {% set type_name = "{subject_name}[itemtypes][0][{scope}]" %}
+                                        {{ xar_data_input({type: "checkbox", name: type_name, id: type_id, checked: scopehooked}) }}<label for="{{ type_id }}">{{ scope }} Hooks</label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if modinfo['hookstate'] == 2 %}
+                            <![CDATA[
+                             <script type="text/javascript">
+                                 setDisplayOn('{{ subject_id }}_itemtypes_0'); document.getElementById('{{ subject_id }}_hookstate_2').checked="checked";
+                             </script>
+                            ]]>
+                        {% else %}
+                            <![CDATA[
+                             <script type="text/javascript">
+                                 setDisplayOff('{{ subject_id }}_itemtypes_0');
+                             </script>
+                            ]]>
+                        {% endif %}
+
+                        {% if modinfo['itemtypes'] %}
+                        {# <!-- hooked to some scopes, some itemtypes --> #}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label for="{{ subject_id }}_hookstate_3">Enable SOME
+                                {{ modinfo['displayname'] }} hooks for SOME items in {{ displayname }}</label>
+                            </div>
+                            <div class="xar-col">
+                                {% if modinfo['hookstate'] == 3 %}
+                                    <input type="radio" id="{{ subject_id }}_hookstate_3" name="{{ subject_name }}[hookstate]" value="3" checked="checked" onclick="setDisplayOff('{{ subject_id }}_itemtypes_0');setDisplayOn('{{ subject_id }}_itemtypes');"/>
+                                {% else %}
+                                    <input type="radio" id="{{ subject_id }}_hookstate_3" name="{{ subject_name }}[hookstate]" value="3" onclick="setDisplayOff('{{ subject_id }}_itemtypes_0');setDisplayOn('{{ subject_id }}_itemtypes');"/>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <ul id="{{ subject_id }}_itemtypes">
+                            {% for itemtype, typeinfo in modinfo['itemtypes'] %}
+                                {% if not itemtype %}
+                                {% else %}
+                                {% set type_id = "{subject_id}_itemtypes_{itemtype}" %}
+                                {% set type_name = "{subject_name}[itemtypes][{itemtype}]" %} 
+                                <li><h4>Itemtype {{ itemtype }}: {{ typeinfo['label'] }}</h4>
+                            
+                                <div class="xar-row">
+                                    <div class="xar-col">
+                                        <label for="{{ type_id }}_0_scopes_0_0">Do NOT enable {{ modinfo['displayname'] }} hooks for items in {{ typeinfo['label'] }}</label>
+                                    </div>
+                                    <div class="xar-col">
+                                        {% if typeinfo['scopes'][0] == 0 %}
+                                            <input type="radio" id="{{ type_id }}_scopes_0_0" name="{{ type_name }}[scopes][0]" value="0" checked="checked" onclick="setDisplayOff('{{ type_id }}_scopes');"/>
+                                        {% else %}
+                                            <input type="radio" id="{{ type_id }}_scopes_0_0" name="{{ type_name }}[scopes][0]" value="0" onclick="setDisplayOff('{{ type_id }}_scopes');"/>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="xar-row">
+                                    <div class="xar-col">
+                                        <label for="{{ type_id }}_0_scopes_0_1">Enable ALL {{ modinfo['displayname'] }} hooks for items in {{ typeinfo['label'] }}</label>
+                                    </div>
+                                    <div class="xar-col">
+                                        {% if typeinfo['scopes'][0] == 1 %}
+                                            <input type="radio" id="{{ type_id }}_scopes_0_1" name="{{ type_name }}[scopes][0]" value="1" checked="checked" onclick="setDisplayOff('{{ type_id }}_scopes');"/>
+                                        {% else %}
+                                            <input type="radio" id="{{ type_id }}_scopes_0_1" name="{{ type_name }}[scopes][0]" value="1" onclick="setDisplayOff('{{ type_id }}_scopes');"/>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            
+                                {% if modinfo['scopes'] %}
+                                    {# <!-- hooked to some scopes, this itemtype --> #}
+                                    <div class="xar-row">
+                                        <div class="xar-col">
+                                            <label for="{{ type_id }}_scopes_0_2">Enable SOME {{ modinfo['displayname'] }} hooks for items in {{ typeinfo['label'] }}</label>
+                                        </div>
+                                        <div class="xar-col">
+                                            {% if typeinfo['scopes'][0] == 2 %}
+                                                <input type="radio" id="{{ type_id }}_scopes_0_2" name="{{ type_name }}[scopes][0]" value="2" onclick="setDisplayOn('{{ type_id }}_scopes');" checked="checked"/>
+                                            {% else %}
+                                                <input type="radio" id="{{ type_id }}_scopes_0_2" name="{{ type_name }}[scopes][0]" value="2" onclick="setDisplayOn('{{ type_id }}_scopes');"/>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <ul id="{{ type_id }}_scopes">
+                                        {% for scope in modinfo['scopes']|keys %}
+                                            {% set scopehooked = typeinfo['scopes'][scope] %}
+                                            <li>
+                                                {% set scope_name = "{type_name}[scopes][{scope}]" %}
+                                                {% set scope_id = "{type_id}_scopes_{scope}" %}
+                                                {{ xar_data_input({type: "checkbox", name: scope_name, id: scope_id, checked: scopehooked}) }}
+                                                <label for="{{ scope_id }}">{{ scope }} Hooks</label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% if typeinfo['scopes'][0] == 2 %}
+                                        <![CDATA[
+                                            <script type="text/javascript">
+                                            setDisplayOn('{{ type_id }}_scopes'); document.getElementById('{{ type_id }}_scopes_0_2').checked="checked";
+                                            </script>
+                                        ]]>
+                                    {% else %}
+                                        <![CDATA[
+                                            <script type="text/javascript">
+                                            setDisplayOff('{{ type_id }}_scopes');
+                                            </script>
+                                        ]]>
+                                    {% endif %}  
+                                {% endif %}
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                      
+                        {% endif %}
+                        {# <!-- show/hide itemtype details on page load (only if js enabled :) ) --> #}
+                        {% if modinfo['hookstate'] > 2 %}
+                             <![CDATA[                                 
+                             <script type="text/javascript">
+                                 setDisplayOn('{{ subject_id }}_itemtypes'); document.getElementById('{{ subject_id }}_hookstate_3').checked="checked";
+                             </script>
+                             ]]>
+                        {% else %}
+                            <![CDATA[                                 
+                             <script type="text/javascript">
+                                 setDisplayOff('{{ subject_id }}_itemtypes');
+                             </script>
+                             ]]>
+                        {% endif %}
+                </fieldset>
+            {% endfor %}
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                      {% if return_url %}
+                          <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                      {% endif %}
+                      <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>              
+                      <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                      <input type="hidden" name="displayname" id="displayname" value="{{ displayname }}"/>
+                      <input type="hidden" name="newdisplayname" id="newdisplayname" value="{{ displayname }}"/>
+                      {% set label = 'Save Changes' %}
+                      {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </div>
+        </form>
+    {% endif %}
+    {# <!-- Ends the if at the top where we test if we need to do it at all --> #}
+{% endblock %}

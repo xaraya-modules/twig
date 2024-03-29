@@ -1,0 +1,13 @@
+{# @roles/requestpwconfirm.html.twig #}
+
+{% extends '@roles/base.html.twig' %}
+
+{% block modulespace %}
+{{ include('@roles/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Password Sent</h2>
+        <p>
+            Your new password has been sent to your email address on record. You will want to change this new password once you have logged in.
+        </p>
+    </div>
+{% endblock %}

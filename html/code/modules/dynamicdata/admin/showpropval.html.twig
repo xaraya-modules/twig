@@ -1,0 +1,49 @@
+{# @dynamicdata/admin/showpropval.html.twig #}
+
+{% block showpropval %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% set typename = propertytype.name %}
+        {% if file_exists(xar_coremethod('sys', 'code') . 'properties/' . typename . '/xartemplates/includes/overview.xt') %}
+            <![CDATA[
+            <script type="text/javascript">
+                function showtab (selectedindex, items)
+                {
+                    for (i=1;i<=items;i++) {
+                        document.getElementById('page-' + i).style.display = "none";
+                        document.getElementById('tab-' + i).className = "xar-tab";
+                        document.getElementById('href-' + i).className = "xar-norm xar-norm-outline";
+                    }
+                    document.getElementById('page-' + selectedindex).style.display = "block";
+                    document.getElementById('tab-' + selectedindex).className = "xar-tab-active";
+                    document.getElementById('href-' + selectedindex).className = "xar-accent xar-accent-outline";
+                }
+            </script>
+            ]]>
+            <ul class="xar-tabs xar-alt xar-norm-outline" style="clear:both">
+                <li id="tab-1">
+                    <a id="href-1" href="javascript:showtab(1,2)">
+                        Configuration
+                    </a>
+                </li>
+                <li id="tab-2">
+                    <a id="href-2" href="javascript:showtab(2,2)">
+                        Property Information
+                    </a>
+                </li>
+            </ul>
+            <div id="page-1">
+                {{ include('@dynamicdata/includes/property-configuration.html.twig') }}
+            </div>
+
+            <div id="page-2" style="display: none">
+                {{ include('@dynamicdata/includes/overview.html.twig') }}
+            </div>
+            <script type="text/javascript">
+                showtab (1,2)
+            </script>
+        {% else %}
+            {{ include('@dynamicdata/includes/property-configuration.html.twig') }}
+        {% endif %}
+    </div>
+{% endblock %}

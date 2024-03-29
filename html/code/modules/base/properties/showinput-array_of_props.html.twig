@@ -1,0 +1,179 @@
+{# @base/properties/showinput-array_of_props.html.twig #}
+
+{% block showinput_array_of_props %}
+{# <!--div class="xar-form-container-after"--> #}
+    <fieldset>
+        {% if allowinput == 0 %}       
+            {% if value is iterable %}
+                {% set index = 0 %}
+                {% for key, val in value %}
+                    <div class="xar-row">
+                        <div class="xar-col">                   
+                            {% if associative_array == 0 %}
+                                {% set keyvalue = index+1 %}                         
+                                <input type="hidden" name="{{ name }}_key[{{ index }}]" id="{{ id }}_key_{{ index }}" value="{{ keyvalue }}" size="{{ size }}"/>                                   
+                            {% else %}
+                                {% if keylabel %}
+                                    <label for="{{ id }}_key_{{ index }}">{{ keylabel }}:</label>&#160;
+                                {% endif %}
+                                {% if fixedkeys %}
+                                    {{ key }}<input type="hidden" name="{{ name }}_key[{{ index }}]" id="{{ id }}_key_{{ index }}" value="{{ key }}"/>
+                                {% else %}
+                                    <input class="xar-form-textmedium" type="text" name="{{ name }}_key[{{ index }}]" id="{{ id }}_key_{{ index }}" value="{{ key }}" size="{{ size }}"/>
+                                {% endif %}
+                            {% endif %}                   
+                            &#160;
+                            {% if valuelabel %}
+                                <label for="{{ id }}_value_{{ index }}">{{ valuelabel }}:</label>&#160;
+                            {% endif %}
+                        </div>
+                        <div class="xar-col">
+                            {# <!-- we don't use an array here, because other property types may add their own suffix --> #}
+                            {% set propname = name ~ '_value_' ~ index %}
+                            {% set propid = id ~ '_value_' ~ index %}
+                            {{ xar_data_input({property: property, name: propname, id: propid, value: val, size: size}) }}
+                        </div>
+                    </div>
+                    {% set index = index+1 %}
+                {% endfor %}
+                {% for i in range(index, rows - 1) %}
+                    <div class="xar-row">
+                        <div class="xar-col">                    
+                            {% if associative_array == 0 %}
+                                {% set keyvalue = i+1 %}                         
+                                <input type="hidden" name="{{ name }}_key[{{ i }}]" id="{{ id }}_key_{{ i }}" value="{{ keyvalue }}" size="{{ size }}"/>                     
+                            {% else %}
+                                {% if keylabel %}
+                                    <label for="{{ id }}_key_{{ i }}">{{ keylabel }}:</label>&#160;
+                                {% endif %}
+                                <input class="xar-form-textmedium" type="text" name="{{ name }}_key[{{ i }}]" id="{{ id }}_key_{{ i }}" value="" size="{{ size }}"/>
+                            {% endif %}                   
+                            &#160;
+                            {% if valuelabel %}
+                                <label for="{{ id }}_value_{{ i }}">{{ valuelabel }}:</label>&#160;
+                            {% endif %}
+                        </div>
+                        <div class="xar-col">
+                            {# <!-- we don't use an array here, because other property types may add their own suffix --> #}
+                            {% set propname = name ~ '_value_' ~ i %}
+                            {% set propid = id ~ '_value_' ~ i %}
+                            {{ xar_data_input({property: property, name: propname, id: propid, size: size}) }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="xar-col dummy">
+                    <textarea name="{{ name }}" rows="8" cols="50" id="{{ id }}" tabindex="{{ tabindex }}">{{ value }}</textarea>
+                </div>
+            {% endif %}   
+        {% else %}
+            {% set rowsdisplayed = "" %}
+            {% set j = 0 %}
+            {{ include('@base/includes/arrayjs.html.twig') }}
+            <div id="{{ id }}_rows">           
+                {% if value is iterable %}           
+                    {% set index = 0 %}                       
+                    {% for key, val in value %}
+                        <div class="xar-row">
+                            <div class="xar-col" id="{{ id }}_{{ index }}">                        
+                                {% if associative_array == 0 %}
+                                    {% set keyvalue = index+1 %}                         
+                                    <input type="hidden" name="{{ name }}_key[{{ index }}]" id="{{ id }}_key_{{ index }}" value="{{ keyvalue }}" size="{{ size }}"/>
+                                {% else %}
+                                    {% if keylabel %}
+                                        <label for="{{ id }}_key_{{ index }}">{{ keylabel }}:</label>&#160;
+                                    {% endif %}
+                                    <input class="xar-form-textmedium" type="text" name="{{ name }}_key[{{ index }}]" id="{{ id }}_key_{{ index }}" value="{{ key }}" size="{{ size }}"/>
+                                {% endif %}
+                                &#160;
+                                {% if valuelabel %}
+                                    <label for="{{ id }}_value_{{ index }}">{{ valuelabel }}:</label>&#160;                      
+                                {% endif %}
+                            </div>
+                            <div class="xar-col">
+                                <input class="xar-form-textlong" type="text" name="{{ name }}_value[{{ index }}]" id="{{ id }}_value_{{ index }}" value="{{ val }}" size="{{ size }}"/>
+                                {% if rows <= index and allowinput == 2 %}
+                                    {% set label = 'Remove' %}
+                                    <input type="button" title="{{ label }}&#160;{{ suffixlabel }}" value="{{ label }}&#160;{{ suffixlabel }}" style="height: 23px; font-size: small;" onclick="javascript:{{ id }}_removeRow('{{ id }}','{{ index }}')"/>
+                                {% endif %}
+                                {% set rowsdisplayed = rowsdisplayed ~ "," ~ j %}
+                            </div>
+                        </div>
+                        {% set index = index+1 %}
+                        {% set j = j+1 %}
+                    {% endfor %}          
+                    {% for i in range(index, rows - 1) %}
+                        {% set j = i+1 %}
+                        <div class="xar-row">
+                            <div class="xar-col" id="{{ id }}_{{ i }}">                        
+                                {% if associative_array == 0 %}
+                                    {% set keyvalue = i+1 %}                         
+                                    <input type="hidden" name="{{ name }}_key[{{ i }}]" id="{{ id }}_key_{{ i }}" value="{{ keyvalue }}" size="{{ size }}"/>
+                                {% else %}
+                                    {% if keylabel %}
+                                        <label for="{{ id }}_key_{{ i }}">{{ keylabel }}:</label>&#160;
+                                    {% endif %}
+                                    <input class="xar-form-textmedium" type="text" name="{{ name }}_key[{{ i }}]" id="{{ id }}_key_{{ i }}" value="" size="{{ size }}"/>
+                                {% endif %}                       
+                                &#160;
+                                {% if valuelabel %}
+                                    <label for="{{ id }}_value_{{ i }}">{{ valuelabel }}:</label>&#160;
+                                {% endif %}
+                            </div>
+                            <div class="xar-col">
+                                <input class="xar-form-textlong" type="text" name="{{ name }}_value[{{ i }}]" id="{{ id }}_value_{{ i }}" value="" size="{{ size }}"/>
+                                {% set rowsdisplayed = rowsdisplayed ~ "," ~ j %}                   
+                            </div>     
+                        </div>
+                    {% endfor %}              
+                    <input type="hidden" name="{{ id }}_lastrow" id="{{ id }}_lastrow" value="{{ j }}"/>            
+                {% else %}
+                    <div class="xar-col dummy">
+                        <textarea name="{{ name }}" rows="8" cols="50" id="{{ id }}" tabindex="{{ tabindex }}">{{ value }}</textarea>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="xar-col dummy">
+                {% set label = 'Add' %}
+                {% if allowinput == 1 %}
+                    <input class="xar-col" type="button" title="{{ label }}&#160;{{ suffixlabel }}" value="{{ label }}&#160;{{ suffixlabel }}" onclick="{{ id }}_addRow(0);" style="height: 23px; font-size: small;"/>
+                {% else %}
+                    <input class="xar-col" type="button" title="{{ label }}&#160;{{ suffixlabel }}" value="{{ label }}&#160;{{ suffixlabel }}" onclick="{{ id }}_addRow(1);" style="height: 23px; font-size: small;"/>
+                {% endif %}
+            </div>
+            {% set rowsdisplayed = rowsdisplayed|trim(",") %}
+            <input type="hidden" name="{{ id }}_rowsdisplayed" id="{{ id }}_rowsdisplayed" value="{{ rowsdisplayed }}"/>
+        {% endif %}
+        <div class ="xar-displaynone">
+            <div id="{{ id }}_rowtemplate">                
+                {% if associative_array == 0 %}                              
+                    <input type="hidden" name="dummyid_key[dummy]" id="dummyid_key_dummy" value="dummy" size="{{ size }}"/>
+                {% else %}
+                    {% if keylabel %}
+                        <label for="dummyid_key_dummy">{{ keylabel }}:</label>&#160;
+                    {% endif %}
+                    <input class="xar-form-textmedium" type="text" name="dummyid_key[dummy]" id="dummyid_key_dummy" value="" size="{{ size }}"/>
+                {% endif %}           
+                &#160;
+                {% if valuelabel %}
+                    <label for="dummyid_value_dummy">{{ valuelabel }}:</label>&#160;
+                {% endif %}
+                <input class="xar-form-textlong" type="text" name="dummyid_value[dummy]" id="dummyid_value_dummy" value="" size="{{ size }}"/>                        
+            </div>
+        </div>
+        <div class ="xar-displaynone">
+            <div id="{{ id }}_removetemplate">         
+                {% set label = 'Remove' %}
+                <input type="button" title="{{ label }}&#160;{{ suffixlabel }}" value="{{ label }}&#160;{{ suffixlabel }}" style="height: 23px; font-size: small;" onclick="javascript:{{ id }}_removeRow('{{ id }}','dummy')"/>                                                   
+            </div>
+        </div>
+        {# <!--PSspl:Added hidden field for associative array configuration value. --> #}
+        <input type="hidden" name="{{ name }}_associative_array" id="{{ name }}_associative_array" value="{{ associative_array }}"/>        
+{% if property %}
+        <input type="hidden" name="{{ name }}_has_property" id="{{ name }}_has_property" value="1"/>        
+{% endif %}
+        <br class="xar-clearall"/>
+        {{ include('@base/includes/dataproperty_additions.html.twig') }}        
+    {# <!--/div--> #}
+    </fieldset>
+{% endblock %}

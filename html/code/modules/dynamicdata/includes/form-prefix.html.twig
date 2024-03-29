@@ -1,0 +1,19 @@
+{# @dynamicdata/includes/form-prefix.html.twig #}
+
+{% block form_prefix %}
+{# <!--
+            This layout uses a field prefix for all input fields of the object, so that
+            you can have several identical objects in the same input form (cfr. subforms)
+     --> #}
+    {% for name, property in properties %}
+        {% set fieldname = fieldprefix ~ '_dd_' ~ property.id %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {{ xar_data_label({property: properties[name], id: fieldname}) }}
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({property: properties[name], fieldprefix: fieldprefix}) }}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

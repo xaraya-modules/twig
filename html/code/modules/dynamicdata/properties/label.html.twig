@@ -1,0 +1,41 @@
+{# @dynamicdata/properties/label.html.twig #}
+
+{% block label %}
+{% if not title %}
+        {% set title = "" %}
+    {% endif %}
+    {% if not style %}
+        {% set style = "" %}
+    {% endif %}
+
+    {% if not for %}
+        {% if not class %}
+            {% set class = "" %}
+        {% endif %}
+        <label class="{{ class }}" title="{{ title }}" style="{{ style }}">
+            {{ label }}
+        </label>
+    {% else %}
+        {% if not class %}
+            {% set class = "xar-form-label" %}
+        {% endif %}
+        {% if for != 'id' and for != 'name' %}
+            <label class="{{ class }}" for="{{ for }}" title="{{ title }}" style="{{ style }}">
+                {{ label }}
+            </label>
+        {% elseif for == 'id' and id %}
+            <label class="{{ class }}" for="{{ id }}" title="{{ title }}" style="{{ style }}">
+                {{ label }}
+            </label>
+        {% elseif for == 'name' and name %}
+            {% set for = name %}
+            <label class="{{ class }}" for="{{ for }}" title="{{ title }}" style="{{ style }}">
+                {{ label }}
+            </label>
+        {% else %}
+             <label class="{{ class }}" title="{{ title }}" style="{{ style }}">
+                {{ label }}
+            </label>
+        {% endif %}
+    {% endif %}
+{% endblock %}

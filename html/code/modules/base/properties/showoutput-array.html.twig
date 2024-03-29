@@ -1,0 +1,31 @@
+{# @base/properties/showoutput-array.html.twig #}
+
+{% block showoutput_array %}
+<table class="xar-table xar-border-none xar-margin-thicktop">
+        <tr>
+            <td>&#160;</td>
+            {% for i in range(0, column_titles|length - 1) %}
+                <td style="text-align: left">
+                    <label>{{ column_titles[i] }}</label>
+                </td>
+            {% endfor %}
+        </tr>
+        {% for i in range(0, rows - 1) %}
+            <tr>
+                <td>{% set row = i+1 %}
+                    Row {{ row }}
+                </td>
+                {% for j in range(0, column_titles|length - 1) %}
+                    <td>
+                        {% if value[i][j] is not null %}
+                            {{ xar_data_output({property: column_types[j], value: value[i][j]}) }}
+                        {% else %}
+                            {{ xar_data_output({property: column_types[j]}) }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}        
+{% endblock %}

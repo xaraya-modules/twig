@@ -1,0 +1,283 @@
+{# @installer/admin/upgrade.html.twig #}
+
+{% block upgrade %}
+<link rel='icon' href="favicon.ico"/>
+    <div id="main_right">
+        {{ include('@installer/includes/upstatus.html.twig') }}
+    </div>
+    <div id="main_left">
+        {% if phase == 1 %}
+            <h1>Please log in</h1>
+        {% elseif phase == 2 %}
+            <h1>Welcome to the Xaraya Upgrader</h1>
+        {% elseif phase == 3 %}
+            <h1>Running the Upgrade</h1>
+        {% elseif phase == 4 %}
+            <h1>Database Checks</h1>
+        {% elseif phase == 5 %}
+            <h1>Notes on this Version</h1>
+        {% endif %}
+
+        {% if phase != 1 %}
+            <h2>Version Status</h2>
+            <h3>Version Information</h3>
+            <table class="xar-table" style="width: 90%; min-width: 900p">
+                <tr>
+                    <th></th>
+                    <th>Your Files</th>
+                    <th>Your Database</th>
+                </tr>
+                <tr>
+                    <td>
+                        {% set label = 'Current Core Version' %}
+                        <label title="{{ label }}">                            
+                            Xaraya Core:                            
+                        </label>
+                    </td>
+                    <td>
+                        {{ xarCore..VERSION_ID }} version {{ xarCore..VERSION_NUM }} ({{ xarCore..VERSION_SUB }})
+                    </td>
+                    <td>
+                        {{ xar_var({scope: "config", name: "System.Core.VersionId"}) }} version
+                        {% if oldversionnum is not null %}
+                            2.0.0
+                        {% else %}
+                            {{ xar_var({scope: "config", name: "System.Core.VersionNum"}) }}
+                        {% endif %}
+                        ({{ xar_var({scope: "config", name: "System.Core.VersionSub"}) }})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {% set label = 'Current Build' %}
+                        <label title="{{ label }}">                            
+                            Build:                            
+                        </label>
+                    </td>
+                    <td>
+                        {{ xarCore..build }}
+                    </td>
+                    <td>
+                        {% if oldversionnum is not null %}
+                            {{ oldversionnum }}
+                        {% else %}
+                            {{ xar_var({scope: "config", name: "System.Core.VersionRev"}) }}                    
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        {% endif %}
+        
+        {% if phase == 1 %}
+            <form action="upgrade.php" method="post">
+                <p class="center">
+                    Enter the password of the designated site administrator
+                </p>
+                <p class="center">
+                    <input type="password" name="pass"/>
+                    &#160;
+                    <input type="hidden" name="phase" id="phase" value="2"/>
+                    {% set label = 'Submit' %}
+                    {{- xar_button({type: "submit", label: label}) -}}
+                </p>
+                <p class="center" style="color: red; font-weight: bold">
+                    {% if error %}
+                        The password entered is not correct
+                    {% endif %}
+                </p>
+            </form>
+        {% elseif phase == 2 %}
+            <h3>
+                Status:
+                {% set idsequal = xarCore..VERSION_ID == xar_coremethod('xarConfigVars', 'get', [null, 'System.Core.VersionId']) %}
+                {% if idsequal %}
+                    {% if versioncompare == 0 %}
+                        Your installation is current.
+                    {% elseif versioncompare == 1 %}
+                        The file version of Xaraya is greater than the database version. You should upgrade your database now.
+                    {% else %}
+                        The database version is higher than the file version. You need to install 
+                    {% endif %}
+                {% else %}
+                    The file and database versions of Xaraya are not compatible.
+                {% endif %}
+            </h3>
+
+            {% if versioncompare == 0 %}
+                You have already upgraded to version {{ xarCore..VERSION_NUM }}. The upgrade script only needs to run once and therefore stops here.
+                <h2>Checking your system</h2>
+                You can run checks to verify that your installed database is correct: 
+                <form action="upgrade.php" method="post">
+                    <input type="hidden" name="password" value="{{ password }}"/>
+                    <input type="hidden" name="phase" id="phase" value="3"/>
+                    <p class="center">
+                        {% set label = 'Run checks' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </p>
+                </form>
+            {% elseif versioncompare == 1 %}
+                {% if not upgradable %}
+                    You must have at least version 2.0.0 in order to run the upgrader.
+                {% else %}
+                    Now preparing to run an upgrade from prior version <strong>{{ xar_var({scope: "config", name: "System.Core.VersionNum"}) }}</strong> to version <strong>{{ xarCore..VERSION_NUM }}</strong>. 
+                    <form action="upgrade.php" method="post">
+                        <input type="hidden" name="password" value="{{ password }}"/>
+                        <p class="center">
+                            <input type="hidden" name="phase" id="phase" value="3"/>
+                            {% set label = 'Continue' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </p>
+                    </form>
+                {% endif %}
+            {% endif %}
+        {% elseif phase == 3 %}
+            <form action="upgrade.php" method="post">            
+                <input type="hidden" name="password" value="{{ password }}"/>
+                <input type="hidden" name="phase" id="phase" value="4"/>
+                {% for version, upgrade in upgrades %}
+                    <table class="xar-table" style="margin-top:10px; width:100%">
+                        <tr>
+                            <th style="border-bottom: dotted 1px; text-align: left">Task</th>
+                            <th style="border-bottom: dotted 1px; width:10%; text-align: left">Result</th>
+                            <th style="border-bottom: dotted 1px; width:10%; text-align: left">Reference</th>
+                        </tr>
+                        {% if not upgrade['tasks'] %}
+                            <tr>
+                                <td colspan="3" style="text-align: center">
+                                    No tasks completed
+                                </td>
+                            </tr>
+                        {% else %}
+                            {% for task in upgrade['tasks'] %}
+                                <tr>
+                                    <td>{{ task['description'] }}</td>
+                                    {% if task['success'] %}
+                                        {% set reply_color = 'green' %}
+                                    {% else %}
+                                        {% set reply_color = 'red' %}
+                                    {% endif %}
+                                    <td style="color: {{ reply_color }}">{{ task['reply'] }}</td>
+                                    <td>{{ task['reference'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </table>
+                    {% if upgrade['message'] and not upgrade['errormessage'] %}
+                        <h3>{{ upgrade['message'] }}</h3>
+                    {% else %}
+                        <h3>{{ upgrade['errormessage'] }}</h3>
+                    {% endif %}
+                {% endfor %}
+                Note: Some of these database changes cannot be repeated. Please do not try to use the back button on your browser to go back to the previous page or refresh this page.
+                <br/>
+                <h4>The next page will check the database for correct structure and consistency.</h4>
+                <p class="center">
+                    {# <!--
+                    {% set label = 'Back' %}
+                    {{- xar_button({type: "cancel", label: label}) -}}&#160;
+                    --> #}
+                    {# <!--
+                    {% if not upgrade['errormessage'] %}
+                        {% set label = 'Continue' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    {% endif %}
+                    --> #}
+                    {% set label = 'Continue' %}
+                    {{- xar_button({type: "submit", label: label}) -}}
+                </p>
+            </form>
+        {% elseif phase == 4 %}
+            <form action="upgrade.php" method="post">
+                <input type="hidden" name="password" value="{{ password }}"/>
+                <input type="hidden" name="phase" id="phase" value="5"/>
+                {% for version, check in checks %}
+                    <table class="xar-table" style="margin-top:10px; width:100%">
+                        <tr>
+                            <th style="border-bottom: dotted 1px; text-align: left">Task</th>
+                            <th style="border-bottom: dotted 1px; width:10%; text-align: left">Result</th>
+                            <th style="border-bottom: dotted 1px; width:10%; text-align: left">Reference</th>
+                        </tr>
+                        {% if not check['tasks'] %}
+                            <tr>
+                                <td colspan="3" style="text-align: center">
+                                    No checks available/required
+                                </td>
+                            </tr>
+                        {% else %}
+                            {% for task in check['tasks'] %}
+                                <tr>
+                                    <td>{{ task['description'] }}</td>
+                                    {% if task['success'] %}
+                                        {% set reply_color = 'green' %}
+                                    {% else %}
+                                        {% set reply_color = 'red' %}
+                                    {% endif %}
+                                    <td style="color: {{ reply_color }}">{{ task['reply'] }}</td>
+                                    <td>{{ task['reference'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </table>
+                    {% if check['message'] and not check['errormessage'] %}
+                        <h3>{{ check['message'] }}</h3>
+                    {% else %}
+                        <h3>{{ check['errormessage'] }}</h3>
+                    {% endif %}
+                {% endfor %}
+                <p class="center">
+                    {% set label = 'Back' %}
+                    {{- xar_button({type: "cancel", label: label}) -}}&#160;
+                    {# <!--
+                    {% if not check['errormessage'] %}
+                        {% set label = 'Continue' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    {% endif %}
+                    --> #}
+                    {% set label = 'Continue' %}
+                    {{- xar_button({type: "submit", label: label}) -}}
+                </p>
+            </form>
+        {% elseif phase == 5 %}
+            <h3>Your upgrade is complete</h3>
+            <h2>Next Steps:</h2>
+            <p>
+                You can now customize your installation to match your needs. Manage sitewide settings with the configuration options of the <strong>Base module</strong>. Use the <strong>Modules administration</strong> to install any additional features, or use the <strong>Blocks administration</strong> to adjust the look of your sidebars or add blocks to your site. You can do either of these at any time via the Admin menu.
+            </p>
+            <div style="clear: both; float: left; width: 25%">
+                <h3><a href="index.php?module=base&amp;type=admin&amp;func=modifyconfig">I want to configure the site</a></h3>
+            </div>
+            <div style="float: left; width: 25%">
+                <h3><a href="index.php?module=modules&amp;type=admin&amp;func=list">I want to add modules</a></h3>
+            </div>
+            <div style="float: left; width: 25%">
+                <h3><a href="index.php?module=blocks&amp;type=admin&amp;func=view_instances">I want to manage blocks</a></h3>
+            </div>
+            <div style="float: left; width: 25%">
+                <h3><a href="index.php">Just launch the site!</a></h3>
+            </div>
+            <br />
+            <br />
+            <h2>Thank you for using Xaraya.</h2>
+            <h2>Notes for Version {{ xarCore..VERSION_NUM }}</h2>
+            {% if xarCore..VERSION_NUM == '2.1.0' %}
+                {{ include('@installer/includes/notes-210.html.twig') }}
+            {% elseif xarCore..VERSION_NUM == '2.2.0' %}
+                {{ include('@installer/includes/notes-220.html.twig') }}
+            {% elseif xarCore..VERSION_NUM == '2.3.0' %}
+            {# <!-- No notes yet
+                {{ include('@installer/includes/notes-230.html.twig') }}
+            --> #}
+                No notes available
+            {% elseif xarCore..VERSION_NUM == '2.3.1' %}
+                No notes available
+            {% elseif xarCore..VERSION_NUM == '2.4.0' %}
+                No notes available
+            {% elseif xarCore..VERSION_NUM == '2.4.1' %}
+                {{ include('@installer/includes/notes-241.html.twig') }}
+            {% endif %}
+        {% endif %}
+        {% if upgrade['errormessage'] %}
+            <p class="warning">{{ upgrade['errormessage'] }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

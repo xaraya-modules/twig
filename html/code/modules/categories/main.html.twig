@@ -1,0 +1,74 @@
+{# @categories/main.html.twig #}
+
+{% extends '@categories/base.html.twig' %}
+
+{% block modulespace %}
+<h2>
+        
+            Browse Categories
+        
+    </h2>
+
+    {% if parents and parents|length > 0 %}
+      <a href="&xar-modurl-categories-user-main;">Browse</a>
+      {% for parent in parents %}
+        &gt;
+        {% if parent['link'] %}
+          <a href="{{ parent['link'] }}">{{ parent['name'] }}</a>
+        {% else %}
+          <strong>{{ parent['name'] }}</strong>
+        {% endif %}
+      {% endfor %}
+      {{ hooks }}
+      <br/><br/>
+    {% endif %}
+
+    {% if letters and letters|length > 0 %}
+      [
+      {% for id, letter in letters %}
+        {% if id %}
+          |
+        {% endif %}
+        <a href="{{ letter['link'] }}">{{ letter['name'] }}</a>
+      {% endfor %}
+      ]
+      <hr/>
+    {% endif %}
+
+    {% if categories and categories|length > 0 %}
+      {% set numcats = categories|length %}
+      {% set miditem = ((numcats - 0.5) / 2)|round %}
+      {% if numcats > 7 %}
+      {# <!--  TODO: Review this
+        <table class="xar-table" border="0"><tr><td valign="top">
+      <ul>
+      {% for id, category in categories %}
+        <li> <a href="{{ category['link'] }}">{{ category['name'] }}</a> </li>
+          </ul></td>
+          <td valign="top"><ul>
+      {% endfor %}
+      </ul>
+        </tr></table>
+        --> #}
+      {% else %}
+      <ul>
+      {% for id, category in categories %}
+        <li> <a href="{{ category['link'] }}">{{ category['name'] }}</a> </li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    {% endif %}
+
+    {% if moditems and moditems|length > 0 %}
+      {% for moditem in moditems %}
+        &#8226; <a href="{{ moditem['link'] }}">{{ moditem['name'] }}</a> ({{ moditem['numitems'] }})
+        <ul>
+        {% if moditem['items'] %}
+        {% for item in moditem['items'] %}
+           <li> <a href="{{ item['url'] }}" title="{{ item['title'] }}">{{ item['label'] }}</a> </li>
+        {% endfor %}
+        {% endif %}
+        </ul>
+      {% endfor %}
+    {% endif %}
+{% endblock %}

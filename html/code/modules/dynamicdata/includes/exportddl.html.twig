@@ -1,0 +1,116 @@
+{# @dynamicdata/includes/exportddl.html.twig #}
+
+{% block exportddl %}
+<?xml version="1.0" encoding="utf-8"?>
+<schema name="{{ schemaName }}" xmlns="http://xaraya.com/2007/schema" xmlns:xar="http://xaraya.com/2004/blocklayout">
+    <description>Auto generated schema file for development purposes</description>
+    {% for table in tables %}
+        <table class="xar-table" name="{{ table.getName() }}">
+            {% for column in {{ table.getColumns() }} %}
+                {% set required = !column.isNullable()?'true'.'false' %}
+                {% set auto = column.isAutoIncrement()?'true'.'false' %}
+                {% set default = column.getDefaultValue() %}
+                {% set size = column.getSize() %}
+                {% set scale = column.getScale()?column.getScale().0 %}
+                <column id="{{ table.getName() }}.{{ column.getName() }}" name="{{ column.getName() }}">
+                    {# <!-- Determine the required and auto attribute and add these to the column tag --> #}
+                    <xar:attribute name="required">
+                        {{ required }}
+                    </xar:attribute>
+                    <xar:attribute name="auto">
+                        {{ auto }}
+                    </xar:attribute>
+                    {% if {{ strtolower(column.getType()) == 'boolean' }} %}
+                        <boolean>
+                            <xar:attribute name="defaultvalue">
+                                {{ default }}
+                            </xar:attribute>
+                        </boolean>
+                    {% elseif {{ strtolower(column.getType()) == 'number' }} %}
+                        {% if {{ column.isAutoIncrement() or (column.getDefaultValue() == '') }} %}
+                            <number>
+                                {# <!-- Size should be easy, if Creole has done its job. No number without size --> #}
+                                <xar:attribute name="size">
+                                    {{ size }}
+                                </xar:attribute>
+                                {# <!-- We call scale decimals --> #}
+                                <xar:attribute name="decimals">
+                                    {{ scale }}
+                                </xar:attribute>
+                            </number>
+                        {% else %}
+                            <number>
+                                {# <!-- Size should be easy, if creole has done it's job. No number without size --> #}
+                                <xar:attribute name="size">
+                                    {{ size }}
+                                </xar:attribute>
+                                {# <!-- This aint right, default value '' is valid but different from no default --> #}
+                                <xar:attribute name="defaultvalue">
+                                    {{ default }}
+                                </xar:attribute>
+                                {# <!-- We call scale decimals --> #}
+                                <xar:attribute name="decimals">
+                                    {{ scale }}
+                                </xar:attribute>
+                            </number>
+                        {% endif %}
+                    {% elseif {{ strtolower(column.getType()) == 'text' }} %}
+                        {% if {{ column.getSize() != '' }} %}
+                            <text>
+                                <xar:attribute name="size">
+                                    {{ size }}
+                                </xar:attribute>
+                                <xar:attribute name="defaultvalue">
+                                    {{ default }}
+                                </xar:attribute>
+                            </text>
+                        {% else %}
+                            <text></text>
+                        {% endif %}
+                    {% elseif {{ strtolower(column.getType()) == 'time' }} %}
+                        {# <!-- well, yes, this originates from date, timestamp and other date related values --> #}
+                        {# <!-- for now, we just copy the size attribute --> #}
+                        <time>
+                            <xar:attribute name="size">
+                                {{ size }}
+                            </xar:attribute>
+                        </time>
+                    {% elseif {{ strtolower(column.getType()) == 'binary' }} %}
+                        <binary />
+                    {% endif %}
+                </column>
+            {% endfor %}
+            <constraints>
+                {# <!-- Primary keys --> #}
+                {% set primary = table.getPrimaryKey() %}
+                {% if primary is object %}
+                    <primary name="{{ primary.getName() }}">
+                        {% for primColumn in primary.getColumns() %}
+                            <columnref id="{{ table.getName() }}.{{ primColumn.getName() }}"/>
+                        {% endfor %}
+                    </primary>
+                {% else %}
+                    {#  ERROR: the table has no primary key #}
+                {% endif %}
+                {# <!-- Indexes --> #}
+                {% set indexes = table.getIndexes() %}
+                {% for index in indexes %}
+                    {% if index.isUnique() %}
+                        <unique name="{{ index.getName() }}">
+                            {% for indexColumn in {{ index.getColumns() }} %}
+                                <columnref id="{{ table.getName() }}.{{ indexColumn.getName() }}"/>
+                            {% endfor %}
+                        </unique>
+                    {% else %}
+                        <index name="{{ index.getName() }}">
+                            {% for indexColumn in {{ index.getColumns() }} %}
+                                <columnref id="{{ table.getName() }}.{{ indexColumn.getName() }}"/>
+                            {% endfor %}
+                        </index>
+                    {% endif %}
+                {% endfor %}
+            </constraints>
+            <description>End of {{ table.getName() }}</description>
+        </table>
+    {% endfor %}
+</schema>{% endblock %}

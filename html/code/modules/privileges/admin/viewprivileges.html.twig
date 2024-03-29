@@ -1,0 +1,18 @@
+{# @privileges/admin/viewprivileges.html.twig #}
+
+{% block viewprivileges %}
+{{ include('@privileges/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+	    <div class="xar-mod-page-head">
+	        <h2>View Privileges</h2>
+            {% set xmldata = 'viewprivileges' %}
+            {{ include('@base/includes/admin-menu-skel.html.twig') }}
+	    </div>
+	    <div class="xar-mod-page-body">
+	        <fieldset>
+	            <legend>Privilege hierarchy</legend>
+	            {{ xar_data_input({type: "privilegestree", show: show}) }}
+	        </fieldset>
+        </div>
+    </div>
+{% endblock %}

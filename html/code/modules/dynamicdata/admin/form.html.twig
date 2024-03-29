@@ -1,0 +1,24 @@
+{# @dynamicdata/admin/form.html.twig #}
+
+{% block form %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Preview Input Form for {{ object.label }}</h2>
+        {% set objectid = object.objectid %}
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','form') }}">
+            <div class="xar-form-actions">
+                <input type="hidden" name="objectid" value="{{ objectid }}"/>
+                <input type="hidden" name="theme" value="print"/>
+                {% set label = 'Refresh' %}
+                {{- xar_button({type: "submit", label: label}) -}}
+            </div>
+        </form>
+        <form>
+            <div>
+                <table class="xar-table xar-options">
+                    {{ xar_data_form({object: object}) }}
+                </table>
+            </div>
+        </form>
+    </div>
+{% endblock %}

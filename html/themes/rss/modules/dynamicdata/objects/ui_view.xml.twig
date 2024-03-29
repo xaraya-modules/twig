@@ -1,0 +1,29 @@
+{# modules/dynamicdata/objects/ui_view.xml.twig #}
+
+{% block ui_view %}
+{# <!-- FIXME: this does not generate valid RSS feeds --> #}
+    {% if object %}
+        {% if object.name == 'objects' and object.linktype == 'object' %}
+            <label>{{ object.label }}</label>
+            {# <!-- show the list of main objects --> #}
+            <items>
+                {{ include('main_objects.xml.twig') }}
+            </items>
+        {% else %}
+            <label>{{ object.label }}</label>
+            {% set searchlink = object.getActionURL('search') %}
+            <searchlink>{{ searchlink }}</searchlink>
+            {% if object.primary and object.checkAccess('create') %}
+                {% set newlink = object.getActionURL('new') %}
+                <newlink>{{ newlink }}</newlink>
+            {% endif %}
+            {# <!-- don't show a newlink here --> #}
+            <items>
+                {{ xar_data_view({object: object}) }}
+            </items>
+        {% endif %}
+    {% else %}
+        <error>Please select one of the available objects</error>
+        <configure>{{ xar_moduleurl('dynamicdata','object','main') }}</configure>
+    {% endif %}
+{% endblock %}

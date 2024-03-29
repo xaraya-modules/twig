@@ -1,0 +1,23 @@
+{# @dynamicdata/includes/display-meta.html.twig #}
+
+{% block display_meta %}
+{% for name, property in properties %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {{ xar_data_label({property: properties[name], for: "id"}) }}
+            </div>
+            <div class="xar-col">
+                {% if get_class(property) == 'TextAreaProperty' and is_string(property.value) %}
+                    {% if property.value starts with 'a.' %}
+                        {% set value = unserialize(property.value|json_encode(), JSON_PRETTY_PRINT) %}
+                        (serialized)<pre>{{ value }}</pre>
+                    {% else %}
+                        {{ xar_data_output({property: properties[name], layout: "preformat"}) }}
+                    {% endif %}
+                {% else %}
+                    {{ xar_data_output({property: properties[name]}) }}
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

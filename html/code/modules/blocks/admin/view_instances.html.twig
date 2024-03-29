@@ -1,0 +1,44 @@
+{# @blocks/admin/view_instances.html.twig #}
+
+{% block view_instances %}
+{{ include('@blocks/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            <h2>View Block Instances</h2>
+            {% set xmldata = 'view_instances' %}
+            {{ include('@base/includes/admin-menu-skel.html.twig') }}
+        </div>
+        <div class="xar-mod-page-body">
+            {% if not tab or tab == 'list' %}
+                {{ include('@blocks/includes/plain.html.twig') }}
+            {% elseif tab == 'bygroup' %}
+                {{ include('@blocks/includes/bygroup.html.twig') }}
+            {% elseif tab == 'bytype' %}
+                {{ include('@blocks/includes/bytype.html.twig') }}
+            {% elseif tab == 'compact' %}
+
+            {% endif %}
+
+        </div>
+
+    </div>
+{# <!--
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            <h2>View Blocks</h2>
+        </div>
+        <div class="xar-mod-page-body">
+            {{ include('@blocks/includes/admin-selstyle.html.twig') }}
+            {% if selstyle == 'compact' %}
+                {{ include('@blocks/includes/compact.html.twig') }}
+            {% elseif selstyle == 'plain' %}
+                {{ include('@blocks/includes/plain.html.twig') }}
+            {% elseif selstyle == 'bytype' %}
+                {{ include('@blocks/includes/bytype.html.twig') }}
+            {% elseif selstyle == 'bygroup' %}
+                {{ include('@blocks/includes/bygroup.html.twig') }}
+            {% endif %}
+        </div>
+       </div>
+--> #}
+{% endblock %}

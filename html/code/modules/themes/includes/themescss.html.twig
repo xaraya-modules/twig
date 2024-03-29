@@ -1,0 +1,9 @@
+{# @themes/includes/themescss.html.twig #}
+
+{% block themescss %}
+<h4>Component - {{ component }}</h4>
+    <p>The Theme CSS tools deal with the styles defined and included by the user themes.</p>
+    {% if not configurable %}
+        <h4>{{ unmanagednote }}</h4>
+    {% endif %}
+{% endblock %}

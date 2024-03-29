@@ -1,0 +1,22 @@
+{# @dynamicdata/admin/showform.html.twig #}
+
+{% block showform %}
+{% if not layout or layout == 'default' %}
+        {% for field in fields %}
+            <tr class="xar-align-left xar-valign-middle">
+                <td>{{ field['label'] }}</td>
+                <td>
+                    {% set fieldname = 'dd_' ~ field['id'] %}
+                    {{ xar_data_input({type: field['type'], name: fieldname, value: field['value'], validation: field['validation']}) }}
+                    {% if field['invalid'] %}
+                        <span class="xar-error">Invalid{{ field['invalid'] }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        {% else %}
+        <p>Specify your own layout here...</p>
+        <p>You can also specify a separate template, e.g. if you want to handle individual fields
+        differently for a particular module / itemtype</p>
+    {% endif %}
+{% endblock %}

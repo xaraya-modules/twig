@@ -1,0 +1,65 @@
+{# @dynamicdata/properties/showoutput-deferlist.html.twig #}
+
+{% block showoutput_deferlist %}
+{% if value is not null %}
+        {% if value is iterable %}
+            {% set first = value|first %}
+            {% if not first is numeric %}
+                {% if object and not singlevalue %}
+                    {{ xar_data_view({object: object, items: value, fieldlist: fieldlist, linktype: "object"}) }}
+                {% else %}
+            <div class="xar-form-container">
+                {# <!-- TODO: show related item details --> #}
+                {% for key, val in value %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                        {% if val is iterable %}
+                        {% if link %}
+                            {% set itemlink = str_replace('[itemid]', key, link) %}
+                            <label title="" style=""><a href="{{ itemlink }}">{{ key }}</a>.</label>&#160;
+                        {% else %}
+                            <label title="" style="">{{ key }}.</label>&#160;
+                        {% endif %}
+                            <div class="xar-form-container">
+                                {% for k, v in val %}
+                                    <div class="xar-row">
+                                        <div class="xar-col">
+                                        <label title="" style="">{{ k }}:</label>&#160;
+                                        {{ v }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% elseif link %}
+                            {# <!-- label title="" style="">{{ key }}.</label>&#160; --> #}
+                            {% set itemlink = str_replace('[itemid]', key, link) %}
+                            {% if val %}
+                                <a href="{{ itemlink }}">{{ val }}</a>
+                            {% else %}
+                                <label title="" style=""><a href="{{ itemlink }}">{{ key }}</a>:</label>&#160;
+                                {{ val }}
+                            {% endif %}
+                        {% else %}
+                            {{ val }}
+                        {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+                {% endif %}
+            {% elseif link %}
+                {% for val in value %}
+                     {% set itemlink = str_replace('[itemid]', val, link) %}
+                     <a href="{{ itemlink }}">{{ val }}</a>&#160;{% endfor %}
+            {% else %}
+                {% set val = value|join('&#160;') %}
+                {{ val }}
+            {% endif %}
+        {% elseif link %}
+            {% set itemlink = str_replace('[itemid]', value, link) %}
+            <a href="{{ itemlink }}">{{ value }}</a>
+        {% else %}
+            {{ value }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

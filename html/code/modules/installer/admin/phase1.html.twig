@@ -1,0 +1,36 @@
+{# @installer/admin/phase1.html.twig #}
+
+{% block phase1 %}
+<div class="xar-mod-body">
+		<link rel='icon' href="favicon.ico"/>
+		{% set active_step = 1 %}
+		<div id="main_right">
+			{{ include('@installer/includes/status.html.twig') }}
+		</div>
+		<div id="main_left">
+			<h1>Select your Language</h1>
+			<form action="install.php" method="post">
+				<div class="xar-form-actions">
+					<div class="xar-row">
+						<div class="xar-col"></div>
+						<div class="xar-col">
+							<label for="install_language">Language:</label>&#160;
+							<select id="install_language" name="install_language" class="xar-text">
+								{% for key, value in languages %}
+									{% if install_language == key %}
+										<option value="{{ key }}" selected="selected">{{ value }} ({{ key }})</option>
+									{% else %}
+										<option value="{{ key }}">{{ value }} ({{ key }})</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+							<input type="hidden" name="install_phase" id="install_phase" value="2"/>&#160;
+							{% set label = 'Continue' %}
+							{{- xar_button({type: "submit", label: label}) -}}
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{# @blocks/admin/view_types.html.twig #}
+
+{% block view_types %}
+{{ include('@blocks/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>View Block Types</h2>
+        {% if types %}
+                {% set icon_info = xar_imageurl('icons/info.png','theme') %}
+                {% set icon_modify = xar_imageurl('icons/modify-config.png','theme') %}
+                {% set icon_help = xar_imageurl('icons/help-browser.png','theme') %}
+                {% set icon_preview = xar_imageurl('icons/display.png','theme') %}
+                {% set icon_delete = xar_imageurl('icons/delete.png','theme') %}
+                {% set icon_add = xar_imageurl('icons/add.png','theme') %}
+            <table class="xar-table xar-fullwidth">
+                <caption class="xar-align-left xar-margin-nonebottom">
+                    Block Types
+                </caption>
+                <thead>
+                    <tr>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Module
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            State
+                        </th>
+                        <th class="xar-align-right">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in types %}
+                    <tr>
+                        <td>
+                            {{ item['type'] }}
+                        </td>
+                        <td>
+                        {% if item['module'] %}
+                            {{ item['module'] }}
+                        {% else %}
+                            [ none ]
+                        {% endif %}
+                        </td>
+                        <td>
+                        {% if item['type_info']['text_type_long'] %}
+                            {{ item['type_info']['text_type_long'] }}
+                        {% endif %}
+                        </td>
+                        <td>
+                            {% if item['type_state'] != xarBlock..TYPE_STATE_ACTIVE %}
+                                <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_type',{'type_id': item['type_id'}, 'tab' => 'status']) }}">{{ type_states[item['type_state']]['name'] }}</a>
+                            {% else %}
+                                {{ type_states[item['type_state']]['name'] }}
+                            {% endif %}
+                        </td>
+                        <td class="xar-align-right">
+                                    {% if item['info_link']['url'] %}
+                                        <a href="{{ item['info_link']['url'] }}" class="xar-icon" title="{{ item['info_link']['title'] }}"><img src="{{ icon_info }}" class="xar-icon" alt="{{ item['info_link']['label'] }}"/></a>
+                                    {% else %}
+                                        <img src="{{ icon_info }}" class="xar-icon-disabled" alt="{{ item['info_link']['label'] }}" title="{{ item['info_link']['title'] }}"/>
+                                    {% endif %}&#160;
+                                    {% if item['modify_link']['url'] %}
+                                        <a href="{{ item['modify_link']['url'] }}" class="xar-icon" title="{{ item['modify_link']['title'] }}"><img src="{{ icon_modify }}" class="xar-icon" alt="{{ item['modify_link']['label'] }}"/></a>
+                                    {% else %}
+                                        <img src="{{ icon_modify }}" class="xar-icon-disabled" alt="{{ item['modify_link']['label'] }}" title="{{ item['modify_link']['title'] }}"/>
+                                    {% endif %}&#160;
+                                    {% if item['preview_link']['url'] %}
+                                        <a href="{{ item['preview_link']['url'] }}" class="xar-icon" title="{{ item['preview_link']['title'] }}"><img src="{{ icon_preview }}" class="xar-icon" alt="{{ item['preview_link']['label'] }}"/></a>
+                                    {% else %}
+                                        <img src="{{ icon_preview }}" class="xar-icon-disabled" alt="{{ item['preview_link']['label'] }}" title="{{ item['preview_link']['title'] }}"/>
+                                    {% endif %}&#160;
+                                    {% if item['help_link']['url'] %}
+                                        <a href="{{ item['help_link']['url'] }}" class="xar-icon" title="{{ item['help_link']['title'] }}"><img src="{{ icon_help }}" class="xar-icon" alt="{{ item['help_link']['label'] }}"/></a>
+                                    {% else %}
+                                        <img src="{{ icon_help }}" class="xar-icon-disabled" alt="{{ item['help_link']['label'] }}" title="{{ item['help_link']['title'] }}"/>
+                                    {% endif %}&#160;
+                                    {% if item['add_link']['url'] %}
+                                        <a href="{{ item['add_link']['url'] }}" class="xar-icon" title="{{ item['add_link']['title'] }}"><img src="{{ icon_add }}" class="xar-icon" alt="{{ item['add_link']['label'] }}"/></a>
+                                    {% else %}
+                                        <img src="{{ icon_add }}" class="xar-icon-disabled" alt="{{ item['add_link']['label'] }}" title="{{ item['add_link']['title'] }}"/>
+                                    {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {{ xar_pager({startnum: startnum, itemsperpage: items_per_page, total: total}) }}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,272 @@
+{# @roles/admin/modify.html.twig #}
+
+{% block modify %}
+{% set id = object-&gt;getID() %}
+    {% set itemtype = object-&gt;getType() %}
+    {{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            {% set properties = object.properties %}
+            {% if itemtype == xarRoles..ROLES_USERTYPE %}
+                {% set thisname = object.properties['uname'].getValue() %}
+            {% else %}
+                {% set thisname = object.properties['name'].getValue() %}
+            {% endif %}
+            <h2>Manage {{ object.label }} '{{ thisname }}':</h2>
+            {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+            {% set activetab = request.2 %}
+            {% set xmldata = 'showusers' %}
+            {% set urlargs = {'id': id, 'reload': 'reload'} %}
+            {{ include('@base/includes/admin-menu-skel.html.twig') }}
+            {% if parents|length != 0 %}
+                    <ul class="xar-tabs">
+                        {% set title = 'These are the groups that {{ name }} is a member of' %}
+                        {% set label = 'Parent Groups' %}
+                        <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                        {% set prevgroup = "" %}
+                        {% for i in range(0, parents|length - 1) %}
+                            {% if prevgroup != parents[i]['parentname'] %}
+                                <li class="xar-tab">
+                                    {% set label = 'Show this group' %}
+                                    <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                        {{ xar_prep_display(parents[i]['parentname']) }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% set prevgroup = xar_prep_display(parents[i]['parentname']) %}
+                        {% endfor %}
+                    </ul>
+            {% endif %}
+        </div>
+        <div class="xar-mod-page-body">
+            <fieldset>
+                <legend>{{ object.label }} Properties:</legend>
+                {% if object.upload %}
+                    {% set enctype = 'multipart/form-data' %}
+                {% else %}
+                    {% set enctype = 'application/x-www-form-urlencoded' %}
+                {% endif %}
+                <form action="{{ xar_currenturl() }}" method="post" enctype="{{ enctype }}">
+                    {% if not xar_security_check('EditRoles',0,'Roles',object.getName()) %}
+                        {{ xar_data_display({object: object, tplmodule: "roles"}) }}
+                        <p>This {{ object.label }} cannot be edited or deleted.</p>
+                    {% else %}
+                        {% if itemtype == xarRoles..ROLES_GROUPTYPE and object.countChildren() %}
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    {% set label = 'Type of Role' %}
+                                    <label title="{{ label }}" class="xar-form-label">
+                                        Type:
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    {{ object.label }}
+                                    {# <!--
+                                        value should still be there in the form, otherwise validation will fail,
+                                        do it with a hidden input now, but this should really be done with readonly attribute
+                                    --> #}
+                                    <input type="hidden" name="itemtype" value="{{ itemtype }}"/>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    {% set label = 'Type of Role' %}
+                                    <label for="itemtype" title="{{ label }}" class="xar-form-label">
+                                        Type:
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    {% set onchange = "this.form.action='" ~ xar_currenturl() ~ "';this.form.submit();" %}
+                                        {% set options = [ 
+                                                {'id': xarRoles..ROLES_USERTYPE, 'name': 'User'},
+                                                {'id': xarRoles..ROLES_GROUPTYPE, 'name': 'Group'},
+                                            ] %}
+                                        {{ xar_data_output({type: "dropdown", name: "itemtype", value: itemtype, options: options}) }}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {{ xar_data_form({object: object, tplmodule: "roles"}) }}
+                        {% set settings = '|split(')) %}
+                        {% if 'primaryparent' in settings %}
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    {% set label = 'Primary parent group' %}
+                                    <label for="duvs_primaryparent" title="{{ label }}" class="xar-form-label">
+                                        Primary Parent Group:
+                                    </label>
+                                </div>
+                                <div class="xar-col">
+                                    {% set value = xar_apifunc('roles','user','getprimaryparent',{'itemid': id}) %}
+                                    {% set options = xar_apifunc('roles','user','getancestors',{'id': id, 'parents': 1}) %}
+                                    {{ xar_data_input({type: "dropdown", name: "duvs[primaryparent]", id: "duvs_primaryparent", options: options, value: value, tabindex: "8"}) }}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if 'userhome' in settings %}
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    {% set label = 'Home URL' %}
+                                    <label for="duvs_userhome" title="{{ label }}" class="xar-form-label">Home:</label>
+                                </div>
+                                <div class="xar-col">
+                                    <input type="text" name="duvs[userhome]" id="duvs_userhome" value="{{ xar_coremethod('xarModUserVars', 'get', ['roles','userhome',id]) }}" size="40" maxlength="100" tabindex="7"/>
+                                    <p class="xar-col dummy">
+                                        You can use the module shortcut syntax available in the Base user menu block.
+                                    </p>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if itemtype == xarRoles..ROLES_USERTYPE %}
+                            {% if 'useremailformat' in settings %}
+                                <div class="xar-row">
+                                    <div class="xar-col">
+                                        {% set label = 'Email Format' %}
+                                        <label for="duvs_useremailformat" title="{{ label }}" class="xar-form-label">
+                                            Email Format:
+                                        </label>
+                                    </div>
+                                    <div class="xar-col">
+                                        {% set value = xar_coremethod('xarModUserVars', 'get', ['roles','useremailformat',id]) %}
+                                        {% set options = [ 
+                                                {'id': 'text', 'name': 'text'},
+                                                {'id': 'html', 'name': 'html'},
+                                            ] %}
+                                        {{ xar_data_input({type: "dropdown", name: "duvs[useremailformat]", id: "duvs_useremailformat", value: value, options: options}) }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {# <!-- revisit in php5.3.0
+                            {% if 'usertimezone' in settings %}
+                                <div class="xar-row">
+                                    <div class="xar-col">
+                                        <label for="duvs_usertimezone" class="xar-form-label">
+                                            User Timezone:
+                                        </label>
+                                    </div>
+                                    <div class="xar-col">
+                                        {% set value = xar_coremethod('xarModUserVars', 'get', ['roles','usertimezone',id]) %}
+                                        {{ xar_data_input({type: "timezone", name: "duvs[usertimezone]", id: "duvs_usertimezone", value: value}) }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            --> #}
+                            {% if (bool)xar_modvar('roles', 'allowemail') %}
+                                <div class="xar-row">
+                                    <div class="xar-col">
+                                        {% set label = 'Allow users to send emails?' %}
+                                        <label for="allowemail" title="{{ label }}">
+                                            User has allowed other users to send them an email?
+                                        </label>
+                                    </div>
+                                    <div class="xar-col">
+                                        {% set checked = (bool)xar_coremethod('xarModUserVars', 'get', ['roles', 'allowemail',id]) %}
+                                        {{ xar_data_input({type: "checkbox", name: "duvs[allowemail]", id: "duvs_allowemail", checked: checked}) }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if 'passwordupdate' in settings %}
+                                <div class="xar-row">
+                                    <div class="xar-col">
+                                        <label class="xar-form-label">
+                                            Password last updated:
+                                        </label>
+                                    </div>
+                                    <div class="xar-col">
+                                        {{ xar_localedate(xarModUserVars..get('roles', 'medium', '')) }}
+                                        {{ xar_localedate(xarModUserVars..get('roles', '', 'medium')) }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if 'userlastlogin' in settings %}
+                                <div class="xar-row">
+                                    <div class="xar-col">
+                                        <label class="xar-form-label">
+                                            Last login time:
+                                        </label>
+                                    </div>
+                                    <div class="xar-col">
+                                        {{ xar_localedate(xarModUserVars..get('roles', 'medium', '')) }}
+                                        {{ xar_localedate(xarModUserVars..get('roles', '', 'medium')) }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        <p class="xar-clear"></p>
+                        {% if hooks and hooks|length > 0 %}
+                            {% for hookmodule in hooks|keys %}
+                                {{ hooks[hookmodule] }}
+                            {% endfor %}
+                        {% endif %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                            </div>
+                            <div class="xar-col">
+                                <input type="hidden" name="objectid" id="objectid" value="{{ object.objectid }}"/>
+                                <input type="hidden" name="itemid" id="itemid" value="{{ id }}"/>
+                                <input type="hidden" name="tplmodule" id="tplmodule" value="roles"/>
+                                <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                                <input type="hidden" name="confirm" id="confirm" value="1"/>
+                                {% set label = 'Update' %}
+                                {{- xar_button({type: "submit", label: label}) -}}
+                            </div>
+                        </div>
+                    {% endif %}
+                </form>
+            </fieldset>
+            <fieldset>
+                <legend>Group Memberships</legend>
+                <table class="xar-table xar-fullwidth">
+                    <tr>
+                        <th>Group</th>
+                        <th>Remove</th>
+                    </tr>
+                    {% for loop_key1, loop_item1 in parents %}{% set loop_index1 = loop.index %}
+                        <tr>
+                            <td>
+                                {% if loop_item1['parentid'] > 4 %}
+                                    <a href="{{ xar_moduleurl('roles','admin','modify',{'id': loop_item1['parentid']}) }}">
+                                        {{ loop_item1.parentname }}
+                                    </a>
+                                {% else %}
+                                    {{ loop_item1.parentname }}
+                                {% endif %}
+                            </td>
+                            <td class="xar-align-center">
+                                {% if parents|length != 1 %}
+                                    <a href="{{ xar_moduleurl('roles','admin','removemember',{'childid': id, 'parentid': loop_item1['parentid'},'authid'=>xar_coremethod('xarSec', 'genAuthKey')]) }}">
+                                Remove</a>
+                                {% else %}Cannot Remove{% endif %}
+                            </td>
+                        </tr>
+                    </xar:loop>
+                </table>
+                {% if not xar_security_check('EditRoles',0,'Roles',object.getName()) %}
+                    <p>This {{ object.label }} cannot be edited or deleted.</p>
+                    {% else %}
+                  <form action="{{ xar_moduleurl('roles','admin','addmember') }}" method="post" enctype="application/x-www-form-urlencoded">
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                {% set label = 'Choose a parent to assign membership' %}
+                                <label for="roleid" title="{{ label }}" class="xar-form-label">Add to:</label>
+                            </div>
+                            <div class="xar-col">
+                                <select name="roleid" id="roleid">
+                                    <xar:loop name="$groups">
+                                        <option value="{{ loop_item1['did'] }}">
+                                            {{ loop_item1.dname }}
+                                        </option>
+                                    {% endfor %}
+                                </select>&#160;
+                                <input type="hidden" name="id" id="addid" value="{{ id }}"/>
+                                <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                                {% set label = 'Add' %}
+                                {{- xar_button({type: "submit", label: label}) -}}
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
+            </fieldset>
+        </div>
+    </div>
+{% endblock %}

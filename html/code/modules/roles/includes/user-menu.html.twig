@@ -1,0 +1,23 @@
+{# @roles/includes/user-menu.html.twig #}
+
+{% block user_menu %}
+{% if message %}
+            {{ message }}
+        {% else %}
+                <ul class="xar-tabs">
+                    {% for menutab in menutabs %}
+                        {% if menutab['active'] %}
+                            {% set tabclass = 'xar-tab-active' %}
+                            {% set linkclass = 'xar-accent xar-accent-outline' %}
+                        {% else %}
+                            {% set tabclass = 'xar-tab' %}
+                            {% set linkclass = 'xar-norm xar-norm-outline' %}
+                        {% endif %}
+                        <li class="{{ tabclass }}">
+                            <a href="{{ menutab['url'] }}" title="{{ menutab['title'] }}" class="{{ linkclass }}">{{ menutab['label'] }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+        {% endif %}
+    
+{% endblock %}

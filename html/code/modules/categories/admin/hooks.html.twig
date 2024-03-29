@@ -1,0 +1,21 @@
+{# @categories/admin/hooks.html.twig #}
+
+{% block hooks %}
+{{ include('@categories/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Categories Hooks</h2>
+        <fieldset>
+            <legend>
+                Configure Categories Hooks
+            </legend>
+            {% set url = xar_moduleurl('categories','admin','hooks') %}
+            {{ xar_guifunc("modules", "admin", "hooks", {main: "false", curhook: "categories", return_url: url}) }}
+        </fieldset>
+        <p>
+            Note: this will allow you to define base categories in your module configuration, and to assign your module items to categories when you create or update them.
+            However, it will not automatically handle filtering the items by category for you, and you will need to use the categories navigation block or add the xar:data-output
+            type="categoriesnavigation" tag in your view and display templates to be able to browse by category afterwards.
+            Some modules like articles and xarpages already do that for you...
+        </p>
+    </div>
+{% endblock %}

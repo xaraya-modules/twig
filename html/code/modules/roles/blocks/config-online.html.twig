@@ -1,0 +1,48 @@
+{# @roles/blocks/config-online.html.twig #}
+
+{% block config_online %}
+<div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'Display a list of active users with links to their profiles' %}
+            <label for="showusers" class="help xar-form-label" title="{{ label }}">
+                List the active users
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "showusers", checked: showusers}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'Display the number of users logged on' %}
+            <label for="showusertotal" class="help xar-form-label" title="{{ label }}">
+                Number of active users
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "showusertotal", checked: showusertotal}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'Display the number of anonymous users' %}
+            <label for="showanontotal" class="help xar-form-label" title="{{ label }}">
+                Number of anon users
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "showanontotal", checked: showanontotal}) }}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'Display the name and profile link of the latest registered user' %}
+            <label for="showlastuser" class="help xar-form-label" title="{{ label }}">
+                Show the last registered user
+            </label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "showlastuser", checked: showlastuser}) }}
+        </div>
+    </div>
+{% endblock %}

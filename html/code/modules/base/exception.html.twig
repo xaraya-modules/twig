@@ -1,0 +1,35 @@
+{# @base/exception.html.twig #}
+
+{% extends '@base/base.html.twig' %}
+
+{% block modulespace %}
+{# <!--
+    ***********
+    * WARNING
+    * Modify this template at your own risk.
+    * If the template contains errors, the exception system will not be able to process
+    * it correctly, leading to unexpected results
+    ***********
+    --> #}
+    <div class="xar-mod-head">
+        <span class="xar-mod-title">Error Message</span>
+    </div>
+    <div class="xar-mod-body">
+        {% set label = 'Exception Icon' %}
+        {{- xar_image({scope: "theme", file: "exception.png", class: "xar-module-icon", alt: label}) -}}
+        <h2>{{ type }}</h2>
+        <h3>{{ title }}</h3>
+        <p>{{ short }}</p>
+        {% if long != '' %}
+            <h3>Problem:</h3>
+            <p>{{ long }}</p>
+        {% endif %}
+        {% if hint != '' %}
+            <h3>Further Information:</h3>
+            <p>{{ hint }}</p>
+        {% endif %}
+        <p>
+            <a href="javascript:history.back(-1)">Click here to try again</a>
+        </p>
+    </div>
+{% endblock %}

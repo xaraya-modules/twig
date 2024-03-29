@@ -1,0 +1,13 @@
+{# @base/properties/showoutput-textarea.html.twig #}
+
+{% block showoutput_textarea %}
+{% if layout and layout == 'preformat' %}
+        <pre>
+        {{ value }}
+        </pre>
+    {% elseif layout and layout == 'linebreak' %}
+        {{ nl2br(value) }}
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endblock %}

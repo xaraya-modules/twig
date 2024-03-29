@@ -1,0 +1,85 @@
+{# @mail/admin/qstatus.html.twig #}
+
+{% block qstatus %}
+{# <!-- @todo: <chris/> create a stylesheet for all the inline styles in here --> #}
+    {{ include('@mail/includes/mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% set active_tab = 'status' %}
+        {{ include('@mail/includes/queue-tabs.html.twig') }}
+
+        <style type="text/css">
+            ul.qstatus { background-position: 0 50%; background-repeat: no-repeat; height: 1.5em;clear:left; margin-bottom: 1pt;}
+            ul.qstatus li { background-position: 0 50%; background-image: none; float:left;}
+            fieldset.qslip { float:left; margin-top: 10pt; width: 48%;}
+            ul.qslip li { height: 1.8em; background-position: 0 50%;}
+            div.qstatus { text-align: right; font-size: smaller;}
+            div.qstatus a, div.qstatus a:hover { text-decoration: none; }
+            div.qstatus a img { vertical-align: middle; }
+        </style>
+
+        <fieldset>
+            <div class="qstatus">
+                Status as of: {{ xar_localedate(0, 'medium', '') }} / {{ xar_localedate(0, '', 'medium') }}
+            </div>
+            <legend>Queue status overview</legend>
+            {% for index, qinfo in queues %}
+                {% set rowclass = index % 2?'xar-alt'.'' %}
+                <ul class="qstatus {{ rowclass }}" style="background-image: url({{ xar_imageurl(qinfo.status .'.gif','module','mail') }});">
+                    <li style="width: 16px;">
+                        {% set qimage = 'qtype_'.qinfo['qtype'].'.gif' %}
+                        {{- xar_image({scope: "module", module: "mail", file: qimage, class: "xar-valign-middle"}) -}}
+                    </li>
+                    <li style="width: 5em;">{{ qinfo.name }}</li>
+                    <li style="width: 12em; text-align: right;">{{ qinfo.count }} items</li>
+                    <li>{{ qinfo.msg }}</li>
+                </ul>
+            {% endfor %}
+            <div class="qstatus">
+                <a href="{{ xar_moduleurl('mail','admin','qstatus') }}">
+                    {{- xar_image({scope: "module", module: "mail", file: "refresh.gif"}) -}}Refresh current status
+                </a>
+                <a href="{{ xar_moduleurl('mail','admin','qstatus') }}">
+                    {{- xar_image({scope: "module", module: "mail", file: "reprocess.gif"}) -}}Reprocess queues
+                </a>
+            </div>
+        </fieldset>
+        <fieldset class="qslip">
+            <legend>Corrective measures</legend>
+            {% for qname, measure in measures %}
+                <ul>
+                    <li>{{ qname }}
+                        <ul class="qstatus">
+                            {% for action in measure %}
+                            {% set bgimg = action['action'].'.gif' %}
+                            {% set bckgrndimg =  xar_image({scope: "module", module: "mail", file: bgimg, render: "false"})  %}
+                                <li style="background-image: url($bckgrndimg)">
+                                    <a style="text-decoration: none; font-size: 0.85em;" href="{{ xar_moduleurl('mail','admin',action['action'],{'name': qname, 'authid': authid}) }}">
+                                    {{ action.text }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul></li>
+                </ul>
+            {% endfor %}
+        </fieldset>
+        <fieldset class="qslip" style="margin-left: 5pt;">
+            <legend>Legend</legend>
+            <ul class="qslip">
+                <li style="background-image: url({{ xar_imageurl('active.gif','module','mail') }});">
+                    Queue is active and in good condition
+                </li>
+                <li style="background-image: url({{ xar_imageurl('inactive.gif','module','mail') }});">
+                    Queue is inactive
+                </li>
+                <li style="background-image: url({{ xar_imageurl('problematic.gif','module','mail') }});">
+                    Queue is inactive due to a problem
+                </li>
+                {% for type, description in qtypes %}
+                    <li style="background-image: url({{ xar_imageurl('qtype_'.type.'.gif','module','mail') }});">
+                        {{ description }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </fieldset>
+    </div>
+{% endblock %}

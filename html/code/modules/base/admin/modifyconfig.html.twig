@@ -1,0 +1,66 @@
+{# @base/admin/modifyconfig.html.twig #}
+
+{% block modifyconfig %}
+{# <!-- TODO: split this file up in parts --> #}
+    {{ xar_javascript({scope: "theme", filename: "formcheck.js"}) }}
+    <script type="text/javascript">
+    {#  
+        // Enter name of mandatory fields
+        var base_fieldRequired = Array("defaultfunction");
+        // Enter field description to appear in the dialog box
+        var base_fieldDescription = Array("Default Module Function");
+    // #}
+    </script>
+    {{ include('@base/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+            <h2 class="xar-mod-pagetitle">Modify System Configuration</h2>
+            {% set xmldata = 'modifyconfig' %}
+            {{ include('@base/includes/admin-menu-skel.html.twig') }}
+        </div>
+        <div class="xar-mod-page-body">
+            {# <!-- Begin Site Setup Options --> #}
+            {% if tab == 'setup' %}
+                <form action="{{ xar_currenturl() }}" method="post" onsubmit="return xar_base_formCheck(this, base_fieldRequired, base_fieldDescription);" enctype="application/x-www-form-urlencoded">
+                    {{ include('@base/includes/modifyconfig-setup.html.twig') }}
+                    <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                    {{ include('@base/includes/update-button.html.twig') }}
+                </form>
+            {# <!-- Begin Site Display Options --> #}
+            {% elseif tab == 'display' %}
+                <form action="{{ xar_currenturl() }}" method="post" onsubmit="return xar_base_formCheck(this, base_fieldRequired, base_fieldDescription);" enctype="application/x-www-form-urlencoded">
+                    {{ include('@base/includes/modifyconfig-display.html.twig') }}
+                    <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                    {{ include('@base/includes/update-button.html.twig') }}
+                </form>
+                {# <!-- Begin Security Options --> #}
+            {% elseif tab == 'security' %}
+                <form action="{{ xar_currenturl() }}" method="post" onsubmit="return xar_base_formCheck(this, base_fieldRequired, base_fieldDescription);" enctype="application/x-www-form-urlencoded">
+                    {{ include('@base/includes/modifyconfig-security.html.twig') }}
+                    <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                    {{ include('@base/includes/update-button.html.twig') }}
+                </form>
+            {# <!-- Begin Locale Options --> #}
+            {% elseif tab == 'locales' %}
+                <form action="{{ xar_currenturl() }}" method="post" onsubmit="return xar_base_formCheck(this, base_fieldRequired, base_fieldDescription);" enctype="application/x-www-form-urlencoded">
+                    {{ include('@base/includes/modifyconfig-locales.html.twig') }}
+                    <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                    {{ include('@base/includes/update-button.html.twig') }}
+                </form>
+            {# <!-- Begin Caching Options --> #}
+            {% elseif tab == 'caching' %}
+                {{ include('@base/includes/modifyconfig-caching.html.twig') }}
+            {# <!-- Begin Logging Options --> #}
+            {% elseif tab == 'logging' %}
+                {{ include('@base/includes/modifyconfig-logging.html.twig') }}
+            {# <!-- Begin Other Options --> #}
+            {% elseif tab == 'other' %}
+                <form action="{{ xar_currenturl() }}" method="post" onsubmit="return xar_base_formCheck(this, base_fieldRequired, base_fieldDescription);" enctype="application/x-www-form-urlencoded">
+                    {{ include('@base/includes/modifyconfig-other.html.twig') }}
+                    <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+                    {{ include('@base/includes/update-button.html.twig') }}
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

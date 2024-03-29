@@ -1,0 +1,52 @@
+{# @privileges/properties/showhidden-access.html.twig #}
+
+{% block showhidden_access %}
+{# <!--  
+    {% if layout == 'horizontal' %}
+        {% set propname = name ~ '_group' %}
+        {{ xar_data_input({type: "grouplist", name: propname, options: groupoptions, value: group, hidden: "hidden"}) }}
+        {% set propname = name ~ '_level' %}
+        {{ xar_data_input({type: "dropdown", name: propname, options: leveloptions, value: level, hidden: "hidden"}) }}
+        {% set propname = name ~ '_failure' %}
+        {% if showfailure is null %}
+            {{ xar_data_input({type: "radio", name: propname, options: failureoptions, value: failure, hidden: "hidden"}) }}
+        {% else %}
+            {{ xar_data_input({type: "radio", name: propname, options: failureoptions, value: failure, hidden: "hidden"}) }}
+        {% endif %}
+    {% else %}
+    --> #}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set propname = name ~ '_group' %}
+            </div>
+            <div class="xar-col">
+                {% if group_multiselect %}
+                    {{ xar_data_input({type: "multiselect", name: propname, options: groupoptions, value: group, hidden: "hidden"}) }}
+                {% else %}
+                    {{ xar_data_input({type: "grouplist", name: propname, options: groupoptions, value: group, hidden: "hidden"}) }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set propname = name ~ '_level' %}
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({type: "dropdown", name: propname, options: leveloptions, value: level, hidden: "hidden"}) }}&#160;
+            </div>
+        </div>
+        {% set propname = name ~ '_failure' %}
+        {% if showfailure is null %}
+            <div class="xar-row">
+                <div class="xar-col">
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({type: "radio", name: propname, options: failureoptions, value: failure, hidden: "hidden"}) }}
+                </div>
+            </div>
+        {% else %}
+            {{ xar_data_input({type: "radio", name: propname, options: failureoptions, value: failure, hidden: "hidden"}) }}
+        {% endif %}
+   {# <!-- {% endif %} --> #}
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

@@ -1,0 +1,123 @@
+{# @blocks/includes/bygroup.html.twig #}
+
+{% block bygroup %}
+{% set icon_info = xar_imageurl('icons/info.png','theme') %}
+    {% set icon_modify = xar_imageurl('icons/modify-config.png','theme') %}
+    {% set icon_help = xar_imageurl('icons/help-browser.png','theme') %}
+    {% set icon_preview = xar_imageurl('icons/display.png','theme') %}
+    {% set icon_delete = xar_imageurl('icons/delete.png','theme') %}
+                
+    {% for group_id, group in list %}
+        <table class="xar-table xar-fullwidth xar-items xar-margin-nonetop">
+            <thead>
+                <tr>
+                    <th colspan="4">
+                        {% if group['info_link']['url'] %}
+                            <a href="{{ group['info_link']['url'] }}" title="{{ group['info_link']['title'] }}">{{ group['name'] }}</a>
+                        {% else %}
+                            {{ group['name'] }}
+                        {% endif %}
+                        Group Instances
+                    </th>
+                    <th class="xar-align-right">
+                        {% if group['info_link']['url'] %}
+                            <a href="{{ group['info_link']['url'] }}" class="xar-icon" title="{{ group['info_link']['title'] }}"><img src="{{ icon_info }}" class="xar-icon" alt="{{ group['info_link']['label'] }}"/></a>
+                        {% else %}
+                            <img src="{{ icon_info }}" class="xar-icon-disabled" alt="{{ group['info_link']['label'] }}" title="{{ group['info_link']['title'] }}"/>
+                        {% endif %}&#160;
+                        {% if group['modify_link']['url'] %}
+                            <a href="{{ group['modify_link']['url'] }}" class="xar-icon" title="{{ group['modify_link']['title'] }}"><img src="{{ icon_modify }}" class="xar-icon" alt="{{ group['modify_link']['label'] }}"/></a>
+                        {% else %}
+                            <img src="{{ icon_modify }}" class="xar-icon-disabled" alt="{{ group['modify_link']['label'] }}" title="{{ group['modify_link']['title'] }}"/>
+                        {% endif %}&#160;
+                        {% if group['preview_link']['url'] %}
+                            <a href="{{ group['preview_link']['url'] }}" class="xar-icon" title="{{ group['preview_link']['title'] }}"><img src="{{ icon_preview }}" class="xar-icon" alt="{{ group['preview_link']['label'] }}"/></a>
+                        {% else %}
+                            <img src="{{ icon_preview }}" class="xar-icon-disabled" alt="{{ group['preview_link']['label'] }}" title="{{ group['preview_link']['title'] }}"/>
+                        {% endif %}&#160;
+                        {% if group['help_link']['url'] %}
+                            <a href="{{ group['help_link']['url'] }}" class="xar-icon" title="{{ group['help_link']['title'] }}"><img src="{{ icon_help }}" class="xar-icon" alt="{{ group['help_link']['label'] }}"/></a>
+                        {% else %}
+                            <img src="{{ icon_help }}" class="xar-icon-disabled" alt="{{ group['help_link']['label'] }}" title="{{ group['help_link']['title'] }}"/>
+                        {% endif %}&#160;
+                        {% if group['delete_link']['url'] %}
+                            <a href="{{ group['delete_link']['url'] }}" class="xar-icon" title="{{ group['delete_link']['title'] }}"><img src="{{ icon_delete }}" class="xar-icon" alt="{{ group['delete_link']['label'] }}"/></a>
+                        {% else %}
+                            <img src="{{ icon_delete }}" class="xar-icon-disabled" alt="{{ group['delete_link']['label'] }}" title="{{ group['delete_link']['title'] }}"/>
+                        {% endif %}                                                                    
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if group['instances'] %}
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Module</th>
+                        <th>Status</th>
+                        <th class="xar-align-right">Actions</th>
+                    </tr>
+                    {% for block_id, item in group['instances'] %}
+                        <tr>
+                            <td class="xar-form-textlong">
+                                {% if item['info_link']['url'] %}
+                                    <a href="{{ item['info_link']['url'] }}" title="{{ item['info_link']['title'] }}">{{ item['name'] }}</a>
+                                {% else %}
+                                    {{ item['name'] }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item['type_link']['url'] %}
+                                    <a href="{{ item['type_link']['url'] }}" title="{{ item['type_link']['title'] }}">{{ item['type'] }}</a>
+                                {% else %}
+                                    {{ item['type'] }}
+                                {% endif %}
+                            </td>
+                            <td>
+                            {% if item['module'] %}
+                                {{ item['module'] }}
+                            {% else %}
+                                [ none ]
+                            {% endif %}
+                            </td>
+                            <td>
+                                {% if item['type_state'] != xarBlock..TYPE_STATE_ACTIVE %}
+                                    <a href="xarController::URL('blocks', 'admin', 'modify_instance', ['interface' => 'display', 'block_method' => 'state', 'block_id' => $block_id]){{ ">Type }}$type_states[$item['type_state']]['name']{{ </a>
+                                {% else %} }}$instance_states[$item['state']]['name']{{ {% endif %}
+                            </td>
+                            <td class="xar-align-right">
+                                {% if item['info_link']['url'] %}
+                                    <a href=" }}$item['info_link']['url']{{ " class="xar-icon" title=" }}$item['info_link']['title']{{ "><img src=" }}$icon_info{{ " class="xar-icon" alt=" }}$item['info_link']['label']{{ "/></a>
+                                {% else %}
+                                    <img src=" }}$icon_info{{ " class="xar-icon-disabled" alt=" }}$item['info_link']['label']{{ " title=" }}$item['info_link']['title']{{ "/>
+                                {% endif %}& }}160;
+                                {% if item['modify_link']['url'] %}
+                                    <a href="{{ item['modify_link']['url'] }}" class="xar-icon" title="{{ item['modify_link']['title'] }}"><img src="{{ icon_modify }}" class="xar-icon" alt="{{ item['modify_link']['label'] }}"/></a>
+                                {% else %}
+                                    <img src="{{ icon_modify }}" class="xar-icon-disabled" alt="{{ item['modify_link']['label'] }}" title="{{ item['modify_link']['title'] }}"/>
+                                {% endif %}&#160;
+                                {% if item['preview_link']['url'] %}
+                                    <a href="{{ item['preview_link']['url'] }}" class="xar-icon" title="{{ item['preview_link']['title'] }}"><img src="{{ icon_preview }}" class="xar-icon" alt="{{ item['preview_link']['label'] }}"/></a>
+                                {% else %}
+                                    <img src="{{ icon_preview }}" class="xar-icon-disabled" alt="{{ item['preview_link']['label'] }}" title="{{ item['preview_link']['title'] }}"/>
+                                {% endif %}&#160;
+                                {% if item['help_link']['url'] %}
+                                    <a href="{{ item['help_link']['url'] }}" class="xar-icon" title="{{ item['help_link']['title'] }}"><img src="{{ icon_help }}" class="xar-icon" alt="{{ item['help_link']['label'] }}"/></a>
+                                {% else %}
+                                    <img src="{{ icon_help }}" class="xar-icon-disabled" alt="{{ item['help_link']['label'] }}" title="{{ item['help_link']['title'] }}"/>
+                                {% endif %}&#160;
+                                {% if item['delete_link']['url'] %}
+                                    <a href="{{ item['delete_link']['url'] }}" class="xar-icon" title="{{ item['delete_link']['title'] }}"><img src="{{ icon_delete }}" class="xar-icon" alt="{{ item['delete_link']['label'] }}"/></a>
+                                {% else %}
+                                    <img src="{{ icon_delete }}" class="xar-icon-disabled" alt="{{ item['delete_link']['label'] }}" title="{{ item['delete_link']['title'] }}"/>
+                                {% endif %}
+                            </td>
+                        </tr>                                
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="5">No group instances</td></tr>
+                {% endif %}                            
+            </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}

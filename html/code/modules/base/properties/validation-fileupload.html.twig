@@ -1,0 +1,100 @@
+{# @base/properties/validation-fileupload.html.twig #}
+
+{% block validation_fileupload %}
+<table class="xar-table xar-norm">
+        {% if not ishooked %}
+            <tr>
+                <td>Base directory</td>
+                <td>
+                    <input type="text" name="{{ name }}[basedir]" id="{{ id }}_basedir" value="{{ basedir }}" size="{{ size }}" tabindex="{{ tabindex }}"/>
+                    <br />Note : {theme} will be replaced by the appropriate theme directory - e.g.
+                    {theme}/images -&gt; themes/default/images
+                </td>
+            </tr>
+            <tr>
+                <td>File extensions</td>
+                <td>
+                    {% for ext in filetype %}
+                        <input type="text" name="{{ name }}[filetype][]" value="{{ ext }}" size="5" tabindex="{{ tabindex }}"/>
+                        <br />
+                    {% endfor %}
+                    <input type="text" name="{{ name }}[filetype][]" value="" size="5" tabindex="{{ tabindex }}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>File size</td>
+                <td>
+                    <input type="text" name="{{ name }}[maxsize]" id="{{ id }}_maxsize" value="{{ maxsize }}" size="{{ size }}" tabindex="{{ tabindex }}"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <strong>Note: the uploads module is not hooked</strong>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td>
+                    <label for="{{ id }}_multiple">Multiple</label>
+                </td>
+                <td>
+                    <select name="{{ name }}[multiple]" id="{{ id }}_multiple" tabindex="{{ tabindex }}">
+                        {% if multiple %}
+                            <option value="1" selected="selected">yes</option>
+                            <option value="0">no</option>
+                        {% else %}
+                            <option value="1">yes</option>
+                            <option value="0" selected="selected">no</option>
+                        {% endif %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Methods</td>
+                <td>
+                    {% for method, checked in methods %}
+                        <label for="{{ id }}_methods_{{ method }}">{{ method }}</label>
+                        {% if checked %}
+                            <input type="checkbox" name="{{ name }}[methods][{{ method }}]" id="{{ id }}_methods_{{ method }}" value="1" tabindex="{{ tabindex }}" checked="checked"/>
+                        {% else %}
+                            <input type="checkbox" name="{{ name }}[methods][{{ method }}]" id="{{ id }}_methods_{{ method }}" value="1" tabindex="{{ tabindex }}"/>
+                        {% endif %}
+                        <br />
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="{{ id }}_basedir">Upload Directory</label>
+                </td>
+                <td>
+                    <input type="text" name="{{ name }}[basedir]" id="{{ id }}_basedir" value="{{ basedir }}" size="{{ size }}" tabindex="{{ tabindex }}"/>
+                    <br />Note : {user} will be replaced by the current user uploading the file - e.g.
+                    var/uploads/{user} -&gt; var/uploads/myusername_123
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="{{ id }}_importdir">Trusted Directory</label>
+                </td>
+                <td>
+                    <input type="text" name="{{ name }}[importdir]" id="{{ id }}_importdir" value="{{ importdir }}" size="{{ size }}" tabindex="{{ tabindex }}"/>
+                    <br />Note : {user} will be replaced by the current user importing the file - e.g.
+                    var/imports/{user} -&gt; var/imports/myusername_123
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <strong>Note: the uploads module is hooked</strong>
+                </td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td>Other rule</td>
+            <td>
+                <input type="text" name="{{ name }}[other]" id="{{ id }}_other" value="{{ other }}" size="{{ size }}" tabindex="{{ tabindex }}"/>
+            </td>
+        </tr>
+    </table>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

@@ -1,0 +1,54 @@
+{# @dynamicdata/includes/view-meta.html.twig #}
+
+{% block view_meta %}
+{# <!-- TODO: multi-column output --> #}
+    {% set dummy = xar_coremethod('xarVar', 'fetch', ['table', 'notempty', table, '', xarVar..NOT_REQUIRED]) %}
+    {% set dummy = xar_coremethod('xarVar', 'fetch', ['dbtype', 'notempty', dbtype, '', xarVar..NOT_REQUIRED]) %}
+    {% set dummy = xar_coremethod('xarVar', 'fetch', ['db', 'notempty', db, '', xarVar..NOT_REQUIRED]) %}
+    {% if not dbtype %}
+        {% set itemlink = xar_moduleurl('dynamicdata','admin','meta', {'table': table, 'export': 'display'}) %}
+    {% else %}
+        {% set itemlink = xar_moduleurl('dynamicdata','admin','meta', {'dbtype': dbtype, 'db': db, 'table': table, 'export': 'display'}) %}
+    {% endif %}
+    <table class="xar-table">
+        <tr>
+            {% for name in properties|keys %}
+                <th class="xar-form-textlong">
+                    <a href="{{ sorturl }}={{ name }}">
+                        {{ xar_data_label({property: properties[name]}) }}
+                    </a>
+                </th>
+            {% endfor %}
+            {% if not linkfield %}
+                <th class="xar-form-textlong" style="text-align: center;">Actions</th>
+            {% endif %}
+        </tr>
+        {# <!-- xar:template module="$tplmodule" file="table_filter"/ --> #}
+        {% set item_no = 0 %}
+        {% for itemid, fields in items %}
+            {% set item_no = item_no+1 %}
+            {% set rowclass = 'xar-norm' %}
+            {% if item_no % 2 == 0 %}
+                {% set rowclass = 'xar-alt' %}
+            {% endif %}
+            <tr class="{{ rowclass }}">
+                {# <!-- we could use xar:data-display here too, instead of looping over fields ourselves --> #}
+                {% for name in properties|keys %}
+                    <td>
+                        {% if not fields[name] %}&#160; 
+                        {% else %}
+                            {{ xar_data_output({property: properties[name], _itemid: itemid, value: fields[name]}) }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                {% if not linkfield %}
+                    <td class="xar-align-center">
+                        {% if object.primary %}
+                            <a href="{{ itemlink }}&amp;itemid={{ itemid }}" title="Display">{{- xar_image({scope: "theme", file: "icons/display.png", class: "xar-icon", alt: "display"}) -}}</a>
+                        {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,14 @@
+{# @base/properties/showhidden-celkoposition.html.twig #}
+
+{% block showhidden_celkoposition %}
+{% if not reference_id %}
+        {% set reference_id = 0 %}
+        {% if func and func == 'modify' %}
+            {% set position = 1 %}
+        {% else %}
+            {% set position = 2 %}
+        {% endif %}
+    {% endif %}
+    <input type="hidden" name="{{ name }}_reference_id" id="{{ name }}_reference_id" value="{{ reference_id }}"/>
+    <input type="hidden" name="{{ name }}_position" id="{{ name }}_position" value="{{ position }}"/>
+{% endblock %}

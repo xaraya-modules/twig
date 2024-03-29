@@ -1,0 +1,19 @@
+{# @dynamicdata/admin/modifyhook.html.twig #}
+
+{% block modifyhook %}
+{# <!-- You can use different admin-modifyhook-[objectname].xd templates for different objects --> #}
+    {# <!-- Contrary to admin-newhook.xd, it is not recommended to use preset="yes" here --> #}
+    {% for name in properties|keys %}
+        {% if properties[name].getDisplayStatus() != DataPropertyMaster..DD_DISPLAYSTATE_DISABLED %}
+
+            <div class="xar-row">
+                <div class="xar-col">
+                    {{ xar_data_label({property: properties[name], for: "id"}) }}
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({property: properties[name]}) }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

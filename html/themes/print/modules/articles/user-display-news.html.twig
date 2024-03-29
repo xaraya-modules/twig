@@ -1,0 +1,29 @@
+{# modules/articles/user-display-news.html.twig #}
+
+{% block user_display_news %}
+<h3>
+        {{ title }}
+    </h3>
+    <span class="xar-sub">Posted by: 
+    {% if profile %}
+        <a href="{{ profile }}">
+            {{ author }}
+        </a>
+        {% else %}
+        {{ author }}
+    {% endif %}on 
+    {{ date }}</span>
+    <br />
+    {{ summary }}
+    <br />
+    <br />
+    {{ body }}
+    <br />
+    {% if notes %}
+        <br />
+        <span class="xar-quote">Note :
+        <i>
+            {{ notes }}
+        </i></span>
+    {% endif %}
+{% endblock %}

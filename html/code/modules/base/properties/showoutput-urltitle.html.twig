@@ -1,0 +1,11 @@
+{# @base/properties/showoutput-urltitle.html.twig #}
+
+{% block showoutput_urltitle %}
+{% if link and title %}
+        <a href="{{ link }}">{{ title }}</a>
+    {% elseif not link and title %}
+        {{ title }}
+    {% elseif not title and link %}
+        <a href="{{ link }}">{{ link }}</a>
+    {% endif %}
+{% endblock %}

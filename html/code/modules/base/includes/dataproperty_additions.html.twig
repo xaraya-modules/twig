@@ -1,0 +1,10 @@
+{# @base/includes/dataproperty_additions.html.twig #}
+
+{% block dataproperty_additions %}
+{% if required %}
+        &#160;<span class="xar-error">Required</span>
+    {% endif %}
+    {% if invalid %}
+        &#160;<span class="xar-error">{{ invalid }}</span>
+    {% endif %}
+{% endblock %}

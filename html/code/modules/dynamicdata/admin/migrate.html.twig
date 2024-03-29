@@ -1,0 +1,264 @@
+{# @dynamicdata/admin/migrate.html.twig #}
+
+{% block migrate %}
+{{ xar_style({scope: "module", file: "dd"}) }}
+    {{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            {% if mapfrom and mapto %}Utilities - Migrate Items from
+            {{ mapfrom }} to {{ mapto }} 
+            {% else %}Utilities - Migrate Module Items{% endif %}
+        </h2>
+        {{ include('@dynamicdata/includes/utility-menu.html.twig') }}
+        {% if debug %}
+            <div>
+                <pre>
+                    {{ debug }}
+            
+</pre>
+            </div>
+        {% endif %}
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','migrate') }}">
+            <fieldset>
+                <legend>Mapping</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Choose a mapping to migrate data' %}
+                            <label for="map" title="{{ label }}" class="xar-form-label">Use Mapping:</label>
+                        </div>
+                        <div class="xar-col">
+                            {% if maplist|length > 0 %}
+                                <select name="map" id="map">
+                                    <option value=""></option>
+                                    {% for maptype in maplist %}
+                                        {% if map and map == maptype %}
+                                            <option value="{{ maptype }}" selected="selected">{{ maptype }}</option>
+                                        {% else %}
+                                            <option value="{{ maptype }}">{{ maptype }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                {% set label = 'Load' %}
+                                {{- xar_button({type: "submit", label: label, name: "load"}) -}}
+                            {% else %}No mappings available.{% endif %}
+                        </div>
+                    </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Enter a new mapping' %}
+                        <label for="newmap" title="{{ label }}" class="xar-form-label">Create Mapping:</label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" name="newmap" id="newmap" value="{{ newmap }}" class="xar-form-textlong"/>
+                        {% set label = 'Save' %}
+                        {{- xar_button({type: "submit", label: label, name: "save"}) -}}
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="xar-clearboth">
+                <legend>Migration Settings</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Module which provides the original object' %}
+                        <label title="{{ label }}" class="xar-form-label">Module Route:</label>
+                    </div>
+                    <div class="xar-col">
+                        <span class="xar-nowrap">
+                            {% if not from['module'] %}
+                                <select name="from[module]" id="from_module">
+                                    {% for module_id, modlabel in modulelist %}
+                                        {% if module_id not in modulesupported %}
+                                        {% elseif module_id == 151 %}
+                                            {# <!-- TODO: keep this preset to articles? --> #}
+                                        <option value="{{ module_id }}" selected="selected">
+                                        {{ modlabel }}</option>
+                                        {% else %}
+                                            <option value="{{ module_id }}">{{ modlabel }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            {% else %}{{ modulelist[from['module']] }} 
+                            <input type="hidden" name="from[module]"
+                            value="{{ from['module'] }}"/>{% endif %}
+                            <strong>To</strong>
+                            {% if not to['module'] %}
+                                <select name="to[module]" id="to_module">
+                                    {% for module_id, modlabel in modulelist %}
+                                        {% if module_id not in modulesupported %}
+                                        {% elseif module_id == 151 %}
+                                            {# <!-- TODO: keep this preset to articles? --> #}
+                                        <option value="{{ module_id }}" selected="selected">
+                                        {{ modlabel }}</option>
+                                        {% else %}
+                                            <option value="{{ module_id }}">{{ modlabel }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            {% else %}{{ modulelist[to['module']] }} 
+                            <input type="hidden" name="to[module]" value="{{ to['module'] }}"/>{% endif %}
+                        </span>
+                    </div>
+                </div>
+                {% if from['module'] and to['module'] %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Item type to be migrated from.' %}
+                            <label title="{{ label }}" class="xar-form-label">Item Type Route:</label>
+                        </div>
+                        <div class="xar-col">
+                            <span class="xar-nowrap">
+                                {# <!--  get the list of itemtypes for that module --> #}
+                                {% if from['itemtype'] is null %}
+                                    <select name="from[itemtype]" id="from_itemtype">
+                                        {% for itemtype, info in fromitemtypes %}
+                                        <option value="{{ itemtype }}">[{{ itemtype }}]
+                                        {{ info['label'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}[{{ from['itemtype'] }}]
+                                {{ fromitemtypes[from['itemtype']]['label'] }} 
+                                <input type="hidden" name="from[itemtype]" id="from_itemtype"
+                                value="{{ from['itemtype'] }}"/>{% endif %}
+                                <strong>To</strong>
+                                {% if to['itemtype'] is null %}
+                                    <select name="to[itemtype]" id="to_itemtype">
+                                        {% for itemtype, info in toitemtypes %}
+                                        <option value="{{ itemtype }}">[{{ itemtype }}]
+                                        {{ info['label'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}[{{ to['itemtype'] }}]
+                                {{ toitemtypes[to['itemtype']]['label'] }} 
+                                <input type="hidden" name="to[itemtype]"
+                                value="{{ to['itemtype'] }}"/>{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if from['module'] and to['module'] %}
+                    {% if from['itemtype'] and to['itemtype'] %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                {% set label = 'List of items for this module+itemtype' %}
+                                <label for="from_itemid" title="{{ label }}" class="xar-form-label">Items:</label>
+                            </div>
+                            <div class="xar-col">
+                                {# <!--  get the list of items for that module+itemtype --> #}
+                                {% if from['itemid'] is null %}
+                                    <select name="from[itemid][]" id="from_itemid" multiple="multiple">
+                                        {% for itemid, info in fromitems %}
+                                            <option value="{{ itemid }}">[{{ itemid }}]
+                                            {{ info['label'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}
+                                    {% for itemid, info in fromitems %}
+                                    [{{ itemid }}] {{ info['label'] }} 
+                                    <br />{% endfor %}
+                                    <input type="hidden" name="from[itemid]"
+                                    value="{{ from['itemid'] }}"/>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="xar-col dummy">
+                            {% set checked = not to['itemid'] %}
+                            {{ xar_data_input({type: "checkbox", name: "to[itemid]", id: "to_itemid", checked: checked}) }}
+                            <label for="to_itemid"
+                            title="{{ xar_translate('Attempt to preserve item id during this migration') }}{{ ">
+                            Preserve id</label>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </fieldset>
+            <fieldset class="xar-form-actions">
+                <input type="hidden" name="step" value=" }}$step{{ "/>
+                <input type="hidden" name="authid" value=" }}xarSec::genAuthKey(){{ "/>
+                {% set label = 'Back' %}
+                {% if step > 1 %}
+                    {{- xar_button({type. "submit", label. label, name. "back"}) -}}
+                {% else %}
+                    {{- xar_button({type. "submit", name. "back", label. label, disabled. "disabled"}) -}}
+                {% endif %}
+                {% set label = 'Next' %}
+                {{- xar_button({type. "submit", label. label, name. "next"}) -}}
+                {% set label = 'Test' %}
+                {% set label1 = 'Finish' %}
+                {% if check %}
+                    {{- xar_button({type. "submit", label. label, name. "test"}) -}}
+                    {{- xar_button({type. "submit", label. label1, name. "confirm"}) -}}
+                {% else %}
+                    {{- xar_button({type. "submit", name. "test", label. label, disabled. "disabled"}) -}}
+                    {{- xar_button({type. "submit", name. "confirm", label. label1, disabled. "disabled"}) -}}
+                {% endif %}
+            </fieldset>
+            {% if from['module'] and to['module'] %}
+                {% if from['itemtype'] and to['itemtype'] %}
+                    <fieldset>
+                        <legend>Field and Hook Mappings</legend>
+                        <h4>Fields</h4>
+                        {% for namefrom, infofrom in fromfieldlist %}
+                            <div class="xar-row">
+                                <div class="xar-col">
+                                    <label for="fieldmap_ }}$namefrom{{ " class="xar-form-label">
+                                    [ }}$namefrom{{ ] }}$infofrom['label']{{ ( }}$infofrom['type']{{ ).</label>
+                                </div>
+                                <div class="xar-col">
+                                    <select name="fieldmap[ }}$namefrom{{ ]" id="fieldmap_ }}$namefrom{{ ">
+                                        <option value="">* not migrated *</option>
+                                        {% for nameto, infoto in tofieldlist %}
+                                            {% if fieldmap[namefrom] is null and namefrom == nameto %}
+    
+                                                <option value=" }}$nameto{{ " selected="selected">
+                                                [ }}$nameto{{ ] }}$infoto['label']{{ ( }}$infoto['type']{{ )</option>
+                                                {% elseif fieldmap[namefrom] and fieldmap[namefrom] == nameto %}
+                                                <option value=" }}$nameto{{ " selected="selected">
+                                                [ }}$nameto{{ ] }}$infoto['label']{{ ( }}$infoto['type']{{ )</option>
+                                            {% else %}
+                                                <option value=" }}$nameto{{ ">[ }}$nameto{{ ] }}$infoto['label']{{ ( }}$infoto['type']{{ )</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <h4>Hooks</h4>
+                        {% if fromhooklist|length > 0 %}
+                            {% for hookmodfrom, valfrom in fromhooklist %}
+                                <div class="xar-row">
+                                    <div class="xar-col">
+                                        <label for="hookmap_ }}$hookmodfrom{{ " class="xar-form-label"> }}$hookmodfrom{{ .</label>
+                                    </div>
+                                    <div class="xar-col">
+                                        {% if hookmodfrom not in hooksupported %}not
+                                        supported 
+                                        {% elseif hookmodfrom == 'dynamicdata' %}see
+                                        field mapping above 
+                                        {% else %}
+                                        <select name="hookmap[ }}$hookmodfrom{{ ]"
+                                        id="hookmap_ }}$hookmodfrom{{ ">
+                                            <option value="">* not migrated *</option>
+                                            {% for hookmodto, valto in tohooklist %}
+                                                    {% if hookmap[hookmodfrom] is null and hookmodfrom == hookmodto %}
+    
+                                                    <option value=" }}$hookmodto{{ " selected="selected"> }}$hookmodto{{ </option>
+                                                    {% elseif hookmap[hookmodfrom] and hookmap[hookmodfrom] == hookmodto %}
+                                                    <option value=" }}$hookmodto{{ " selected="selected"> }}$hookmodto{{ </option>
+                                                    {% elseif hookmodto not in hooksupported %}
+                                                    <option value=" }}$hookmodto{{ " disabled="disabled"> }}$hookmodto{{ </option>
+                                                    {% else %}
+                                                        <option value=" }}$hookmodto{{ "> }}$hookmodto#</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                        </select>{% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No hooks assigned.</p>
+                        {% endif %}
+                    </fieldset>
+                {% endif %}
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

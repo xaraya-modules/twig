@@ -1,0 +1,14 @@
+{# @base/properties/showoutput-timezone.html.twig #}
+
+{% block showoutput_timezone %}
+{% if timezone is not null %}
+        {{ timezone }}
+        {% if offset is not null %}
+            (GMT {{ offset }})
+        {% endif %}
+    {% elseif offset is not null %}
+        GMT {{ offset }}
+    {% elseif option['name'] %}
+        {{ option['name'] }}
+    {% endif %}
+{% endblock %}

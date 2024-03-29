@@ -1,0 +1,51 @@
+{# @modules/modify/adminmenu.html.twig #}
+
+{% block adminmenu %}
+<div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'By checking this box a logout link will be shown in the panel instance.' %}
+            <label for="showlogout{{ blockid }}" title="{{ label }}">
+            Show a logout link in this menu</label>
+        </div>
+        <div class="xar-col">
+            {% if showlogout == 1 %}
+                <input type="checkbox" name="showlogout" id="showlogout{{ blockid }}" value="1"
+                checked="checked"/>
+            {% else %}
+                <input type="checkbox" name="showlogout" id="showlogout{{ blockid }}" value="1"/>
+            {% endif %}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'By checking this box the menu will NOT show the overview page of the module by default.' %}
+            <label for="overview{{ blockid }}" title="{{ label }}">
+            Disable the module overview by default</label>
+        </div>
+        <div class="xar-col">
+            {% if overview == 1 %}
+                <input type="checkbox" name="overview" id="overview{{ blockid }}" value="1" checked="checked"/>
+                checked="checked"/>
+            {% else %}
+                <input type="checkbox" name="overview" id="overview{{ blockid }}" value="1"/>
+            {% endif %}
+        </div>
+    </div>
+    <div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'How should the menu items be ordered?' %}
+            <label for="menustyle" title="{{ label }}" class="xar-form-label">Sort menuitems:</label>
+        </div>
+        <div class="xar-col">
+            <select name="menustyle" id="menustyle">
+                <xar:foreach in="$sortorder" value="$v" key="$k">
+                    {% if k == menustyle %}
+                        <option value="{{ k }}" selected="selected">{{ v }}</option>
+                    {% else %}
+                        <option value="{{ k }}">{{ v }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{# @dynamicdata/admin/dbconfig.html.twig #}
+
+{% block dbconfig %}
+{{ xar_style({scope: "module", file: "dd"}) }}
+    {{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Utilities - Database Configurations</h2>
+        {{ include('@dynamicdata/includes/utility-menu.html.twig') }}
+        {% if not db and not obj %}
+            <h3>Database Configurations</h3>
+            {{ include('@dynamicdata/includes/dbconfig-dblist.html.twig') }}
+        {% elseif db %}
+            {% if db == 'default' %}
+                {% set link = xar_moduleurl('dynamicdata', 'admin', 'meta') %}
+                <h3>Database Configuration <a href="{{ link }}" title="Table Browser">{{- xar_image({scope: "theme", file: "icons/system-search.png", class: "xar-icon", alt: "meta"}) -}}</a></h3>
+                <div class="xar-row">
+                    <div class="xar-col">
+                    <p>The database configuration for Xaraya is defined in the config.system file - nothing to see here</p>
+                    </div>
+                </div>
+            {% else %}
+                {% set link = xar_moduleurl('dynamicdata', 'admin', 'meta', {'db': db}) %}
+                <h3>
+                    Database Configuration
+                    <a href="{{ link }}" title="Table Browser">{{- xar_image({scope: "theme", file: "icons/system-search.png", class: "xar-icon", alt: "meta"}) -}}</a>
+                    <span class="xar-error">&#160;&#171; create DD objects</span>
+                </h3>
+                {{ include('@dynamicdata/includes/dbconfig-dbform.html.twig') }}
+            {% endif %}
+        {% elseif obj %}
+            {% if not config['objectid'] %}
+                <h3>Object Configuration</h3>
+            {% else %}
+                {% set link = xar_moduleurl('dynamicdata', 'admin', 'modify', {'itemid': config['objectid']}) %}
+                <h3>Object Configuration <a href="{{ link }}" title="Modify DataObject">{{- xar_image({scope: "theme", file: "icons/modify.png", class: "xar-icon", alt: "modify"}) -}}</a></h3>
+            {% endif %}
+            {{ include('@dynamicdata/includes/dbconfig-object.html.twig') }}
+        {% else %}
+            Hello :-)
+        {% endif %}
+    </div>
+{% endblock %}

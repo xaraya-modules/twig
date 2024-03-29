@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{{ xar_twig_header("text/html") -}}
+    <html xml:lang="en" lang="en">
+        <head>
+            {{ xar_blockgroup("header") }}
+            <title>
+                {{ tpl.pageTitle }}
+            </title>
+            <base href="{{ xar_baseurl() }}index.php"/>
+            <link rel='icon' href="favicon.ico"/>
+            {{ xar_style({scope: "common"}) }}
+            {{ xar_style({scope: "theme", file: "style", title: "Kingston Default Stylesheet"}) }}
+            {{ xar_place_css() }}
+            {{ xar_place_javascript({position: "head"}) }}
+        </head>
+
+<body>
+
+<img id="bg" src="/themes/kingston/images/frontend/elements/pageback.png" />
+
+{# <!-- !PAGE --> #}
+<div id="page-wrapper">
+<div id="page" class="">
+<div id="page-enclosure" class="clearfix">
+
+	{# <!-- !HEADER --> #}
+    <div id="header">
+    <div id="header-enclosure">
+        <h1 id="sitename">{{ xar_var({name: "SiteName", scope: "module", module: "themes"}) }}</h1>
+        <div id="siteslogan">{{ xar_var({name: "SiteSlogan", scope: "module", module: "themes"}) }}</div>
+    </div>{# <!--/header-enclosure--> #}
+    </div>{# <!--/header--> #}
+    
+    {{ xar_blockgroup("topnav") }}
+
+    {# <!-- !MAIN WRAPPER --> #}
+    <div id="main">
+    
+    	{# <!-- !PRIMARY CONTENT --> #}
+	    <div id="primary-wrapper">
+	    <div id="primary">
+	    <div id="primary-enclosure">
+	        {% block modulespace %}{{ _bl_mainModuleOutput|raw }}{% endblock %}
+	        {{ xar_blockgroup("center") }}
+	    </div>{# <!--/primary-enclosure--> #}
+	    </div>{# <!--/primary--> #}
+		</div>{# <!--/primary-wrapper--> #}
+		
+	    {# <!-- !SECONDARY CONTENT --> #}
+	    <div id="secondary-wrapper">
+	    <div id="secondary">
+	    <div id="secondary-enclosure">
+	        {{ xar_blockgroup("left") }}
+	    </div>{# <!--/secondary-enclosure--> #}
+	    </div>{# <!--/secondary--> #}
+	    </div>{# <!--/secondary-wrapper--> #}
+	    
+	    {# <!-- !TERTIARY CONTENT --> #}
+	    <div id="tertiary-wrapper">
+	    <div id="tertiary">
+	    <div id="tertiary-enclosure">
+	        {{ xar_blockgroup("right") }}
+	    </div>{# <!--/tertiary-enclosure--> #}
+	    </div>{# <!--/tertiary--> #}
+	    </div>{# <!--/tertiary-wrapper--> #}
+	    	
+	</div>{# <!--/main--> #}
+	
+	{# <!-- !FOOTER --> #}
+    <div id="footer">
+    <div id="footer-enclosure">
+        {{ xar_blockgroup("right") }}
+    </div>{# <!--/footer-enclosure--> #}
+    </div>{# <!--/footer--> #}
+
+</div>{# <!--/page-enclosure--> #}
+</div>{# <!--/page--> #}
+</div>{# <!--/page-wrapper--> #}
+
+{{ xar_place_javascript({position: "body"}) }} 
+
+</body>
+</html>
+

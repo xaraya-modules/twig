@@ -1,0 +1,21 @@
+{# includes/user-message.html.twig #}
+
+{% block user_message %}
+<div id="xar-message">
+        {% if message is not null %}
+            {% if message is iterable %}
+                {% for title, text in message %}
+                    <div>
+                        <div class="xar-title">{{ title }}</div>
+                        {{ text }}
+                      </div>
+                {% endfor %}
+            {% else %}
+                <div>
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% else %}
+        {% endif %}
+    </div>
+{% endblock %}

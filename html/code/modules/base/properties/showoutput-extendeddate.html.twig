@@ -1,0 +1,16 @@
+{# @base/properties/showoutput-extendeddate.html.twig #}
+
+{% block showoutput_extendeddate %}
+{# <!--
+        We can't use xarLocale::formatDate() here because timestamps might be out of range,
+        but we could use locale-dependent years, months, days etc.
+    --> #}
+    {% if year %}
+        {{ year }}-{{ mon }}-{{ day }}
+        {% if format and format == 'datetime' %}
+            {{ hour }}:{{ min }}:{{ sec }}
+        {% endif %}
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endblock %}

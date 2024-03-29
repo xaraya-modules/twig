@@ -1,0 +1,35 @@
+{# @dynamicdata/includes/view-bullet.html.twig #}
+
+{% block view_bullet %}
+{# <!-- TODO: what is the expected behaviour of this? --> #}
+    <div class="xar-fullwidth">
+        <ul>
+            {% for itemid, fields in items %}
+                <li>
+                    {% for name in properties|keys %}
+                        {% if not fields[name] %}
+                            &#160; 
+                        {% elseif linkfield and linkfield == name and links[itemid]['display'] %}
+                            <a href="{{ links[itemid]['display']['olink'] }}" title="{{ links[itemid]['display']['otitle'] }}">
+                                {{ xar_data_output({property: properties[name], _itemid: itemid, value: fields[name]}) }}
+                            </a>
+                        {% else %}
+                            {{ xar_data_output({property: properties[name], _itemid: itemid, value: fields[name]}) }}
+                        {% endif %}&#160;*** &#160;
+                    {% endfor %}
+                    {% if not linkfield and links[itemid] and links[itemid]|length > 0 %}
+                        {% for otype, option in links[itemid] %}
+                            {% if option['olink'] %}{{ option['ojoin'] }} 
+                                <a href="{{ option['olink'] }}">{{ option['otitle'] }}</a>
+                            {% else %}
+                                {{ option['ojoin'] }} {{ option['otitle'] }}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        &#160;
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

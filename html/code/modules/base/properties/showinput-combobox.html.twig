@@ -1,0 +1,59 @@
+{# @base/properties/showinput-combobox.html.twig #}
+
+{% block showinput_combobox %}
+{% if mode == 3 %}
+        {% set onchange = "document.getElementById('tb_" ~ id ~ "').value = document.getElementById('dd_" ~ id ~ "').options[document.getElementById('dd_" ~ id ~ "').selectedIndex].text" %}
+    {% endif %}
+    {% if onchange is null %}
+      {% set onchange = 'return true;' %}
+    {% endif %}
+
+    {% if style is null %}
+        {% set style = '' %}
+    {% endif %}
+    {% if firstline is null %}
+        {% set firstline = '' %}
+    {% endif %}
+    
+    {% set optionSelected = false %}
+    {% if mode == 1 %}
+        {{ xar_data_input({type: "dropdown", name: name, id: id, options: options, value: value, tabindex: tabindex, onchange: onchange, style: style, firstline: firstline}) }}
+    {% else %}
+        {% if (mode == 2) or (mode == 3) %}
+            {% set tbname = name ~ '_tb' %}
+            {% set tb_id = 'tb_' ~ id %}
+            {% if optionSelected == false %}
+                {{ xar_data_input({type: "textbox", name: tbname, id: tb_id, value: value, style: style}) }}
+            {% else %}
+                {{ xar_data_input({type: "textbox", name: tbname, id: tb_id, style: style}) }}
+            {% endif %}
+        {% endif %}
+        {% if mode == 3 %}
+            {% if layout == 'horizontal' %}
+                &#160;
+            {% elseif (layout == 'vertical') or (layout == 'default') %}
+                <br />
+            {% endif %}
+        {% endif %}
+        {% if mode == 3 %}
+            {% set dd_id = 'dd_' ~ id %}
+            {% if options|length > 0 %}
+                {% if (optionSelected == false) and value %}
+                    {% if not firstline %}
+                        {% set linetext = '&lt;== Text Specified' %}
+                        {% set firstline = {'id': '', 'name': linetext} %}
+                    {% endif %}
+                    {{ xar_data_input({type: "dropdown", name: name, id: dd_id, options: options, value: value, tabindex: tabindex, onchange: onchange, style: style, firstline: firstline}) }}
+                {% else %}
+                    {% if not firstline %}
+                        {% set linetext = '&lt;== Choose or enter an item' %}
+                        {% set firstline = {'id': '', 'name': linetext} %}
+                    {% endif %}
+                    {{ xar_data_input({type: "dropdown", name: name, id: dd_id, options: options, value: value, tabindex: tabindex, onchange: onchange, style: style, firstline: firstline}) }}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+    {% endif %}
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

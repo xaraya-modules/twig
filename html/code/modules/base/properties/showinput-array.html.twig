@@ -1,0 +1,16 @@
+{# @base/properties/showinput-array.html.twig #}
+
+{% block showinput_array %}
+{% set info = xar_coremethod('xarController', 'getRequest').getInfo() %}
+    <div class="xar-clearboth">
+        {% if info[2] == 'showpropval' and (display_page_type == 'configuration') %}
+            {# <!-- We are configuring an array property --> #}
+            {{ include('@base/includes/array_configuration.html.twig') }}
+        {% else %}
+            {# <!-- We are displaying an array property or one of its descendents --> #}
+            {{ include('@base/includes/array_table.html.twig') }}
+        {% endif %}
+        <br class="xar-clearall"/>
+        {{ include('@base/includes/dataproperty_additions.html.twig') }}        
+    </div>
+{% endblock %}

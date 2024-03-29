@@ -1,0 +1,106 @@
+{# @themes/objects/showview.html.twig #}
+
+{% block showview %}
+{# <!--
+        This is a generic view template for any DD object. You can use a specific template
+        for one particular object in this directory as showview-[objectname].xd, and/or
+        use templates in your own [module]/xartemplates/objects directory by specifying
+        the tplmodule="..." argument in the xar:data-view BL tag or showView() method call.
+    --> #}
+    {{ xar_style({scope: "module", module: "dynamicdata", file: "dd"}) }}
+    {# <!-- You can give a custom 'newlink' argument to showView() higher up --> #}
+        <table class="xar-table xar-items">
+            <tr>
+                {% for name in properties|keys %}
+            		{% if xar_coremethod('xarController', 'getVar', ['sort']) == name %}
+                    	{% set xar_status = 'xar-active ' %}
+                    {% else %}
+                    	{% set xar_status = '' %}
+                    {% endif %}
+                    {# <!-- <th class="{{ xar_status }} {{ name }}"> --> #}
+                    <th>
+                        <a href="{{ sorturl }}={{ name }}">
+                            {{ xar_data_label({property: properties[name]}) }}
+                        </a>
+                    </th>
+                {% endfor %}
+                <th class="action">Action</th>
+            </tr>
+            {% set item_no = 0 %}
+            {% for itemid, fields in items %}
+                {% set item_no = item_no+1 %}
+                {% set rowclass = 'xar-norm' %}
+                {% if item_no % 2 == 0 %}
+                    {% set rowclass = 'xar-alt' %}
+                {% endif %}
+                <tr class="{{ rowclass }}">
+                    {# <!-- we could use xar:data-display here too, instead of looping over fields ourselves --> #}
+                    {% for name in properties|keys %}
+                		{% if xar_coremethod('xarController', 'getVar', ['sort']) == name %}
+                        	{% set xar_status = 'xar-active ' %}
+                        {% else %}
+                        	{% set xar_status = '' %}
+                        {% endif %}
+                        {# <!-- <td class="{{ xar_status }} {{ name }}"> --> #}
+                        <td>
+                            {% if not fields[name] %}&#160; 
+                            {% elseif linkfield and linkfield == name and links[itemid]['display'] %}
+                                <a href="{{ links[itemid]['display']['olink'] }}" title="{{ links[itemid]['display']['otitle'] }}">
+                                    {{ xar_data_output({property: properties[name], value: fields[name]}) }}
+                                </a>
+                            {% else %}
+                                {{ xar_data_output({property: properties[name], value: fields[name]}) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                    <td class="action">
+                        {% if xar_modvar('themes', 'use_module_icons') %}
+                            {% set title = 'Display Configuration' %}
+                            <a href="{{ xar_moduleurl('themes','admin','display_config',{'itemid': fields['id']}) }}" title="{{ title }}" class="xar-icon-display">
+                                {{- xar_image({scope: "theme", file: "icons/display.png", class: "xar-icon", alt: title}) -}}
+                            </a>&#160;
+                            {% set title = 'Modify Configuration' %}
+                            <a href="{{ xar_moduleurl('themes','admin','modify_config',{'itemid': fields['id']}) }}" title="{{ title }}" class="xar-icon-modify">
+                                {{- xar_image({scope: "theme", file: "icons/modify.png", class: "xar-icon", alt: title}) -}}
+                            </a>&#160;
+                            {% set title = 'Delete Configuration' %}
+                            <a href="{{ xar_moduleurl('themes','admin','delete_config',{'itemid': fields['id']}) }}" title="{{ title }}" class="xar-icon-delete">
+                                {{- xar_image({scope: "theme", file: "icons/delete.png", class: "xar-icon", alt: title}) -}}
+                            </a>&#160;
+                            {% set title = 'Export Configuration' %}
+                            &#160;<a href="{{ xar_moduleurl('themes','admin','export_config',{'itemid': fields['theme_id']}) }}" title="{{ title }}" class="xar-icon-export">
+                                {{- xar_image({scope: "theme", file: "icons/export-xml.png", class: "xar-icon", alt: title}) -}}
+                            </a>
+                        {% else %}
+                            <a href="{{ xar_moduleurl('themes','admin','display_config',{'itemid': fields['id']}) }}">Display</a>&#160;
+                            <a href="{{ xar_moduleurl('themes','admin','modify_config',{'itemid': fields['id']}) }}">Modify</a>&#160;
+                            <a href="{{ xar_moduleurl('themes','admin','delete_config',{'itemid': fields['id']}) }}">Delete</a>&#160;
+                            <a href="{{ xar_moduleurl('themes','admin','export_config',{'itemid': fields['id']}) }}">Export</a>&#160;
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% if not object.itemcount %}
+        {# <!-- if we don't have an item total show prev / next links --> #}
+        <div>
+            {% if object.startnum > 1 %}
+                <div class="xar-halfwidth xar-floatleft">
+                    {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: object.startnum, urltemplate: object.pagerurl, template: "multipageprev"}) }}
+                </div>
+            {% endif %}
+            {% if object.items|length == object.numitems %}
+                <div class="xar-halfwidth xar-floatright xar-align-right">
+                    {% set newtotal = object.startnum + object.numitems %}
+                    {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: newtotal, urltemplate: object.pagerurl, template: "multipagenext"}) }}
+                </div>
+            {% endif %}
+            <br class="xar-clearboth"/>
+        </div>
+    {% elseif object.itemcount > object.numitems %}
+        {# <!-- show the pager --> #}
+        <div class="xar-align-center">
+            {{ xar_pager({startnum: object.startnum, itemsperpage: object.numitems, total: object.itemcount, urltemplate: object.pagerurl}) }}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{# @roles/properties/showoutput-username.html.twig #}
+
+{% block showoutput_username %}
+{% if not value %}
+        {% set value = '[All Users]' %}
+    {% endif %}
+    {% if link_url %}
+        {% set title = 'View profile' %}
+        <a href="{{ link_url }}" title="{{ title }}">{{ value }}</a>
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endblock %}

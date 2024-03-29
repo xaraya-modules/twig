@@ -1,0 +1,45 @@
+{# @dynamicdata/includes/view-list.html.twig #}
+
+{% block view_list %}
+{# <!-- Default layout for a list of objects --> #}
+    <div class="xar-fullwidth">
+        {# <!-- we don't use xar:data-form or xar:data-input here, because this is typically not an input form --> #}
+        {% for itemid, fields in items %}
+            <table class="xar-table xar-norm xar-norm-outline xar-fullwidth">
+                <tr>
+                    <th>Sort by</th>
+                    <th colspan="2">
+                        {% if not linkfield %}
+                        {% for otype, option in links[itemid] %}
+                            {% if option['olink'] %}
+                                {{ option['ojoin'] }} 
+                                <a href="{{ option['olink'] }}">{{ option['otitle'] }}</a>
+                            {% else %}
+                                {{ option['ojoin'] }} {{ option['otitle'] }}
+                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </th>
+                </tr>
+                {% for name in properties|keys %}
+                    <tr>
+                        <th class="xar-align-right xar-form-textlong">
+                            <a href="{{ sorturl }}={{ name }}">
+                                {{ xar_data_label({property: properties[name]}) }}
+                            </a>
+                        </th>
+                        <td>
+                            {% if linkfield and linkfield == name and links[itemid]['display'] %}
+                                <a href="{{ links[itemid]['display']['olink'] }}" title="{{ links[itemid]['display']['otitle'] }}">
+                                    {{ xar_data_output({property: properties[name], _itemid: itemid, value: fields[name]}) }}
+                                </a>
+                            {% else %}
+                                {{ xar_data_output({property: properties[name], _itemid: itemid, value: fields[name]}) }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
+{% endblock %}

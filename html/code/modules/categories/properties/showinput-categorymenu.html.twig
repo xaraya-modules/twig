@@ -1,0 +1,69 @@
+{# @categories/properties/showinput-categorymenu.html.twig #}
+
+{% block showinput_categorymenu %}
+{{ xar_style({scope: "module", module: "base", file: "navtabs"}) }}
+
+    {% set urlinfo = xar_coremethod('xarController', 'getRequest').getInfo() %}
+    <div>
+        <ul class="xar-tabs xar-alt xar-norm-outline">
+            {% if layout == 'toplevel' %}
+                {% for tab in tabs %}
+                    {% set condition = tab['id'] == activetab %}
+                    {% if condition %}
+                        {% set tabclass = 'xar-tab-active' %}
+                        {% set linkclass = 'xar-accent xar-accent-outline' %}
+                    {% else %}
+                        {% set tabclass = 'xar-tab' %}
+                        {% set linkclass = 'xar-norm xar-norm-outline' %}
+                    {% endif %}
+                    <li class="{{ tabclass }}">
+                        <a href="{{ xar_currenturl({'activetab': tab['id']}) }}" class="{{ linkclass }}">
+                            {{ tab['name'] }}
+                        </a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                {% for tab in tabs %}
+                    {% set iterator = tab.getIterator() %}
+                    {% set currentcategory = iterator.current() %}
+                    {% set mask = currentcategory.mask is not null ? currentcategory.mask : "" %}
+                    {% set id = currentcategory.id %}
+
+                    {% set condition = id == activetab %}
+                    {% if mask %}
+                        {% set mask = tab['mask'] %}
+                        {% if xar_security_check(mask) }}
+                            {% if condition %}
+                                {% set tabclass = 'xar-tab-active' %}
+                                {% set linkclass = 'xar-accent xar-accent-outline' %}
+                            {% else %}
+                                {% set tabclass = 'xar-tab' %}
+                                {% set linkclass = 'xar-norm xar-norm-outline' %}
+                            {% endif %}
+                            <li class="{{ tabclass }}">
+                                <a href="{{ xar_moduleurl(urlinfo[0],urlinfo[1],tab['target']) }}" class="{{ linkclass }}">
+                                    {{ tab['label'] }}
+                                </a>
+                            </li>
+                        {% endif %}            
+                    {% else %}
+                        {% if condition %}
+                            {% set tabclass = 'xar-tab-active' %}
+                            {% set linkclass = 'xar-accent xar-accent-outline' %}
+                        {% else %}
+                            {% set tabclass = 'xar-tab' %}
+                            {% set linkclass = 'xar-norm xar-norm-outline' %}
+                        {% endif %}
+                        <dd class="{{ tabclass }}">
+                            {% set name = currentcategory.name %}
+                            {% set url = currentcategory.url is not null ? currentcategory.url : xar_currenturl({'activetab': id}) %}
+                            <a href="{{ url }}" class="{{ linkclass }}">
+                                {{ name }}
+                            </a>
+                        </dd>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

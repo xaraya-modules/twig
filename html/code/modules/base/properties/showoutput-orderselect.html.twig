@@ -1,0 +1,9 @@
+{# @base/properties/showoutput-orderselect.html.twig #}
+
+{% block showoutput_orderselect %}
+{% set join = "" %}
+    {% for option in options %}
+        {{ join }}{{ option['name'] }}
+        {% set join = "&#160;|&#160;" %}
+    {% endfor %}
+{% endblock %}

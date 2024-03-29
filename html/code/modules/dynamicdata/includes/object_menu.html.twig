@@ -1,0 +1,37 @@
+{# @dynamicdata/includes/object_menu.html.twig #}
+
+{% block object_menu %}
+{% if not tab %}
+        {% set tab = 'edit' %}
+    {% endif %}
+    {% if tab != 'edit' %}
+        {% set editlink = xar_moduleurl('dynamicdata','admin','modify',{'itemid': itemid}) %}
+        &#160;<a href="{{ editlink }}" title="Modify DataObject {{ label }}">
+            {{- xar_image({scope: "theme", file: "icons/modify.png", class: "xar-icon", alt: "modify"}) -}}
+        </a>
+    {% endif %}
+    {% if tab != 'modifyprop' %}
+        {% set proplink = xar_moduleurl('dynamicdata','admin','modifyprop',{'itemid': itemid}) %}
+        &#160;<a href="{{ proplink }}" title="Modify DataProperties for {{ label }}">
+            {{- xar_image({scope: "theme", file: "icons/modify-config.png", class: "xar-icon", alt: "modifyprop"}) -}}
+        </a>
+    {% endif %}
+    {% if tab != 'access' %}
+        {% set accesslink = xar_moduleurl('dynamicdata','admin','access',{'itemid': itemid}) %}
+        &#160;<a href="{{ accesslink }}" title="Modify Access Rules for {{ label }}">
+            {{- xar_image({scope: "theme", file: "icons/privileges.png", class: "xar-icon", alt: "access"}) -}}
+        </a>
+    {% endif %}
+    {% if tab != 'view' %}
+        {% set itemslink = xar_moduleurl('dynamicdata','admin','view',{'itemid': itemid}) %}
+        &#160;<a href="{{ itemslink }}" title="View Items for {{ label }}">
+            {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "viewitems"}) -}}
+        </a>
+    {% endif %}
+    {% if tab != 'export' %}
+        {% set exportlink = xar_moduleurl('dynamicdata','admin','export',{'objectid': itemid}) %}
+        &#160;<a href="{{ exportlink }}" title="Export Object Definition for {{ label }}">
+            {{- xar_image({scope: "theme", file: "icons/export-xml.png", class: "xar-icon", alt: "export"}) -}}
+        </a>
+    {% endif %}
+{% endblock %}

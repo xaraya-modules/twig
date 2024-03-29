@@ -1,0 +1,11 @@
+{# @dynamicdata/properties/showoutput-objectmultiselect.html.twig #}
+
+{% block showoutput_objectmultiselect %}
+{% set join = "" %}
+    {% for option in options %}
+            {% if option['id'] in value %}
+                  {{ join }} {{ option['name'] }}
+                  {% set join = "|" %}
+            {% endif %}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,125 @@
+{# @themes/admin/view.html.twig #}
+
+{% block view %}
+{{ include('@themes/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <div class="xar-mod-page-head">
+	        <h2>View Themes</h2>
+        </div>
+        <div class="xar-mod-page-body">
+            <form method="get" action="{{ xar_baseurl() }}index.php">
+                <input type="hidden" name="module" id="module" value="themes"/>
+                <input type="hidden" name="type" id="type" value="admin"/>
+                <input type="hidden" name="func" id="func" value="view"/>
+                <table class="xar-table">
+                    <thead>
+                        <tr>
+                            <th><label for="tab">Style</label></th>
+                            <th><label for="state">State</label></th>
+                            <th><label for="class">Class</label></th>
+                            <noscript>
+                            <th><label for="apply">Action</label></th>
+                            </noscript>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {{ xar_data_input({type: "dropdown", name: "tab", id: "tab", value: tab, options: tabs, onchange: "this.form.submit();return false;"}) }}
+                            </td>
+                            <td>
+                                {{ xar_data_input({type: "dropdown", name: "state", id: "state", value: state, options: states, onchange: "this.form.submit();return false;"}) }}
+                            </td>
+                            <td>
+                                {{ xar_data_input({type: "dropdown", name: "class", id: "class", value: class, options: classes, onchange: "this.form.submit();return false;"}) }}
+                            </td>
+                            <noscript>
+                            <td>
+                                {% set label = 'Apply Filter' %}
+                                {{- xar_button({type: "submit", label: label, name: "apply", id: "apply"}) -}}
+                            </td>
+                            </noscript>
+                        </tr>
+                    </tbody>
+                </table>    
+            </form>
+            {% set infotitle = 'View detail information about this theme' %}
+            {% set infolabel = 'Info' %}
+
+            {% set inittitle = 'Initialize this theme' %}
+            {% set initlabel = 'Initialize' %}
+
+            {% set activatetitle = 'Activate this theme' %}
+            {% set activatelabel = 'Activate' %}
+
+            {% set deactivatetitle = 'Deactivate this theme' %}
+            {% set deactivatelabel = 'Deactivate' %}
+
+            {% set upgradetitle = 'Upgrade this theme' %}
+            {% set upgradelabel = 'Upgrade' %}
+
+            {% set nonetitle = 'Option not available' %}
+            {% set nonelabel = 'n/a' %}
+
+            {% set errortitle = 'Theme state error' %}
+            {% set errorlabel = 'Error' %}
+
+            {% set removetitle = 'Remove this theme' %}
+            {% set removelabel = 'Remove' %}
+
+            {% if useicons %}
+                {% set infoicon = xar_imageurl('icons/info.png','theme') %}
+                {% set initicon = xar_imageurl('icons/initialize.png','theme') %}
+                {% set activateicon = xar_imageurl('icons/activate.png','theme') %}
+                {% set deactivateicon = xar_imageurl('icons/deactivate.png','theme') %}
+                {% set upgradeicon = xar_imageurl('icons/software-upgrade.png','theme') %}
+                {% set noneicon = xar_imageurl('icons/none.png','theme') %}
+                {% set erroricon = xar_imageurl('icons/dialog-error.png','theme') %}
+                {% set removeicon = xar_imageurl('icons/remove.png','theme') %}
+            {% endif %}
+
+            {% if sort == 'ASC' %}
+                {% set sorturl = xar_currenturl({'sort': 'DESC'}) %}
+                {% set sortimg = xar_imageurl('arrow_down.gif', 'module', 'base') %}
+                {% set sortlbl = 'Sort by name descending' %}
+            {% else %}
+                {% set sorturl = xar_currenturl({'sort': 'ASC'}) %}
+                {% set sortimg = xar_imageurl('arrow_up.gif', 'module', 'base') %}
+                {% set sortlbl = 'Sort by name ascending' %}
+            {% endif %}                         
+            
+            <div class="xar-align-center">
+                {{ xar_pager({startnum: startnum, itemsperpage: items_per_page, total: total}) }}
+            </div>
+            {% if tab == 'plain' %}
+                {{ include('@themes/includes/admin-list-plain.html.twig') }} 
+            {% else %}
+                {{ include('@themes/includes/admin-list-preview.html.twig') }}
+            {% endif %}
+            <div class="xar-align-center">
+                {{ xar_pager({startnum: startnum, itemsperpage: items_per_page, total: total}) }}
+            </div>
+        </div>
+    </div>
+    {% if useicons %}
+        <div class="xar-mod-foot">
+        	<dl class="xar-legend">
+        		<dt>Legend</dt>
+        		<dd><img src="{{ infoicon }}" class="xar-icon" alt="{{ infolabel }}"/>
+        		{{ infolabel }}</dd>
+        		<dd><img src="{{ initicon }}" class="xar-icon" alt="{{ initlabel }}"/>
+        		{{ initlabel }}</dd>        		
+        		<dd><img src="{{ activateicon }}" class="xar-icon" alt="{{ activatelabel }}"/>
+        		{{ activatelabel }}</dd>            		
+        		<dd><img src="{{ deactivateicon }}" class="xar-icon" alt="{{ deactivatelabel }}"/>
+        		{{ deactivatelabel }}</dd>    
+        		<dd><img src="{{ upgradeicon }}" class="xar-icon" alt="{{ upgradelabel }}"/>
+        		{{ upgradelabel }}</dd>    
+        		<dd><img src="{{ removeicon }}" class="xar-icon" alt="{{ removelabel }}"/>
+        		{{ removelabel }}</dd>    
+        		<dd><img src="{{ erroricon }}" class="xar-icon" alt="{{ errorlabel }}"/>
+        		{{ errorlabel }}</dd>            		
+        	</dl>
+        </div>
+    {% endif %}
+{% endblock %}

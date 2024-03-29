@@ -1,0 +1,158 @@
+{# @blocks/admin/new_instance.html.twig #}
+
+{% block new_instance %}
+{{ include('@blocks/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>New Block Instance</h2>
+        <form action="{{ xar_moduleurl('blocks', 'admin', 'new_instance') }}" method="post">
+            {% if not phase or phase == 'options' %}
+                <input type="hidden" name="phase" id="phase" value="form"/>
+                <fieldset>
+                    <legend>Select Block Type</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="type_id">Block Type (module)</label>
+                        </div>
+                        <div class="xar-col">
+                            {% set firstline = '-- choose type --' %}
+                            {{ xar_data_input({type: "dropdown", name: "type_id", id: "type_id", firstline: firstline, options: type_options, onchange: "this.form.submit();return false;"}) }}
+                            {% if invalid['type_id'] %}
+                                <p class="xar-error">Error: {{ invalid['type_id'] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </fieldset>
+                <noscript>
+                    <fieldset>
+                        <div class="xar-row">
+                            {% set submitLabel = 'Create instance' %}
+                            {{- xar_button({type: "submit", label: submitLabel}) -}}
+                        </div>
+                    </fieldset>
+                </noscript>
+            {% elseif phase == 'form' %}
+                <input type="hidden" name="type_id" id="type_id" value="{{ type['type_id'] }}"/>
+                <input type="hidden" name="phase" id="phase" value="update"/>
+                <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                <fieldset>
+                    <legend>Create Instance</legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="type_id">Block Type:</label>
+                        </div>
+                        <div class="xar-col">
+                            {{ type['type'] }}
+                            {% if type['module'] %}
+                                ({{ type['module'] }})
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set labelTitle = 'Every block instance requires a unique name' %}
+                            <label for="name" title="{{ labelTitle }}" class="xar-form-label">
+                                Instance Name:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            <input type="text" name="name" id="name" value="{{ name }}" maxlength="64" class="xar-form-textlong"/>
+                            {% if invalid['name'] %}
+                                <p class="xar-error">Error: {{ invalid['name'] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="title" title="{{ xar_translate('The title of the block as you want it to appear on your website') }}" class="xar-form-label">
+                                Instance Title:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            <input type="text" name="title" id="title" value="{{ title }}" maxlength="255" class="xar-form-textxlong"/>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="state"
+                            title="{{ {{ xar_translate('This field is used to determine whether the block is shown (maximized) }} or hidden.') }}" class="xar-form-label">
+                                Instance State:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "dropdown", name: "state", id: "state", value: state, options: instance_states}) }}
+                            {% if invalid['state'] %}
+                                <p class="xar-error">Error: {{ invalid['state'] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </fieldset>
+                {% if type['type_category'] == 'group' %}
+                    {# <!-- Blockgroup type blocks only have an outer template which,
+                             counter-intuitively is not applied to the blockgroup itself,
+                             rather it is applied to all instances in the group --> #}
+                    <fieldset>
+                        <legend>Group Instances Template</legend>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label for="type_box_template">
+                                        Instances Outer Template:</label>
+                            </div>
+                            <div class="xar-col">
+                                <input type="text" name="box_template" id="box_template" value="{{ box_template }}"/>
+                                {% if invalid['templates'] %}
+                                     <p class="xar-error">Error: {{ invalid['templates'] }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </fieldset>
+                {% else %}
+                    <fieldset>
+                        <legend>Templates and groups</legend>
+                        <table class="xar-table xar-fullwidth xar-margin-thickends">
+                            <thead>
+                                <tr>
+                                    <th>Instance Group</th>
+                                    <th>Outer</th>
+                                    <th>Inner</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Any (default)</td>
+                                    <td><input type="text" name="box_template" id="box_template" value="{{ box_template }}"/></td>
+                                    <td><input type="text" name="block_template" id="block_template" value="{{ block_template }}"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                {% set labelTitle = 'Optionally add this instance to selected block groups' %}
+                                <label for="groups" title="{{ labelTitle }}" class="xar-form-label">
+                                Instance Groups:
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_data_input({type: "multiselect", name: "groups", id: "groups", options: group_options, value: groups}) }}
+                                {% if invalid['groups'] %}
+                                    <p class="xar-error">Error: {{ invalid['groups'] }}        </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </fieldset>
+
+                {% endif %}
+
+                <fieldset class="xar-form-actions">
+                    <div class="xar-row">
+                        <div class="xar-col">
+                        </div>
+                        <div class="xar-col">
+                            {% set submitLabel = 'Create Instance' %}
+                            {{- xar_button({type: "submit", label: submitLabel}) -}}
+                        </div>
+                    </div>
+                </fieldset>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

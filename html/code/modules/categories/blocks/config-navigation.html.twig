@@ -1,0 +1,101 @@
+{# @categories/blocks/config-navigation.html.twig #}
+
+{% block config_navigation %}
+<div style="clear: both; padding-top: 10px;">
+        <span style="float: left; width: 20%; text-align: right;">
+        <label for="layout{{ blockid }}">Category layout</label>
+        </span>
+        <span style="float: right; width: 78%; text-align: left;">
+            {% set options = [
+                    {'id': 1, 'name': {{ xar_translate('Tree (Side Block}') }}),
+                    {'id': 2, 'name': {{ xar_translate('Crumbtrail (Top Block}') }}),
+                    {'id': 3, 'name': {{ xar_translate('Prev/Next (Bottom Block}') }})
+                ] %}
+            {% set id = "layout" ~ blockid %}
+            {{ xar_data_input({type: "dropdown", name: "layout", id: id, options: options, value: layout}) }}
+         </span>
+    </div>
+
+    <div style="clear: both; padding-top: 10px;">
+        <span style="float: left; width: 20%; text-align: right;">
+          <label for="startmodule{{ blockid }}">Show categories</label>
+        </span>
+        <span style="float: right; width: 78%; text-align: left;">
+          {% set optgroup = 0 %}
+          <select name="startmodule" id="startmodule{{ blockid }}">
+            {% for i in range(0, modules|length - 1) %}
+                {% set optgroup = 1 %}
+                <optgroup label="Module: {{ modules[i] }}['label']">
+                    <xar:while condition="1">
+                        {% if startmodule == modules[i]['id'] %}
+                            <option value="{{ modules[i]['id'] }}" selected="selected">{{ modules[i]['name'] }}</option>
+                        {% else %}
+                            <option value="{{ modules[i]['id'] }}">{{ modules[i]['name'] }}</option>
+                        {% endif %}
+                        {% if optgroup %}
+                            <xar:break />
+                        {% endif %}
+                    </xar:while>
+                </optgroup>
+            {% endfor %}
+
+            </select>
+        </span>
+    </div>
+
+    <div style="clear: both; padding-top: 10px;">
+        <span style="float: left; width: 20%; text-align: right;">
+         <label for="showempty{{ blockid }}">Show empty categories</label>
+        </span>
+        <span style="float: right; width: 78%; text-align: left;">
+        {% if showempty %}
+            <input type="checkbox" name="showempty" id="showempty{{ blockid }}" value="1" checked="checked"/>
+        {% else %}
+            <input type="checkbox" name="showempty" id="showempty{{ blockid }}" value="1"/>
+        {% endif %}
+        </span>
+    </div>
+
+    <div style="clear: both; padding-top: 10px;">
+        <span style="float: left; width: 20%; text-align: right;">
+         <label for="dynamictitle{{ blockid }}">Dynamic title (linked to content)</label>
+        </span>
+        <span style="float: right; width: 78%; text-align: left;">
+        {% if dynamictitle %}
+            <input type="checkbox" name="dynamictitle" id="dynamictitle{{ blockid }}" value="1" checked="checked"/>
+        {% else %}
+            <input type="checkbox" name="dynamictitle" id="dynamictitle{{ blockid }}" value="1"/>
+        {% endif %}
+        </span>
+    </div>
+
+    <div style="clear: both; padding-top: 10px;">
+        <span style="float: left; width: 20%; text-align: right;">
+          <label for="showcatcount{{ blockid }}">Show count per category</label>
+        </span>
+        <span style="float: right; width: 78%; text-align: left;">
+            {% set options = [
+                    {'id': 0, 'name': {{ xar_translate('None') }}},
+                    {'id': 1, 'name': {{ xar_translate('Simple count') }}},
+                    {'id': 2, 'name': {{ xar_translate('Cascading count') }}}
+                ] %}
+            {% set id1 = "showcatcount" ~ blockid %}
+            {{ xar_data_input({type: "dropdown", name: "showcatcount", id: id1, options: options, value: showcatcount}) }}
+        </span>
+    </div>
+
+    <div style="clear: both; padding-top: 10px;">
+        <span style="float: left; width: 20%; text-align: right;">
+          <label for="showchildren{{ blockid }}">Show children</label>
+        </span>
+        <span style="float: right; width: 78%; text-align: left;">
+            {% set options = [
+                    {'id': 0, 'name': {{ xar_translate('None') }}},
+                    {'id': 1, 'name': {{ xar_translate('Direct children only') }}},
+                    {'id': 2, 'name': {{ xar_translate('All children') }}},
+                ] %}
+            {% set id2 = "showchildren" ~ blockid %}
+            {{ xar_data_input({type: "dropdown", name: "showchildren", id: id2, options: options, value: showchildren}) }}
+        </span>
+    </div>
+{% endblock %}

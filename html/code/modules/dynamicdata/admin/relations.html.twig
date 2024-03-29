@@ -1,0 +1,124 @@
+{# @dynamicdata/admin/relations.html.twig #}
+
+{% block relations %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+    	<div class="xar-mod-page-head">
+        {% if objectid %}
+            <h2>Utilities - Links for Object {{ object.label }}</h2>
+        {% elseif table %}
+            <h2>Utilities - Links for Table {{ table }}</h2>
+        {% elseif module_id %}
+            <h2>Utilities - Links for Module {{ module }}</h2>
+        {% else %}
+            <h2>Utilities - Links between Objects or Tables</h2>
+        {% endif %}
+        {{ include('@dynamicdata/includes/utility-menu.html.twig') }}
+       </div>{# <!--/xar-mod-page-head--> #}
+		<div class="xar-mod-page-body">
+        {% set authid = xar_coremethod('xarSec', 'genAuthKey') %}
+
+        <form method="get" action="{{ xar_baseurl() }}">
+            <fieldset>
+                <input type="hidden" name="module" value="dynamicdata"/>
+                <input type="hidden" name="type" value="admin"/>
+                <input type="hidden" name="func" value="relations"/>
+                <legend>Links between Objects</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="objectid" class="xar-form-label">Object:</label>
+                    </div>
+                    <div class="xar-col">
+                        <select name="objectid" id="objectid" onchange="javascript:submit();">
+                            <option value=""></option>
+                            {% for id, objectinfo in objects %}
+                                {% if objectid and objectid == id %}
+                                    <option value="{{ id }}" selected="selected">
+                                    {{ objectinfo['label'] }}</option>
+                                {% else %}
+                                    <option value="{{ id }}">{{ objectinfo['label'] }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        &#160;
+                        {% set label = 'Select' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        {% if objectid %}
+            {{ include('@dynamicdata/includes/link-objects.html.twig') }}
+        {% endif %}
+
+        <form method="get" action="{{ xar_baseurl() }}">
+            <fieldset>
+                <input type="hidden" name="module" value="dynamicdata"/>
+                <input type="hidden" name="type" value="admin"/>
+                <input type="hidden" name="func" value="relations"/>
+                <legend>Links between Tables</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="table" class="xar-form-label">Table:</label>
+                    </div>
+                    <div class="xar-col">
+                        <select name="table" id="table" onchange="javascript:submit();">
+                            <option value=""></option>
+                            {% for tblInfo in tables %}
+                                {% if table and table == tblInfo.getName() %}
+                                    <option value="{{ tblInfo.getName() }}" selected="selected">
+                                    {{ tblInfo.getName() }}</option>
+                                    {% else %}
+                                    <option value="{{ tblInfo.getName() }}">{{ tblInfo.getName() }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        &#160;
+                        {% set label = 'Select' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        {% if table %}
+            {{ include('@dynamicdata/includes/link-tables.html.twig') }}
+
+            {{ include('@dynamicdata/includes/link-foreignkeys.html.twig') }}
+        {% endif %}
+
+        {% if not objectid and not table and not module_id %}
+            {{ include('@dynamicdata/includes/link-mapping.html.twig') }}
+        {% endif %}
+
+{# <!-- TODO: re-examine module links
+
+        <form method="get" action="{{ xar_baseurl() }}">
+            <fieldset>
+                <input type="hidden" name="module" value="dynamicdata"/>
+                <input type="hidden" name="type" value="admin"/>
+                <input type="hidden" name="func" value="relations"/>
+                <legend>Links between Modules</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="module_id" class="xar-form-label">Module:</label>
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({type: "module", name: "module_id", value: module_id, firstline: " ", onchange: "javascript:submit();"}) }}
+                        &#160;
+                        {% set label = 'Select' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        {% if module_id %}
+            {{ include('@dynamicdata/includes/link-modules.html.twig') }}
+        {% endif %}
+
+--> #}
+	</div>{# <!--xar-mod-page-body--> #}
+    </div>{# <!--xar-mod-body--> #}
+{% endblock %}

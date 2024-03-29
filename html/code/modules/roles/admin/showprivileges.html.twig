@@ -1,0 +1,167 @@
+{# @roles/admin/showprivileges.html.twig #}
+
+{% block showprivileges %}
+{{ xar_style({scope: "module", file: "privileges"}) }}
+    {{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if itemtype == xarRoles..ROLES_USERTYPE %}
+            {% set pname = object.properties['uname'].getValue() %}
+        {% else %}
+            {% set pname = object.properties['name'].getValue() %}
+        {% endif %}
+        <h2>
+          Show privileges of {{ itemtypename }} '{{ pname }}':
+        </h2>
+        {% set id = roleid %}
+        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set activetab = request.2 %}
+        {% set xmldata = 'showusers' %}
+        {% set urlargs = {'id': id, 'reload': 'reload'} %}
+        {{ include('@base/includes/admin-menu-skel.html.twig') }}
+        {% if parents|length != 0 %}
+                <ul class="xar-tabs xar-alt xar-norm-outline">
+                    {% set title = 'These are the groups that {{ pname }} is a member of' %}
+                    {% set label = 'Parent Groups' %}
+                    <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                    {% set prevgroup = "" %}
+                    {% for i in range(0, parents|length - 1) %}
+                        {% if prevgroup != parents[i]['parentname'] %}
+                            <li class="xar-tab">
+                                {% set label = 'Show this group' %}
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                    {{ parents[i].parentname }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% set prevgroup = parents[i].parentname %}
+                    {% endfor %}
+                </ul>
+        {% endif %}
+        {#  TODO set the active tab here #}
+        {# <!-- Show the general tab list for roles --> #}
+        <fieldset>
+          <legend>
+                Privileges inherited by {{ xar_prep_display(pname) }}:
+          </legend>
+            {% if inherited|length == 0 %}
+                <p>No privileges inherited.</p>
+            {% else %}
+                <div class="xar-fullwidth xar-overflow-auto xar-area-large">
+                    <table class="xar-table xar-fullwidth">
+                        <tr>
+                            <th>Name</th>
+                            {% if xar_modvar('privileges', 'showrealms') %}
+                                <th>Realm</th>
+                            {% endif %}
+                            <th>Module</th>
+                            <th>Component</th>
+                            <th>Instance</th>
+                            <th>Level</th>
+                            <th>Override</th>
+                            <th>From Group</th>
+                        </tr>
+                        {% for loop_key1, loop_item1 in inherited %}{% set loop_index1 = loop.index %}
+                            <tr>
+                                <td>
+                                    <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': loop_item1['privid']}) }}">
+                                        {{ loop_item1.name }}
+                                    </a>
+                                </td>
+                                {% if xar_modvar('privileges', 'showrealms') %}
+                                    <td>
+                                        {{ loop_item1.realm }}
+                                    </td>
+                                {% endif %}
+                                <td>{{ loop_item1.module }}</td>
+                                <td>{{ loop_item1.component }}</td>
+                                <td>{{ loop_item1.instance }}</td>
+                                <td class="xar-nowrap">{{ loop_item1.level }}</td>
+                                <td>
+                                    {% if loop_item1['status'] == 1 %}Full 
+                                    {% elseif loop_item1['status'] == 2 %}Partial 
+                                    {% else %}None{% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ groupurl }}&amp;id={{ loop_item1['groupid'] }}">
+                                        {{ loop_item1.groupname }}
+                                    </a>
+                                </td>
+                            </tr>
+                        </xar:loop>
+                    </table>
+                </div>
+            {% endif %}
+        </fieldset>
+        <fieldset>
+            <legend>Privileges assigned to {{ xar_prep_display(pname) }}:</legend>
+            {% if privileges|length == 0 %}
+                <p>No privileges assigned.</p>
+            {% else %}
+                <p>Note: only relevant privileges are shown.</p>
+                <table class="xar-table xar-fullwidth">
+                    <tr>
+                        <th>Name</th>
+                        {% if xar_modvar('privileges', 'showrealms') %}
+                            <th>Realm</th>
+                        {% endif %}
+                        <th>Module</th>
+                        <th>Component</th>
+                        <th>Instance</th>
+                        <th>Level</th>
+                        <th>Override</th>
+                        <th>&#160;</th>
+                    </tr>
+                    <xar:loop name="$privileges">
+                        <tr>
+                            <td>
+                                <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': loop_item1['privid']}) }}">
+                                    {{ loop_item1.name }}
+                                </a>
+                            </td>
+                            {% if xar_modvar('privileges', 'showrealms') %}
+                                <td class="xar-align-center">
+                                    {{ loop_item1.realm }}
+                                </td>
+                            {% endif %}
+                            <td>{{ loop_item1.module }}</td>
+                            <td>{{ loop_item1.component }}</td>
+                            <td>{{ loop_item1.instance }}</td>
+                            <td class="xar-nowrap">{{ loop_item1.level }}</td>
+                            <td>
+                                {% if loop_item1['status'] == 1 %}Full 
+                                {% elseif loop_item1['status'] == 2 %}Partial 
+                                {% else %}None{% endif %}
+                            </td>
+                            <td class="xar-align-center">
+                                {% if loop_item1['privid'] in directassigned %}
+                                {% if not loop_item1['frozen'] %}
+                                <a href="{{ removeurl }}&amp;privid={{ loop_item1['privid'] }}"
+                                title="Remove this Privilege assignment">Remove</a>
+                                {% else %}Cannot Be Removed{% endif %}
+                                {% else %}Not Directly Assigned{% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+          <form action="{{ xar_moduleurl('roles','admin','addprivilege') }}" method="post" enctype="application/x-www-form-urlencoded">
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Select the Privilege to add' %}
+                        <label for="privid" title="{{ label }}" class="xar-form-label">
+                            Assign a Privilege to {{ itemtypename }} '{{ xar_prep_display(pname) }}'
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set options = xar_coremethod('xarPrivileges', 'getprivileges') %}
+                        {{ xar_data_input({type: "dropdown", name: "privid", options: options}) }}&#160;
+                        <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                        <input type="hidden" name="roleid" id="roleid" value="{{ roleid }}"/>
+                        {% set label = 'Add Privilege' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+{% endblock %}

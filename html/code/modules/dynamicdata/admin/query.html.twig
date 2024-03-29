@@ -1,0 +1,373 @@
+{# @dynamicdata/admin/query.html.twig #}
+
+{% block query %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Utilities : Query {{ label }}</h2>
+        {{ include('@dynamicdata/includes/utility-menu.html.twig') }}
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','query') }}">
+            <table border="0" cellpadding="5" class="xar-table xar-align-left xar-fullwidth">
+                <tr>
+                    <td>
+                        <label for="itemid">Object:</label>
+                    </td>
+                    <td>
+                        <input type="hidden" name="olditemid" value="{{ olditemid }}"/>
+                        <select name="itemid" id="itemid" onchange="submit()">
+                            <option value=""></option>
+                            {% for item in objects %}
+                                {% if itemid and itemid == item['objectid'] %}
+
+                                    <option value="{{ item['objectid'] }}" selected="selected">
+                                    {{ item['label'] }}</option>
+                                {% else %}
+                                    <option value="{{ item['objectid'] }}">{{ item['label'] }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <label for="query">Query:</label>
+                    </td>
+                    <td>
+                        <input type="hidden" name="oldquery" value="{{ oldquery }}"/>
+                        <select name="query" id="query" onchange="submit()">
+                            <option value=""></option>
+                            {% for item in queries %}
+                                {% if query and query == item %}
+                                    <option value="{{ item }}" selected="selected">{{ item }}</option>
+                                {% else %}
+                                    <option value="{{ item }}">{{ item }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <label for="numitems">Items:</label>
+                    </td>
+                    <td>
+                        <input type="text" name="numitems" id="numitems" value="{{ numitems }}" size="5"/>
+                    </td>
+                    <td>
+                        <label for="groupby">Group By:</label>
+                    </td>
+                    <td>
+                        {% set checked = groupby %}
+                        {{ xar_data_input({type: "checkbox", name: "groupby", id: "groupby", onchange: "submit()", checked: checked}) }}
+                    </td>
+                </tr>
+                {% if jointables %}
+                    <tr>
+                        <td>
+                            <label for="join">Join:</label>
+                        </td>
+                        <td>
+                            <input type="hidden" name="oldjoin" value="{{ oldjoin }}"/>
+                            <select name="join" id="join" onchange="submit()">
+                                <option value=""></option>
+                                {% for item in jointables %}
+                                    {% if join and join == item %}
+                                        <option value="{{ item }}" selected="selected">
+                                        {{ item }}</option>
+                                    {% else %}
+                                        <option value="{{ item }}">{{ item }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td colspan="6">&#160;</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td>
+                        <label for="table">Table:</label>
+                    </td>
+                    <td>
+                        <input type="hidden" name="oldtable" value="{{ oldtable }}"/>
+                        <select name="table" id="table" onchange="submit()">
+                            <option value=""></option>
+                            {% for item in tables %}
+                                {% if table and table == item %}
+                                    <option value="{{ item }}" selected="selected">{{ item }}</option>
+                                {% else %}
+                                    <option value="{{ item }}">{{ item }}</option>
+                                {% endif %}
+                            {% endfor %}
+                            {% if table and strstr(table, '.') %}
+                                <option value="{{ table }}" selected="selected">{{ table }}</option>
+                            {% endif %}
+                        </select>
+                    </td>
+                    <td>
+                        <label for="newquery">Save As:</label>
+                    </td>
+                    <td>
+                        <input type="text" name="newquery" id="newquery" value="{{ newquery }}"
+                        size="20"/>
+                    </td>
+                    <td>
+                        <label for="startnum">Start:</label>
+                    </td>
+                    <td>
+                        <input type="text" name="startnum" id="startnum" value="{{ startnum }}"
+                        size="5"/>
+                    </td>
+                    <td>
+                        <label for="cache">Cache:</label>
+                    </td>
+                    <td>
+                        <input type="text" name="cache" id="cache" value="{{ cache }}" size="3"/>
+                    </td>
+                </tr>
+            </table>
+            {# <!--
+            <table class="xar-table" border="0" cellpadding="5">
+                {% if properties %}
+                    <tr>
+                        <td>
+                        Properties:
+                        </td>
+                        {% for name in properties|keys %}
+                            <td>
+                                {% if name == '_extra_' %}
+                                    <select name="field[$name]">
+                                        <option value="">
+                                        Select:
+                                        </option>
+                                        {% for name2 in properties|keys %}
+                                            {% if field[name] and field[name] == name2 %}
+                                                <option value="{{ name2 }}" selected="selected">
+                                                    {{ xar_data_label({property: properties[name2]}) }}
+                                                </option>
+                                            {% else %}
+                                                <option value="{{ name2 }}">
+                                                    {{ xar_data_label({property: properties[name2]}) }}
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    {% elseif field[name] %}
+                                        <input type="checkbox" name="field[{{ name }}]" id="field_{{ name }}" value="1" checked="checked"/>
+                                        <label for="field_{{ name }}">
+                                            {{ xar_data_label({property: properties[name]}) }}
+                                        </label>
+                                    {% else %}
+                                        <input type="checkbox" name="field[{{ name }}]" id="field_{{ name }}" value="1"/>
+                                    <label for="field_{{ name }}">
+                                        {{ xar_data_label({property: properties[name]}) }}
+                                    </label>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    {% if groupby %}
+                        <tr>
+                            <td>
+                            Operation:
+                            </td>
+                            {% for name in properties|keys %}
+                                <td>
+                                    <select name="operation[{{ name }}]" id="operation_{{ name }}">
+                                        <option value=""></option>
+                                        {% for option in operationoptions %}
+                                            {% if operation[name] and operation[name] == option['id'] %}
+                                                <option value="{{ option['id'] }}" selected="selected">{{ option['name'] }}</option>
+                                                {% else %}
+                                                <option value="{{ option['id'] }}">{{ option['name'] }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <label for="operation_{{ name }}"/>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td>
+                        Conditions:
+                        </td>
+                        {% for name in properties|keys %}
+                            <td>
+                                <select name="where[{{ name }}]" id="where_{{ name }}">
+                                    <option value=""></option>
+                                    {% for option in whereoptions %}
+                                        {% if where[name] and where[name] == option['id'] %}
+                                            <option value="{{ option['id'] }}" selected="selected">{{ option['name'] }}</option>
+                                            {% else %}
+                                            <option value="{{ option['id'] }}">{{ option['name'] }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <label for="where_{{ name }}"/>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>&#160;</td>
+                        {% for name in properties|keys %}
+                            <td>
+                                {% if value[name] is not null %}
+                                    <input name="value[{{ name }}]" id="value_{{ name }}" value="{{ value[name] }}" type="text" size="13"/>
+                                {% else %}
+                                    <input name="value[{{ name }}]" id="value_{{ name }}" value="" type="text" size="13"/>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>
+                        Sort Order:
+                        </td>
+                        {% for name in properties|keys %}
+                            <td>
+                                <select name="sort[{{ name }}]" id="sort_{{ name }}">
+                                    <option value=""></option>
+                                    {% for option in sortoptions %}
+                                        {% if sort[name] and sort[name] == option['id'] %}
+                                            <option value="{{ option['id'] }}" selected="selected">{{ option['name'] }}</option>
+                                        {% else %}
+                                            <option value="{{ option['id'] }}">{{ option['name'] }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td>&#160;</td>
+                    <td colspan="{{ numfields }}">
+                        {{- xar_button({type: "submit", label: submit}) -}}
+                    </td>
+                </tr>
+            </table>
+     --> #}
+            {#  vertical layout of basically the same table as above (as requested by
+            johnny, implemented by andyv) NOTE: if someone ever need the horisontal layout, then
+            please implement a GUI switch #}
+            <table summary="Query Options" class="xar-table xar-align-left xar-fullwidth">
+                <tr>
+                    <th>Property:</th>
+                    {% if groupby %}
+                        <th>Operation:</th>
+                    {% endif %}
+                    <th>Condition:</th>
+                    <th>Value:</th>
+                    <th>Sort Order:</th>
+                </tr>
+                {% if properties %}
+                    {% for name in properties|keys %}
+                        <tr>
+                            <td>
+                                {% if name == '_extra_' %}
+                                    <select name="field[$name]">
+                                        <option value="">Select:</option>
+                                        {% for name2 in properties|keys %}
+                                            {% if field[name] and field[name] == name2 %}
+                                                <option value="{{ name2 }}" selected="selected">
+                                                    {{ properties[name2].label }}
+                                                </option>
+                                            {% else %}
+                                                <option value="{{ name2 }}">
+                                                    {{ properties[name2].label }}
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                {% elseif field[name] %}
+                                    <input type="checkbox" name="field[{{ name }}]" id="field_{{ name }}" value="1" checked="checked"/>
+                                    <label for="field_{{ name }}">
+                                        {{ properties[name].label }}
+                                    </label>
+                                {% else %}
+                                    <input type="checkbox" name="field[{{ name }}]" id="field_{{ name }}" value="1"/>
+                                    <label for="field_{{ name }}">
+                                        {{ properties[name].label }}
+                                    </label>
+                                {% endif %}
+                            </td>
+                            {% if groupby %}
+                                <td>
+                                    <select name="operation[{{ name }}]" id="operation_{{ name }}">
+                                        <option value=""></option>
+                                        {% for option in operationoptions %}
+                                            {% if operation[name] and operation[name] == option['id'] %}
+                                                <option value="{{ option['id'] }}" selected="selected">{{ option['name'] }}</option>
+                                            {% else %}
+                                                <option value="{{ option['id'] }}">
+                                                {{ option['name'] }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <label for="operation_{{ name }}"/>
+                                </td>
+                            {% endif %}
+                            <td>
+                                <select name="where[{{ name }}]" id="where_{{ name }}">
+                                    <option value=""></option>
+                                    {% for option in whereoptions %}
+                                        {% if where[name] and where[name] == option['id'] %}
+                                            <option value="{{ option['id'] }}" selected="selected">
+                                                {{ option['name'] }}
+                                            </option>
+                                        {% else %}
+                                            <option value="{{ option['id'] }}">
+                                                {{ option['name'] }}
+                                            </option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <label for="where_{{ name }}"/>
+                            </td>
+                            <td>
+                                {% if value[name] is not null %}
+                                    <input name="value[{{ name }}]" id="value_{{ name }}" value="{{ value[name] }}" type="text" size="13"/>
+                                    {% else %}
+                                    <input name="value[{{ name }}]" id="value_{{ name }}" value="" type="text" size="13"/>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <select name="sort[{{ name }}]" id="sort_{{ name }}">
+                                    <option value=""></option>
+                                    {% for option in sortoptions %}
+                                        {% if sort[name] and sort[name] == option['id'] %}
+                                            <option value="{{ option['id'] }}" selected="selected">
+                                                {{ option['name'] }}
+                                            </option>
+                                        {% else %}
+                                            <option value="{{ option['id'] }}">
+                                                {{ option['name'] }}
+                                            </option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                <tr>
+                    <td colspan="4">
+                        {% set label = 'Submit' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </td>
+                </tr>
+            </table>
+        </form>
+        {% if viewlink %}
+            <p>
+                <a href="{{ viewlink }}">View {{ label }}</a>
+            </p>
+        {% endif %}
+        {% if mylist is not null %}
+            {% if groupby %}
+                {# <!-- xar:data-view object="$mylist" layout="list"/--> #}
+                {{ xar_data_view({object: mylist}) }}
+            {% else %}
+                {{ xar_data_view({object: mylist}) }}
+            {% endif %}
+        {% endif %}
+        {% if sample %}
+            <p>Sample Tag : {{ sample }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

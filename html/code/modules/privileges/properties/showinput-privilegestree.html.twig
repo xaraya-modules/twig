@@ -1,0 +1,77 @@
+{# @privileges/properties/showinput-privilegestree.html.twig #}
+
+{% block showinput_privilegestree %}
+{{ xar_style({scope: "theme", file: "tree"}) }}
+    {{ xar_javascript({scope: "module", module: "privileges", filename: "xarTree.js"}) }}
+    <script type="text/javascript">
+        {# <!--
+        var oldOnLoadFunction = (window.onload) ? window.onload : new Function("","return true;");
+        function doOnLoad(){
+            oldOnLoadFunction();
+            xarTree_init();
+        }
+        var oldOnUnloadFunction = (window.onunload) ? window.onunload : new Function("","return true;");
+        function doOnUnload(){
+            oldOnUnloadFunction();
+            xarTree_init();
+        }
+    // --> #}
+    </script>
+    {% if trees %}
+        {% set deleteicon =  xar_image({scope: "theme", file: "icons/delete.png", render: "false"})  %}
+        {% set groupsicon =  xar_image({scope: "theme", file: "icons/system-user-groups.png", render: "false"})  %}
+        {% set removeicon =  xar_image({scope: "theme", file: "icons/remove.png", render: "false"})  %}
+        {% set blankicon =  xar_image({scope: "theme", file: "icons/blank.png", render: "false"})  %}
+        
+        {% for tree in trees %}
+            <ul class="xar-tree">
+                {% for index, node in tree %}
+                    {% set id = node-&gt;id %}
+                    {% set name = node-&gt;name %}
+                    {% set description = node-&gt;description %}
+                    {% set parentid = node-&gt;parent %}
+                    {% set level = node-&gt;getLevel() %}
+                    <li class="leaf">
+                        <div class="leaf-actions">
+                            {% set label1 = 'Delete' %}
+                            <xar:sec mask="DeletePrivilege" catch="false" component="Privileges" instance="{{ name }}">
+                                {% set dellink = xar_moduleurl('privileges','admin','deleteprivilege',{'id': id}) %}
+                                {% set label = 'Delete this privilege' %}
+                                <a href="{{ dellink }}" title="{{ label }}">
+                                    <img src="{{ deleteicon }}" alt="{{ label1 }}"/>
+                                </a>
+                            {% else %}
+                                <img src="{{ blankicon }}" alt="{{ label1 }}"/>
+                            {% endif %}
+                            &#160;
+                            {% set userslink = xar_moduleurl('privileges','admin','viewroles',{'id': id}) %}
+                            {% set label = 'Show the Groups/Users this Privilege is assigned to' %}
+                            <a href="{{ userslink }}" title="{{ label }}">
+                                {% set label1 = 'Groups' %}
+                                <img src="{{ groupsicon }}" alt="{{ label1 }}"/>
+                            </a>
+                            &#160;
+                            {% set label1 = 'Remove' %}
+                            {% if parentid != 0 %}
+                                {% set removelink = xar_moduleurl('privileges','admin','removebranch',{'id': id}) %}
+                                {% set label = 'Remove this privilege from its parent' %}
+                                <a href="{{ removelink }}" title="{{ label }}">
+                                    <img src="{{ removeicon }}" alt="{{ label1 }}"/>
+                                </a>
+                            {% else %}
+                                <img src="{{ blankicon }}" alt="{{ label1 }}"/>
+                            {% endif %}
+                        </div>
+                        {% set indent = level * 1.5 %}
+                        <div class="leaf-body" style="padding-left: {{ indent }}em;">
+                            {% set modlink = xar_moduleurl('privileges','admin','modifyprivilege',{'id': id}) %}
+                            <a href="{{ modlink }}" title="{{ description }}">
+                                {{ name }}
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{# @roles/properties/showoutput-yahoo.html.twig #}
+
+{% block showoutput_yahoo %}
+{% set yahoo = 'Yahoo Messenger' %}
+    {% if link %}
+        <a href="{{ link }}">
+            <img src="{{ image }}" alt="{{ yahoo }}" width="18" height="18"/>
+        </a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,90 @@
+{# @roles/blocks/online.html.twig #}
+
+{% block online %}
+{{ xar_style({scope: "block", file: "onlineblock"}) }}
+    {# <!--
+        the above stylesheet has been included more like example
+        how to include a stylesheet in a block rather than a pure necessity here.
+        Tables really shouldn't be used for layout, only for tablular data,
+        but since it's used it could be put right via css
+        (comment by andyv)
+    --> #}
+     {% if activeusers and showusers %}
+        <table class="xar-table xar-fullwidth xar-roles-nicetable">
+            <tr>
+                <td class="xar-threequarterswidth">Users</td>
+                <td>&#160;</td>
+                <td colspan="2">
+                    {% if xar_coremethod('xarMod', 'isAvailable', ['messages']) %}
+                        Messages 
+                    {% else %}&#160;{% endif %}
+                </td>
+            </tr>
+            {% if xar_coremethod('xarMod', 'isAvailable', ['messages']) %}
+                <tr>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                    <td class="xar-align-center">
+                        {% set label = 'Unread messages' %}
+                        {{- xar_image({scope: "module", module: "roles", file: "ob_mail_unreaded.gif", class: "xar-icon", alt: label}) -}}
+                    </td>
+                    <td class="xar-align-center">
+                        {% set label = 'Total messages' %}
+                        {{- xar_image({scope: "module", module: "roles", file: "ob_mail_total.gif", class: "xar-icon", alt: label}) -}}
+                    </td>
+                </tr>
+            {% endif %}
+            {% for dd in activeusers %}
+                <tr>
+                    <td>
+                        {% if dd['userurl'] %}
+                            {{- xar_image({scope: "module", module: "roles", file: "ob_user.gif", class: "xar-icon"}) -}}
+                        {% else %}
+                            {{- xar_image({scope: "module", module: "roles", file: "ob_user_other.gif", class: "xar-icon"}) -}}
+                        {% endif %}
+                        <a href="{{ dd['userurl'] }}">{{ xar_prep_display(dd['name']) }}</a>
+                    </td>
+                    <td>&#160;</td>
+                    <td class="xar-align-center">
+                        <a href="{{ dd['messagesurl'] }}">{{ dd['unread'] }}</a>
+                    </td>
+                    <td class="xar-align-center">
+                        <a href="{{ dd['messagesurl'] }}">{{ dd['total'] }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    {% if showusertotal or showanontotal %}
+        <table class="xar-table xar-fullwidth xar-roles-nicetable">
+            {% if showusertotal %}
+                <tr>
+                    <td>
+                        {{- xar_image({scope: "module", module: "roles", file: "ob_users.gif", class: "xar-icon"}) -}}
+                        Total users
+                    </td>
+                    <td></td>
+                    <td class="xar-align-center" colspan="2">{{ numusers }}</td>
+                </tr>
+            {% endif %}
+            {% if showanontotal %}
+                <tr>
+                    <td>
+                        {{- xar_image({scope: "module", module: "roles", file: "ob_users_an.gif", class: "xar-icon"}) -}}
+                        Total guests
+                    </td>
+                    <td></td>
+                    <td class="xar-align-center" colspan="2">{{ numguests }}</td>
+                </tr>
+            {% endif %}
+        </table>
+    {% endif %}
+    {% if lastuser is not null and showlastuser %}
+         <p>
+             Welcome to our latest member,
+             <a href="{{ xar_moduleurl('roles','user','display',{'id': lastuser['id']}) }}">
+                 {{ xar_prep_display(lastuser['name']) }}
+             </a>
+         </p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{# @themes/additionalstyles.html.twig #}
+
+{% extends '@themes/base.html.twig' %}
+
+{% block modulespace %}
+{% if styles is not null and styles is iterable %}
+    {% for scope, style in styles %}
+    {% if comments %}
+    {#   the following styles were supplied from component {{ scope }}  #}{% endif %}
+    {% for method, attributes in style %}
+    {% if comments %}
+    {#   {{ method }} style  #}{% endif %}
+    {% for loop_key1, loop_item1 in attributes %}{% set loop_index1 = loop.index %}
+    {% if method == 'link' %}
+    {% if loop_item1['title'] != '' %}
+    <link rel="{{ loop_item1['rel'] }}" type="{{ loop_item1['type'] }}" href="{{ loop_item1['url'] }}" media="{{ loop_item1['media'] }}" title="{{ loop_item1['title'] }}"/>
+    {% else %}
+    {% if loop_item1['condition'] != '' %}
+    {#  iecondition="{{ loop_item1.condition }}" <link rel="{{ loop_item1['rel'] }}" type="{{ loop_item1['type'] }}" href="{{ loop_item1['url'] }}" media="{{ loop_item1['media'] }}"/> #}
+    {% else %}
+    <link rel="{{ loop_item1['rel'] }}" type="{{ loop_item1['type'] }}" href="{{ loop_item1['url'] }}" media="{{ loop_item1['media'] }}"/>
+    {% endif %}
+    {% endif %}
+    {% elseif method == 'import' %}
+    {% if loop_item1['condition'] != '' %}
+    {#  iecondition="{{ loop_item1['condition'] }}" <style type="{{ loop_item1['type'] }}" media="{{ loop_item1['media'] }}">@import url({{ loop_item1['url'] }}) {{ loop_item1['media'] }};</style> #}
+    {% else %}
+    <style type="{{ loop_item1['type'] }}" media="{{ loop_item1['media'] }}">@import url({{ loop_item1['url'] }}); {{ loop_item1['media'] }};</style>
+    {% endif %}
+    {% elseif method == 'embed' %}
+    {% if loop_item1['condition'] != '' %}
+    {#  iecondition="{{ loop_item1['condition'] }}" <style type="{{ loop_item1['type'] }}" media="{{ loop_item1['media'] }}">{{ loop_item1['source'] }}</style> #}
+    {% else %}
+    <style type="{{ loop_item1['type'] }}" media="{{ loop_item1['media'] }}">{{ loop_item1['source'] }}</style>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{# @modules/admin/prefs.html.twig #}
+
+{% block prefs %}
+{{ include('@modules/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Preferences</h2>Modules List 
+        <br />Style: 
+        <br />View number of modules per page: 
+        <br />Restore Defaults 
+        <br />Most preferences for this module have default values. Changing your preferences does not
+        affect other users [admins] e.g., people who use different login name than your own. 
+        <br />Your preferences can be reset to defaults from this page, so that you can, for instance,
+        see the same startup page as a new admin.. 
+        <br />
+        <form method="post" action="xar-modurl-modules-admin-pref;">
+            <div class="xar-form-actions">
+                {% set label = 'Restore' %}
+                {{- xar_button({type: "submit", label: label, name: "restore"}) -}}
+                Status: your current preferences are the same as defaults
+            </div>
+        </form>
+    </div>
+{% endblock %}

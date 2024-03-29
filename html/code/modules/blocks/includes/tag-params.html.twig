@@ -1,0 +1,60 @@
+{# @blocks/includes/tag-params.html.twig #}
+
+{% block tag_params %}
+<fieldset>
+        <legend>Block Tag Parameters</legend>
+        {# <!-- Permitted xar:block tag parameters for this block type --> #}
+        <table class="xar-table xar-fullwidth">
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Default Value</th>
+                    <th>Data Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# <!-- Standard xar:block tag attributes --> #}
+                <tr>
+                    <td>title</td>
+                    <td>""</td>
+                    <td>string</td>
+                </tr>
+                <tr>
+                    <td>template</td>
+                    <td>""</td>
+                    <td>string</td>
+                </tr>
+                <tr>
+                    <td>nocache</td>
+                    <td>{{ block['type_info']['nocache'] }}</td>
+                    <td>boolean</td>
+                </tr>
+                <tr>
+                    <td>usershared</td>
+                    <td>{{ block['type_info']['usershared'] }}</td>
+                    <td>integer</td>
+                </tr>
+                <tr>
+                    <td>pageshared</td>
+                    <td>{{ block['type_info']['pageshared'] }}</td>
+                    <td>boolean</td>
+                </tr>
+                <tr>
+                    <td>cacheexpire</td>
+                    <td>{{ block['type_info']['cacheexpire'] }}</td>
+                    <td>integer</td>
+                </tr>
+                {# <!-- Block type specific xar:block tag attributes --> #}
+                {% if block_params %}
+                    {% for param in block_params %}
+                        <tr>
+                            <td>{{ param['attribute'] }}</td>
+                            <td>{{ param['default'] }}</td>
+                            <td>{{ param['datatype'] }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </fieldset>
+{% endblock %}

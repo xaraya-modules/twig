@@ -1,0 +1,229 @@
+{# @roles/objects/showform-usermenu.html.twig #}
+
+{% block showform_usermenu %}
+{# <!-- This is the generic form for any modules dd user_settings object. --> #}
+    {% if not layout %}
+        {% set layout = 'default' %}
+    {% endif %}
+    {% if layout == 'default' %}
+        {# <!--
+            This is the default layout, used when a module doesn't provide it's own showform-usermenu template
+        --> #}
+        <fieldset>
+            <legend>{{ object.label }}</legend>
+            {% for name, property in properties %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {{ xar_data_label({property: properties[name], for: "id"}) }}
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({property: properties[name]}) }}
+                    </div>
+                </div>
+            {% endfor %}
+        </fieldset>
+    {% elseif layout == 'nolabels' %}
+        {% for name, property in properties %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    {{ xar_data_input({property: properties[name]}) }}
+                </div>
+            </div>
+        {% endfor %}
+    {% elseif layout == 'roles_user_settings' %}
+        {# <!--
+            This is the layout used to display the form that users see for the roles_user_settings object
+        --> #}
+        <h2>Edit Settings</h2>
+        {% set settings = '|split(')) %}
+        <fieldset>
+            <legend>{{ object.label }}</legend>
+            {% set optionsactive = false %}
+            
+            {% if 'userhome' in settings and (bool)xar_modvar('roles', 'allowuserhomeedit') == true %}
+                {% set optionsactive = true %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {{ xar_data_label({property: properties['userhome'], for: "id"}) }}
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({property: properties['userhome']}) }}
+                        {% if (bool)xar_modvar('roles', 'loginredirect') %}&#160;
+                            You will be redirected to your homepage whenever you log in
+                        {% endif %}
+                    </div>
+               </div>
+            {% endif %}
+            
+            {% if 'usertimezone' in settings %}
+                {% set optionsactive = true %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {{ xar_data_label({property: properties['usertimezone'], for: "id"}) }}
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({property: properties['usertimezone']}) }}
+                    </div>
+                </div>
+            {% endif %}
+            
+            {% if (bool)xar_modvar('roles', 'allowemail') == true %}
+                {% set optionsactive = true %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Allow users to send you emails?' %}
+                        <label for="{{ properties['allowemail'].id }}" title="{{ label }}">
+                            Allow other users to send you an email via a form?
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({property: properties['allowemail']}) }}
+                    </div>
+                </div>
+                <p class="xar-col dummy">
+                    Note your email address is never disclosed or displayed in this process.
+                </p>
+            {% endif %}
+            
+            {% if 'useremailformat' in settings %}
+                {% set optionsactive = true %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {{ xar_data_label({property: properties['useremailformat'], for: "id"}) }}
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({property: properties['useremailformat']}) }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if not optionsactive %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        No user options are active
+                    </div>
+                </div>
+            {% endif %}
+        </fieldset>
+    {% elseif layout == 'admin' %}
+        {# <!--
+            This is the layout used to display the form to admins for the roles_user_settings object
+        --> #}
+        {% set settings = '|split(')) %}
+        <fieldset>
+            <legend>Member Options</legend>
+            <div class="xar-row">
+                <div class="xar-col">
+                    {{ xar_data_label({property: properties['usereditaccount'], for: "id"}) }}
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({property: properties['usereditaccount']}) }}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    {{ xar_data_label({property: properties['allowemail'], for: "id"}) }}
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({property: properties['allowemail']}) }}&#160;
+                    Allows members to send emails via a form to other users. Users must switch this option on in their own account.
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    {{ xar_data_label({property: properties['requirevalidation'], for: "id"}) }}
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({property: properties['requirevalidation']}) }}
+                </div>
+            </div>    
+        </fieldset>
+        <fieldset>
+            <legend>Members List Options</legend>
+            <div class="xar-row">
+                <div class="xar-col">
+                    {{ xar_data_label({property: properties['displayrolelist'], for: "id"}) }}
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({property: properties['displayrolelist']}) }}&#160;
+                    This enables access to the members list for everyone. Roles administrators can always access this list.
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    {{ xar_data_label({property: properties['searchbyemail'], for: "id"}) }}
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({property: properties['searchbyemail']}) }}&#160;
+                    Caution: this may reveal enough information to compromise a user's login.
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>User Home Page Options</legend>
+            {% if 'userhome' in settings %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {{ xar_data_label({property: properties['allowuserhomeedit'], for: "id"}) }}
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({property: properties['allowuserhomeedit']}) }}&#160;
+                        Allow users to set their homepage in their user settings.
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {{ xar_data_label({property: properties['allowexternalurl'], for: "id"}) }}
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({property: properties['allowexternalurl']}) }}&#160;
+                        Allow users to set their homepage to an external url.
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {{ xar_data_label({property: properties['loginredirect'], for: "id"}) }}
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({property: properties['loginredirect']}) }}&#160;
+                        Automatically redirect users to their home page when they log in.
+                    </div>
+                </div>
+            {% else %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        Allow users to set a home page in their user settings.
+                        <br />
+                        To activate click on the User Home Page checkbox <a href="{{ xar_moduleurl('roles','admin','modifyconfig',{'tab': 'duvs'}) }}">here</a>
+                    </div>
+                </div>
+            {% endif %}
+        </fieldset>
+        <fieldset>
+            <legend>Primary Parent Option</legend>
+            {% if 'primaryparent' in settings %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {{ xar_data_label({property: properties['primaryparent'], for: "id"}) }}
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({property: properties['primaryparent']}) }}
+                    </div>
+                </div>
+                If this group is a parent of the current user, then it takes precedence when inheriting. This is used mainly for determining the user's home page.
+            {% else %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        Defines a parent group for the current uswer that takes precedence over other groups.
+                        <br />
+                        To activate click on the Primary Parent checkbox <a href="{{ xar_moduleurl('roles','admin','modifyconfig',{'tab': 'duvs'}) }}">here</a>
+                    </div>
+                </div>
+            {% endif %}
+        </fieldset>
+
+    {% else %}
+        {# <!-- You can also specify your own layout here or in a separate template, e.g. if you want to handle individual fields differently for a particular module usermenu --> #}
+        {{ include('@' ~ tplmodule ~ '/includes/form-' ~ layout ~ '.html.twig') }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,73 @@
+{# @base/includes/blocks-menu-menulinks.html.twig #}
+
+{% block blocks_menu_menulinks %}
+{% if menulinks %}
+    {# <!-- This template is called recursively, so we keep track of how many levels deep we are --> #}
+    {% if not level %}{% set level = 1 %}{% endif %}
+    {# <!-- Optional $maxlevels) param so we know when to stop, 0 = all levels, default --> #}
+    {% if not maxlevels %}{% set maxlevels = 0 %}{% endif %}
+    {# <!-- Calling function should have supplied a unique menuid (cfr. base menu/adminmenu block templates --> #}
+    {% if not menuid %}{% set menuid = 'menu' %}{% endif %}
+    {# <!-- Keep track of the current marker, so we can pass it through to sublinks later --> #}
+    {% set linkmarker = marker ? marker : '' %}
+    {% if level == 1 %}
+        {# <!-- set classes for first level (parent) menu-item(s) --> #}
+        {% set itemclass = 'xar-menu-item' %}
+        {% set activeclass = 'xar-menu-item-current' %}
+        {# <!-- string to append to active link id --> #}
+        {% set activeid = 'activeitem' %}
+        {# <!-- don't show the marker in these links --> #}
+        {% set marker = '' %}
+        {# <!-- Parent links are always active --> #}
+        {% set parentactive = 1 %}
+    {% else %}
+        {# <!-- set classes for subsequent level (child) menu-subitem(s) --> #}
+        {% set itemclass = 'xar-menu-subitem' %}
+        {% set activeclass = 'xar-menu-subitem-current' %}
+        {# <!-- string to append to active link id --> #}
+        {% set activeid = 'activesubitem' %}
+    {% endif %}
+    <ul class="{{ itemclass }}">
+        {# <!-- loop through the menulinks for the current level --> #}
+        {% for linkid, link in menulinks %}
+            {# <!-- set a unique id for each link in this menu at this level --> #}
+            {% set linkkey = menuid ~ '_' ~ level ~ '_' ~ linkid %}
+            {# <!-- set the list item container class --> #}
+            {% set linkclass = link['isactive']  ? activeclass : itemclass %}
+            {# <!-- Set the link id, using linkkey and appending activeid if the link is active --> #}
+            {% set linkid = link['isactive']? linkkey ~ activeid : linkkey %}
+            {# <!-- Get the marker if the link is active --> #}
+            {% set marked = link['isactive'] ? marker : '' %}
+            <li class="{{ linkclass }}">
+                {# <!-- Display the link --> #}
+                {% if link['url'] and link['label'] %}
+                    <a href="{{ link['url'] }}" id="{{ linkid }}" title="{{ link['title'] }}">
+                        {{ link['label'] }} {{ marked }}
+                    </a>
+                {% elseif link['label'] %}
+                    <a id="{{ linkid }}" title="{{ link['title'] }}">
+                        {{ link['label'] }} {{ marked }}
+                    </a>
+                {% else %}
+                    &#160;<a id="{{ linkid }}"></a>
+                {% endif %}
+                {# <!-- If this link has menulinks, and the link is active, and its parent is active,
+                     and we haven't reached the maxlevel, display next level --> #}
+                {% if link['menulinks'] and link['isactive'] and parentactive and (not maxlevels or maxlevels >= level+1) %}
+                    {# <!-- Put all the data this template expects in the subdata array --> #}
+                    {% set subdata = {
+                        'menulinks': link['menulinks'],
+                        'level': level+1,
+                        'menuid': menuid,
+                        'marker': linkmarker,
+                        'maxlevels': maxlevels,
+                        'parentactive': link['isactive'],// let sublinks know if parent is active
+                    } %}
+                    {# <!-- pass the subdata to this template, and do the dance again :) --> #}
+                    {{ include('@base/includes/blocks-menu-menulinks.html.twig') }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

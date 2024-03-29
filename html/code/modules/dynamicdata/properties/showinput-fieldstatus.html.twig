@@ -1,0 +1,37 @@
+{# @dynamicdata/properties/showinput-fieldstatus.html.twig #}
+
+{% block showinput_fieldstatus %}
+{% if onchange is not null %}
+      {% set evt_change = onchange %}
+    {% else %}
+      {% set evt_change = 'return true;' %}
+    {% endif %}
+
+    {# <!-- Arguably a style attribute here is wrong --> #}
+    {% if style is null %}
+        {% set style = '' %}
+    {% endif %}
+    <select name="display_{{ name }}" id="display_{{ id }}_" tabindex="{{ tabindex }}" onchange="{{ evt_change }}" style="{{ style }}">
+        {% for row in options['display'] %}
+            {% if row['id'] == value['display'] %}
+                <option value="{{ row['id'] }}" selected="selected">{{ row['name'] }}</option>
+            {% else %}
+                <option value="{{ row['id'] }}">{{ row['name'] }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    &#160;
+    {% set tabindex = tabindex + 1 %}
+    <select name="input_{{ name }}" id="input_{{ id }}" tabindex="{{ tabindex }}" onchange="{{ evt_change }}" style="{{ style }}">
+        {% for row in options['input'] %}
+            {% if row['id'] == value['input'] %}
+                <option value="{{ row['id'] }}" selected="selected">{{ row['name'] }}</option>
+            {% else %}
+                <option value="{{ row['id'] }}">{{ row['name'] }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+
+{% endblock %}

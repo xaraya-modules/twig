@@ -1,0 +1,131 @@
+{# @base/includes/modifyconfig-locales.html.twig #}
+
+{% block modifyconfig_locales %}
+{# <!-- Initialization of some information --> #}
+    {% set mlsmode = xar_var({scope: "config", name: "Site.MLS.MLSMode"}) %}
+    {% set single_checked = false %}
+    {% if mlsmode == 'SINGLE' %}
+        {% set single_checked = true %}
+    {% endif %}
+    {% set boxed_checked = false %}
+    {% if mlsmode == 'BOXED' %}
+        {% set boxed_checked = true %}
+    {% endif %}
+    {% set unboxed_checked = false %}
+    {% if mlsmode == 'UNBOXED' %}
+        {% set unboxed_checked = true %}
+    {% endif %}
+    <fieldset>
+        <legend>Mode of Operation</legend>
+        <p>The multilanguage system (MLS) works in three different modes.</p>
+        <dl>
+        	<dd>
+	            {% if single_checked %}
+	                <input type="radio" id="mlsmode_single" name="mlsmode" value="SINGLE"
+	                checked="checked"/>
+	            {% else %}
+	                <input type="radio" id="mlsmode_single" name="mlsmode" value="SINGLE"/>
+	            {% endif %}&#160;
+	            Single Language Mode
+            </dd>
+            <dd>
+            	<p>
+            		MLS uses only one character set, typically single byte but potentially multi byte if mb_string is built in. All information is stored coherently with the chosen character set (at installation time), and also user data is meaningful in the chosen character set.
+        		</p>
+            </dd>
+        </dl>
+        <dl>
+            <dd>
+	            {% if boxed_checked %}
+	                <input type="radio" id="mlsmode_boxed" name="mlsmode" value="BOXED" checked="checked"/>
+	            {% else %}
+	                <input type="radio" id="mlsmode_boxed" name="mlsmode" value="BOXED"/>
+	            {% endif %}&#160;
+	            Multilanguage Mode
+            </dd>
+            <dd>
+            <p>
+                MLS uses an universal character set to represent everything (read: UTF-8). This guarantees that no conversion is needed for the content representation. Every page is always shown according to the user chosen language, but the page can contain texts in other languages (for example a French article and comments inside an English page).  This mode can produce unexpected results if the mb_string extension is not installed. 
+            </p>    
+	            {% if function_exists('mb_strlen') %}
+	            	<p class="xar-success">The extension is installed on this server, so you can use this mode.</p>
+	            {% else %}
+	            	<p class="xar-alert">The extension is not installed on this server, so you cannot use this mode reliably.</p>
+	            {% endif %}
+            </dd>
+        </dl>
+    </fieldset>
+    <fieldset>
+        <legend>Language/Locale Configuration</legend>
+        <dl>
+            <dt>
+            	<label>Available Locales</label>
+            	<p>
+            		The following locales are available to this site:
+            	</p>
+            </dt>
+            <dd>
+            	{{ xar_data_input({type: "checkboxlist", name: "active", options: locales, value: allowedlocales, layout: "vertical"}) }}
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+	            {% set label = 'Default locale to load' %}
+	            <label for="defaultlocale" title="{{ label }}" class="xar-form-label">Default Locale</label>
+            </dt>
+            <dd>
+	            <select name="defaultlocale" id="defaultlocale">
+	                {% for loop_key1, loop_item1 in locales %}{% set loop_index1 = loop.index %}
+	                    {% if xar_coremethod('xarMLS', 'getSiteLocale') == loop_item1['name'] %}
+	                        <option value="{{ loop_item1['name'] }}" selected="selected">
+	                            {{ loop_item1['name'] }}
+	                        </option>
+	                    {% else %}
+	                        <option value="{{ loop_item1['name'] }}">
+	                            {{ loop_item1['name'] }}
+	                        </option>
+	                    {% endif %}
+	                {% endfor %}
+	            </select>
+            </dd>
+        </dl>
+    </fieldset>
+    <input type="hidden" name="translationsbackend" id="translationsbackend" value="xml2php"/>
+    {# <!--    
+    <fieldset>
+        <legend>
+        Translations backend
+        </legend>
+
+        <p>
+            The translated information for Xaraya and its modules can be stored in different back-ends. The following back-ends are supported:
+        </p>
+
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Translations Backend' %}
+                <label for="translationsbackend" title="{{ label }}" class="xar-form-label">
+                    Translations Backend:
+                </label>
+            </div>
+            <div class="xar-col">
+                <select name="translationsbackend" id="translationsbackend" size="1">
+                    {% if xar_coremethod('xarConfigVars', 'get', [null, 'Site.MLS.TranslationsBackend']) == 'xml' %}
+                    <option value="xml" selected="selected">XML (good for interoperability)</option>
+                    <option value="php">PHP (good for programmed access)</option>
+                    <option value="xml2php">XML with caching in PHP (new experimental)</option>
+                    {% elseif xar_coremethod('xarConfigVars', 'get', [null, 'Site.MLS.TranslationsBackend']) == 'php' %}
+                    <option value="xml">XML (good for interoperability)</option>
+                    <option value="php" selected="selected">PHP (good for programmed access)</option>
+                    <option value="xml2php">XML with caching in PHP (new experimental)</option>
+                    {% elseif xar_coremethod('xarConfigVars', 'get', [null, 'Site.MLS.TranslationsBackend']) == 'xml2php' %}
+                    <option value="xml">XML (good for interoperability)</option>
+                    <option value="php">PHP (good for programmed access)</option>
+                    <option value="xml2php" selected="selected">XML with caching in PHP (new experimental)</option>
+                    {% endif %}
+                </select>
+            </div>
+        </div>
+    </fieldset>
+    --> #}
+{% endblock %}

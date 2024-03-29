@@ -1,0 +1,300 @@
+{# @dynamicdata/admin/test_apis.html.twig #}
+
+{% block test_apis %}
+{{ xar_style({scope: "module", file: "dd"}) }}
+    {{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+
+    <div class="xar-mod-body">
+        <h2>Utilities - Test APIs</h2>
+        {{ include('@dynamicdata/includes/utility-menu.html.twig') }}
+        <fieldset class="xar-form-actions">
+            <legend>REST API</legend>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <code>$ composer require --dev nikic/fast-route</code>
+                </div>
+                <div class="xar-col">
+                    Pre-requisite composer package for the REST API endpoint
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <a href="./code/modules/dynamicdata/xartests/swagger-ui.html">Swagger UI</a>
+                </div>
+                <div class="xar-col">
+                    Explore the REST API for Dynamic Data Objects
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                {% if openapi %}
+                    <a href="./var/cache/api/openapi.json">var/cache/api/openapi.json</a>
+                    {% set mtime = filemtime(openapi) %}
+                    ({{ xar_coremethod('xarLocale', 'formatUTCDate', ["%Y-%m-%d", mtime]) }})
+                {% else %}
+                    var/cache/api/openapi.json
+                {% endif %}
+                    &#8635; <a href="{{ xar_moduleurl('dynamicdata','admin','test_apis',{'create_rst': 1}) }}">re-build</a>
+                </div>
+                <div class="xar-col">
+                    The current openapi.json document for this API
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <a href="./code/modules/dynamicdata/xartests/datatables.html">DataTables</a>
+                </div>
+                <div class="xar-col">
+                    Example using the REST API in web pages with jQuery and DataTables
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="xar-form-actions">
+            <legend>GraphQL</legend>
+            <div class="xar-row">
+                <div class="xar-col">
+                   <code>$ composer require --dev webonyx/graphql-php</code>
+                </div>
+                <div class="xar-col">
+                    Pre-requisite composer package for the GraphQL interface
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <a href="./code/modules/dynamicdata/xartests/playground.html">GraphQL Playground</a>
+                </div>
+                <div class="xar-col">
+                    Experiment with GraphQL queries and mutations on objects
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                {% if schema %}
+                    <a href="./var/cache/api/schema.graphql">var/cache/api/schema.graphql</a>
+                    {% set mtime = filemtime(schema) %}
+                    ({{ xar_coremethod('xarLocale', 'formatUTCDate', ["%Y-%m-%d", mtime]) }})
+                {% else %}
+                    var/cache/api/schema.graphql
+                {% endif %}
+                    &#8635; <a href="{{ xar_moduleurl('dynamicdata','admin','test_apis',{'create_gql': 1}) }}">re-build</a>
+                </div>
+                <div class="xar-col">
+                    The current schema.graphql document for this API
+                </div>
+            </div>
+        </fieldset>
+    {# <!-- show the list of api objects --> #}
+        <form method="post">
+            <fieldset class="xar-form-actions">
+                <legend>Objects Available via APIs</legend>
+                <table class="xar-table xar-items">
+                    <thead>
+                        <tr>
+                            <th>Dynamic Data Object</th>
+                            <th>REST API</th>
+                            <th>GraphQL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in objects %}
+                        <tr>
+                            <td><a href="{{ xar_objecturl(item['name']) }}">{{ item['label'] }}</a></td>
+                            {% if not restapilist or item['name'] in restapilist %}
+                                <td><input type="checkbox" name="restapi[{{ item['name'] }}]" id="restapi_{{ item['name'] }}" checked="checked"/></td>
+                            {% else %}
+                                <td><input type="checkbox" name="restapi[{{ item['name'] }}]" id="restapi_{{ item['name'] }}"/></td>
+                            {% endif %}
+                            {% if not graphqllist or item['name'] in graphqllist %}
+                                <td><input type="checkbox" name="graphql[{{ item['name'] }}]" id="graphql_{{ item['name'] }}" checked="checked"/></td>
+                            {% else %}
+                                <td><input type="checkbox" name="graphql[{{ item['name'] }}]" id="graphql_{{ item['name'] }}"/></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td>Other Object: <select name="object_new" id="object_new">
+                            <option value=""></option>
+                            {% for item in otherlist %}
+                                <option value="{{ item['name'] }}">{{ item['label'] }}</option>
+                            {% endfor %}
+                        </select></td>
+                        <td><input type="checkbox" name="restapi_new" id="restapi_new"/></td>
+                        <td><input type="checkbox" name="graphql_new" id="graphql_new"/></td>
+                    </tr>
+                    <tr>
+                        <td>Who am I?</td>
+                        <td><input type="checkbox" id="restapi_whoami" checked="checked" disabled="disabled"/></td>
+                        <td><input type="checkbox" id="graphql_whoami" checked="checked" disabled="disabled"/></td>
+                    </tr>
+                    <tr>
+                        <td>Context</td>
+                        <td><input type="checkbox" id="restapi_context" checked="checked" disabled="disabled"/></td>
+                        <td><input type="checkbox" id="graphql_context" checked="checked" disabled="disabled"/></td>
+                    </tr>
+                    {% for item in modules %}
+                        {% for api, info in item['apilist'] %}
+                        <tr>
+                            {% if not info['type'] %}
+                                {% set dummy = info['type'] = 'rest' %}
+                            {% endif %}
+                            <td>Module <a href="{{ xar_moduleurl(item['module']) }}">{{ item['module'] }}</a> {{ api }} with {{ info['type'] }} api {{ info['name'] }}() {% if info['caching'] %}<span>*</span>{% endif %}</td>
+                            {% set moduleapi = item['module'] ~ '.' ~ api %}
+                            {% if not restapilist or moduleapi in restapilist %}
+                                <td><input type="checkbox" name="restapi[{{ moduleapi }}]" id="restapi_{{ moduleapi }}" checked="checked"/></td>
+                            {% else %}
+                                <td><input type="checkbox" name="restapi[{{ moduleapi }}]" id="restapi_{{ moduleapi }}"/></td>
+                            {% endif %}
+                            {% if not graphqllist or moduleapi in graphqllist %}
+                                <td><input type="checkbox" name="graphql[{{ moduleapi }}]" id="graphql_{{ moduleapi }}" checked="checked"/></td>
+                            {% else %}
+                                <td><input type="checkbox" name="graphql[{{ moduleapi }}]" id="graphql_{{ moduleapi }}"/></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    <tr>
+                        <td>Other Module: <select name="module_new" id="module_new">
+                            <option value=""></option>
+                            {% for item in othermodules %}
+                                <option value="{{ item['name'] }}.any">{{ item['displayname'] }}</option>
+                            {% endfor %}
+                        </select></td>
+                        <td><input type="checkbox" name="restapi_module" id="restapi_module"/></td>
+                        <td><input type="checkbox" name="graphql_module" id="graphql_module"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+            <fieldset class="xar-form-actions">
+                <legend>API Token</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="tokenexpires" class="xar-form-label">Expiration Time</label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" name="tokenexpires" id="tokenexpires" size="8" value="{{ tokenexpires }}"/> (format hh:mm:ss)
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="tokenstorage" class="xar-form-label">Cache Storage</label>
+                    </div>
+                    <div class="xar-col">
+                        <select name="tokenstorage" id="tokenstorage">
+                            {% for storagetype, storageinfo in storagetypes %}
+                                {% if not storageinfo['enabled'] %}
+                                    <option value="{{ storagetype }}" disabled="disabled">{{ storageinfo.label }}</option>
+                                {% elseif tokenstorage == storagetype %}
+                                    <option value="{{ storagetype }}" selected="selected">{{ storageinfo.label }}</option>
+                                {% else %}
+                                    <option value="{{ storagetype }}">{{ storageinfo.label }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="xar-form-actions">
+                <legend>Common Configuration</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="enabletimer" class="xar-form-label">Show Query Timer</label>
+                    </div>
+                    <div class="xar-col">
+                        {% if enabletimer %}
+                            <input type="checkbox" name="enabletimer" id="enabletimer" checked="checked"/>
+                        {% else %}
+                            <input type="checkbox" name="enabletimer" id="enabletimer"/>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="enablecache" class="xar-form-label">Enable Cache</label> <span>*</span>
+                    </div>
+                    <div class="xar-col">
+                        {% if enablecache %}
+                            <input type="checkbox" name="enablecache" id="enablecache" checked="checked"/>
+                        {% else %}
+                            <input type="checkbox" name="enablecache" id="enablecache"/>
+                        {% endif %}
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="xar-form-actions">
+                <legend>GraphQL Configuration</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="querycomplexity" class="xar-form-label">Query Complexity Limit</label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" name="querycomplexity" id="querycomplexity" size="3" value="{{ querycomplexity }}"/> (playground introspection = 181)
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="querydepth" class="xar-form-label">Query Depth Limit</label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" name="querydepth" id="querydepth" size="3" value="{{ querydepth }}"/> (playground introspection = 11)
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="tracepath" class="xar-form-label">Trace Query Path</label>
+                    </div>
+                    <div class="xar-col">
+                        {% if tracepath %}
+                            <input type="checkbox" name="tracepath" id="tracepath" checked="checked"/>
+                        {% else %}
+                            <input type="checkbox" name="tracepath" id="tracepath"/>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="cacheplan" class="xar-form-label">Cache Query Plan</label> (no gain)
+                    </div>
+                    <div class="xar-col">
+                        {% if cacheplan %}
+                            <input type="checkbox" name="cacheplan" id="cacheplan" checked="checked"/>
+                        {% else %}
+                            <input type="checkbox" name="cacheplan" id="cacheplan"/>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="cachedata" class="xar-form-label">Cache Query Data</label> (faster)
+                    </div>
+                    <div class="xar-col">
+                        {% if cachedata %}
+                            <input type="checkbox" name="cachedata" id="cachedata" checked="checked"/>
+                        {% else %}
+                            <input type="checkbox" name="cachedata" id="cachedata"/>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="cacheoperation" class="xar-form-label">Cache Operation</label> (fastest)
+                    </div>
+                    <div class="xar-col">
+                        {% if cacheoperation %}
+                            <input type="checkbox" name="cacheoperation" id="cacheoperation" checked="checked"/>
+                        {% else %}
+                            <input type="checkbox" name="cacheoperation" id="cacheoperation"/>
+                        {% endif %}
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="xar-form-actions">
+                <legend>Save Configuration</legend>
+                <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                {% set label = 'Update List' %}
+                {{- xar_button({type: "submit", label: label}) -}}
+                <p><span style="color:red;">Note: don't forget to &#8635; re-build the API schema document(s) above after updating this object list</span></p>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

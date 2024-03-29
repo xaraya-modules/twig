@@ -1,0 +1,141 @@
+{# @dynamicdata/objects/showform-module_settings.html.twig #}
+
+{% block showform_module_settings %}
+{% if properties['items_per_page'] is not null %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'List items per page' %}
+                {% set title = 'The number of items to show on each page.' %}
+                {{ xar_data_label({property: properties['items_per_page'], for: "id", title: label, size: "3"}) }}
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({property: properties['items_per_page']}) }}
+            </div>
+        </div>
+    {% endif %}
+    {% if properties['enable_short_urls'] is not null %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Enable short URLs' %}
+                {% set title = 'Enable short URLs for this module' %}
+                {{ xar_data_label({property: properties['enable_short_urls'], for: "id", label: label, title: title}) }}
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({property: properties['enable_short_urls']}) }}
+            </div>
+        </div>
+    {% endif %}
+    {% if properties['use_module_alias'] is not null %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Enable module alias(es)' %}
+                {% set title = 'Use an alias instead of the module name' %}
+                {{ xar_data_label({property: properties['use_module_alias'], for: "id", label: label, title: title}) }}
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({id: "use_module_alias", property: properties['use_module_alias'], onchange: "toggle(\'aliaslink\',\'aliascheckbox\')"}) }}&#160;
+                {% set modname = xar_coremethod('xarMod', 'getName') %}
+                <a href="{{ xar_moduleurl('modules','admin','aliases',{'name': modname}) }}">Manage Aliases</a>
+            </div>
+        </div>
+    {% endif %}
+    {% if properties['module_alias_name'] is not null %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Module Alias Name' %}
+                {% set title = 'The module alias name to use' %}
+                {{ xar_data_label({property: properties['module_alias_name'], for: "id", label: label, title: title}) }}
+            </div>
+            <div class="xar-col">
+                {% set aliasmap = xar_coremethod('xarConfigVars', 'get', [null,'System.ModuleAliases']) %}
+                {% set options = [] %}
+                {% if aliasmap %}
+                	{% set modname = xar_coremethod('xarMod', 'getName') %}
+                    {% for aliasname, modulename in aliasmap %}
+                        {% if modulename == modname %}
+                            {% set dummy = 1;options[aliasname] = aliasname %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if options %}
+                    {{ xar_data_input({property: properties['module_alias_name'], options: options, override: "1"}) }}
+                {% else %}
+                    No alias names defined for this module
+                    {{ xar_data_input({property: properties['module_alias_name'], hidden: "hidden"}) }}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {% if properties['use_module_icons'] is not null %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Use Icons' %}
+                {% set title = 'Display icons instead of text' %}
+                {{ xar_data_label({property: properties['use_module_icons'], for: "id", label: label, title: title}) }}
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({property: properties['use_module_icons']}) }}
+            </div>
+        </div>
+    {% endif %}
+    {% if properties['enable_user_menu'] is not null %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Enable User Settings' %}
+                {% set title = 'Enable the user settings for this module in Roles User Account' %}
+                {{ xar_data_label({property: properties['enable_user_menu'], for: "id", label: label, title: title}) }}
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({property: properties['enable_user_menu']}) }}
+            </div>
+        </div>
+    {% endif %}
+    {% if properties['user_menu_link'] is not null %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Hide link in User Menu' %}
+                {% set title = 'Hide the link to this module's user functions in the Base module User Menu Block' %}
+                {{ xar_data_label({property: properties['user_menu_link'], for: "id", label: label, title: title}) }}
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({property: properties['user_menu_link']}) }}
+            </div>
+        </div>
+    {% endif %}
+    {% if properties['admin_menu_link'] is not null %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Hide link in Admin Menu' %}
+                {% set title = 'Hide the link to this module's admin functions in the Base module Admin Menu Block' %}
+                {{ xar_data_label({property: properties['admin_menu_link'], for: "id", label: label, title: title}) }}
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({property: properties['admin_menu_link']}) }}
+            </div>
+        </div>
+    {% endif %}
+    {% if properties['frontend_page'] is not null %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Default Frontend Page' %}
+                {% set title = 'Define a default frontend page for this module' %}
+                {{ xar_data_label({property: properties['frontend_page'], for: "id", label: label, title: title}) }}
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({property: properties['frontend_page']}) }}
+            </div>
+        </div>
+    {% endif %}
+    {% if properties['backend_page'] is not null %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Default Backend Page' %}
+                {% set title = 'Define a default backend page for this module' %}
+                {{ xar_data_label({property: properties['backend_page'], for: "id", label: label, title: title}) }}
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({property: properties['backend_page']}) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

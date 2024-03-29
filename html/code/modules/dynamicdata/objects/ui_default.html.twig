@@ -1,0 +1,13 @@
+{# @dynamicdata/objects/ui_default.html.twig #}
+
+{% block ui_default %}
+{{ include('@dynamicdata/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if object %}
+            <h2>{{ object.label }}</h2>
+            {{ output }}
+            {% set viewlink = object.getActionURL('view') %}
+            <p><a href="{{ viewlink }}">View {{ xar_data_label({object: object}) }}</a></p>
+        {% endif %}
+    </div>
+{% endblock %}

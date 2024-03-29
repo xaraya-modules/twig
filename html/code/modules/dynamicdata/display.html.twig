@@ -1,0 +1,26 @@
+{# @dynamicdata/display.html.twig #}
+
+{% extends '@dynamicdata/base.html.twig' %}
+
+{% block modulespace %}
+{{ include('@dynamicdata/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if object %}
+            {# <!-- here we retrieve the complete object in the function, and we only pass a reference of it to the data-display tag --> #}
+            <h2>
+                {{ xar_data_label({object: object}) }}
+            </h2>
+            {{ xar_data_display({object: object}) }}
+        {% else %}
+            {# <!-- here we only retrieve the parameters in the function, and we let the data-display tag retrieve the complete object --> #}
+            <h2>{{ label }}</h2>
+            {{ xar_data_display({module: module, itemtype: itemtype, itemid: itemid}) }}
+        {% endif %}
+        {% if hooks %}
+            {% for module, output in hooks %}
+                {{ output }}
+            {% endfor %}
+        {% endif %}
+        <div style="clear:both">&#160;</div>
+    </div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{# @base/properties/showoutput-checkboxlist.html.twig #}
+
+{% block showoutput_checkboxlist %}
+<div class="xar-form-container">
+        {% if not layout or layout == 'default' or layout == 'horizontal' %}
+            {% if options|length > 0 %}
+                {% for key, option in options %}
+                    <div style="float: left;margin-right: 2em;">
+                        {% if option['id'] in value %}
+                            {{ option['name'] }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% elseif layout == 'vertical' %}
+            {% if options|length > 0 %}
+                {% for key, option in options %}
+                    <div>
+                        {% if option['id'] in value %}
+                            {{ option['name'] }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% elseif layout == 'columns' or layout == 'column' %}
+            {% set opt_count = options|length %}
+            {% if opt_count > 0 %}
+                {% set col_count = floor(opt_count / rows_cols) %}
+                {% set long_cols = opt_count % rows_cols %}
+                {% if long_cols > 0 %}
+                    {% set col_count = col_count + 1 %}
+                {% endif %}
+                {% set col_options = [] %}
+                {% for i in range(1, rows_cols) %}
+                    {% if array_push(col_options, array_slice(options, ((i - 1 ) * col_count), col_count, true)) %}{% endif %}
+                {% endfor %}
+                {% set col_width = round(100 / rows_cols) - 1 %}
+                {% for c, col_opts in col_options %}
+                    <div style="width: {{ col_width }}%;float: left;">
+                        {% for o, option in col_opts %}
+                            <div>
+                                {% if option['id'] in value %}
+                                    {{ option['name'] }}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <p>
+              Specify your own layout '{{ layout }}' here...
+            </p>
+            <p>
+              You can also specify a separate template, e.g. if you want to handle individual fields differently for a particular module / itemtype
+            </p>
+        {% endif %}
+
+        {{ include('@base/includes/dataproperty_additions.html.twig') }}
+        <br class="xar-clearall"/>
+    </div>
+{% endblock %}

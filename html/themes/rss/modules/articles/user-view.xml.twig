@@ -1,0 +1,9 @@
+{# modules/articles/user-view.xml.twig #}
+
+{% block user_view %}
+{% if number %}
+        {% for col in columns|keys %}
+            {% for row in columns[col]|keys %}{{ columns[col][row] }}{% endfor %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

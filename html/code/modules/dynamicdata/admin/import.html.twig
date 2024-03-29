@@ -1,0 +1,101 @@
+{# @dynamicdata/admin/import.html.twig #}
+
+{% block import %}
+{{ xar_style({scope: "module", file: "dd"}) }}
+    {{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+    <div class="xar-mod-page-head">    
+        <h2>Utilities - Import DataObject Definition</h2>
+        {{ include('@dynamicdata/includes/utility-menu.html.twig') }}
+        {% if warning %}
+            <p>{{ warning }}</p>
+        {% endif %}
+    </div>{# <!--/xar-mod-page-head--> #}
+    <div class="xar-mod-page-body">
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','import') }}">
+            <fieldset>
+                <legend>Import Object Definition</legend>
+                <div class="xar-row">
+                	<div class="xar-col">
+	                    {% set label = 'Location of object definitions' %}
+	                    <label for="basedir" title="{{ label }}" class="xar-form-label">Base Directory:</label>
+                    </div>
+                    <div class="xar-col">
+	                    <input type="text" name="basedir" id="basedir" value="{{ basedir }}" maxlength="250" class="xar-form-textxlong"/>
+	                    {% set label = 'Refresh' %}
+                        <span style="margin-left: 10px">{{- xar_button({type: "submit", label: label, name: "refresh", id: "refresh"}) -}}</span>
+                    </div>
+                </div>
+                <div class="xar-row">
+                	<div class="xar-col">
+	                    {% set label = 'XML files found in Base Directory' %}
+	                    <label for="import" title="{{ label }}">
+	                        Available .xml Files:
+	                    </label>
+                    </div>
+                    <div class="xar-col">
+	                    <select name="import" id="import">
+	                        {% for option in options %}
+	                            <option value="{{ option['id'] }}">{{ option['name'] }}</option>
+	                        {% endfor %}
+	                    </select>
+                    </div>
+                </div>
+                <div class="xar-row">
+                	<div class="xar-col"></div>
+                	<div class="xar-col">
+	                    <input type="checkbox" name="overwrite" id="overwrite" value="1"/>&#160;
+	                    {% set label = 'Overwrite the definition if it already exists' %}
+	                    <label for="overwrite" title="{{ label }}">
+	                        Overwrite if exists
+	                    </label>
+                    </div>
+                </div>
+                <div class="xar-row">
+                	<div class="xar-col"></div>
+                	<div class="xar-col">
+	                    <input type="checkbox" name="keepitemid" id="keepitemid" value="1"/>&#160;
+	                    {% set label = 'Check to attempt to maintain item ids found in definition file' %}
+	                    <label for="keepitemid" title="{{ label }}">
+	                        Preserve item ids if possible
+	                    </label>
+                    </div>
+                </div>
+                <div class="xar-row">
+                	<div class="xar-col">
+	                    {% set label = 'Object definition to import.' %}
+	                    <label for="xml" title="{{ label }}">
+	                        Select a file in the list above, or paste the object definition in here:
+	                    </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set empty = '' %}
+                        <textarea name="xml" id="xml" class="xar-form-textareaxlarge" style="width: 40em">{{ empty }}</textarea>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+	                    {% set label = 'The prefix to use for storage definitions' %}
+	                    <label for="prefix" title="{{ label }}" class="xar-form-label">
+	                        Prefix:
+	                    </label>
+                    </div>
+                    <div class="xar-col">
+                        <input name="prefix" id="prefix" class="xar-form-textshort" value="{{ prefix }}"/>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                        {% set label = 'Import Definition' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>{# <!--/xar-mod-page-body--> #}
+    </div>{# <!--/xar-mod-body--> #}
+{% endblock %}

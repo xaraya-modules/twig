@@ -1,0 +1,5 @@
+{# @dynamicdata/properties/filter.html.twig #}
+
+{% block filter %}
+{{ xar_data_input({type: "dropdown", name: "op[" ~ name], options: options, value: value, style: "width: 100px"}) }}
+{% endblock %}

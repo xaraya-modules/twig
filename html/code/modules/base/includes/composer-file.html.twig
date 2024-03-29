@@ -1,0 +1,43 @@
+{# @base/includes/composer-file.html.twig #}
+
+{% block composer_file %}
+{% set writable = file_exists(composer_file) AND is_writeable(composer_file) %}
+    <fieldset>
+        <legend>
+            Manage composer.json
+        </legend>
+        {% if not writable %}
+            The file composer.json in the top level composer directory either does not exist or is not writable.
+        {% else %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    {{ xar_data_input({type: "textarea", name: "composer", value: composer, cols: "40", rows: "10"}) }}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                </div>
+                <div class="xar-col">
+                    {% if message and (message != 'success') %}
+                        <span style="color: red">{{ message }}</span>
+                    {% endif %}
+                    {% if message == 'success' %}
+                        <span style="color: green">The composer.json file was updated</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                </div>
+                <div class="xar-col">
+                    {% set value = 'Save' %}
+		    {% if composer_file != 'composer/composer.json' %}
+                        {{- xar_button({name: "update", value: value, disabled: "disabled"}) -}}
+                    {% else %}
+                        {{- xar_button({name: "update", value: value}) -}}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </fieldset>
+{% endblock %}

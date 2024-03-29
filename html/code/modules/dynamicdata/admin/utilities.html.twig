@@ -1,0 +1,94 @@
+{# @dynamicdata/admin/utilities.html.twig #}
+
+{% block utilities %}
+{{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if not option %}
+            {% set option = 'query' %}
+        {% endif %}
+        <div class="xar-mod-page-head">
+        <h2>Dynamic Data Utilities</h2>
+            <ul class="xar-tabs">
+                {% set title = 'Options' %}
+                {% set label = 'Options' %}
+                <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                {% if option == 'query' %}
+                    <li class="xar-tab-active">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'query'}) }}">Query</a>
+                    </li>
+                {% else %}
+                    <li class="xar-tab">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'query'}) }}">Query</a>
+                    </li>
+                {% endif %}
+                {% if option == 'import' %}
+                    <li class="xar-tab-active">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'import'}) }}">Import</a>
+                    </li>
+                {% else %}
+                    <li class="xar-tab">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'import'}) }}">Import</a>
+                    </li>
+                {% endif %}
+                {% if option == 'export' %}
+                    <li class="xar-tab-active">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'export'}) }}">Export</a>
+                    </li>
+                {% else %}
+                    <li class="xar-tab">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'export'}) }}">Export</a>
+                    </li>
+                {% endif %}
+                {% if option == 'static' %}
+                    <li class="xar-tab-active">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'static'}) }}">Table
+                        Definition</a>
+                    </li>
+                {% else %}
+                    <li class="xar-tab">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'static'}) }}">Table
+                        Definition</a>
+                    </li>
+                {% endif %}
+                {% if option == 'relations' %}
+                    <li class="xar-tab-active">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'relations'}) }}">
+                        Relationships</a>
+                    </li>
+                {% else %}
+                    <li class="xar-tab">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'relations'}) }}">
+                        Relationships</a>
+                    </li>
+                {% endif %}
+                {% if option == 'meta' %}
+                    <li class="xar-tab-active">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'meta'}) }}">Meta
+                        Definitions</a>
+                    </li>
+                {% else %}
+                    <li class="xar-tab">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'meta'}) }}">Meta
+                        Definitions</a>
+                    </li>
+                {% endif %}
+                {% if option == 'migrate' %}
+                    <li class="xar-tab-active">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'migrate'}) }}">Migrate
+                        Items</a>
+                    </li>
+                {% else %}
+                    <li class="xar-tab">
+                        <a href="{{ xar_moduleurl('dynamicdata','admin','utilities',{'q': 'migrate'}) }}">Migrate
+                        Items</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>{# <!--/xar-mod-page-head--> #}
+    </div>
+    {% if not option or option == 'query' %}
+        {{ xar_guifunc("dynamicdata", "admin", "query", {main: "false"}) }}
+        {% else %}
+        {{ xar_guifunc("dynamicdata", "admin", option, {main: "false"}) }}
+    {% endif %}
+{% endblock %}

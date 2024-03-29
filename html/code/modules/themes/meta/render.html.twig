@@ -1,0 +1,28 @@
+{# @themes/meta/render.html.twig #}
+
+{% block render %}
+{% set lang = xar_coremethod('xarUser'|slice( 'getNavigationLocale'),0,2) %}
+    {% if meta and meta is iterable %}
+        {% for type, values in meta %}
+            {% if not values %}
+                {% set values = [] %}
+            {% endif %}
+            {% for value, tags in values %}
+                {% if not tags %}
+                    {% set tags = [] %}
+                {% endif %}
+               {% for index, tag in tags %}
+                    {# <!-- Ignore tags with no content --> #}
+                    {% if not tag or not tag['content'] %}
+                    {# <!-- Ignore tags with a language different than that of the current locale --> #}
+                    {% elseif tag['lang'] and (lang != tag['lang']) %}
+                    {% elseif tag['type'] == 'name' %}
+                        <meta name="{{ tag['value'] }}" content="{{ tag['content'] }}" lang="{{ tag['lang'] }}" xml:lang="{{ tag['lang'] }}" dir="{{ tag['dir'] }}" scheme="{{ tag['scheme'] }}"/>
+                    {% elseif tag['type'] == 'http-equiv' %}
+                        <meta http-equiv="{{ tag['value'] }}" content="{{ tag['content'] }}" lang="{{ tag['lang'] }}" xml:lang="{{ tag['lang'] }}" dir="{{ tag['dir'] }}" scheme="{{ tag['scheme'] }}"/>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    {% endif %}               
+{% endblock %}

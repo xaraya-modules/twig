@@ -1,0 +1,369 @@
+{# @themes/admin/view_jslibs.html.twig #}
+
+{% block view_jslibs %}
+{{ include('@themes/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+    	<div class="xar-mod-page-head">
+            {% set xmldata = 'jslibraries' %}
+            {{ include('@base/includes/admin-menu-skel.html.twig') }}
+	    </div>
+		<div class="xar-mod-page-body">
+            {% if tab == 'auto' %}
+                <h2>
+                    Loaded Javascript Libraries
+                </h2>
+                <form method="post" action="{{ xar_currenturl() }}" style="margin-top: 10px; margin-bottom: 10px;">
+                    <table class="table xar-table">
+                        <tr>
+                            <th>Sequence</th>
+                            <th>Type</th>
+                            <th>Library</th>
+                            <th>Name</th>
+                            <th>Version</th>
+                            <th>Scope</th>
+                            <th>Package</th>
+                            <th>Path</th>
+                            <th>File</th>
+                            <th>Position</th>
+                        </tr>
+                        {% if not fieldvalues %}
+                            <tr>
+                                <td colspan="10">
+                                    No libraries are loaded automatically
+                                </td>
+                            </tr>
+                        {% else %}
+                            {% for value in fieldvalues %}
+                                <tr>
+                                    <td>
+                                        {% set name = 'dd_id[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_id_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['id'], value: value['id'], hidden: "hidden"}) }}
+                                        {% set name = 'dd_seq[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_seq_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['seq'], value: value['seq']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_type[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_type_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['type'], value: value['type']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_parent[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_parent_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['parent'], value: value['parent']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_lib[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_lib_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['lib'], value: value['lib']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_version[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_version_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['version'], value: value['version']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_scope[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_scope_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['scope'], value: value['scope']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_package[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_package_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['package'], value: value['package']}) }}
+                                    </td>
+                                    {% if value['origin'] == 'local' %}
+                                        <td>
+                                            {% set name = 'dd_base[' ~ value['id'] ~ ']' %}
+                                            {% set id = 'dd_base_' ~ value['id'] %}
+                                            {{ xar_data_input({name: name, id: id, property: properties['base'], value: value['base']}) }}
+                                        </td>
+                                        <td>
+                                            {% set name = 'dd_src[' ~ value['id'] ~ ']' %}
+                                            {% set id = 'dd_src_' ~ value['id'] %}
+                                            {{ xar_data_input({property: properties['src'], value: value['src']}) }}
+                                        </td>
+                                    {% else %}
+                                        <td colspan="2">
+                                            {% set name = 'dd_src[' ~ value['id'] ~ ']' %}
+                                            {% set id = 'dd_src_' ~ value['id'] %}
+                                            {{ xar_data_input({property: properties['src'], value: value['src']}) }}
+                                        </td>
+                                    {% endif %}
+                                    <td>
+                                        {% set name = 'dd_position[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_position_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['position'], value: value['position'], style: "width: 100px"}) }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </table>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                        </div>
+                        <div class="xar-col">
+                            <input type="hidden" name="confirm" id="confirm" value="true"/>
+                            {% set label = 'Save' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </div>
+                    </div>
+                </form>
+            {% elseif tab == 'local' %}
+                <h2>
+                    Local Javascript Libraries
+                </h2>
+	        {# <!--
+            <form method="post" action="{{ xar_currenturl() }}" style="margin-top: 10px; margin-bottom: 10px;">
+	            {% set label = 'Refresh' %}
+                {{- xar_button({type: "submit", name: "refresh", label: label}) -}}
+            </form>
+            --> #}
+                <form method="post" action="{{ xar_currenturl() }}" style="margin-top: 10px; margin-bottom: 10px;">
+                    <table class="table xar-table">
+                        <tr>
+                            <th>Sequence</th>
+                            <th>Type</th>
+                            <th>Name</th>
+                            <th>Version</th>
+                            <th>Scope</th>
+                            <th>Package</th>
+                            <th>Path</th>
+                            <th>File</th>
+                            <th>Plugins</th>
+                            <th>Autoload</th>
+                        </tr>
+                        {% if not fieldvalues %}
+                            <tr>
+                                <td colspan="10">
+                                    No local libraries found
+                                </td>
+                            </tr>
+                        {% else %}
+                            {% for value in fieldvalues %}
+                                <tr>
+                                    <td>
+                                        {% set name = 'dd_id[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_id_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['id'], value: value['id'], hidden: "hidden"}) }}
+                                        {% set name = 'dd_seq[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_seq_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['seq'], value: value['seq']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_type[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_type_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['type'], value: value['type']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_lib[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_lib_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['lib'], value: value['lib']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_version[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_version_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['version'], value: value['version']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_scope[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_scope_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['scope'], value: value['scope']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_package[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_package_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['package'], value: value['package']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_base[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_base_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['base'], value: value['base']}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_src[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_src_' ~ value['id'] %}
+                                        {{ xar_data_input({property: properties['src'], value: value['src']}) }}
+                                    </td>
+                                    <td>
+                                        {{ value['plugins'] }}
+                                        {% set name = 'dd_parent[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_parent_' ~ value['id'] %}
+                                        {# <!-- {{ xar_data_input({name: name, id: id, property: properties['parent'], value: value['parent']}) }}
+                                    --> #}</td>
+                                    <td>
+                                        {% set name = 'dd_load[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_load_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['load'], value: value['load']}) }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </table>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                        </div>
+                        <div class="xar-col">
+                            <input type="hidden" name="confirm" id="confirm" value="true"/>
+                            {% set label = 'Save' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </div>
+                    </div>
+                </form>
+            {% elseif tab == 'remote' %}
+                <h2>
+                    Remote Javascript Libraries and Plugins
+                </h2>
+                <form method="post" action="{{ xar_currenturl() }}" style="margin-top: 10px; margin-bottom: 10px;">
+                    <table class="table xar-table">
+                        <thead>
+                            <tr>
+                                {# <!-- <th>Sequence</th> --> #}
+                                <th>Type</th>
+                                <th>Library</th>
+                                <th>Name</th>
+                                <th>Version</th>
+                                <th>Path</th>
+                                <th>Autoload</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if not fieldvalues %}
+                            <tr>
+                                <td colspan="7">
+                                    No remote libraries defined
+                                </td>
+                            </tr>
+                        {% else %}
+                            {% for value in fieldvalues %}
+                                <tr>
+                                        {% set name = 'dd_id[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_id_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['id'], value: value['id'], hidden: "hidden"}) }}
+                                    {# <!-- <td>
+                                      {% set name = 'dd_seq[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_seq_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['seq'], value: value['seq']}) }}
+                                    </td> --> #}
+                                    <td>
+                                        {% set name = 'dd_type[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_type_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['type'], value: value['type'], style: "width: 100px"}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_parent[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_parent' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['parent'], value: value['parent'], class: "xar-form-textmedium"}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_lib[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_lib_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['lib'], value: value['lib'], class: "xar-form-textmedium"}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_version[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_version_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['version'], value: value['version'], class: "xar-form-textshort"}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_scope[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_scope_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['scope'], value: value['scope'], class: "xar-form-textshort", hidden: "hidden"}) }}
+                                        {% set name = 'dd_package[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_package_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['package'], value: value['package'], class: "xar-form-textshort", hidden: "hidden"}) }}
+                                        {% set name = 'dd_base[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_base_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['base'], value: value['base'], class: "xar-form-textxlong", hidden: "hidden"}) }}
+                                        {% set name = 'dd_src[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_src_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['src'], value: value['src'], class: "xar-form-textxlong"}) }}
+                                    </td>
+                                    <td>
+                                        {% set name = 'dd_load[' ~ value['id'] ~ ']' %}
+                                        {% set id = 'dd_load_' ~ value['id'] %}
+                                        {{ xar_data_input({name: name, id: id, property: properties['load'], value: value['load']}) }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                            <tr>
+                                <td colspan="6">
+                                </td>
+                            </tr>        
+                            <tr>
+                            {# <!-- <th>&#160;</th> --> #}
+                            <th>Type</th>
+                            <th>Library</th>
+                            <th>Name</th>
+                            <th>Version</th>
+                            <th>Path</th>
+                            <th>Autoload</th>
+                            </tr>        
+                            <tr>
+                                {# <!-- <td>
+                                    &#160;
+                                </td> --> #}
+                                <td>
+                                    {% set name = 'new_type' %}
+                                    {% set id = 'new_type' %}
+                                    {{ xar_data_input({name: name, id: id, property: properties['type'], value: "lib", style: "width: 100px"}) }}
+                                </td>
+                                <td>
+                                    {% set name = 'new_parent' %}
+                                    {% set id = 'new_parent' %}
+                                    {{ xar_data_input({name: name, id: id, type: "textbox", class: "xar-form-textmedium"}) }}
+                                </td>
+                                <td>
+                                    {% set name = 'new_lib' %}
+                                    {% set id = 'new_lib' %}
+                                    {{ xar_data_input({name: name, id: id, type: "textbox", class: "xar-form-textmedium"}) }}
+                                </td>
+                                <td>
+                                    {% set name = 'new_version' %}
+                                    {% set id = 'new_version' %}
+                                    {{ xar_data_input({name: name, id: id, type: "textbox", class: "xar-form-textshort"}) }}
+                                </td>
+                                <td>
+                                    {% set name = 'new_scope' %}
+                                    {% set id = 'new_scope' %}
+                                    {{ xar_data_input({name: name, id: id, type: "textbox", value: "remote", class: "xar-form-textshort", hidden: "hidden"}) }}
+                                    {% set name = 'new_package' %}
+                                    {% set id = 'new_package' %}
+                                    {{ xar_data_input({name: name, id: id, type: "textbox", value: "remote", class: "xar-form-textshort", hidden: "hidden"}) }}
+                                    {% set name = 'new_base' %}
+                                    {% set id = 'new_base' %}
+                                    {{ xar_data_input({name: name, id: id, type: "textbox", class: "xar-form-textxlong", hidden: "hidden"}) }}
+                                    {% set name = 'new_src' %}
+                                    {% set id = 'new_src' %}
+                                    {{ xar_data_input({name: name, id: id, type: "textbox", class: "xar-form-textxlong"}) }}
+                                </td>
+                                <td>
+                                    {% set name = 'new_load' %}
+                                    {% set id = 'new_load' %}
+                                    {{ xar_data_input({name: name, id: id, type: "checkbox"}) }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            To remove a library or plugin, set its name to empty
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                        </div>
+                        <div class="xar-col">
+                            <input type="hidden" name="confirm" id="confirm" value="true"/>
+                            {% set label = 'Save' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </div>
+                    </div>
+                </form>
+            {% elseif tab == 'css' %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{# @categories/includes/alert_error.html.twig #}
+
+{% block alert_error %}
+{% if message_error %}
+        <div class="alert alert-danger" role="alert">
+            {% if message_error is iterable %}
+                {% for message in message_error %}
+                    {% if message %}
+                        {{ message }}
+                        <br/>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                {{ message_error }}
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

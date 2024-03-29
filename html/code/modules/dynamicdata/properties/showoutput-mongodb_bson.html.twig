@@ -1,0 +1,18 @@
+{# @dynamicdata/properties/showoutput-mongodb_bson.html.twig #}
+
+{% block showoutput_mongodb_bson %}
+{% if value and value is object %}
+        {% set value = value|json_encode(constant('JSON_PRETTY_PRINT')) %}
+        {% if subset %}
+            (bson subset)
+        {% else %}
+            (bson)
+        {% endif %}
+        <pre>{{ value }}</pre>
+    {% elseif value and value is iterable %}
+        {% set value = value|json_encode(constant('JSON_PRETTY_PRINT')) %}
+        (array)<pre>{{ value }}</pre>
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endblock %}

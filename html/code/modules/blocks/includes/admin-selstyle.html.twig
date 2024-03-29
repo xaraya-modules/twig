@@ -1,0 +1,40 @@
+{# @blocks/includes/admin-selstyle.html.twig #}
+
+{% block admin_selstyle %}
+<form method="post" action="{{ xar_moduleurl('blocks', 'admin', 'settings') }}">
+        <fieldset>
+            <legend>View Options</legend>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label for="selstyle" title="{{ xar_translate('Choose how Block instances are displayed.') }}" class="xar-form-label">
+                        Preferred Layout:
+                    </label>
+                    {# <!--
+                        Module List Sort and Filter Controls
+                    --> #}
+                </div>
+                <div class="xar-col">
+                    {% set options = [
+                            {'id': 'plain', 'name': {{ xar_translate('Plain') }}},
+                            {'id': 'compact', 'name': {{ xar_translate('Compact') }}},
+                            {'id': 'bygroup', 'name': {{ xar_translate('By Group') }}},
+                            {'id': 'bytype', 'name': {{ xar_translate('By Type') }}},
+                        ] %}
+                    {{ xar_data_input({type: "dropdown", name: "selstyle", options: options, value: selstyle}) }}&#160;
+                    {% set label = 'Refresh' %}
+                    {{- xar_button({type: "submit", label: label}) -}}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label for="filter" title="{{ xar_translate('Filter the instances to be shown.') }}" class="xar-form-label">
+                        Filter:
+                    </label>
+                </div>
+                <div class="xar-col">
+                    <input type="text" id="filter" name="filter" value="{{ filter }}" class="xar-form-textmedium"/>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}

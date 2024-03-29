@@ -1,0 +1,51 @@
+{# @dynamicdata/objects/showfilterform.html.twig #}
+
+{% block showfilterform %}
+{# <!-- This is a generic form template for any DD object. You can use a specific template for one particular object in this directory as showform-[objectname].xd, and/or use templates in your own [module]/xartemplates/objects directory by specifying the tplmodule="..." argument in the xar:data-form BL tag or showForm() method call. --> #}
+    {% if not layout %}
+        {% set layout = 'default' %}
+    {% endif %}
+    {% if layout == 'default' %}
+        {% if properties|length != 0 %}
+			{% for name, property in properties %}
+				<div class="xar-row">
+					{# <!-- The name of the property --> #}
+					<div class="xar-col-condensed">
+						{{ xar_data_label({property: properties[name], for: "id"}) }}
+					</div>
+					{# <!-- The operation --> #}
+					<div class="xar-col-condensed">
+						{% set fieldname = "op[name]" %}
+						{% if oplist[name] is not null %}
+							{{ xar_data_filter({property: properties[name], name: fieldname, filter: oplist[name]}) }}
+						{% else %}
+							{{ xar_data_filter({property: properties[name], name: fieldname}) }}
+						{% endif %}
+						{% set dummy = properties[name].setDisplayStatus(DataPropertyMaster..DD_DISPLAYSTATE_VIEWONLY) %}
+					</div>
+					{# <!-- The value --> #}
+					<div class="xar-col-expanded">
+						{% set firstline = 'All' %}
+						{% set firstline = "0,firstline" %}
+						{# <!-- We can't use array notation here because checkInput will have problems --> #}
+						{% set fieldname = "value_name" %}
+						{% if valuelist[name] is not null %}
+							{{ xar_data_input({property: properties[name], name: fieldname, value: valuelist[name], firstline: firstline}) }}
+						{% else %}
+							{{ xar_data_input({property: properties[name], name: fieldname, firstline: firstline}) }}
+						{% endif %}
+						{% set fieldname = "source[name]" %}
+						<input type="hidden" name="{{ fieldname }}" value="{{ property.source }}"/>
+						{% set fieldname = "name[name]" %}
+						<input type="hidden" name="{{ fieldname }}" value="{{ property.name }}"/>
+					</div>
+				</div>
+			{% endfor %}
+		{% else %}
+			<div>No fields to search</div>
+		{% endif %}
+    {% else %}
+        {# <!-- You can also specify your own layout here or in a separate template, e.g. if you want to handle individual fields differently for a particular module / itemtype --> #}
+        {{ include('@' ~ tplmodule ~ '/includes/form-' ~ layout ~ '.html.twig') }}
+    {% endif %}
+{% endblock %}

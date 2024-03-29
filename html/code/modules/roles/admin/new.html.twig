@@ -1,0 +1,108 @@
+{# @roles/admin/new.html.twig #}
+
+{% block new %}
+{% set id = object-&gt;getID() %}
+    {{ include('@roles/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Add {{ object.label }}</h2>
+        <p>
+            All fields are required to create a new role on the system.
+        </p>
+        {% set itemtype = object.properties['role_type'].value %}
+        {% if object.upload %}
+            {% set enctype = 'multipart/form-data' %}
+        {% else %}
+            {% set enctype = 'application/x-www-form-urlencoded' %}
+        {% endif %}
+        <form id="newrole" action="{{ xar_currenturl() }}" method="post" enctype="{{ enctype }}">
+            <fieldset>
+                <legend>
+                  {{ object.label }} Details
+                </legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Type of Role' %}
+                        <label for="ptype" title="{{ label }}" class="xar-form-label">
+                            Type:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set onchange = "this.form.action='" ~ xar_currenturl() ~ "';this.form.submit();" %}
+                        {{ xar_data_input({type: "itemtype", name: "itemtype", value: itemtype, module: "roles", onchange: onchange, mode: "1"}) }}
+                    </div>
+                </div>
+                {{ xar_data_form({object: object}) }}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Initial Group membership' %}
+                        <label for="parentid" title="{{ label }}" class="xar-form-label">Member Of:</label>
+                    </div>
+                    <div class="xar-col">
+                        {% if not parentid %}
+                            {% set parentid = xar_modvar('roles', 'defaultgroup') %}
+                        {% endif %}
+                        {{ xar_data_input({type: "grouplist", name: "parentid", value: parentid}) }}
+                    </div>
+                </div>
+                {% set settings = '|split(')) %}
+                {% if xarRoles..ROLES_USERTYPE == itemtype %}
+                    {% if 'useremailformat' in settings %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                {% set label = 'Email Format' %}
+                                <label for="duvs_useremailformat" title="{{ label }}" class="xar-form-label">Email Format:</label>
+                            </div>
+                            <div class="xar-col">
+                                {% set value = xar_coremethod('xarModUserVars', 'get', ['roles','useremailformat',id]) %}
+                                {% set options = [ 
+                                        {'id': 'text', 'name': 'text'}, 
+                                        {'id': 'html', 'name': 'html'}, 
+                                    ] %}
+                                {{ xar_data_input({type: "dropdown", name: "duvs[useremailformat]", id: "duvs_useremailformat", value: value, options: options}) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if 'usertimezone' in settings %}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label for="duvs_usertimezone" class="xar-form-label">
+                                    User Timezone:
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {% set value = xar_coremethod('xarModUserVars', 'get', ['roles','usertimezone',id]) %}
+                                {{ xar_data_input({type: "timezone", name: "duvs[usertimezone]", id: "duvs_usertimezone", value: value}) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+                {% if 'userhome' in settings %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Home URL' %}
+                            <label for="duvs_userhome" title="{{ label }}" class="xar-form-label">
+                                Home:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            <input type="text" name="duvs[userhome]" id="duvs_userhome" value="{{ xar_coremethod('xarModUserVars', 'get', ['roles','userhome',id]) }}" size="40" maxlength="100" tabindex="7"/>
+                        </div>
+                    </div>
+                {% endif %}
+                {% for hookmodule in hooks|keys %}{{ hooks[hookmodule] }}{% endfor %}
+            </fieldset>
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        <input type="hidden" name="objectid" id="objectid" value="{{ object.objectid }}"/>
+                        <input type="hidden" name="tplmodule" id="tplmodule" value="roles"/>
+                        <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                        {% set label = 'Add' %}
+                        {{- xar_button({type: "submit", label: label, name: "confirm"}) -}}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

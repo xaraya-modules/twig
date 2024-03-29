@@ -1,0 +1,22 @@
+{# @roles/objects/showdisplay-roles_users.html.twig #}
+
+{% block showdisplay_roles_users %}
+<table class="xar-table xar-fullwidth">
+        {% for name, property in properties %}
+            <tr><td>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {{ xar_data_label({property: properties[name], for: "id"}) }}
+                    </div>
+                    <div class="xar-col">
+                        {% if name == 'name' %}
+                            {{ xar_data_output({property: properties[name], layout: "single"}) }}
+                        {% else %}
+                            {{ xar_data_output({property: properties[name]}) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </td></tr>
+        {% endfor %}
+    </table>
+{% endblock %}

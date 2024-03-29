@@ -1,0 +1,49 @@
+{# @themes/properties/showinput-themeconfiguration.html.twig #}
+
+{% block showinput_themeconfiguration %}
+<fieldset>
+        <legend>Configuration options</legend>
+        {% if configs|length == 0 %}
+            No configuration options are defined, or those defined are not used in the theme. Define some <a href="{{ xar_moduleurl('themes','admin','new_config') }}">here</a>.
+        {% else %}
+            <table class="xar-table">
+                <tr>
+                    <th>Value</th>
+                    <th>Description</th>
+                    <th>Variable</th>
+                    <th>Theme</th>
+                </tr>
+                {% for key, init in configs %}
+                    {% set fieldname = name ~ '[' ~ key ~ ']' %}
+                    {% set fieldid = id ~ '_' ~ key %}
+                    {% if init['configuration'] is not null %}
+                        {% set configuration = init['configuration'] %}
+                    {% else %}
+                        {% set configuration = '' %}
+                    {% endif %}
+                        
+                    <tr>
+                    	<th colspan="4">{{ init['label'] }}</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ xar_data_input({type: init['property_id'], name: fieldname, id: fieldid, configuration: configuration, value: init['value']}) }}
+                        </td>
+                        <td>{{ init['description'] }}</td>
+                        <td>{{ key }}</td>
+                        <td>
+                            {% if init['applies'] == 1 %}
+                                All themes
+                            {% elseif init['applies'] == 2 %}
+                                This theme
+                            {% else %}
+                                Unused
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </fieldset>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

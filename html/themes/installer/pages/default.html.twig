@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{{ xar_twig_header("text/html") -}}
+	<html xml:lang="en" lang="en">
+		<head>
+			<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+			<title>{{ tpl.pageTitle }}</title>
+			<meta name="ROBOTS" content="NOINDEX,NOFOLLOW"/>
+			<meta name="resource-type" content="document"/>
+			<meta http-equiv="expires" content="0"/>
+			<meta name="generator" content="Xaraya; - http://www.xaraya.info"/>
+			<meta name="rating" content="General"/>
+			<link rel="stylesheet" type="text/css" href="themes/common/style/core.css"/>
+			<link rel="stylesheet" type="text/css" href="themes/installer/style/style.css"/>
+		</head>
+		<body>
+			{% set isupgrade = xar_coremethod('xarVar', 'getCached', ['Upgrade', 'upgrading']) %}
+			<div id="header">
+				<div id="header_logo">
+					<div id="head_link">Xaraya</div>
+					<div id="header_content_wrap">
+						<div id="header_content">
+							<div id="header_tlcorner"><div id="header_trcorner">&#160;</div></div>
+
+							<div id="header_contentcore">
+								{% set script_path = xar_coremethod('xarServer', 'getVar', ['SCRIPT_NAME']) %}
+								{% set script = script_path|split("/")|last %}
+								{% set modulename = xar_coremethod('xarController', 'getVar', ['module']) %}
+								{% if script == 'install.php' or modulename == 'installer' %}
+									<h1>Xaraya Installer</h1>
+									<p>
+										This script will install the Xaraya database and configure the settings you need to get started. This process will take approximately ten (10) minutes. If you need assistance at any point, visit the <a href="http://www.xaraya.com/index.php/xarbb">support forums</a> or live IRC support for help.
+									</p>
+								{% else %}
+									<h1>Xaraya Upgrade</h1>
+									<p>
+										This script will upgrade the Xaraya database and adjust the settings for your new version of Xaraya. This process will take approximately five (5) minutes.   If you need assistance at any point, visit the <a href="http://www.xaraya.com/index.php/xarbb">support forums</a> or live IRC support for help.
+									</p>
+								{% endif %}
+							</div>
+							<div id="header_blcorner"><div id="header_brcorner">&#160;</div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="navbar">
+				<div id="navbar_inner">
+					<ul id="navbar_core">
+						<li class="navbar-item">
+							<a href="http://xarmaica.com/" target="_blank">Support at our Community Site</a>
+						</li>
+						<li class="navbar-item">
+							<a href="docs/license.html" target="_blank">GNU General Public License</a>
+						</li>
+						<li class="navbar-item">
+							<a href="docs/credits.html" target="_blank">Xaraya Credits</a>
+						</li>
+						{% if isupgrade == '1' %}
+						{# <!--
+							<li class="navbar-item">
+								<a href="http://www.xaraya.info/index.php/documentation/586">Upgrade Guide</a>
+							</li>
+						--> #}
+						{% else %}
+						{# <!--
+							<li class="navbar-item">
+								<a href="http://www.xaraya.info/index.php/documentation/96">Prepare for Install</a>
+							</li>
+							<li class="navbar-item">
+								<a href="http://www.xaraya.info/index.php/documentation/97">Install Guide</a>
+							</li>
+							--> #}
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+
+			<div id="contentouter">
+				<div id="contentwrap">
+					<div id="contentmain">
+						<div id="contentmain_inner"><div id="contentmain_tlcorner"><div id="contentmain_trcorner">&#160;</div></div>
+							<div id="contentmain_core">
+								{% block modulespace %}{{ _bl_mainModuleOutput|raw }}{% endblock %}
+							</div>
+							<div id="contentmain_blcorner"><div id="contentmain_brcorner">&#160;</div></div>
+						</div>
+					</div>
+				</div>
+				<br class="xar-clearboth"/>
+			</div>
+		</body>
+	</html>

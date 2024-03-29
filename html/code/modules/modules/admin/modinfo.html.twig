@@ -1,0 +1,201 @@
+{# @modules/admin/modinfo.html.twig #}
+
+{% block modinfo %}
+{{ include('@modules/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+	    <div class="xar-mod-page-head">
+	        <h2>Detailed Module Information</h2>
+	        {# <!-- Icon --> #}
+	                <h3>{{ moddispname }}</h3>
+	            <div style="display: none;">
+	                {% set modiconurl = xar_imageurl(modname ~ '.png', 'module', modname) %}
+	                {% if not modiconurl %}
+	                    {% set modiconurl = xar_imageurl(modname ~ '.png', 'theme') %}
+	                    {% if not modiconurl %}
+	                        {% set modiconurl = xar_imageurl('module-generic.png', 'theme') %}
+	                    {% endif %}
+	                {% endif %}
+	                {% set imagetext = '{{ moddispname }}' %}
+	                {% set imagealt = imagetext %}
+	                {{ xar_data_output({type: "image", value: modiconurl, imagetext: imagetext, imagealt: imagealt}) }}
+	            </div>
+	    </div>
+	    <div class="xar-mod-page-body">
+        <fieldset>
+            <div class="xar-row">
+            	<div class="xar-col">
+	                <label>
+	                    Module ID
+	                </label>
+                </div>
+                <div class="xar-col">
+	                {{ modid }}
+                </div>
+            </div>
+            <div class="xar-row">
+            	<div class="xar-col">
+	                <label>
+	                    Name
+	                </label>
+                </div>
+                <div class="xar-col">
+	                <a href="http://www.xaraya.com/index.php/release/{{ modid }}.html">{{ modname }}</a>
+                </div>
+            </div>
+            <div class="xar-row">
+            	<div class="xar-col">
+	                <label>
+	                    Display Name
+	                </label>
+                </div>
+                <div class="xar-col">
+	                {{ moddispname }}
+                </div>
+            </div>
+            <div class="xar-row">
+            	<div class="xar-col">
+	                <label>
+	                    Version
+	                </label>
+                </div>
+                <div class="xar-col">
+	                {{ modver }}
+                </div>
+            </div>
+            <div class="xar-row">
+            	<div class="xar-col">
+	                <label>
+	                    Alias(es)
+	                </label>
+                </div>
+                <div class="xar-col">
+	                <a href="{{ xar_moduleurl('modules','admin','aliases',{'name': modname}) }}">
+	                    {% set imagealt = '[set aliases]' %}
+	                    {% set iconurl = xar_imageurl('icons/modify.png', 'theme') %}
+	                    {{ xar_data_output({type: "image", value: iconurl, imagetext: imagealt}) }}
+	                </a>
+	                {{ aliases }}
+                </div>
+            </div>
+            <div class="xar-row">
+            	<div class="xar-col">
+	                <label>
+	                    Description
+	                </label>
+                </div>
+                <div class="xar-col">
+	                {{ moddispdesc }}
+                </div>
+            </div>
+            <div class="xar-row">
+            	<div class="xar-col">
+	                <label>
+	                    Directory
+	                </label>
+	            </div>
+                <div class="xar-col">
+	                {{ moddir }}
+                </div>
+            </div>
+            <div class="xar-row">
+            	<div class="xar-col">
+	                <label>
+	                    Class
+	                </label>
+                </div>
+                <div class="xar-col">
+	                {{ modclass }}
+                </div>
+            </div>
+            <div class="xar-row">
+            	<div class="xar-col">
+	                <label>
+	                    Category
+	                </label>
+                </div>
+                <div class="xar-col">
+	                {{ modcat }}
+                </div>
+            </div>
+            <div class="xar-row">
+            	<div class="xar-col">
+	                <label>
+	                    Author(s)
+	                </label>
+                </div>
+                <div class="xar-col">
+	                {{ modauthor }}
+                </div>
+            </div>
+            <div class="xar-row">
+            	<div class="xar-col">
+	                <label class="xar-form-label">
+	                    Contact(s)
+	                </label>
+                </div>
+                <div class="xar-col">
+	                {{ modcontact }}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+	                <label class="xar-form-label">
+	                    Dependencies
+	                </label>
+                </div>
+                <div class="xar-col">
+	                {{ moddependencies }}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label class="xar-form-label">
+                        {% if hookobservers %}
+                            <a href="{{ xar_moduleurl('modules','admin','hooks',{'hook': modname}) }}">Hook Observers</a>
+                        {% else %}
+                            Hook Observers
+                        {% endif %}
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {% if hookobservers %}
+                        {% for scope, events in hookobservers %}
+                            <div>
+                                <span>{{ ucfirst(scope) }} Scope</span>
+                                <ul>
+                                    {% for event, hook in events %}
+                                        <li>{{ hook['area'] }}: {{ event }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        None
+                    {% endif %}
+                </div>
+            </div>
+            {% if namespace %}
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label class="xar-form-label">
+                            Namespace
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {{ namespace }}
+                    </div>
+                </div>
+            {% endif %}
+        </fieldset>
+        <div class="xar-form-actions">
+            <div class="xar-row">
+                <div class="xar-col"></div>
+                <div class="xar-col">
+                    {% set label = 'Go Back' %}
+                    {{- xar_button({type: "cancel", label: label}) -}}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

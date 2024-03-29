@@ -1,0 +1,135 @@
+{# @mail/admin/compose.html.twig #}
+
+{% block compose %}
+{{ xar_javascript({position: "head", scope: "theme", filename: "formcheck.js"}) }}
+    <script type="text/javascript">
+    {#  
+        // Enter name of mandatory fields
+        var mail_fieldRequired = Array("subject", "message");
+        // Enter field description to appear in the dialog box
+        var mail_fieldDescription = Array("Subject", "Message");
+    //  #}
+    </script>
+    {{ include('@mail/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Compose Message</h2>
+        <div><span style="color: red">{{ message }}</span></div>
+        <form action="{{ xar_moduleurl('mail','admin','sendtest') }}" method="post" onsubmit="return xar_base_formCheck(this, mail_fieldRequired, mail_fieldDescription);" enctype="application/x-www-form-urlencoded">
+            <fieldset>
+                <legend>Message Details</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Recipient Name' %}
+                        <label for="name" title="{{ label }}" class="xar-form-label">
+                            Recipient Name:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" id="name" name="name" value="{{ name }}" maxlength="100" class="xar-form-textlong"/>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Recipient Email Address' %}
+                        <label for="email" title="{{ label }}" class="xar-form-label">
+                            Recipient Email:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" id="email" name="email" value="{{ email }}" maxlength="255" class="xar-form-textlong"/>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Recipient CC' %}
+                        <label for="emailcc" title="{{ label }}" class="xar-form-label">
+                            CC:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" id="emailcc" name="emailcc" value="" maxlength="255" class="xar-form-textlong"/>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'CC Name' %}
+                        <label for="namecc" title="{{ label }}" class="xar-form-label">CC
+                            Name:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" id="namecc" name="namecc" value="" maxlength="100" class="xar-form-textlong"/>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Recipient BCC' %}
+                        <label for="emailbcc" title="{{ label }}" class="xar-form-label">
+                            BCC:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" id="emailbcc" name="emailbcc" value="" maxlength="255" class="xar-form-textlong"/>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'BCC Name' %}
+                        <label for="namebcc" title="{{ label }}" class="xar-form-label">BCC
+                            Name:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" id="namebcc" name="namebcc" value="" maxlength="100" class="xar-form-textlong"/>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Message Subject' %}
+                        <label for="subject" title="{{ label }}" class="xar-form-label">
+                            Subject:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="text" id="subject" name="subject" value="" maxlength="100" class="xar-form-textlong"/>
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        {% set label = 'Message Body' %}
+                        <label for="message" title="{{ label }}" class="xar-form-label">
+                            Message:
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({type: "textarea", name: "message", id: "message", class: "xar-form-textarealarge"}) }}
+                    </div>
+                </div>
+                {% if xar_coremethod('xarMod', 'isAvailable', ['scheduler']) %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% set label = 'Test scheduled mails' %}
+                            <label for="when_input" title="{{ label }}" class="xar-form-label">
+                                No Earlier Than:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({name: "when", type: "calendar"}) }}
+                        </div>
+                    </div>
+                {% endif %}
+            </fieldset>
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        <input type="hidden" name="confirm" id="confirm" value="1"/>
+                        <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                        {% set label = 'Send Message' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

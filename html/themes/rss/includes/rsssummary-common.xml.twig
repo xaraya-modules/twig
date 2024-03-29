@@ -1,0 +1,25 @@
+{# includes/rsssummary-common.xml.twig #}
+
+{% block rsssummary_common %}
+<item>
+        <title>
+            {{ rsstitle }}
+        </title>
+        <link>
+            {{ link }}
+        </link>
+        <pubDate>
+        {% set gmpubdate = gmdate("D, d M Y H.i.s",pubdate) %}{{ gmpubdate }}
+        GMT</pubDate>
+        <format resource="http://www.w3.org/1999/xhtml"/>
+        <encoded>
+            <![CDATA[ {{ summary }} ]]>
+        </encoded>
+        <description>
+            {{ rsssummary }}
+        </description>
+        <guid isPermaLink="true">
+            {{ link }}
+        </guid>
+    </item>
+{% endblock %}

@@ -1,0 +1,11 @@
+{# @roles/properties/showoutput-userlist.html.twig #}
+
+{% block showoutput_userlist %}
+{% if option_link %}
+        <a href="{{ xar_moduleurl('roles','user','display',{'id': value}) }}">
+            {{ user }}
+        </a>
+    {% else %}
+        {{ user }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,86 @@
+{# @base/pager/openended.html.twig #}
+
+{% block openended %}
+{# <!--
+    Open-ended pager where you don't know the number of pages in total.
+    Set the total pages to current_page + 1 for correct display.
+    --> #}
+    {# <!-- Get the pager css, this css deals only with layout for the pager links
+         Styles can be applied either by adding classes to your theme,eg. to
+         style.css or by applying classes directly in your template.
+         This template uses the default Xaraya classes xar-alt, xar-accent
+         and xar-norm to indicate the current state of links --> #}
+    {{ xar_style({scope: "theme", file: "pager"}) }}
+    <div class="xar-pager">
+        {# <!-- Display first-page link or text if there is more than one page --> #}
+        {% if totalpages > 1 %}
+            {% set label = 'First page' %}
+            {% if currentpagenum != firstpagenum %}
+                <span class="xar-page">
+                    <a title="{{ label }}" href="{{ firsturl }}">|&lt;</a>
+                </span>
+            {% else %}
+                <span class="xar-page-current" title="{{ label }}">
+                    |&lt;
+                </span>
+            {% endif %}
+        {% endif %}
+        {# <!-- Display previous-block link if there is more than one block --> #}
+        {% if totalblocks > 1 and pagesperblock > 1 %}
+            {% if currentblock != firstblock %}
+                {% set prevblocklabel = {{ xar_translate('Previous #(1) }} pages',prevblockpages) %}
+            <span class="xar-page">
+                <a title="{{ prevblocklabel }}" href="{{ prevblockurl }}">&lt;&lt;</a>
+            </span>
+            {% else %}
+            <span class="xar-page">
+                &lt;&lt;
+            </span>
+            {% endif %}
+        {% endif %}
+        {# <!-- Display previous-page link if there is just one block --> #}
+        {% if totalblocks == 1 or pagesperblock == 1 %}
+            {% if prevpageitems > 0 %}
+                <span class="xar-page">
+                    {% set label = 'Previous page' %}
+                    <a title="{{ label }}" href="{{ prevpageurl }}">&lt;</a>
+                </span>
+            {% else %}
+                <span class="xar-page">
+                    &lt;
+                </span>
+            {% endif %}
+        {% endif %}
+        {% for pagenumber, pageurl in middleurls %}
+            {% if pagenumber != currentpage %}
+                {% set pageurllabel = {{ xar_translate('Page #(1) }}',pagenumber) %}
+                {% if pagenumber == lastpagenum %}
+                    <span class="xar-page">
+                            <a href="{{ pageurl }}" title="{{ pageurllabel }}">{{ pagenumber }}...</a>
+                    </span>
+                {% else %}
+                    <span class="xar-page">
+                            <a href="{{ pageurl }}" title="{{ pageurllabel }}">{{ pagenumber }}</a>
+                    </span>
+                {% endif %}
+            {% else %}
+            <span class="xar-page-current">
+                {{ pagenumber }}
+            </span>
+            {% endif %}
+        {% endfor %}
+        {# <!-- Display next-page link if there is just one block --> #}
+        {% if currentpagenum != lastpagenum %}
+            {% if nextpageitems > 0 %}
+                <span class="xar-page">
+                    {% set label = 'Next page' %}
+                    <a title="{{ label }}" href="{{ nextpageurl }}">&gt;</a>
+                </span>
+            {% else %}
+                <span class="xar-page">
+                    &gt;
+                </span>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

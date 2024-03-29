@@ -1,0 +1,43 @@
+{# @dynamicdata/includes/subitemstemplate-input.html.twig #}
+
+{% block subitemstemplate_input %}
+{# <!-- START: This can be modified (the text) or moved around as a block --> #}
+    {% if addremove %}
+        <div id="add-element_{{ fieldprefix }}">
+            <span style="cursor: pointer">
+                Add Item
+            </span>
+        </div>
+    {% endif %}
+{# <!-- END: This can be modified (the text) or moved around as a block --> #}
+    
+    <div id="item_content_{{ fieldprefix }}">
+        {% set index = 'index_' ~ fieldprefix %}
+        {% set $index = 0 %}
+        {% set prefix = object.getFieldPrefix() %}
+        {% for key, item in items %}
+            {# <!-- xar:set name="$index">$$index+1</xar:set> --> #}
+            {% set $index = key %}
+            {% set dummy = object.setFieldPrefix(index ~ '_' ~ prefix) %}
+            {% set dummy = object.setFieldValues(item) %}
+            <div id="{{ key }}">
+
+{# <!-- START: This can be modified (the text) or moved around as a block --> #}
+                {% if addremove == 2 %}
+                    <div id="template_{{ fieldprefix }}_{{ index }}">
+                        <span style="cursor: pointer">
+                            Remove
+                        </span>
+                        <script>
+                            el = document.getElementById('template_{{ fieldprefix }}_{{ index }}');
+                            setRemove(el);
+                        </script>
+                    </div>
+                {% endif %}
+{# <!-- END: This can be modified (the text) or moved around as a block --> #}
+
+                {{ xar_data_form({object: object, tplmodule: tplmodule, layout: layout}) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

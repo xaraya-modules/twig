@@ -1,0 +1,14 @@
+{# @privileges/includes/admin-mod-head.html.twig #}
+
+{% block admin_mod_head %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">
+            {% if xar_modvar('privileges', 'use_module_alias') %}
+                {{ xar_var({scope: "module", module: "privileges", name: "module_alias_name"}) }}
+            {% else %}
+                Privileges Administration
+            {% endif %}
+        </span>
+        {{ include('@privileges/includes/admin-menu.html.twig') }}
+    </div>
+{% endblock %}

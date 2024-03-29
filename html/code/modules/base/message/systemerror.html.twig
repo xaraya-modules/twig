@@ -1,0 +1,52 @@
+{# @base/message/systemerror.html.twig #}
+
+{% block systemerror %}
+{# <!--
+    ***********
+    * WARNING
+    * Modify this template at your own risk.
+    * If the template contains errors, the exception system will not be able to process
+    * it correctly, leading to unexpected results
+    ***********
+    --> #}
+    <div class="xar-mod-head">
+        <span class="xar-mod-title">Error Message</span>
+    </div>
+    <div class="xar-mod-body">
+        {% set label = 'Exception Icon' %}
+        {{- xar_image({scope: "theme", file: "exception.png", alt: label, class: "xar-module-icon"}) -}}
+        <h2>{{ type }}</h2>
+        <h3>{{ title }}</h3>
+        <pre style="text-align: left;">
+{{ short }}
+</pre>
+        <p>
+          Raised in: {{ file }}, line {{ line }}
+        </p>
+        {% if long is not null and long != '' %}
+            <h3>Explanation:</h3>
+            <p>{{ long }}</p>
+        {% endif %}
+        {% if hint is not null and hint != '' %}
+            <h3>Further Information:</h3>
+            <p>{{ hint }}</p>
+        {% endif %}
+        {% if stack is not null and stack != '' %}
+            <h3>Stack:</h3>
+            <pre style="text-align: left;">
+{{ stack }}
+</pre>
+        {% endif %}
+        {% if product is not null and product != '' %}
+{# <!-- Properly update for use with GitHub. http://bugs.xaraya.com/enter_bug.cgi?product={{ product }}&amp;component={{ component }}&amp;comment={{ short }} Maybe "$product" or "$component" could supply "core", "modules", "blocks", "themes", or "properties"?     --> #}
+		  <p>
+                <a href="https://github.com/xaraya/core/issues"
+                target="_blank">Click here to raise a bug</a>
+            </p>
+            {% else %}
+            <p>
+                <a href="https://github.com/xaraya/core/issues">Click here to raise a bug</a>
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}

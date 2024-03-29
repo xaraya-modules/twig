@@ -1,0 +1,71 @@
+{# @privileges/admin/deleteprivilege.html.twig #}
+
+{% block deleteprivilege %}
+{{ xar_style({scope: "module", file: "privtree"}) }}
+    {{ include('@privileges/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Delete Privilege: {{ pname }}</h2>
+        {% if parents|length != 0 %}
+            <div>
+                <ul class="xar-tabs xar-alt xar-norm-outline">
+                    {% set title = 'These are the privileges that contain {{ pname }} as a component' %}
+                    {% set label = 'Used in' %}
+                    <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                    {% set prevgroup = "" %}
+                    {% for i in range(0, parents|length - 1) %}
+                        {% if prevgroup != parents[i]['parentname'] %}
+                            <li class="xar-tab">
+                                {% set label = 'Show this privilege' %}
+                                <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                    {{ parents[i]['parentname'] }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% set prevgroup = parents[i]['parentname'] %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <div>
+            <ul class="xar-tabs xar-alt xar-norm-outline">
+                {% set title = 'Choose an action to perform on this privilege' %}
+                {% set label = 'Manage privilege' %}
+                <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+                <li class="xar-tab">
+                    <a href="{{ xar_moduleurl('privileges','admin','displayprivilege',{'id': id}) }}" class="xar-norm xar-norm-outline">
+                        Display
+                    </a>
+                </li>
+                <li class="xar-tab">
+                    <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': id}) }}" class="xar-norm xar-norm-outline">
+                        Modify
+                    </a>
+                </li>
+                <li class="xar-tab-active">
+                    <a href="{{ xar_moduleurl('privileges','admin','deleteprivilege',{'id': id}) }}" class="xar-accent xar-accent-outline">
+                        Delete
+                    </a>
+                </li>
+                <li class="xar-tab">
+                    <a href="{{ xar_moduleurl('privileges','admin','viewroles',{'id': id}) }}" class="xar-norm xar-norm-outline">
+                        Groups/Users
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <form method="post" action="{{ xar_moduleurl('privileges','admin','deleteprivilege') }}" enctype="application/x-www-form-urlencoded">
+            <h3 class="xar-align-center">Confirm deletion of all instances of Privilege
+            '{{ pname }}'</h3>
+            <div class="xar-align-center">
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                <input type="hidden" name="id" id="id" value="{{ id }}"/>
+                <input type="hidden" name="confirm" id="confirm" value="1"/>
+                <input type="hidden" name="confirmation" id="confirmation" value="1"/>
+                {% set label = 'Delete Privilege' %}
+                {{- xar_button({type: "submit", label: label}) -}}
+                {% set label = 'Cancel' %}
+                {{- xar_button({type: "cancel", label: label}) -}}
+            </div>
+        </form>
+    </div>
+{% endblock %}

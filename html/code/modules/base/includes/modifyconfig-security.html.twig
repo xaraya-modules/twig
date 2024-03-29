@@ -1,0 +1,219 @@
+{# @base/includes/modifyconfig-security.html.twig #}
+
+{% block modifyconfig_security %}
+<fieldset>
+        <legend>Sessions and Security</legend>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Security options for sessions' %}
+                <label for="securitylevel" title="{{ label }}" class="xar-form-label">
+                    Security Level:
+                </label>
+            </div>
+            <div class="xar-col">
+                {% set options = [
+                        {'id': 'High', 'name': {{ xar_translate('High') }}},
+                        {'id': 'Medium', 'name': {{ xar_translate('Medium') }}},
+                        {'id': 'Low', 'name': {{ xar_translate('Low') }}},
+                    ] %}
+                {% set value = xar_coremethod('xarConfigVars', 'get', [null,'Site.Session.SecurityLevel']) %}
+                {{ xar_data_input({type: "dropdown", name: "securitylevel", options: options, value: value}) }}
+            </div>
+        </div>
+        {% if xar_coremethod('xarConfigVars', 'get', [null,'Site.Session.SecurityLevel']) == 'Medium' %}
+
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% set label = 'How long to allow the session to last in days' %}
+                    <label for="sessionduration" title="{{ label }}" class="xar-form-label">Session Duration (In Days):</label>
+                </div>
+                <div class="xar-col">
+                    {% set value = xar_var({scope: "config", name: "Site.Session.Duration"}) %}
+                    <input type="text" id="sessionduration" name="sessionduration" value="{{ value }}" maxlength="3" class="xar-form-textshort"/>
+                </div>
+            </div>
+        {% endif %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Session times out in minutes' %}
+                <label for="sessiontimeout" title="{{ label }}" class="xar-form-label">Session Inactivity Time Out:</label>
+                    {% set value = xar_var({scope: "config", name: "Site.Session.InactivityTimeout"}) %}
+            </div>
+            <div class="xar-col">
+                <input type="text" id="sessiontimeout" name="sessiontimeout" value="{{ value }}" maxlength="3" class="xar-form-textshort"/>
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set authmodules = xar_var({scope: "config", name: "Site.User.AuthenticationModules"}) %}
+                {% set label = 'Change the order of authentication' %}
+                <label for="authmodules" title="{{ label }}" class="xar-form-label">Authentication Modules:</label>
+            </div>
+            <div class="xar-col">
+                {% if authmodules and authmodules|length > 1 %}
+                    {% set size = authmodules|length %}
+                    {{ xar_data_input({type: "orderselect", name: "authmodules", order: authmodules, size: size}) }}
+                {% else %}
+                    {{ authmodules[0] }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Override the default cookie name' %}
+                <label for="cookiename" title="{{ label }}{{ " class="xar-form-label">
+                    Cookie Name.
+                </label>
+            </div>
+            <div class="xar-col">
+                {% set value = xar_var({scope. "config", name. "Site.Session.CookieName"}) %}
+                <input type="text" id="cookiename" name="cookiename" value=" }}$value{{ " maxlength="20" class="xar-form-textmedium"/>
+                & }}160;Default: XARAYASID
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Override the default cookie path' %}
+                <label for="cookiepath" title="{{ label }}" class="xar-form-label">
+                    Cookie Path:
+                </label>
+            </div>
+            <div class="xar-col">
+                {% set value = xar_var({scope: "config", name: "Site.Session.CookiePath"}) %}
+                <input type="text" id="cookiepath" name="cookiepath" value="{{ value }}" maxlength="20" class="xar-form-textmedium"/>
+                <span>
+                    &#160;Default: {{ xar_baseuri() }} (limited to the Xaraya directory)
+                </span>
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Override the default cookie domain' %}
+                <label for="cookiedomain" title="{{ label }}" class="xar-form-label">
+                    Cookie Domain:
+                </label>
+            </div>
+            <div class="xar-col">
+                {% set value = xar_var({scope: "config", name: "Site.Session.CookieDomain"}) %}
+                <input type="text" id="cookiedomain" name="cookiedomain" value="{{ value }}" maxlength="20" class="xar-form-textmedium"/>
+                &#160;Default: none (not shared across hosts)
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Cookie Timeout Settings' %}
+                <label for="cookietimeout" title="{{ label }}" class="xar-form-label">
+                    Cookie Timeout: (In Days)
+                </label>
+            </div>
+            <div class="xar-col">
+            <xar:set name="value" catch="false">xarConfigVars::get(null,'Site.Session.CookieTimeout')</xar:set>
+                <input type="text" id="cookietimeout" name="cookietimeout" value="{{ value }}" maxlength="40" class="xar-form-textmedium"/>
+                <span>
+                </span>
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Override the default referer check' %}
+                <label for="referercheck" title="{{ label }}" class="xar-form-label">
+                    Referer Check:
+                </label>
+            </div>
+            <div class="xar-col">
+                {% set value = xar_var({scope: "config", name: "Site.Session.RefererCheck"}) %}
+                <input type="text" id="referercheck" name="referercheck" value="{{ value }}" maxlength="40" class="xar-form-textmedium"/>
+                <span>
+                    &#160;Default: {{ xar_coremethod('xarServer', 'getVar', ['HTTP_HOST']) }} for security level 'High'
+                </span>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>SSL Support</legend>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'Configure to run on a secure server.' %}
+                <label for="secureserver" title="{{ label }}" class="xar-form-label">
+                    Configure for secure server
+                </label>
+            </div>
+            <div class="xar-col">
+                {% set checked = xar_var({scope: "config", name: "Site.Core.EnableSecureServer"}) %}
+                {{ xar_data_input({type: "checkbox", name: "secureserver", id: "secureserver", checked: checked}) }}
+            </div>
+        </div>
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'SSL port' %}
+                <label for="sslport" title="{{ label }}" class="xar-form-label">SSL port</label>
+            </div>
+            <div class="xar-col">
+                {% set value = xar_var({scope: "config", name: "Site.Core.SecureServerPort"}) %}
+                <input type="text" id="sslport" name="sslport" value="{{ value }}" class="xar-form-textshort"/>
+            </div>
+        </div>
+    </fieldset>
+    {# <!--
+    <fieldset>
+        <legend>Encryption</legend>
+        {% if extension_loaded('mcrypt') %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label for="bar" title="{{ xar_translate('The cipher we are using') }}" class="xar-form-label">                                
+                        Cipher Employed:                                
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({type: "dropdown", name: "cipher", options: ciphers, value: encryption['cipher']}) }}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label for="bar" title="{{ xar_translate('The cipher mode we are using') }}" class="xar-form-label">                                
+                        Cipher Mode:                                
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({type: "dropdown", name: "mode", options: modes, value: encryption['mode']}) }}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label for="bar" title="{{ xar_translate('The key used in encryption and decryption') }}" class="xar-form-label">                                
+                        Key:                                
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({type: "password", name: "key", value: encryption['key']}) }}
+                </div>
+            </div>
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label for="bar" title="{{ xar_translate('A hint for remembering the key used in encryption and decryption') }}" class="xar-form-label">                                
+                        Hint:                                
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({type: "textbox", name: "hint", value: encryption['hint'], size: "80"}) }}
+                </div>
+            </div>
+            
+            <div class="xar-row">
+                <div class="xar-col">
+                    <label for="bar" title="{{ xar_translate('The initialization vector used in encryption and decryption') }}" class="xar-form-label">
+                        Initialization Vector:
+                    </label>
+                </div>
+                <div class="xar-col">
+                    {{ xar_data_input({type: "textbox", name: "initvector", value: encryption['initvector'], size: "10", maxlength: "8"}) }}&#160;
+                    must be exactly 8 characters long
+                </div>
+            </div>
+            
+        {% else %}
+            You need to install the PHP mcrypt extension to access encryption functionality
+        {% endif %}
+    </fieldset>
+    --> #}
+{% endblock %}

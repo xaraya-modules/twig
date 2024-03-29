@@ -1,0 +1,17 @@
+{# @categories/properties/showoutput-categorynavigation.html.twig #}
+
+{% block showoutput_categorynavigation %}
+{% set filename = 'navigation-' ~ propertytemplate; %}
+    {{ include('@categories/includes/' ~ filename ~ '.html.twig') }}
+{# <!--
+    {% if layout == 'prevnext' %}
+      {{ include('@categories/includes/navigation-prevnext.html.twig') }}
+    {% elseif layout == 'trails' %}
+      {{ include('@categories/includes/navigation-trails.html.twig') }}
+    {% elseif layout == 'tree' %}
+      {{ include('@categories/includes/navigation-tree.html.twig') }}
+    {% else %}
+      {{ include('@categories/includes/navigation-tree.html.twig') }}
+    {% endif %}
+--> #}
+{% endblock %}

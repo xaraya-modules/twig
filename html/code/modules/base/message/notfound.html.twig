@@ -1,0 +1,21 @@
+{# @base/message/notfound.html.twig #}
+
+{% block notfound %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">404 Not Found</span>
+    </div>
+    <div class="xar-mod-body">
+        {% set label = 'Error Icon' %}
+        {{- xar_image({scope: "theme", file: "user-error.png", alt: label, class: "xar-module-icon"}) -}}
+        {% if msg %}
+            <h2>{{ msg }}</h2>
+        {% endif %}
+        <h3>Our apologies, the content you requested was not found</h3>
+
+        {# <!-- Insert sitemap here --> #}
+
+        <p>
+            <a href="javascript:history.back(-1)">Click here to try again</a>
+        </p>
+    </div>
+{% endblock %}

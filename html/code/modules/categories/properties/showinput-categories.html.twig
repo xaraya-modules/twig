@@ -1,0 +1,69 @@
+{# @categories/properties/showinput-categories.html.twig #}
+
+{% block showinput_categories %}
+{% if size %}
+        {% set sizestring = 'size="'.size.'"' %}
+    {% else %}
+        {% set sizestring = '' %}
+    {% endif %}
+
+    {% if multiple %}
+        {% set multiplestring = 'multiple="multiple"' %}
+    {% else %}
+        {% set multiplestring = '' %}
+    {% endif %}
+
+    {% if onchange is not null %}
+      {% set evt_change = onchange %}
+    {% else %}
+      {% set evt_change = 'return true;' %}
+    {% endif %}
+    {% if style is null %}
+        {% set style = '' %}
+    {% endif %}
+
+    {% set index = 0 %}
+
+    {% for key, nodes in trees %}
+        <input type="hidden" name="{{ name }}[base_category][{{ index }}]" value="{{ base_category[index] }}"/>
+        <input type="hidden" name="{{ name }}[module_id]" value="{{ categories_module_id }}"/>
+        <input type="hidden" name="{{ name }}[itemtype]" value="{{ categories_itemtype }}"/>
+        
+        {% set subdata = {
+                'id': id,
+                'name': name,
+                'value': value[index] is not null ? value[index] : 0,
+                'index': index,
+                'nodes': nodes,
+                'select_type': select_type[index],
+                'tabindex': tabindex,
+                'evt_change': evt_change,
+                'style': style,
+                'include_all_cats': include_all_cats,
+                'include_no_cat': include_no_cat,
+                'include_self': include_self[key],
+                'layout': layout
+            } %}
+
+        {% if select_type[index] == 1 %}
+            {{ include('@categories/includes/categories-select.html.twig') }}
+        {% else %}
+            {{ include('@categories/includes/categories-multiselect.html.twig') }}
+        {% endif %}
+    
+        {% if layout == 'vertical' %}
+            <br />
+        {% endif %}
+        {% set index = index+1 %}
+    {% endfor %}
+
+    {% if show_edit and current_id %}
+        <xar:sec id="showEdit" mask="EditCategories" catch="false" component="All" instance="All:$current_id">
+            [&#160;<a href="{{ xar_moduleurl('categories','admin','modify',{'cid': current_id}) }}">
+            Edit
+            </a> ]
+        {% endif %}
+    {% endif %}
+    
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

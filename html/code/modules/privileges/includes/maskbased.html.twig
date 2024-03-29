@@ -1,0 +1,102 @@
+{# @privileges/includes/maskbased.html.twig #}
+
+{% block maskbased %}
+{% set isenabled = xar_modvar('privileges', 'maskbasedsecurity') %}
+{% if xar_security_check('AdminPrivilege') %}
+    {% if _REQUEST['enable'] %}
+        {% if _REQUEST['enable'] < 0 %}
+            {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges','maskbasedsecurity',false]) %}
+            {% set isenabled = 0 %}
+        {% else %}
+            {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges','maskbasedsecurity',true]) %}
+            {% set isenabled = 1 %}
+        {% endif %}
+        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'enable': null}])) }}
+    {% endif %}
+{% endif %}
+
+<fieldset>
+{% if isenabled %}
+    <legend><a href="{{ xar_currenturl({'enable': -1}) }}" title="Turn OFF mask-based security checks">DISABLE</a> Simple Mask-Based Security Checks by Group <a href="{{ xar_currenturl({'refresh': 1}) }}" title="Refresh based on currently assigned privileges (this might take a while)">{{- xar_image({scope: "theme", file: "icons/view-refresh.png", class: "xar-icon"}) -}}</a></legend>
+{% else %}
+    <legend><a href="{{ xar_currenturl({'enable': 1}) }}" title="Turn ON mask-based security checks">ACTIVATE</a> Simple Mask-Based Security Checks by Group <a href="{{ xar_currenturl({'refresh': 1}) }}" title="Refresh based on currently assigned privileges (this might take a while)">{{- xar_image({scope: "theme", file: "icons/view-refresh.png", class: "xar-icon"}) -}}</a></legend>
+{% endif %}
+
+{% if xar_security_check('AdminPrivilege') %}
+    {% if _REQUEST['flip'] %}
+        {% set val = xar_modvar('privileges', _REQUEST['flip']) %}
+        {% if val %}
+            {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges',_REQUEST['flip'],'']) %}
+        {% elseif val is not null %}
+            {% set dummy = xar_coremethod('xarModVars', 'delete', ['privileges',_REQUEST['flip']]) %}
+        {% else %}
+            {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges',_REQUEST['flip'],1]) %}
+        {% endif %}
+        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'flip': null}])) }}
+    {% endif %}
+{% endif %}
+
+{% set groups = xar_apifunc('roles','user','getallgroups') %}
+{% set dummy = 1;
+function by_name(a,b) {
+    return strcmp(a['name'], b['name']);
+}
+uasort(groups,'by_name') %}
+{# <!-- priv_type 3 means a mask --> #}
+{% set tmp_dd_getitems = xar_data_getitems({properties: properties, values: items, objectname: "privileges_privileges", where: "priv_type eq 3", sort: "module,component,level"}) %}{% set properties = tmp_dd_getitems.0 %}{% set items = tmp_dd_getitems.1 %}
+{% set fieldlist = >['name','module','component','level']< %}
+
+{% if xar_security_check('AdminPrivilege') %}
+    {% if _REQUEST['refresh'] %}
+        {% for group in groups %}
+            {% for itemid, fields in items %}
+                {% set code = 'SC.'.fields['name'].'.'.group['id'] %}
+                {% set dummy = xar_security_check(fields['name'], 0, '', '', '', group['name'],0,0) %}
+                {% if dummy %}
+                    {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges',code, 1]) %}
+                {% else %}
+                    {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges',code, 0]) %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'refresh': null}])) }}
+    {% endif %}
+{% endif %}
+
+<table class="xar-table xar-fullwidth">
+<tr>
+    {% for name in fieldlist %}
+        <th>{{ xar_data_label({property: properties[name]}) }}</th>
+    {% endfor %}
+    {% for group in groups %}
+        <th>{{ group['name'] }}</th>
+    {% endfor %}
+</tr>
+{% for itemid, fields in items %}
+<tr>
+    {% for name in fieldlist %}
+        <td>{{ xar_data_output({property: properties[name], value: fields[name]}) }}</td>
+    {% endfor %}
+    {% for group in groups %}
+        {% set code = 'SC.'.fields['name'].'.'.group['id'] %}
+        {% set val = xar_modvar('privileges', code) %}
+        <td align="center"><a href="{{ xar_currenturl({'flip': code}) }}" title="Flip Setting">
+        {% if val %}
+            {{- xar_image({scope: "theme", file: "icons/activate.png", class: "xar-icon"}) -}}
+        {% elseif val is not null %}
+            {{- xar_image({scope: "theme", file: "icons/deactivate.png", class: "xar-icon"}) -}}
+        {% else %}
+            {{- xar_image({scope: "theme", file: "icons/help-browser.png", class: "xar-icon"}) -}}
+        {% endif %}
+        </a></td>
+    {% endfor %}
+</tr>
+{% endfor %}
+</table>
+<p>
+    Note to site developers: if you don't want to differentiate privileges by instance, you could use this view for simplified security checks on your site.<br/>
+    If mask-based security checks are activated, you can flip security settings for individual masks and groups here. Please note that the underlying privilege
+    assignments are not modified, so if you disable mask-based security checks later on, the original privileges come back into effect.
+</p>
+</fieldset>
+{% endblock %}

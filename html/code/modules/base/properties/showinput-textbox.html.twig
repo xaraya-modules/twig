@@ -1,0 +1,36 @@
+{# @base/properties/showinput-textbox.html.twig #}
+
+{% block showinput_textbox %}
+{% if not size %}
+        {% set size = 10 %}
+    {% endif %}
+    {% if class %}
+    {% elseif size > 48 %}
+        {% set class = 'xar-form-textxlong' %}
+    {% elseif size < 12 %}
+        {% set class = 'xar-form-textshort' %}
+    {% elseif size < 30 %}
+        {% set class = 'xar-form-textmedium' %}
+    {% else %}
+        {% set class = 'xar-form-textlong' %}
+    {% endif %}
+    {% if not maxlength %}
+        {% set maxlength = 100 %}
+    {% endif %}
+    {% if not style %}
+        {% set style = '' %}
+    {% endif %}
+    {# <!-- On focus event --> #}
+    {% if onfocus is null %}
+        {% set onfocus = 'return true;' %}
+    {% endif %}
+    {# <!-- On change event --> #}
+    {% if onchange is null %}
+        {% set onchange = 'return true;' %}
+    {% endif %}
+    {% if placeholder is null %}
+        {% set placeholder = '' %}
+    {% endif %}
+    <input type="text" name="{{ name }}" value="{{ value }}" style="{{ style }}" size="{{ size }}" maxlength="{{ maxlength }}" id="{{ id }}" tabindex="{{ tabindex }}" class="{{ class }}" onfocus="{{ onfocus }}" onchange="{{ onchange }}" placeholder="{{ placeholder }}"/>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

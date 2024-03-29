@@ -1,0 +1,11 @@
+{# @base/properties/showinput-textupload.html.twig #}
+
+{% block showinput_textupload %}
+<textarea class="xar-form-textarealarge" name="{{ name }}" rows="{{ rows }}" cols="{{ cols }}" id="{{ id }}" tabindex="{{ tabindex }}">{{ value }}</textarea>
+    {% if uploads_hooked %}{{ uploads_hooked }} 
+    {% else %}
+        <input type="hidden" name="MAX_FILE_SIZE" value="{{ maxsize }}"/>
+        <input class="xar-fullwidth" type="file" name="{{ upname }}" size="{{ size }}" id="{{ upid }}" tabindex="{{ tabindex }}"/>{{ allowed }}
+    {% endif %}
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

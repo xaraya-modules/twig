@@ -1,0 +1,31 @@
+{# @dynamicdata/includes/object_privileges.html.twig #}
+
+{% block object_privileges %}
+<fieldset>
+        {% set instance = object.properties['module_id'].value ~ '.' ~ object.properties['itemtype'].value ~ '.All' %}
+        <legend title="Module: Dynamic Data - Component: Item - Instance: {{ instance }}">
+            Default Access Rights Using Privileges
+        </legend>
+        <table class="xar-table">
+            <tr>
+                <th>Group</th>
+                {% for level, info in levels %}
+                    <th style="text-align: center">{{ info.label }}</th>
+                {% endfor %}
+            </tr>
+            {% for roleid, rolename in grouplist %}
+            <tr>
+                <td>{{ rolename }}</td>
+                {% for level, info in levels %}
+                    {% set allow = xar_security_check(info['mask'],0,'Item',instance,'',rolename,0,0) %}
+                    {% if allow %}
+                        <td style="text-align: center">{{- xar_image({scope: "theme", file: "icons/activate.png", class: "xar-icon"}) -}}</td>
+                    {% else %}
+                        <td style="text-align: center">{{- xar_image({scope: "theme", file: "icons/deactivate.png", class: "xar-icon"}) -}}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </fieldset>
+{% endblock %}

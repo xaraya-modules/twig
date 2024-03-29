@@ -1,0 +1,27 @@
+{# @workflow/showinstances.html.twig #}
+
+{% extends '@workflow/base.html.twig' %}
+
+{% block modulespace %}
+{# <!-- This is the template which will be shown when there is
+     a xar:workflow-instances tag somewhere in the code
+     The ideas is to use a layout attribute in tag tag to select the proper layout
+--> #}
+  {% if not layout or layout == 'default' %}
+    {% if not title %}
+      {% set title = 'My Current Task List' %}
+    {% endif %}
+    <fieldset>
+      <legend>
+        {{ title }}
+      </legend>
+      {# <!-- Produce the list of instances --> #}
+      {{ include('@workflow/includes/instancelist.html.twig') }}
+    </fieldset>
+  {% else %}
+    {# <!-- Layout apparently had a value --> #}
+    Trying to use layout : {{ layout }}
+    Not implemented yet
+    This layout is undefined - please specify it in modules/workflow/xartemplates/user-showinstances.xd
+  {% endif %}
+{% endblock %}

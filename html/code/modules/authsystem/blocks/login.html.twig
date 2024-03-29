@@ -1,0 +1,44 @@
+{# @authsystem/blocks/login.html.twig #}
+
+{% block login %}
+<form action="{{ xar_moduleurl('authsystem','user','login') }}" method="post" class="xar-margin-none">
+        {% set id = 'returnurl'._bl_block_id %}
+        {% set unameid = 'uname'._bl_block_id %}
+        {% set passid = 'pass'._bl_block_id %}
+        {% set remembermeid = 'rememberme'._bl_block_id %}
+        {{ xar_data_input({type: "hidden", name: "redirecturl", id: id, value: return_url}) }}
+        
+        <fieldset>
+	        <div class="row">
+		        <div class="col">
+			        {% set label = 'Enter your user name' %}
+			        <label for="{{ unameid }}" title="{{ label }}">Username:</label>
+		        </div>
+		        <div class="col">
+			        {{ xar_data_input({type: "textbox", class: "xar-fullwidth", name: "uname", id: unameid, maxlength: "64"}) }}
+		        </div>
+	        </div>
+	        <div class="row">
+		        <div class="col">
+			        {% set label = 'Enter your password' %}
+			        <label for="{{ passid }}" title="{{ label }}">Password:</label>
+			    </div>
+		        <div class="col">
+	        		{{ xar_data_input({type: "password", class: "xar-fullwidth", name: "pass", id: passid, maxlength: "64"}) }}
+	        	</div>
+	        </div>
+        </fieldset>
+        
+        <fieldset class="xar-form-actions">
+	        {% if xar_coremethod('xarConfigVars', 'get', [null,'Site.Session.SecurityLevel']) != 'High' %}
+	            <label class="xar-displayblock" for="{{ remembermeid }}">
+	                {{ xar_data_input({type: "checkbox", name: "rememberme", id: remembermeid, value: "1"}) }}
+	                Remember me
+	            </label>
+	        {% endif %}
+	        {% set label = 'Log In' %}
+            {{- xar_button({type: "submit", label: label}) -}}
+	        <a href="{{ xar_moduleurl('roles','user','lostpassword') }}" class="xar-action-secondary">Request new password</a>
+        </fieldset>
+    </form>
+{% endblock %}

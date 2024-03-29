@@ -1,0 +1,52 @@
+{# @dynamicdata/errors.html.twig #}
+
+{% extends '@dynamicdata/base.html.twig' %}
+
+{% block modulespace %}
+{{ include('@dynamicdata/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+    {# <!--
+    <div class="xar-mod-head">
+        <span class="xar-mod-title">User Error</span>
+    </div>
+    --> #}
+        <fieldset>
+            <legend>DynamicData Problem</legend>
+            {% set label = 'System Message' %}
+            {{- xar_image({scope: "theme", file: "user-error.png", class: "xar-module-icon", alt: label}) -}}
+            {% if layout is null %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    No error message is available.
+                    <br />
+                    Please contact the system administrator.
+                </div>                    
+            {% elseif layout == 'duplicate_name' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    A dataobject {{ name }} already exists.
+                    <br/>
+                    If you are importing from a XML file, try going back, clicking on the "Overwrite if exists" checkbox, and importing again.
+                </div>
+            {% elseif layout == 'bad_definition' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    The object could not be imported because of an error in its definition:
+                    <br/>{{ name }}
+                </div>
+            {% else %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    No error message is available.
+                    <br />
+                    Please contact the system administrator.
+                </div>                    
+            {% endif %}                
+        </fieldset>
+        <div class="xar-form-actions">
+            <div class="xar-row">
+                <div class="xar-col"></div>
+                <div class="xar-col">
+                    {% set label = 'Go back' %}
+                    {{- xar_button({type: "cancel", label: label}) -}}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

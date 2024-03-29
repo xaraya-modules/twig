@@ -1,0 +1,14 @@
+{# @dynamicdata/includes/admin-mod-head.html.twig #}
+
+{% block admin_mod_head %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">
+            {% if xar_modvar('dynamicdata', 'use_module_alias') %}
+                {{ xar_var({scope: "module", module: "dynamicdata", name: "module_alias_name"}) }}
+            {% else %}
+                DynamicData Administration
+            {% endif %}
+        </span>
+        {{ include('@dynamicdata/includes/admin-menu.html.twig') }}
+    </div>
+{% endblock %}

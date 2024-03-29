@@ -1,0 +1,18 @@
+{# @base/properties/showinput-statelisting.html.twig #}
+
+{% block showinput_statelisting %}
+<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
+    {# <!--
+        Override this template by creating custom options and/or firstline, such as
+        {% set options = array(
+                ...
+            ) %}
+
+        {% set firstline = 'Choose a state' %}
+        {% set firstline = {'id': 0, 'name': firstline} %}
+
+        {{ xar_data_input({type: "dropdown", options: options, name: name, value: value, firstline: firstline}) }}
+    --> #}
+    
+    {{ xar_data_input({type: "dropdown", name: name, options: options, value: value}) }}
+{% endblock %}

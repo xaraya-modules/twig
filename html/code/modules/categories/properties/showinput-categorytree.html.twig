@@ -1,0 +1,154 @@
+{# @categories/properties/showinput-categorytree.html.twig #}
+
+{% block showinput_categorytree %}
+<table class="xar-table" border="0" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Child Categories</th>
+            <th>Image</th>
+            <th>Template</th>
+            <th style="text-align: center;">Actions</th>
+        </tr>
+
+        {% set clonetitle = 'Clone category' %}
+        {% set modifytitle = 'Modify category' %}
+        {% set deletetitle = 'Delete category' %}
+        {% set displayindex = 0 %}    
+        {% for categories in trees %}
+            {% for node in categories %}
+                {% set cid = node.id %}
+                {% set displayindex = displayindex + 1 %}   
+                {% if not cid or displayindex < startnum or displayindex >= startnum + items_per_page %}
+                {% else %}
+                {% set name = node.name %}
+                {% set description = node.description %}
+                {% set child_object = node.child_object %}
+                {% set image = node.image %}
+                {% set template = node.template %}
+                {# <!--{% set map = node.map %}--> #}
+                {% set level = node.getLevel()-1 %}
+
+                {% if ((displayindex + 1) % 2) %}
+                    {% set rowclass = 'xar-alt' %}
+                {% else %}
+                    {% set rowclass = 'xar-norm' %}
+                {% endif %}
+
+                <tr class="{{ rowclass }}">
+                    <td style="text-align: left; margin-left: 5px">
+                        {% for i in range(1, level) %}
+                            <img src="{{ xar_imageurl('blank.png','categories') }}"/>
+                        {% endfor %}
+                       {{ name }}
+                    </td>
+                    <td style="text-align: left; margin-left: 5px;">{{ description }}</td>
+                    <td style="text-align: left; margin-left: 5px;">{{ child_object }}</td>
+                    <td>{% if not image %}&#160;{% else %}{{ image }}{% endif %}</td>
+                    <td style="text-align: left; margin-left: 5px;">{{ template }}</td>
+                    <td style="text-align: center;">
+                        {% if cid %}
+                            {% if xar_modvar('categories', 'use_module_icons') %}
+                                <a href="{{ xar_moduleurl('categories', 'admin', 'clone', {'itemid': cid}) }}" title="{{ clonetitle }}" style="margin-right: 5px">
+                                    {% set imgfile = 'icons/'.'add.png' %}
+                                    {{- xar_image({scope: "theme", file: imgfile, class: "xar-icon", alt: clonetitle}) -}}
+                                </a>
+                            {% else %}
+                                <a href="{{ xar_moduleurl('categories', 'admin', 'clone', {'itemid': cid}) }}" title="{{ modifytitle }}">
+                                    Clone
+                                </a>
+                            {% endif %}
+                            {% if (cid != 1) or (xar_uservar('id') == xar_modvar('roles', 'admin')) %}
+                                {% if xar_modvar('categories', 'use_module_icons') %}
+                                    <a href="{{ xar_moduleurl('categories', 'admin', 'modify', {'itemid': cid}) }}" title="{{ modifytitle }}" style="margin-right: 5px">
+                                        {% set imgfile = 'icons/'.'modify.png' %}
+                                        {{- xar_image({scope: "theme", file: imgfile, class: "xar-icon", alt: modifytitle}) -}}
+                                    </a>
+                                {% else %}
+                                    <a href="{{ xar_moduleurl('categories', 'admin', 'modify', {'itemid': cid}) }}" title="{{ modifytitle }}">
+                                        Modify
+                                    </a>
+                                {% endif %}
+                                {% if xar_modvar('categories', 'use_module_icons') %}
+                                    <a href="{{ xar_moduleurl('categories', 'admin', 'delete', {'itemid': cid}) }}" title="{{ deletetitle }}">
+                                        {% set imgfile = 'icons/'.'delete.png' %}
+                                        {{- xar_image({scope: "theme", file: imgfile, class: "xar-icon", alt: deletetitle}) -}}
+                                    </a>
+                                {% else %}
+                                    &#160;|&#160;
+                                    <a href="{{ xar_moduleurl('categories', 'admin', 'delete', {'itemid': cid}) }}" title="{{ deletetitle }}">
+                                        Delete
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </table>
+
+    {% if options|length == 1 %}
+        {% set activetab = options[0]['id'] %}
+            {% if displayindex %}
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        {% for i in range(1, (pagertotal, items_per_page) %}
+                            {% set endrow = i+items_per_page-1 %}
+                            {% if i <= startnum  and (i + items_per_page) > startnum %}
+                                {{ i }}-{{ endrow }}
+                            {% else %}
+                                <a href="{{ xar_moduleurl('categories', 'admin', 'view', {'activetab': activetab, 'startnum': i, 'items_per_page': items_per_page}) }}">
+                                    {{ i }}-{{ endrow }}
+                                </a>
+                            {% endif %}
+                            {% if ((i%100) == 1) and (i != 1) %}
+                                <br />
+                            {% else %}
+                                &#160;|&#160;
+                            {% endif %}
+                        {% endfor %}
+                        {% if i == pagertotal %}
+                            {% if i <= startnum  and (i + items_per_page) > startnum %}
+                                {{ i }}
+                            {% else %}
+                                <a href="{{ xar_moduleurl('categories', 'admin', 'view', {'activetab': activetab, 'startnum': i, 'items_per_page': items_per_page}) }}">
+                                    {{ i }}
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                        {% if i < pagertotal %}
+                            {% if i <= startnum  and (i + items_per_page) > startnum %}
+                                {{ i }}-{{ pagertotal }}
+                            {% else %}
+                                <a href="{{ xar_moduleurl('categories', 'admin', 'view', {'activetab': activetab, 'startnum': i, 'items_per_page': items_per_page}) }}">
+                                    {{ i }}-{{ pagertotal }}
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        <form action="{{ xar_moduleurl('categories','admin','view') }}" method="post">
+                            Categories per page:&#160;
+                            <input type="hidden" name="startnum" id="startnum" value="{{ startnum }}"/>
+                            <input type="text" name="items_per_page" id="items_per_page" value="{{ items_per_page }}" size="5"/>&#160;&#160;
+                            <input type="hidden" name="activetab" id="activetab" value="{{ activetab }}" size="5"/>
+                            {% set label = 'Reload' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="xar-row">
+                <div class="xar-col"></div>
+                <div class="xar-col">
+                    Categories Total:&#160;&#160;{{ pagertotal }}
+                </div>
+            </div>
+    {% endif %}
+{% endblock %}

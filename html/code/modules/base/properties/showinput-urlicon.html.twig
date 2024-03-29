@@ -1,0 +1,11 @@
+{# @base/properties/showinput-urlicon.html.twig #}
+
+{% block showinput_urlicon %}
+{% set check = 'check' %}
+    {% set preview = 'preview' %}
+    <input type="text" name="{{ name }}" value="{{ value }}" size="{{ size }}" maxlength="{{ maxlength }}" id="{{ id }}" tabindex="{{ tabindex }}" class="xar-form-textlong"/>
+    {% if (value) and (value != 'http.//') %}[ 
+        <a href="{{ value }}" target="{{ preview }}">{{ check }}</a>]
+    {% endif %}
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

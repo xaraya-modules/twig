@@ -1,0 +1,41 @@
+{# @privileges/admin/viewrealms.html.twig #}
+
+{% block viewrealms %}
+{{ include('@privileges/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% if xar_modvar('privileges', 'showrealms') %}
+            {{ include('@privileges/includes/admin-realms.html.twig') }}
+            <table class="xar-table xar-fullwidth xar-clearboth">
+                <tr>
+                    <th style="text-align: left; padding-left: .5em;">Name</th>
+                    <th style="text-align: center; padding-left: .5em;">Actions</th>
+                </tr>
+                {% for loop_key1, loop_item1 in realms %}{% set loop_index1 = loop.index %}
+                    <tr class="xar-norm-outline xar-padding-endsthick xar-align-left">
+                        <td>
+                            <a href="{{ xar_moduleurl('privileges','admin','modifyrealm',{'id': loop_item1['id']}) }}">
+                                {{ xar_prep_display(loop_item1['name']) }}
+                            </a>
+                        </td>
+                        <td class="xar-align-center">
+                            {% set label = 'Modify this realm' %}
+                            <a class="xar-valign-middle" href="{{ xar_moduleurl('privileges','admin','modifyrealm',{'id': loop_item1['id']}) }}" alt="{{ label }}" title="{{ label }}">
+                                {{- xar_image({scope: "module", module: "roles", file: "infoicon.gif"}) -}}
+                            </a>&#160; 
+                            {% set label = 'Delete this realm' %}
+                            <a class="xar-valign-middle" href="{{ xar_moduleurl('privileges','admin','deleterealm',{'id': loop_item1['id']}) }}" alt="{{ label }}" title="{{ label }}">
+                                {{- xar_image({scope: "module", module: "roles", file: "delete.png"}) -}}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <h2>Manage Realms</h2>
+            {% set label = 'Enable the Realms options' %}
+            <p>
+                You can use Realms to 'slice' or divide your site into different areas. You can slice' in various ways, such as by theme or domain name. You must <a href="{{ xar_moduleurl('privileges','admin','modifyconfig',{'tab': 'realms'}) }}" title="{{ label }}">enable Realms on your site</a> in the Privileges config options. The realms create and modify options will then display here.
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}

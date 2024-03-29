@@ -1,0 +1,61 @@
+{# @themes/includes/navtabs.html.twig #}
+
+{% block navtabs %}
+{% set generalcss = 'All' %}
+    {% set generalcssurl = xar_moduleurl('themes','admin', 'cssconfig') %}
+    {% set modulescss = 'Modules' %}
+    {% set modulescssurl = xar_moduleurl('themes','admin','cssconfig',{'component': 'modules'}) %}
+    {% set themescss = 'Themes' %}
+    {% set themescssurl = xar_moduleurl('themes','admin','cssconfig',{'component': 'themes'}) %}
+    {% set corecss = 'Core' %}
+    {% set corecssurl = xar_moduleurl('themes','admin','cssconfig',{'component': 'core'}) %}
+    {% set currentcssurl = xar_currenturl() %}
+    {# <!--
+    {% if  ==  %}
+        {% set tabclass = ' class="active"' %}
+    {% else %}
+        {% set tabclass = '' %}    
+    {% endif %}
+    --> #}
+    <ul class="xar-tabs xar-alt xar-norm-outline">
+        {% set title = 'Component CSS' %}
+        {% set label = 'Component CSS' %}
+        <li class="xar-tabs-label" title="{{ title }}">{{ label }}</li>
+        {% if generalcssurl == currentcssurl %}
+            <li class="xar-tab-active">
+                <a href="{{ generalcssurl }}" title="{{ generalcss }}" class="xar-accent xar-accent-outline">{{ generalcss }}</a>
+            </li>
+        {% else %}
+            <li class="xar-tab">
+                <a href="{{ generalcssurl }}" title="{{ generalcss }}" class="xar-norm xar-norm-outline">{{ generalcss }}</a>
+            </li>
+        {% endif %}
+        {% if themescssurl == currentcssurl %}
+            <li class="xar-tab-active">
+                <a href="{{ themescssurl }}" title="{{ themescss }}" class="xar-accent xar-accent-outline">{{ themescss }}</a>
+            </li>
+        {% else %}
+            <li class="xar-tab">
+                <a href="{{ themescssurl }}" title="{{ themescss }}" class="xar-norm xar-norm-outline">{{ themescss }}</a>
+            </li>
+        {% endif %}
+        {% if modulescssurl == currentcssurl %}
+            <li class="xar-tab-active">
+                <a href="{{ modulescssurl }}" title="{{ modulescss }}" class="xar-accent xar-accent-outline">{{ modulescss }}</a>
+            </li>
+        {% else %}
+            <li class="xar-tab">
+                <a href="{{ modulescssurl }}" title="{{ modulescss }}" class="xar-norm xar-norm-outline">{{ modulescss }}</a>
+            </li>
+        {% endif %}
+        {% if corecssurl == currentcssurl %}
+            <li class="xar-tab-active">
+                <a href="{{ corecssurl }}" title="{{ corecss }}" class="xar-accent xar-accent-outline">{{ corecss }}</a>
+            </li>
+        {% else %}
+            <li class="xar-tab">
+                <a href="{{ corecssurl }}" title="{{ corecss }}" class="xar-norm xar-norm-outline">{{ corecss }}</a>
+            </li>
+        {% endif %}
+    </ul>
+{% endblock %}

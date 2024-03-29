@@ -1,0 +1,40 @@
+{# @roles/blocks/user.html.twig #}
+
+{% block user %}
+{{ xar_style({scope: "block", file: "onlineblock"}) }}
+    {% set thisuser = xar_apifunc('roles','user','get',{'id': xarSession..getVar('role_id')}) %}
+    <table class="xar-table xar-fullwidth xar-roles-nicetable">
+         <tr>
+             <td class="xar-threequarterswidth">
+                 User:
+             </td>
+             <td>
+                 {{ thisuser['uname'] }}
+             </td>
+         </tr>
+         <tr>
+             <td class="xar-threequarterswidth">
+                 Name:
+             </td>
+             <td>
+                 {{ thisuser['name'] }}
+             </td>
+         </tr>
+         <tr>
+             <td class="xar-threequarterswidth">
+                 Email:
+             </td>
+             <td>
+                 {{ thisuser['email'] }}
+             </td>
+         </tr>
+         <tr>
+             <td class="xar-threequarterswidth">
+                 Registered:
+             </td>
+             <td>
+                 {{ xar_localedate(thisuser['date_reg'], 'short', '') }}
+             </td>
+         </tr>
+    </table>
+{% endblock %}

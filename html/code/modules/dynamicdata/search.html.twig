@@ -1,0 +1,108 @@
+{# @dynamicdata/search.html.twig #}
+
+{% extends '@dynamicdata/base.html.twig' %}
+
+{% block modulespace %}
+{% if not ishooked %}
+        {{ include('@dynamicdata/includes/user-mod-head.html.twig') }}
+        <div class="xar-mod-body">
+            {% if not gotobject %}
+                {% set label = xar_translate('Dynamic Data') %}
+                <h2>Search {{ label }}</h2>
+                <ul>
+                    {% for item in items %}
+                        <li>
+                            <a href="{{ item['link'] }}">Search {{ item['label'] }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                {% for item in items %}
+                    <h2>Search {{ item['label'] }}</h2>
+                    <form method="post" action="{{ xar_currenturl() }}">
+                        <div>
+                            <table class="xar-table" border="0" cellpadding="2" cellspacing="0">
+                                <tr>
+                                    <td class="xar-valign-top">
+                                    <label for="q">Search for</label>:</td>
+                                    <td>
+                                        <input type="hidden" name="module" value="dynamicdata"/>
+                                        <input type="hidden" name="func" value="search"/>
+                                        {% if item['module_id'] %}
+                                            <input type="hidden" name="module_id" module_idvalue="{{ item['module_id'] }}"/>
+                                        {% endif %}
+                                        {% if item['itemtype'] %}
+                                            <input type="hidden" name="itemtype"
+                                            value="{{ item['itemtype'] }}"/>
+                                        {% endif %}
+                                        <input type="text" name="q" id="q" value="{{ q }}"
+                                        size="20"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="xar-valign-top">Search on:</td>
+                                    <td>
+                                        {% if item['fields'] and item['fields']|length > 0 %}
+
+                                            {% for name, field in item['fields'] %}
+                                                {% if field['checked'] %}
+                                                    <input type="checkbox"
+                                                    name="dd_check[{{ field['id'] }}]"
+                                                    id="dd_check_{{ field['id'] }}" value="1"
+                                                    checked="checked"/>
+                                                    {% else %}
+                                                    <input type="checkbox"
+                                                    name="dd_check[{{ field['id'] }}]"
+                                                    id="dd_check_{{ field['id'] }}" value="1"/>
+                                                {% endif %}
+                                                <label for="dd_check_{{ field['id'] }}">
+                                                {{ field['label'] }}</label>
+                                                <br />
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <input type="hidden" name="numitems" value="{{ numitems }}"/>
+                                        {% set label = 'Search' %}
+                                        {{- xar_button({type: "submit", label: label}) -}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                    {% if item['result'] %}{{ item['result'] }}{% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% else %}
+        {% for item in items %}
+            <h2>Search {{ item['label'] }}</h2>
+            <p></p>
+            {% if item['result'] %}{{ item['result'] }} 
+            {% else %}
+            <table class="xar-table" border="0" cellpadding="2" cellspacing="0">
+                <tr>
+                    <td class="xar-valign-top">Search on:</td>
+                    <td>
+                        {% if item['fields'] and item['fields']|length > 0 %}
+
+                            {% for name, field in item['fields'] %}
+                                {% if field['checked'] %}
+                                    <input type="checkbox" name="dd_check[{{ field['id'] }}]"
+                                    id="dd_check_{{ field['id'] }}" value="1" checked="checked"/>
+                                    {% else %}
+                                    <input type="checkbox" name="dd_check[{{ field['id'] }}]"
+                                    id="dd_check_{{ field['id'] }}" value="1"/>
+                                {% endif %}
+                                <label for="dd_check_{{ field['id'] }}">{{ field['label'] }}</label>
+                                <br />
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>{% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

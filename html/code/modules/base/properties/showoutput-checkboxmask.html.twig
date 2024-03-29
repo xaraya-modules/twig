@@ -1,0 +1,17 @@
+{# @base/properties/showoutput-checkboxmask.html.twig #}
+
+{% block showoutput_checkboxmask %}
+{% if numOptionsSelected == 0 %}
+        <em>None Specified</em>
+    {% else %}
+      {% for option in options %}
+        {% if option['checked'] %}
+          <strong>{{ option['id'] }}</strong>- {{ option['name'] }}
+          <br />
+        {% else %}
+          {# <!-- {{ option['id'] }} - {{ option['name'] }}
+          <br /> --> #} 
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+{% endblock %}

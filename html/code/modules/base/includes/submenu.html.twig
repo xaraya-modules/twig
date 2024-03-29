@@ -1,0 +1,23 @@
+{# @base/includes/submenu.html.twig #}
+
+{% block submenu %}
+{% if submenu %}
+        <ul class="xar-menu-subitem">
+            {% for sublink, sublinks in submenu %}
+                {% if sublinks['funcactive'] %}
+                    <li class="xar-menu-subitem-current">
+                        <a name="activesubitem" title="{{ sublinks['title'] }}">
+                            {{ sublinks['label'] }} {{ marker }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="xar-menu-subitem">
+                        <a href="{{ sublinks['link'] }}" title="{{ sublinks['title'] }}">
+                            {{ sublinks['label'] }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

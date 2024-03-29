@@ -1,0 +1,57 @@
+{# @base/blocks/verticallistbyname.html.twig #}
+
+{% block verticallistbyname %}
+{# <!--
+        this is a simplified version of vertical list template
+        for full comments and examples see file verticallistbycats.xd
+    --> #}
+    <ul class="xar-menu-section">
+        <li class="xar-menu-section">
+            <h4>Modules</h4>
+            <ul class="xar-menu-item">
+                {# <!-- hand the links off to the common blocks-menu-menulinks include template
+                     the template recursively includes itself to add sublinks to any number
+                     of nested levels, and also ensures menus are consistent  :)
+                     You can of course over-ride this block template, or the include itself
+                     to provide unique styling for individual menus
+                --> #}
+                {% set subdata = {
+                    'menulinks': adminmods,
+                    'menuid': 'menu' ~ _bl_block_id,
+                    'marker': marker,
+                    'maxlevels': 2
+                } %}
+                {{ include('@base/includes/blocks-menu-menulinks.html.twig') }}
+            </ul>
+        </li>
+    </ul>
+    {# <!--
+        the modvar to display/hide admin logout link should be available starting from version 1.2.3 of adminpanels : upgrade transparently via modules module
+        Note: Moved to base as of xaraya 1.1.x series
+    --> #}
+    {% if showlogout or showfront %}
+        <ul class="xar-menu-section">
+            <li class="xar-menu-section">
+                <h4>Controls</h4>
+                <ul class="xar-menu-item">
+                {% if showfront %}
+                    <li class="xar-menu-item">
+                        {% set label = 'View the site front end' %}
+                        <a title="{{ label }}" href="{{ xar_baseurl() }}">
+                            View Front End
+                        </a>
+                    </li>
+                {% endif %}
+                {% if showlogout %}
+                   <li class="xar-menu-item">
+                        {% set label = 'Logout as administrator' %}
+                        <a title="{{ label }}" href="{{ xar_moduleurl('base','admin','confirmlogout') }}">
+                            Logout
+                        </a>
+                    </li>
+                {% endif %}
+                </ul>
+            </li>
+        </ul>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{# @base/properties/showoutput-fileupload.html.twig #}
+
+{% block showoutput_fileupload %}
+{% if file_OK %}
+        {% if not target %}
+            {% set target = '_self' %}
+        {% endif %}
+        {# <!-- TODO: convert basedir to base URL when necessary ? --> #}
+        {% set filepath = basedirectory ~ "/" ~ xar_prep_display(value) %}        
+        {% if label %}
+            <a href="{{ filepath }}" title="{{ label }}" target="{{ target }}">{{ label }}</a>
+        {% else %}
+            {% set label = 'Download' %}
+            <a href="{{ filepath }}" title="{{ label }}" target="{{ target }}">{{ value }}</a>
+        {% endif %}
+    {% else %} 
+        {# <!-- something went wrong here - the file doesn't exist --> #}
+        {{ value }}
+    {% endif %}
+{% endblock %}

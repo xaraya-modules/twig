@@ -1,0 +1,26 @@
+{# @authsystem/blocks/config-login.html.twig #}
+
+{% block config_login %}
+{% set sl = 'showlogout' %}
+    {% set lt = 'logouttitle' %}
+    <div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'When a user has logged in, you can display a search form and logout link for the user by checking this box.' %}
+            <label for="{{ sl }}" title="{{ label }}">Show Logout Box When Logged In</label>
+        </div>
+        <div class="xar-col">
+            {{ xar_data_input({type: "checkbox", name: "showlogout", id: sl, value: showlogout, checked: showlogout}) }}
+        </div>
+    </div>
+    {% if showlogout == true %}
+        <div class="xar-row">
+            <div class="xar-col">
+                {% set label = 'When the logout block is shown, you can change the display title with this value.' %}
+                <label for="{{ lt }}" title="{{ label }}" class="xar-form-label">Logout Title :</label>
+            </div>
+            <div class="xar-col">
+                {{ xar_data_input({type: "textbox", name: "logouttitle", id: lt, value: logouttitle, maxlength: "25", class: "xar-form-textlong"}) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

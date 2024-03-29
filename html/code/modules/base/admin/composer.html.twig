@@ -1,0 +1,128 @@
+{# @base/admin/composer.html.twig #}
+
+{% block composer %}
+{{ include('@base/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Install Packages with Composer</h2>
+        <p>
+            You can find information on Composer <a href="https://getcomposer.org" target="_blank">here</a>.
+        </p>
+        <p>
+            <div>
+                Message:
+            </div>
+            {% if message %}
+                {% for msg in message %}
+                    <div>{{ msg }}</div>
+                {% endfor %}
+            {% endif %}
+        </p>
+        
+        {% if not libcurl %}
+            <div style="color: red">
+                To install and use the composer functionality please first install the cURL PHP extension.
+            </div>
+        {% else %}
+            <form action="{{ xar_currenturl() }}" method="post" enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <legend>
+                        Composer Installer
+                    </legend>
+                    {% if not installed %}
+                        The installer is not present. Install it by clicking on this button:
+                        {% set value = 'Install' %}
+                        {{- xar_button({type: "submit", name: "setup", value: value}) -}}
+                    {% else %}
+                        The composer installer is present. You can install packages with it.
+                    {% endif %}
+                </fieldset>
+            </form>
+            {% if installed %}
+                <form action="{{ xar_currenturl() }}" method="post" enctype="application/x-www-form-urlencoded">
+                    {{ include('@base/includes/composer-file.html.twig') }}
+                </form>
+                <form action="{{ xar_currenturl() }}" method="post" enctype="application/x-www-form-urlencoded">
+                    <fieldset>
+                        <legend>
+                            Install a package
+                        </legend>
+                        {# <!--
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label for="install_dir" title="{{ xar_translate('The directory where the package will be installed') }}" class="xar-form-label">                                
+                                    Install directory                                
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_data_input({type: "textbox", name: "install_dir", value: install_dir}) }}
+                            </div>
+                        </div>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label for="package_dir" title="{{ xar_translate('The package directory name') }}" class="xar-form-label">                                
+                                    Package directory                  
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_data_input({type: "textbox", name: "package_dir", value: package_dir}) }}
+                            </div>
+                        </div>
+                        --> #}
+                        <div class="xar-row">
+                            <div class="xar-col">
+                                <label for="install_com" title="{{ xar_translate('The command to install the package') }}" class="xar-form-label">                                
+                                    Command                                
+                                </label>
+                            </div>
+                            <div class="xar-col">
+                                {{ xar_data_input({type: "textbox", name: "install_com", value: install_com}) }}
+                            </div>
+                        </div>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                            </div>
+                            <div class="xar-col">
+                                {% for msg in message %}
+                                    {{ msg }}
+                                {% endfor %}
+                                {% if message and (message != 'success') %}
+                                    <span style="color: red">{{ message }}</span>
+                                {% endif %}
+                                {% if message == 'success' %}
+                                    <span style="color: green">Installation was successful</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="xar-row">
+                            <div class="xar-col">
+                            </div>
+                            <div class="xar-col">
+                                {% set value = 'Run' %}
+		                {% if composer_file != 'composer/composer.json' %}
+                                    {{- xar_button({name: "install", value: value, disabled: "disabled"}) -}}
+                                {% else %}
+                                    {{- xar_button({name: "install", value: value}) -}}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <p>
+                    Notes:
+                    <ul>
+                        <li>The composer files and installed packages can be found in the composer directory at the top level of the directory tree.</li>
+                        <li>To install a package:
+                            <ol>
+                                <li>Update the composer.json file and save it</li>
+                                <li>Run the command "php composer.phar update"</li>
+                            </ol>
+                        </li>
+                        <li>When calling a package you must require the Composer autoload. This is done by adding the following line to your Xaraya code:<br/>
+                            <code>&#160;&#160;&#160;&#160;sys::import('composer.vendor.autoload');</code>
+                        </li>
+                    </ul>
+                </p>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

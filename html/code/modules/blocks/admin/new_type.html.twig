@@ -1,0 +1,67 @@
+{# @blocks/admin/new_type.html.twig #}
+
+{% block new_type %}
+{{ xar_javascript({scope: "theme", filename: "formcheck.js"}) }}
+    <script type="text/javascript">
+    {# <!--
+        // Enter name of mandatory fields
+        //var blocks_fieldRequired = Array("modulename", "blockname");
+        // Enter field description to appear in the dialog box
+        //var blocks_fieldDescription = Array("Module Name", "Block Name");
+    //--> #}
+    </script>
+    {{ include('@blocks/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>New Block Type</h2>
+        <form action="{{ xar_moduleurl('blocks', 'admin', 'new_type') }}" method="post" onsubmit="return xar_base_formCheck(this,blocks_fieldRequired, blocks_fieldDescription);" enctype="application/x-www-form-urlencoded">
+            <fieldset>
+                <legend>Block Type Properties</legend>
+                <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                <input type="hidden" name="confirm" id="confirm" value="true"/>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="modulename" title="{{ xar_translate('This is the name of the module that this block is to be associated with. Blocks must be associated with modules. When in doubt use the base module.') }}" class="xar-form-label">Module Name:</label>
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({type: "module", name: "module_id", value: module_id, store_prop: "regid"}) }}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="blockname" title="{{ xar_translate('This is the exact name of the block. It must be case specific, otherwise the block will not function correctly.') }}" class="xar-form-label">Block Name:</label>
+                    </div>
+                    <div class="xar-col">
+                        {% if type_list %}
+                            <select name="blockname" id="blockname">
+                                {% for loop_key1, loop_item1 in type_list %}{% set loop_index1 = loop.index %}
+                                    {% if loop_item1.name == blockname %}
+                                        <option value="{{ xar_prep_display(loop_item1.name) }}"
+                                        selected="selected">
+                                        {{ xar_prep_display(loop_item1.name) }}</option>
+                                        {% else %}
+                                        <option value="{{ xar_prep_display(loop_item1.name) }}">
+                                        {{ xar_prep_display(loop_item1.name) }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            {% else %}
+                            <input type="text" name="blockname" id="blockname" value="" maxlength="255" class="xar-form-textlong"/>
+                        {% endif %}
+                        &#160;
+                        {% set label = 'Scan Module' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </fieldset>
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        {% set label = 'Add Block Type' %}
+                        {{- xar_button({type: "submit", label: label}) -}}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

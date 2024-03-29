@@ -1,0 +1,164 @@
+{# @dynamicdata/includes/object_access.html.twig #}
+
+{% block object_access %}
+<![CDATA[
+    <script type="text/javascript">
+        function dd_toggle_checkboxes(pattern)
+        {
+            var elem = document.getElementsByTagName("input");
+            var match = new RegExp(pattern);
+            for (i = 0; i < elem.length; i++) {
+                if (elem[i].type == 'checkbox' && match.test(elem[i].id)) {
+                    if (elem[i].checked) {
+                        elem[i].checked = false;
+                    } else {
+                        elem[i].checked = true;
+                    }
+                }
+            }
+        }
+
+        function dd_disable_checkboxes(pattern)
+        {
+            var elem = document.getElementsByTagName("input");
+            var match = new RegExp(pattern);
+            for (i = 0; i < elem.length; i++) {
+                if (elem[i].type == 'checkbox' && match.test(elem[i].id)) {
+                    if (elem[i].disabled) {
+                        elem[i].disabled = false;
+                    } else {
+                        elem[i].disabled = true;
+                    }
+                }
+            }
+        }
+    </script>
+    ]]>
+
+    <fieldset>
+        <legend>
+            Specify Access Rules
+        </legend>
+        <label for="do_access">
+        {% if do_access %}
+            <input type="checkbox" id="do_access" name="do_access" value="1" checked="checked" onclick="javascript:dd_disable_checkboxes('access_')"/>
+        {% else %}
+            <input type="checkbox" id="do_access" name="do_access" value="1" onclick="javascript:dd_disable_checkboxes('access_')"/>
+        {% endif %}
+        &#160;Override default access rights ?</label>
+        <table class="xar-table">
+            <tr>
+                <th>Group</th>
+                {% for level, info in levels %}
+                    <th style="text-align: center"><a onclick="javascript:dd_toggle_checkboxes('access_{{ level }}_')" title="Toggle Access for {{ info.label }}">{{ info.label }}</a></th>
+                {% endfor %}
+            </tr>
+            {% for roleid, rolename in grouplist %}
+            <tr>
+                <td><a onclick="javascript:dd_toggle_checkboxes('access_.+_{{ roleid }}')" title="Toggle Access for {{ rolename }}">{{ rolename }}</a></td>
+                {% for level, info in levels %}
+                    {#  check if $roleid is in the list of groups that have access at this level #}
+                    {% if access[level] and roleid in access[level] %}
+                        <td style="text-align: center"><input type="checkbox" id="access_{{ level }}_{{ roleid }}" name="access[{{ level }}][{{ roleid }}]" value="1" checked="checked"/></td>
+                    {% else %}
+                        <td style="text-align: center"><input type="checkbox" id="access_{{ level }}_{{ roleid }}" name="access[{{ level }}][{{ roleid }}]" value="1"/></td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+        <em>Note: if you specify access rules here and then create a new group later on, that group will have NO access by default.</em>
+        {% if not do_access %}
+            <script type="text/javascript">
+                dd_disable_checkboxes('access_');
+            </script>
+        {% endif %}
+    </fieldset>
+    <fieldset>
+        <legend>
+            Additional Content Filters
+        </legend>
+        Automatically filter items in views for specific groups ?
+        <table class="xar-table">
+            <tr>
+                <th>Group</th>
+                <th>Property</th>
+                <th>Condition</th>
+                <th>Value</th>
+{# <!--
+                <th>Access</th>
+--> #}
+            </tr>
+            {% for filterid, filterinfo in filters %}
+            <tr>
+                <td>
+                    <select name="filters[{{ filterid }}][group]" id="filters_{{ filterid }}_group">
+                        <option value=""></option>
+                        {% for roleid, rolename in grouplist %}
+                            {% if filterinfo['group'] == roleid %}
+                                <option value="{{ roleid }}" selected="selected">{{ rolename }}</option>
+                            {% else %}
+                                <option value="{{ roleid }}">{{ rolename }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <select name="filters[{{ filterid }}][prop]" id="filters_{{ filterid }}_prop">
+                        <option value=""></option>
+                        {% for propname, propinfo in properties %}
+                            {% if filterinfo['prop'] == propname %}
+                                <option value="{{ propname }}" selected="selected">{{ propinfo.label }}</option>
+                            {% else %}
+                                <option value="{{ propname }}">{{ propinfo.label }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <select name="filters[{{ filterid }}][match]" id="filters_{{ filterid }}_match">
+                        <option value=""></option>
+                        {% for match, label in conditions %}
+                            {% if filterinfo['match'] == match %}
+                                <option value="{{ match }}" selected="selected">{{ label }}</option>
+                            {% else %}
+                                <option value="{{ match }}">{{ label }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="filters[{{ filterid }}][value]" id="filters_{{ filterid }}_value" value="{{ filterinfo.value }}" class="xar-form-text-medium"/>
+                </td>
+{# <!--
+                <td>
+                    <select name="filters[{{ filterid }}][level]" id="filters_{{ filterid }}_level">
+                        <option value="">Any</option>
+                        {% for level, info in levels %}
+                            {% if filterinfo['level'] == level %}
+                                <option value="{{ level }}" selected="selected">{{ info.label }}</option>
+                            {% else %}
+                                <option value="{{ level }}">{{ info.label }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+--> #}
+            </tr>
+            {% endfor %}
+        </table>
+        If a visitor has Display access, he will be able to see all items by default. You can use the content filters to
+        further limit access e.g. for Anonymous visitors to only see those items where the property 'Age' is greater than 12.
+        <br/><em>Note: if you specify several filters for the same group, they will be combined (AND).</em>
+    </fieldset>
+    <fieldset class="xar-form-actions">
+        <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+        <input type="hidden" name="itemid" id="itemid" value="{{ object.itemid }}"/>
+        <input type="hidden" name="tplmodule" id="tplmodule" value="{{ tplmodule }}"/>
+        {% if return_url %}
+            <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+        {% endif %}
+        {% set label = 'Update' %}
+        {{- xar_button({type: "submit", label: label, name: "confirm"}) -}}
+    </fieldset>
+{% endblock %}

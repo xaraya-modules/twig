@@ -1,0 +1,76 @@
+{# @dynamicdata/admin/export.html.twig #}
+
+{% block export %}
+{{ xar_style({scope: "module", file: "dd"}) }}
+    {{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Utilities - Export DataObject Definition</h2>
+        {{ include('@dynamicdata/includes/utility-menu.html.twig') }}
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','export') }}">
+            <fieldset class="xar-form-actions">
+                <legend>Select Object</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="xml" class="xar-form-label">Object :</label>
+                    </div>
+                    <div class="xar-col">
+                        {{ xar_data_input({type: "object", name: "objectid", value: objectid, display_prop: "name", store_prop: "objectid", onchange: "submit()"}) }}
+                        {% set button = 'Refresh' %}&#160;
+                        {{- xar_button({type: "submit", label: button}) -}}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="xml" class="xar-form-label">Format :</label>
+                    </div>
+                    <div class="xar-col">
+                        {% set formats = [
+                            {'id': 'xml', 'name': 'XML'},
+                            {'id': 'json', 'name': 'JSON'},
+                            {'id': 'php', 'name': 'PHP'},
+                        ] %}
+                        {{ xar_data_input({type: "dropdown", name: "format", id: "format", options: formats, value: format}) }}
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <form>
+            <fieldset>
+                <legend>{{ label }}</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="xml" class="xar-form-label">Definition :</label>
+                    </div>
+                    <div class="xar-col">
+                        <textarea name="xml" id="xml" class="xar-form-textarealarge" style="width: 40em">{{ xml }}</textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        {% if convertlink %}
+            <p class="xar-align-center">
+                <a href="{{ convertlink }}">Create a dedicated table for this object</a>
+            </p>
+        {% endif %}
+        {% if savelink %}
+            <p class="xar-align-center">
+                <a href="{{ savelink }}">Export the DataObject definition to a -def.xml file</a>
+            </p>
+        {% endif %}
+        {% if formlink %}
+            <p class="xar-align-center">
+                <a href="{{ formlink }}">Export the data for all items to your browser</a>
+            </p>
+        {% endif %}
+        {% if filelink %}
+            <p class="xar-align-center">
+                <a href="{{ filelink }}">Export the data for all items to a -dat.xml file</a>
+            </p>
+        {% endif %}
+        {% if generatelink %}
+            <p class="xar-align-center">
+                <a href="{{ generatelink }}">Generate DataObject class in a .php file (experimental)</a>
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}

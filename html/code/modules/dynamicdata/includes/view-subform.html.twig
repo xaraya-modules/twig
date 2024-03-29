@@ -1,0 +1,63 @@
+{# @dynamicdata/includes/view-subform.html.twig #}
+
+{% block view_subform %}
+{% if fieldprefix %}
+        {% set fieldprefix = fieldprefix ~ '_' %}
+    {% else %}
+        {% set fieldprefix = '' %}
+    {% endif %}
+    <table class="xar-table xar-norm">
+        <tr>
+            {% for name in properties|keys %}
+                <th>
+                    {{ xar_data_label({property: properties[name]}) }}
+                </th>
+            {% endfor %}
+            <th>&#160;</th>
+        </tr>
+        {% set shownew = 1 %}
+        {% for itemid, fields in items %}
+            <tr>
+                {% for name in properties|keys %}
+                    <td>
+                        {% set propid = properties.name.id %}
+                        {% set fieldname = fieldprefix ~ 'dd_' ~ propid ~ '[' ~ itemid ~ ']' %}
+                        {% if fields[name] %}
+                            {{ xar_data_input({property: properties[name], name: fieldname, size: "10", value: fields[name], _itemid: itemid}) }}
+                            {% else %}
+                            {{ xar_data_input({property: properties[name], name: fieldname, _itemid: itemid, size: "10"}) }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                <td>
+                    {% if not itemid %}
+                        {% set shownew = 0 %}
+                        <input type="checkbox" name="{{ fieldprefix }}dd_create[{{ objectid }}]"
+                        id="{{ fieldprefix }}dd_create_{{ objectid }}" value="1" checked="checked"/>
+                        <label for="{{ fieldprefix }}dd_create_{{ objectid }}">Add</label>
+                        {% else %}
+                        {# <!--
+                <input type="checkbox" name="{{ fieldprefix }}dd_delete[{{ objectid }}]" id="{{ fieldprefix }}dd_delete_{{ objectid }}_{{ itemid }}" value="{{ itemid }}"/><label for="{{ fieldprefix }}dd_delete_{{ objectid }}_{{ itemid }}">Delete</label>
+                --> #}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        {% if shownew %}
+            <tr>
+                {% for name in properties|keys %}
+                    <td>
+                        {% set propid = properties.name.id %}
+                        {% set fieldname = fieldprefix ~ 'dd_' ~ propid ~ '[0]' %}
+                        {{ xar_data_input({property: properties[name], name: fieldname, size: "10"}) }}
+                    </td>
+                {% endfor %}
+                <td>
+                    <input type="checkbox" name="{{ fieldprefix }}dd_create[{{ objectid }}]"
+                    id="{{ fieldprefix }}dd_create_{{ objectid }}" value="1"/>
+                    <label for="{{ fieldprefix }}dd_create_{{ objectid }}">Add</label>
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+{% endblock %}

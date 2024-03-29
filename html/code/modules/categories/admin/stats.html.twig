@@ -1,0 +1,196 @@
+{# @categories/admin/stats.html.twig #}
+
+{% block stats %}
+{{ include('@categories/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>View Statistics</h2>
+        <div style="margin: auto;">
+        {% if not modid %}
+            <table class="xar-table" border="0" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th valign="center" width="40%">
+                        <strong>Module Name</strong>
+                    </th>
+                    <th align="center" valign="center" width="15%">
+                        <strong>Module<br />Items</strong>
+                    </th>
+                    <th align="center" valign="center" width="15%">
+                        <strong>Distinct<br />Categories</strong>
+                    </th>
+                    <th align="center" valign="center" width="15%">
+                        <strong>Total<br />Links</strong>
+                    </th>
+                    <th align="center" valign="center" width="15%">
+                        <strong>Action</strong>
+                    </th>
+                </tr>
+                {% if not moditems or moditems|length == '0' %}
+                    <tr>
+                        <td colspan="5" align="center">
+                            There are currently no category links in the database...
+                        </td>
+                    </tr>
+                {% else %}
+                    {% for moditem in moditems %}
+                        <tr style="border-bottom: 1px dotted">
+                            <td valign="center" width="40%">
+                                <a href="{{ moditem['link'] }}">{{ moditem['name'] }}</a>
+                            </td>
+                            <td align="center" valign="center" width="15%">
+                                {{ moditem['numitems'] }}
+                            </td>
+                            <td align="center" valign="center" width="15%">
+                                {{ moditem['numcats'] }}
+                            </td>
+                            <td align="center" valign="center" width="15%">
+                                {{ moditem['numlinks'] }}
+                            </td>
+                            <td align="center" valign="center" width="15%">
+                                {% if xar_modvar('categories', 'use_module_icons') %}
+                                    <a href="{{ moditem['delete'] }}">
+                                        {% set imgfile = 'icons/'.'delete.png' %}
+                                        {% set label = 'Delete Links' %}
+                                        {{- xar_image({scope: "theme", file: imgfile, class: "xar-icon", alt: label}) -}}
+                                    </a>
+                                {% else %}
+                                    <a href="{{ moditem['delete'] }}"><strong>Delete</strong></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td valign="center" width="40%">
+                            <strong>Grand Total</strong>
+                        </td>
+                        <td align="center" valign="center" width="15%">
+                            <strong>{{ numitems }}</strong>
+                        </td>
+                        <td align="center" valign="center" width="15%">
+                            <strong>-</strong>
+                        </td>
+                        <td align="center" valign="center" width="15%">
+                            <strong>{{ numlinks }}</strong>
+                        </td>
+                        <td align="center" valign="center" width="15%">
+                            {# <!-- not supported by unlink API at the moment
+                            <a href="{{ delete }}">Delete All</a>
+                            --> #}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    <td colspan="5">
+                        <div class="xar-accent xar-norm-outline" style="text-align: justify;padding: 0.5em 1em 0.5em 1em; margin-top: 5px;">                            
+                            Click on <strong>Delete</strong> to remove all category links associated with a particular
+                            module. Clicking on a module will take you to that module's statistics page containing
+                            the figures for each of that module's items that have category links associated with them.
+                            From there you can delete all category links associated with a particular item.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        {% else %}
+            <h3>{{ xar_translate('Module #(1)', modname) }}</h3>
+    
+                {# <!--
+                {% if not catid %}
+                    <a href="{{ xar_moduleurl('categories','admin','checklinks',{'modid': modid, 'itemtype': itemtype}) }}">Check Orphan Links</a><br/>
+                {% endif %}
+                --> #}
+    
+                {% set urlextra = {'modid': modid} %}
+                {{ xar_data_output({type: "categorynavigation", module: module, itemtype: itemtype, catid: catid, urlmodule: "categories", urltype: "admin", urlfunc: "stats", urlextra: urlextra, showcatcount: "2"}) }}
+    
+                <table class="xar-table" border="0" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th valign="center" width="50%">
+                            {% if not sortlink['itemid'] %}
+                                <strong>Item Id</strong>
+                            {% else %}
+                                <a href="{{ sortlink['itemid'] }}"><strong>Item Id</strong></a>
+                            {% endif %}
+                        </th>
+                        <th align="center" valign="center" width="30%">
+                            <strong>Category<br/>Links</strong>
+                        </th>
+                        <th align="center" valign="center" width="20%">
+                            <strong>Action</strong>
+                        </th>
+                    </tr>
+                    {% if not moditems or moditems|length == '0' %}
+                        <tr>
+                            <td colspan="3" align="center">
+                                There are currently no category links attached to this module...
+                            </td>
+                        </tr>
+                    {% else %}
+                        {% for itemid, moditem in moditems %}
+                            <tr style="border-bottom: 1px dotted">
+                                {% if moditem['title'] and moditem['link'] %}
+                                    <td valign="center" width="50%">
+                                        {{ itemid }}: <a href="{{ moditem['link'] }}">{{ moditem['title'] }} </a>
+                                    </td>
+                                {% else %}
+                                    <td align="center" valign="center" width="50%">
+                                        {{ itemid }}
+                                    </td>
+                                {% endif %}
+                                <td align="center" valign="center" width="30%">
+                                    {% for cid in moditem['cids'] %}
+                                      {% if catinfo[cid] %}
+                                        {{ catinfo[cid]['name'] }}<br/>
+                                      {% else %}
+                                        {{ cid }}<br/>
+                                      {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td align="center" valign="center" width="20%">
+                                    {% if xar_modvar('categories', 'use_module_icons') %}
+                                        <a href="{{ moditem['delete'] }}">
+                                            {% set imgfile = 'icons/'.'delete.png' %}
+                                            {% set label = 'Delete Links' %}
+                                            {{- xar_image({scope: "theme", file: imgfile, class: "xar-icon", alt: label}) -}}
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ moditem['delete'] }}"><strong>Delete</strong></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% if pager %}
+                        <tr>
+                            <td colspan="3" align="center">
+                                {{ xar_pager({startnum: startnum, itemsperpage: itemsperpage, total: total}) }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                        <tr>
+                            <td valign="center" width="50%">
+                                <strong>Grand Total</strong>
+                            </td>
+                            <td align="center" valign="center" width="30%">
+                                <strong>{{ numlinks }}</strong>
+                            </td>
+                            <td align="center" valign="center" width="20%">
+                                {% if not catid %}
+                                    <a href="{{ delete }}">Delete All</a>
+                                {% else %}
+                                    {# <!-- not supported by unlink API at the moment --> #}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td colspan="3">
+                            <div class="xar-accent xar-norm-outline" style="text-align: justify;padding: 0.5em 1em 0.5em 1em; margin-top: 5px;">
+                                Click on <strong>Delete</strong> to remove all category links associated with a particular
+                                module's item.
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

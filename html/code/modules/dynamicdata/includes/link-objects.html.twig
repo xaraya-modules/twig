@@ -1,0 +1,284 @@
+{# @dynamicdata/includes/link-objects.html.twig #}
+
+{% block link_objects %}
+<?xml version="1.0"?>
+<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
+    {% if relations %}
+        <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','relations') }}">
+            <fieldset>
+            <legend>Links for {{ object.label }}</legend>
+
+            {% if yumlpath %}
+                {# <!-- CHECKME: what if var/processes is not under the web root anymore ? --> #}
+                <img src="{{ yumlpath }}" />
+            {% elseif yumlspec %}
+                <img src="http://yuml.me/diagram/class/{{ yumlspec }}" />
+            {% endif %}
+
+            <table class="xar-table">
+                <tr>
+                    <th>Delete</th>
+                    <th>Parent</th>
+                    <th>Link From</th>
+                    <th>[Property]</th>
+                    <th>Link To</th>
+                    <th>Children</th>
+                    <th>Direction</th>
+                </tr>
+                {% for link in relations %}
+                    {% set where = 0 %}
+                    {% set wherename = link['target'] %}
+                    {% for info in objects %}
+                        {% if info['name'] == link['target'] %}
+                            {% set where = info['objectid'] %}
+                            {% set wherename = info['label'] %}
+                        {% endif %}
+                    {% endfor %}
+                    <tr>
+                        <td class="xar-align-center">
+                            <input type="checkbox" name="what[{{ link['id'] }}]" id="what_{{ link['id'] }}" value="1"/>
+                        </td>
+                        {% if link['link_type'] == 'parents' %}
+                            <td>
+                            {% if not where %}
+                                <em>{{ wherename }}</em>
+                            {% else %}
+                                <a href="{{ xar_moduleurl('dynamicdata','admin','relations',{'objectid': where}) }}">{{ wherename }}</a>
+                            {% endif %}
+                            <br />{{ link['to_prop'] }}</td>
+                            <td>&#160;</td>
+                            <td>{{ link['from_prop'] }}</td>
+                            <td class="xar-nowrap">&#160;</td>
+                            <td class="xar-nowrap">&#160;</td>
+                        {% elseif link['link_type'] == 'children' %}
+                            <td>&#160;</td>
+                            <td>&#160;</td>
+                            <td>{{ link['from_prop'] }}</td>
+                            <td class="xar-nowrap">&#160;</td>
+                            <td>
+                            {% if not where %}
+                                <em>{{ wherename }}</em>
+                            {% else %}
+                                <a href="{{ xar_moduleurl('dynamicdata','admin','relations',{'objectid': where}) }}">{{ wherename }}</a>
+                            {% endif %}
+                            <br />{{ link['to_prop'] }}</td>
+                        {% elseif link['link_type'] == 'linkedto' or link['link_type'] == 'extensions' %}
+                            <td>&#160;</td>
+                            <td>&#160;</td>
+                            <td>{{ link['from_prop'] }}</td>
+                            <td>
+                            {% if not where %}
+                                <em>{{ wherename }}</em>
+                            {% else %}
+                                <a href="{{ xar_moduleurl('dynamicdata','admin','relations',{'objectid': where}) }}">{{ wherename }}</a>
+                            {% endif %}
+                            <br />{{ link['to_prop'] }}</td>
+                            <td class="xar-nowrap">&#160;</td>
+                        {% elseif link['link_type'] == 'linkedfrom' or link['link_type'] == 'extended' %}
+                            <td>&#160;</td>
+                            <td>
+                            {% if not where %}
+                                <em>{{ wherename }}</em>
+                            {% else %}
+                                <a href="{{ xar_moduleurl('dynamicdata','admin','relations',{'objectid': where}) }}">{{ wherename }}</a>
+                            {% endif %}
+                            <br />{{ link['to_prop'] }}</td>
+                            <td>{{ link['from_prop'] }}</td>
+                            <td class="xar-nowrap">&#160;</td>
+                            <td class="xar-nowrap">&#160;</td>
+                        {% else %}
+                        {% endif %}
+                        <td>{{ link['direction'] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            </fieldset>
+            <fieldset class="xar-form-actions">
+                <input type="hidden" name="objectid" value="{{ objectid }}"/>
+                <input type="hidden" name="table" value="{{ table }}"/>
+                <input type="hidden" name="authid" value="{{ authid }}"/>
+                {% set label = 'Delete' %}
+                {{- xar_button({type: "submit", label: label, name: "delete", id: "delete"}) -}}
+            </fieldset>
+        </form>
+    {% endif %}
+
+    <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','relations') }}">
+        <fieldset>
+        <legend>Add Link for {{ object.label }}</legend>
+        <div class="xar-row">
+            <div class="xar-col">
+                Link Type:&#160;
+                <input type="hidden" name="module_id" value="{{ module_id }}"/>
+                <input type="hidden" name="itemtype" value="{{ itemtype }}"/>
+                <input type="hidden" name="objectid" value="{{ objectid }}"/>
+                <input type="hidden" name="table" value="{{ table }}"/>
+                <input type="hidden" name="authid" value="{{ authid }}"/>
+                <select name="relation" id="relation">
+                    {% for linktype, descr in linktypes %}
+                        {% if relation and relation == linktype %}
+                            <option value="{{ linktype }}" selected="selected">{{ descr }}</option>
+                        {% else %}
+                            <option value="{{ linktype }}">{{ descr }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>&#160;
+                <select name="withobjectid" id="withobjectid">
+                    <option value=""></option>
+                    {% for id, objectinfo in objects %}
+                        {% if withobjectid and withobjectid == id %}
+                            <option value="{{ id }}" selected="selected">
+                            {{ objectinfo['label'] }}</option>
+                            {% else %}
+                            <option value="{{ id }}">{{ objectinfo['label'] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>&#160;
+                <select name="direction" id="direction">
+                    {% if not direction or direction == 'bi' %}
+                        <option value="bi" selected="selected">two-way</option>
+                    {% else %}
+                        <option value="bi">two-way</option>
+                    {% endif %}
+                    {% if direction and direction == 'uni' %}
+                        <option value="uni" selected="selected">one-way</option>
+                    {% else %}
+                        <option value="uni">one-way</option>
+                    {% endif %}
+                </select>
+            </div>
+        </div>
+        <div class="xar-col dummy">
+            {% set label = 'Add Relation' %}
+            {{- xar_button({type: "submit", label: label, name: "add", id: "add"}) -}}
+        </div>
+        {% if withobjectid %}
+            <div class="xar-floatleft xar-thirdwidth">
+                <h4>From {{ object.label }}</h4>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="field" class="xar-form-labelshort">Field:</label>
+                        <select name="field" id="field">
+                            <option value=""></option>
+                            {% for name in fields|keys %}
+                                {% if field and field == name %}
+                                    <option value="{{ name }}" selected="selected">
+                                    {{ name }}</option>
+                                    {% else %}
+                                    <option value="{{ name }}">{{ name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+{# <!--
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="value" class="xar-form-labelshort">Value:</label>
+                        <input type="textbox" name="value" id="value" value="{{ value }}"
+                        class="xar-form-textmedium"/>
+                    </div>
+                </div>
+--> #}
+            </div>
+            <div class="xar-floatleft xar-thirdwidth">
+                <h4>To {{ withobject.label }}</h4>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="withfield" class="xar-form-labelshort">Field:</label>
+                        <select name="withfield" id="withfield">
+                            <option value=""></option>
+                            {% for name in withfields|keys %}
+                                {% if withfield and withfield == name %}
+                                    <option value="{{ name }}" selected="selected">
+                                    {{ name }}</option>
+                                    {% else %}
+                                    <option value="{{ name }}">{{ name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+{# <!--
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="withvalue" class="xar-form-labelshort">Value:</label>
+                    </div>
+                    <div class="xar-col">
+                        <input type="textbox" name="withvalue" id="withvalue"
+                        value="{{ withvalue }}" class="xar-form-textmedium"/>
+                    </div>
+                </div>
+--> #}
+            </div>
+            <div class="xar-floatleft xar-thirdwidth">
+                <h4>Extra Constraints</h4>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <input type="textbox" name="extra" id="extra" value="{{ extra }}" class="xar-form-textmedium"/>
+                    </div>
+                </div>
+            </div>
+            <fieldset class="xar-form-actions">
+                {% set label = 'Confirm' %}
+                {{- xar_button({type: "submit", label: label, name: "confirm"}) -}}
+            </fieldset>
+        {% endif %}
+        </fieldset>
+    </form>
+
+    <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','relations') }}">
+        <fieldset>
+            <legend>Display Options for {{ object.label }}</legend>
+            {% set getlinkedobjects = xar_coremethod('xarModItemVars', 'get', ['dynamicdata','getlinkedobjects',objectid]) %}
+            <div class="xar-row">
+                <div class="xar-col">
+                    {% if getlinkedobjects %}
+                        <input type="checkbox" name="getlinkedobjects" id="getlinkedobjects" value="1" checked="checked"/>
+                    {% else %}
+                        <input type="checkbox" name="getlinkedobjects" id="getlinkedobjects" value="1"/>
+                    {% endif %}
+                    &#160;<label for="getlinkedobjects">Show linked objects on display (when using the dynamic object user interface)</label>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="xar-form-actions">
+            <input type="hidden" name="objectid" value="{{ objectid }}"/>
+            {% set label = 'Update' %}
+            {{- xar_button({type: "submit", label: label, name: "update"}) -}}
+        </fieldset>
+    </form>
+
+    <fieldset>
+    <legend>Properties of {{ object.label }} <a href="{{ xar_moduleurl('dynamicdata','admin','modifyprop', {'itemid': objectid}) }}" title="Modify Properties for {{ object.label }}">{{- xar_image({scope: "theme", file: "icons/modify-config.png", class: "xar-icon"}) -}}</a></legend>
+    <table class="xar-table">
+        <tr>
+            <th>Name</th>
+            <th>Label</th>
+            <th>Property Type</th>
+            <th>Default</th>
+            <th>Source</th>
+            <th>&#160;</th>
+{# <!--
+            <th>Configuration</th>
+--> #}
+        </tr>
+        {% for name, property in fields %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ property.label }}</td>
+                <td>
+                    {% set proptype = property.type %}
+                    {{ xar_data_output({property: prop, value: proptype}) }}
+                </td>
+                <td>{{ property.defaultvalue }}</td>
+                <td>{{ property.source }}</td>
+                <td><a href="{{ xar_moduleurl('dynamicdata', 'admin', 'showpropval', {'itemid': property.id}) }}" title="Edit configuration for property {{ property.name }}">{{- xar_image({scope: "theme", file: "icons/modify-config.png", class: "xar-icon"}) -}}</a></td>
+{# <!--
+                <td>{{ property.configuration }}</td>
+--> #}
+            </tr>
+        {% endfor %}
+    </table>
+    </fieldset>
+{% endblock %}

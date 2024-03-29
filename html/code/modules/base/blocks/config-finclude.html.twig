@@ -1,0 +1,15 @@
+{# @base/blocks/config-finclude.html.twig #}
+
+{% block config_finclude %}
+<div class="xar-row">
+        <div class="xar-col">
+            {% set label = 'Enter the path of the file to include.' %}
+            <label for="url{{ _bl_block_id }}" title="{{ label }}" class="xar-form-label">
+                File:
+            </label>
+        </div>
+        <div class="xar-col">
+            <input type="text" name="url" id="url{{ _bl_block_id }}" value="{{ url }}" maxlength="255" size="60"/>
+        </div>
+    </div>
+{% endblock %}

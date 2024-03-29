@@ -1,0 +1,36 @@
+{# @themes/switch_theme.html.twig #}
+
+{% extends '@themes/base.html.twig' %}
+
+{% block modulespace %}
+{{ include('@themes/includes/user-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <form action="{{ xar_moduleurl('themes', 'user', 'switch_theme') }}" method="post">
+            <fieldset>
+                <legend>Themes</legend>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        <label for="default_theme" class="xar-form-label">
+                            Select Theme
+                        </label>
+                    </div>
+                    <div class="xar-col">
+                        {% set value = xar_coremethod('xarModUserVars', 'get', ['themes', 'default_theme']) %}{{ value }}
+                        {{ xar_data_input({property: user_themes, name: "default_theme", id: "default_theme", value: value}) }}
+                    </div>
+                </div>
+            </fieldset>
+            <div class="xar-form-actions">
+                <div class="xar-row">
+                    <div class="xar-col"></div>
+                    <div class="xar-col">
+                        <input type="hidden" name="phase" id="phase" value="update"/>
+                        <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
+                        {% set submitLabel = 'Change Theme' %}
+                        {{- xar_button({type: "submit", label: submitLabel}) -}}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{# @roles/getvalidation.html.twig #}
+
+{% extends '@roles/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">Account Validation</span>
+    </div>
+    <div class="xar-mod-body">
+        <h2>Account Validated</h2>
+        {% if pending or pending =='1' %}
+            <p>
+                Your account has been validated, but must be reviewed by the administrator before it is activated. Your account should be activated shortly.
+            </p>
+        {% else %}
+            <p>Your account has been validated! You will now be redirected to the login page.</p>
+            <p>
+            If you are not redirected automatically in a few seconds, please go to  <a href="{{ loginlink }}">log in</a>.
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}

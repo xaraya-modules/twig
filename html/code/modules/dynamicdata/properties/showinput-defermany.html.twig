@@ -1,0 +1,45 @@
+{# @dynamicdata/properties/showinput-defermany.html.twig #}
+
+{% block showinput_defermany %}
+{% if not value %}
+        {% set value = [] %}
+    {% elseif value is not iterable %}
+        {% set value = >[$value]< %}
+    {% endif %}
+    {% if not options %}
+        <input type="text" id="{{ id }}" name="{{ name }}" value="[{{ value|join(',') }}]"/>
+    {% else %}
+        {# <!-- TODO: adapt from multiselect here --> #}
+        {% if size is null %}
+            {% if options|length > 4 %}
+                {% set size = 5 %}
+            {% else %}
+                {% set size = options|length + 1 %}
+            {% endif %}
+        {% endif %}
+        {% if onchange is null %}
+          {% set onchange = 'return true;' %}
+        {% endif %}
+        <select name="{{ name }}[]" id="{{ id }}" tabindex="{{ tabindex }}" multiple="multiple" size="{{ size }}" onchange="{{ onchange }}">
+            {% if value|length < 1 %}
+                <option value="" selected="selected"></option>
+            {% else %}
+                <option value=""></option>
+            {% endif %}
+            {% for option in options %}
+                {% if not option['id'] or option['id'] != option['name'] %}
+                    {% if option['id'] in value|keys %}
+                        <option value="{{ option['id'] }}" selected="selected">{{ option['name'] }}</option>
+                    {% else %}
+                        <option value="{{ option['id'] }}">{{ option['name'] }}</option>
+                    {% endif %}
+                {% elseif option['id'] in value|keys %}
+                    <option selected="selected">{{ option['name'] }}</option>
+                {% else %}
+                    <option>{{ option['name'] }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    {% endif %}
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}
