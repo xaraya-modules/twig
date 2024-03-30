@@ -15,7 +15,7 @@
                         <div class="xar-col">
                         {% if val is iterable %}
                         {% if link %}
-                            {% set itemlink = str_replace('[itemid]', key, link) %}
+                            {% set itemlink = link|replace({'[itemid]': key}) %}
                             <label title="" style=""><a href="{{ itemlink }}">{{ key }}</a>.</label>&#160;
                         {% else %}
                             <label title="" style="">{{ key }}.</label>&#160;
@@ -32,7 +32,7 @@
                             </div>
                         {% elseif link %}
                             {# <!-- label title="" style="">{{ key }}.</label>&#160; --> #}
-                            {% set itemlink = str_replace('[itemid]', key, link) %}
+                            {% set itemlink = link|replace({'[itemid]': key}) %}
                             {% if val %}
                                 <a href="{{ itemlink }}">{{ val }}</a>
                             {% else %}
@@ -49,14 +49,14 @@
                 {% endif %}
             {% elseif link %}
                 {% for val in value %}
-                     {% set itemlink = str_replace('[itemid]', val, link) %}
+                     {% set itemlink = link|replace({'[itemid]': val}) %}
                      <a href="{{ itemlink }}">{{ val }}</a>&#160;{% endfor %}
             {% else %}
                 {% set val = value|join('&#160;') %}
                 {{ val }}
             {% endif %}
         {% elseif link %}
-            {% set itemlink = str_replace('[itemid]', value, link) %}
+            {% set itemlink = link|replace({'[itemid]': value}) %}
             <a href="{{ itemlink }}">{{ value }}</a>
         {% else %}
             {{ value }}

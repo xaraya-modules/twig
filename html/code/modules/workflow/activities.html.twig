@@ -84,7 +84,7 @@
                     <td style="text-align: right;">{{ items[ix]['version'] }}</td>
                     <td style="text-align:left;">
                       {# <!-- Get an image for the activity --> #}
-                      {{ include('@workflow/includes/activity_image.html.twig') }}
+                      {{ include('@workflow/includes/activity_image.html.twig', items[ix]) }}
                       {% if items[ix]['instances'] > 0 %}
                         <a href="{{ xar_moduleurl('workflow','user','instances',{'filter_process': items[ix]['pId'],'filter_activity': items[ix]['activityId']}) }}">{{ items[ix]['name'] }}</a>
                         {% else %}
@@ -119,7 +119,7 @@
       {% if graph %}
         <div style="text-align: center">
           {% if map %}
-            <img src="{{ graph }}" alt="{{ procname }}" usemap="procmap"/>
+            <img src="{{ graph }}" alt="{{ procname }}" usemap="#procmap"/>
             <map name="procmap">{{ map }}</map>
             {% else %}
             <img src="{{ graph }}" alt="{{ procname }}"/>

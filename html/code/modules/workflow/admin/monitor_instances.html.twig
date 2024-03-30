@@ -152,7 +152,7 @@
                   </td>
 
                   <td>
-                    <a class="link" href="{{ xar_moduleurl('workflow','admin','instance',{'iid': items[ix}['instanceId']]) }}">{{ items[ix]['instanceId'] }}</a>
+                    <a class="link" href="{{ xar_moduleurl('workflow','admin','instance',{'iid': items[ix]['instanceId']}) }}">{{ items[ix]['instanceId'] }}</a>
                   </td>
 
                   <td style="text-align:left;">
@@ -175,7 +175,7 @@
 
                   <td style="text-align:left;">
                     {# <!-- Get an image for the activity --> #}
-                    {{ include('@workflow/includes/activity_image.html.twig') }}
+                    {{ include('@workflow/includes/activity_image.html.twig', items[ix]) }}
                     {{ items[ix]['name'] }}
                   </td>
 

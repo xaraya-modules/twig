@@ -4,11 +4,11 @@
 {% if items and items|length > 0 %}
     {% set fieldlabel = {'procname': 'Process', 'version': 'Version', 'instanceId': 'Inst', 'owner': 'Owner', 'started': 'Start', 'ended': 'End', 'status': 'Status', 'name': 'Current Activity', 'user': 'Assigned To'} %}
     {% if fieldlist is null %}
-        {% set fieldlist = >['procname', 'version', 'instanceId', 'started', 'status', 'name', 'user']< %}
+        {% set fieldlist = ['procname', 'version', 'instanceId', 'started', 'status', 'name', 'user'] %}
     {% endif %}
     {% set actionlabel = {'run': 'Run', 'send': 'Send', 'exception': 'Except', 'resume': 'Resume', 'abort': 'Abort', 'release': 'Release', 'remove': 'Seen'} %}
     {% if actionlist is null %}
-        {% set actionlist = >['run', 'exception', 'resume', 'abort', 'release', 'remove']< %}
+        {% set actionlist = ['run', 'exception', 'resume', 'abort', 'release', 'remove'] %}
     {% endif %}
     <table style="border-collapse: separate; width: 99%">
       <tr>
@@ -67,7 +67,7 @@
               {% elseif field == 'name' %}
                 <td>
                   {# <!-- Get an image for the activity --> #}
-                  {{ include('@workflow/includes/activity_image.html.twig') }}
+                  {{ include('@workflow/includes/activity_image.html.twig', item) }}
                   {{ item['name'] }}
                 </td>
               {% else %}
@@ -87,31 +87,31 @@
                   {% if action == 'run' %}
                     {% if item['isInteractive'] == 1 and item['status'] == 'active' and item['user'] == userId %}
                       <input type="hidden" name="activityId" value="{{ item['activityId'] }}"/>
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'exception' %}
                     {% if item['status'] != 'aborted' and item['status'] != 'exception' and item['status'] != 'completed' %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'resume' %}
                     {% if item['status'] == 'exception' %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'abort' %}
                     {% if item['status'] != 'aborted' and item['status'] != 'completed' %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'release' %}
                     {% if item['user'] == '*' and item['status'] == 'active' %}
                       {# <!-- reverse current action --> #}
                       {% set info = {'action': 'grab'} %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% elseif item['status'] == 'active' and item['user'] == userId %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'remove' %}
                     {% if item['status'] == 'completed' or item['status'] == 'aborted' %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% else %}
                     {{ action }} ?

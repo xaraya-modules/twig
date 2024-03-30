@@ -46,9 +46,9 @@
             } %}
 
         {% if select_type[index] == 1 %}
-            {{ include('@categories/includes/categories-select.html.twig') }}
+            {{ include('@categories/includes/categories-select.html.twig', subdata) }}
         {% else %}
-            {{ include('@categories/includes/categories-multiselect.html.twig') }}
+            {{ include('@categories/includes/categories-multiselect.html.twig', subdata) }}
         {% endif %}
     
         {% if layout == 'vertical' %}

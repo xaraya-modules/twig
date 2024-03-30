@@ -9,17 +9,17 @@
 
     {% set fieldlabel = {'procname': 'Process', 'version': 'Version', 'instanceId': 'Inst', 'owner': 'Owner', 'started': 'Start', 'ended': 'End', 'status': 'Status', 'name': 'Activity', 'user': 'User'} %}
     {% if fieldlist is null %}
-        {% set fieldlist = >['procname', 'instanceId', 'owner', 'name', 'user', 'started']< %}
+        {% set fieldlist = ['procname', 'instanceId', 'owner', 'name', 'user', 'started'] %}
     {% endif %}
     {% set actionlabel = {'run': 'Run', 'send': 'Send', 'exception': 'Except', 'resume': 'Resume', 'abort': 'Abort', 'release': 'Release', 'remove': 'Seen'} %}
     {% if actionlist is null %}
-        {% set actionlist = >['run', 'send', 'exception', 'resume', 'abort', 'release']< %}
+        {% set actionlist = ['run', 'send', 'exception', 'resume', 'abort', 'release'] %}
     {% endif %}
 
     <table style="border-collapse: separate; width: 99%">
       <tr>
         {% for field in fieldlist %}
-          {% if sort_mode == field . '_desc' %}
+          {% if sort_mode == field ~ '_desc' %}
             <th><a href="{{ xar_currenturl({'sort_mode': field ~ '_asc'}) }}">{{ fieldlabel[field] }}</a></th>
           {% else %}
             <th><a href="{{ xar_currenturl({'sort_mode': field ~ '_desc'}) }}">{{ fieldlabel[field] }}</a></th>
@@ -77,7 +77,7 @@
               {% elseif field == 'name' %}
                 <td>
                   {# <!-- Get an image for the activity --> #}
-                  {{ include('@workflow/includes/activity_image.html.twig') }}
+                  {{ include('@workflow/includes/activity_image.html.twig', item) }}
                   {{ item['name'] }}
                 </td>
               {% else %}
@@ -97,35 +97,35 @@
                   {% if action == 'run' %}
                     {% if item['isInteractive'] == 1 and item['status'] == 'active' %}
                       <input type="hidden" name="activityId" value="{{ item['activityId'] }}"/>
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'send' %}
                     {% if item['isAutoRouted'] == 0 and item['actstatus'] == 'completed' %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'exception' %}
                     {% if item['status'] != 'aborted' and item['status'] != 'exception' and item['user'] == userId %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'resume' %}
                     {% if item['status'] == 'exception' and item['user'] == userId %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'abort' %}
                     {% if item['status'] != 'aborted' and item['user'] == userId %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'release' %}
                     {% if item['user'] == '*' and item['status'] == 'active' %}
                       {# <!-- reverse current action --> #}
                       {% set info = {'action': 'grab'} %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% elseif item['status'] == 'active' %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'remove' %}
                     {% if item['status'] == 'completed' or item['status'] == 'aborted' %}
-                      {{ include('@workflow/includes/action_input_image.html.twig') }}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% else %}
                     {{ action }} ?

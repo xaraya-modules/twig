@@ -28,7 +28,12 @@
     {% if not layout %}
         {% set layout = 'default' %}
     {% endif %}
-    {{ include('@' ~ tplmodule ~ '/includes/view-' ~ layout ~ '.html.twig') }}
+    {# fallback to dynamicdata template #}
+    {% if tplmodule != 'dynamicdata' %}
+        {{ include(['@' ~ tplmodule ~ '/includes/view-' ~ layout ~ '.html.twig', '@dynamicdata/includes/view-' ~ layout ~ '.html.twig']) }}
+    {% else %}
+        {{ include('@dynamicdata/includes/view-' ~ layout ~ '.html.twig') }}
+    {% endif %}
     {% if not object.itemcount %}
         {# <!-- if we don't have an item total show prev / next links --> #}
         <div>
