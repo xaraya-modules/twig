@@ -23,10 +23,10 @@
             </div>
             <legend>Queue status overview</legend>
             {% for index, qinfo in queues %}
-                {% set rowclass = index % 2?'xar-alt'.'' %}
-                <ul class="qstatus {{ rowclass }}" style="background-image: url({{ xar_imageurl(qinfo.status .'.gif','module','mail') }});">
+                {% set rowclass = index % 2 ? 'xar-alt' : '' %}
+                <ul class="qstatus {{ rowclass }}" style="background-image: url({{ xar_imageurl(qinfo.status ~ '.gif','module','mail') }});">
                     <li style="width: 16px;">
-                        {% set qimage = 'qtype_'.qinfo['qtype'].'.gif' %}
+                        {% set qimage = 'qtype_' ~ qinfo['qtype'] ~ '.gif' %}
                         {{- xar_image({scope: "module", module: "mail", file: qimage, class: "xar-valign-middle"}) -}}
                     </li>
                     <li style="width: 5em;">{{ qinfo.name }}</li>
@@ -50,9 +50,9 @@
                     <li>{{ qname }}
                         <ul class="qstatus">
                             {% for action in measure %}
-                            {% set bgimg = action['action'].'.gif' %}
+                            {% set bgimg = action['action'] ~ '.gif' %}
                             {% set bckgrndimg =  xar_image({scope: "module", module: "mail", file: bgimg, render: "false"})  %}
-                                <li style="background-image: url($bckgrndimg)">
+                                <li style="background-image: url({{ bckgrndimg }})">
                                     <a style="text-decoration: none; font-size: 0.85em;" href="{{ xar_moduleurl('mail','admin',action['action'],{'name': qname, 'authid': authid}) }}">
                                     {{ action.text }}
                                 </a>
@@ -75,7 +75,7 @@
                     Queue is inactive due to a problem
                 </li>
                 {% for type, description in qtypes %}
-                    <li style="background-image: url({{ xar_imageurl('qtype_'.type.'.gif','module','mail') }});">
+                    <li style="background-image: url({{ xar_imageurl('qtype_' ~ type ~ '.gif','module','mail') }});">
                         {{ description }}
                     </li>
                 {% endfor %}

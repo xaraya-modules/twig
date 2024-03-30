@@ -68,7 +68,7 @@
             <h3>{{ xar_translate('Module #(1)', modname) }}</h3>
     
             {% if moditems %}
-                <form method="post" action="&xar-modurl-categories-admin-checklinks;">
+                <form method="post" action="{{ xar_moduleurl('categories','admin','checklinks') }}">
                     <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
                     <input type="hidden" name="modid" id="modid" value="{{ modid }}"/>
                     <input type="hidden" name="itemtype" id="itemtype" value="{{ itemtype }}"/>

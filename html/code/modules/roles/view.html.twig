@@ -53,7 +53,7 @@
                                     {% set items = list.items %}
                                     {% set properties = list.getProperties() %}
                                     {% for key, value in properties %}
-                                        {% if items[id][key] is not null and key in ['name' %}
+                                        {% if items[id][key] is not null and key in ['name','uname','email'] %}
                                             <td>
                                                 {{ xar_data_output({property: properties[key], value: items[id][key]}) }}
                                             </td>

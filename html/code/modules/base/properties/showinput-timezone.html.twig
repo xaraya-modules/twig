@@ -2,7 +2,7 @@
 
 {% block showinput_timezone %}
 <select name="{{ name }}" id="{{ id }}" tabindex="{{ tabindex }}">
-            {% set now = time() %}
+            {% set now = date().getTimestamp() %}
             {% for option in options %}
                 {% if option['offset'] is not null %}
                     {% if option['offset']|slice(0,1) == '-' %}

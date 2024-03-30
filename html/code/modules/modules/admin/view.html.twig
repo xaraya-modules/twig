@@ -156,7 +156,7 @@
                                             <img src="{{ noneicon }}" class="xar-icon" alt="{{ nonelabel }}" title="{{ nonetitle }}"/>
                                         {% elseif item['remove_url'] %}
                                             <a href="{{ item['remove_url'] }}" class="xar-icon" title="{{ removetitle }}"><img src="{{ removeicon }}" class="xar-icon" alt="{{ removelabel }}"/></a>
-                                        {% elseif item['state'] == xarMod..STATE_ACTIVE %}
+                                        {% elseif item['state'] == constant('STATE_ACTIVE','xarMod') %}
                                             <img src="{{ removeicon }}" class="xar-icon-disabled" alt="{{ removelabel }}" title="{{ removetitle }}"/>
                                         {% else %}
                                             <img src="{{ noneicon }}" class="xar-icon" alt="{{ nonelabel }}" title="{{ nonetitle }}"/>
@@ -188,7 +188,7 @@
                                             {{ nonelabel }}
                                         {% elseif item['remove_url'] %}
                                             <a href="{{ item['remove_url'] }}" class="xar-icon" title="{{ removetitle }}">{{ removelabel }}</a>
-                                        {% elseif item['state'] == xarMod..STATE_ACTIVE %}
+                                        {% elseif item['state'] == constant('STATE_ACTIVE','xarMod') %}
                                             {{ nonelabel }}
                                         {% else %}
                                             {{ nonelabel }}

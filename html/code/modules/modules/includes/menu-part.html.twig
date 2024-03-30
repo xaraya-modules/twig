@@ -3,7 +3,7 @@
 {% block menu_part %}
 {% if mod['indlinks'] is not null and mod['indlinks']|length > 0 %}
         <ul class="xar-menu-subitem">
-            <xar:foreach in="$mod['indlinks']" value="$sublinks" key="$sublink">
+            {% for sublink, sublinks in mod['indlinks'] %}
                 {# <!-- determine and indicate current states of module functions display --> #}
                 {% if sublinks['funcactive'] %}
                     <li class="xar-menu-subitem-current">

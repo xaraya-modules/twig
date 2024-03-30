@@ -38,7 +38,7 @@
         </div>
         <div class="xar-col">
             <select name="menustyle" id="menustyle">
-                <xar:foreach in="$sortorder" value="$v" key="$k">
+                {% for k, v in sortorder %}
                     {% if k == menustyle %}
                         <option value="{{ k }}" selected="selected">{{ v }}</option>
                     {% else %}

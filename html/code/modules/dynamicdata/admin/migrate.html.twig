@@ -164,31 +164,31 @@
                             {% set checked = not to['itemid'] %}
                             {{ xar_data_input({type: "checkbox", name: "to[itemid]", id: "to_itemid", checked: checked}) }}
                             <label for="to_itemid"
-                            title="{{ xar_translate('Attempt to preserve item id during this migration') }}{{ ">
+                            title="{{ xar_translate('Attempt to preserve item id during this migration') }} }}">
                             Preserve id</label>
                         </div>
                     {% endif %}
                 {% endif %}
             </fieldset>
             <fieldset class="xar-form-actions">
-                <input type="hidden" name="step" value=" }}$step{{ "/>
-                <input type="hidden" name="authid" value=" }}xarSec::genAuthKey(){{ "/>
+                <input type="hidden" name="step" value="{{ step }}"/>
+                <input type="hidden" name="authid" value=" }}xarSec::genAuthKey() }}"/>
                 {% set label = 'Back' %}
                 {% if step > 1 %}
-                    {{- xar_button({type. "submit", label. label, name. "back"}) -}}
+                    {{- xar_button({type: "submit", label: label, name: "back"}) -}}
                 {% else %}
-                    {{- xar_button({type. "submit", name. "back", label. label, disabled. "disabled"}) -}}
+                    {{- xar_button({type: "submit", name: "back", label: label, disabled: "disabled"}) -}}
                 {% endif %}
                 {% set label = 'Next' %}
-                {{- xar_button({type. "submit", label. label, name. "next"}) -}}
+                {{- xar_button({type: "submit", label: label, name: "next"}) -}}
                 {% set label = 'Test' %}
                 {% set label1 = 'Finish' %}
                 {% if check %}
-                    {{- xar_button({type. "submit", label. label, name. "test"}) -}}
-                    {{- xar_button({type. "submit", label. label1, name. "confirm"}) -}}
+                    {{- xar_button({type: "submit", label: label, name: "test"}) -}}
+                    {{- xar_button({type: "submit", label: label1, name: "confirm"}) -}}
                 {% else %}
-                    {{- xar_button({type. "submit", name. "test", label. label, disabled. "disabled"}) -}}
-                    {{- xar_button({type. "submit", name. "confirm", label. label1, disabled. "disabled"}) -}}
+                    {{- xar_button({type: "submit", name: "test", label: label, disabled: "disabled"}) -}}
+                    {{- xar_button({type: "submit", name: "confirm", label: label1, disabled: "disabled"}) -}}
                 {% endif %}
             </fieldset>
             {% if from['module'] and to['module'] %}
@@ -199,22 +199,22 @@
                         {% for namefrom, infofrom in fromfieldlist %}
                             <div class="xar-row">
                                 <div class="xar-col">
-                                    <label for="fieldmap_ }}$namefrom{{ " class="xar-form-label">
-                                    [ }}$namefrom{{ ] }}$infofrom['label']{{ ( }}$infofrom['type']{{ ).</label>
+                                    <label for="fieldmap_{{ namefrom }}" class="xar-form-label">
+                                    [{{ namefrom }}]{{ infofrom['label'] }}({{ infofrom['type'] }}).</label>
                                 </div>
                                 <div class="xar-col">
-                                    <select name="fieldmap[ }}$namefrom{{ ]" id="fieldmap_ }}$namefrom{{ ">
+                                    <select name="fieldmap[{{ namefrom }}]" id="fieldmap_{{ namefrom }}">
                                         <option value="">* not migrated *</option>
                                         {% for nameto, infoto in tofieldlist %}
                                             {% if fieldmap[namefrom] is null and namefrom == nameto %}
     
-                                                <option value=" }}$nameto{{ " selected="selected">
-                                                [ }}$nameto{{ ] }}$infoto['label']{{ ( }}$infoto['type']{{ )</option>
+                                                <option value="{{ nameto }}" selected="selected">
+                                                [{{ nameto }}]{{ infoto['label'] }}({{ infoto['type'] }})</option>
                                                 {% elseif fieldmap[namefrom] and fieldmap[namefrom] == nameto %}
-                                                <option value=" }}$nameto{{ " selected="selected">
-                                                [ }}$nameto{{ ] }}$infoto['label']{{ ( }}$infoto['type']{{ )</option>
+                                                <option value="{{ nameto }}" selected="selected">
+                                                [{{ nameto }}]{{ infoto['label'] }}({{ infoto['type'] }})</option>
                                             {% else %}
-                                                <option value=" }}$nameto{{ ">[ }}$nameto{{ ] }}$infoto['label']{{ ( }}$infoto['type']{{ )</option>
+                                                <option value="{{ nameto }}">[{{ nameto }}]{{ infoto['label'] }}({{ infoto['type'] }})</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
@@ -226,7 +226,7 @@
                             {% for hookmodfrom, valfrom in fromhooklist %}
                                 <div class="xar-row">
                                     <div class="xar-col">
-                                        <label for="hookmap_ }}$hookmodfrom{{ " class="xar-form-label"> }}$hookmodfrom{{ .</label>
+                                        <label for="hookmap_{{ hookmodfrom }}" class="xar-form-label">{{ hookmodfrom }}.</label>
                                     </div>
                                     <div class="xar-col">
                                         {% if hookmodfrom not in hooksupported %}not
@@ -234,19 +234,19 @@
                                         {% elseif hookmodfrom == 'dynamicdata' %}see
                                         field mapping above 
                                         {% else %}
-                                        <select name="hookmap[ }}$hookmodfrom{{ ]"
-                                        id="hookmap_ }}$hookmodfrom{{ ">
+                                        <select name="hookmap[{{ hookmodfrom }}]"
+                                        id="hookmap_{{ hookmodfrom }}">
                                             <option value="">* not migrated *</option>
                                             {% for hookmodto, valto in tohooklist %}
                                                     {% if hookmap[hookmodfrom] is null and hookmodfrom == hookmodto %}
     
-                                                    <option value=" }}$hookmodto{{ " selected="selected"> }}$hookmodto{{ </option>
+                                                    <option value="{{ hookmodto }}" selected="selected">{{ hookmodto }}</option>
                                                     {% elseif hookmap[hookmodfrom] and hookmap[hookmodfrom] == hookmodto %}
-                                                    <option value=" }}$hookmodto{{ " selected="selected"> }}$hookmodto{{ </option>
+                                                    <option value="{{ hookmodto }}" selected="selected">{{ hookmodto }}</option>
                                                     {% elseif hookmodto not in hooksupported %}
-                                                    <option value=" }}$hookmodto{{ " disabled="disabled"> }}$hookmodto{{ </option>
+                                                    <option value="{{ hookmodto }}" disabled="disabled">{{ hookmodto }}</option>
                                                     {% else %}
-                                                        <option value=" }}$hookmodto{{ "> }}$hookmodto#</option>
+                                                        <option value="{{ hookmodto }}">{{ hookmodto }}</option>
                                                     {% endif %}
                                                 {% endfor %}
                                         </select>{% endif %}

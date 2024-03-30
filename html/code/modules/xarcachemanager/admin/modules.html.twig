@@ -11,7 +11,7 @@
       {{ xar_translate('Module caching is currently disabled') }}
     {% else %}
       {{ xar_javascript({module: "base", filename: "checkall.js"}) }}
-      <form action="&xar-modurl-xarcachemanager-admin-modules;" name="modulecache_form" id="modulecache_form" method="post">
+      <form action="{{ xar_moduleurl('xarcachemanager','admin','modules') }}" name="modulecache_form" id="modulecache_form" method="post">
         <fieldset>
         <legend>
             Module Caching Options

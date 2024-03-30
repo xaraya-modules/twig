@@ -4,13 +4,13 @@
 {{ include('@categories/includes/admin-mod-head.html.twig') }}
     <div class="xar-mod-body">
         {% if extcomponent == 'Link' %}
-            <h2>{{ xar_translate('Select Hooked Modules and/or Categories for Privilege \\'#(1)\\'', extname) }}</h2>
+            <h2>{{ xar_translate('Select Hooked Modules and/or Categories for Privilege \'#(1)\'', extname) }}</h2>
         {% else %}
-            <h2>{{ xar_translate('Select Category for Privilege \\'#(1)\\'', extname) }}</h2>
+            <h2>{{ xar_translate('Select Category for Privilege \'#(1)\'', extname) }}</h2>
         {% endif %}
         <div style="margin: auto;">
     
-        <form method="post" action="&xar-modurl-categories-admin-privileges;">
+        <form method="post" action="{{ xar_moduleurl('categories','admin','privileges') }}">
             <input type="hidden" name="extpid" id="extpid" value="{{ extpid }}"/>
             <input type="hidden" name="extname" id="extname" value="{{ extname }}"/>
             <input type="hidden" name="extrealm" id="extrealm" value="{{ extrealm }}"/>

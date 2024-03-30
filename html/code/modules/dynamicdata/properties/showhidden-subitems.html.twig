@@ -10,6 +10,7 @@
     <input type="hidden" name="subitem_previous_ids_{{ newprefix }}" id="subitem_previous_ids_{{ newprefix }}" value="{{ itemkeys }}" />
 
     <div id="item_content_{{ fieldprefix }}" style="display: none">
+        {# @todo support ${$index} in Twig? #}
         {% set index = 'index_' ~ fieldprefix %}
         {% set $index = 0 %}
         {% set prefix = object.getFieldPrefix() %}

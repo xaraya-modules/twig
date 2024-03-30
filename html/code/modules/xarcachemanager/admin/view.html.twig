@@ -19,9 +19,9 @@
             <td colspan="2" style="font-weight:bold;">
                 Cache item:&#160;
                 {{ key }}
-                [ <a href="{{ xar_moduleurl('xarcachemanager','admin','flushcache',array('flushkey['.tab.']' => key, 'authid' => authid, 'confirm' => 1, 'return_url' => return_url)) }}">flush key</a> ]
+                [ <a href="{{ xar_moduleurl('xarcachemanager','admin','flushcache',{('flushkey[' ~ tab ~ ']'): key, 'authid': authid, 'confirm': 1, 'return_url': return_url}) }}">flush key</a> ]
                 {{ code }}
-                [ <a href="{{ xar_moduleurl('xarcachemanager','admin','flushcache',array('flushkey['.tab.']' => key, 'cachecode['.tab.']' => code, 'authid' => authid, 'confirm' => 1, 'return_url' => return_url)) }}">delete item</a> ]
+                [ <a href="{{ xar_moduleurl('xarcachemanager','admin','flushcache',{('flushkey[' ~ tab ~ ']'): key, ('cachecode[' ~ tab ~ ']'): code, 'authid': authid, 'confirm': 1, 'return_url': return_url}) }}">delete item</a> ]
             </td>
         </tr>
         {% if link %}
@@ -34,28 +34,28 @@
         {% if title %}
             <tr>
                 <td colspan="2">
-                    <strong>Title:</strong>&#160;{% set dummy = var_export(title,true) %}{{ dummy }}
+                    <strong>Title:</strong>&#160;{{ dump(title) }}
                 </td>
             </tr>
         {% endif %}
         {% for style in styles %}
             <tr>
                 <td colspan="2">
-                    <strong>Style:</strong>&#160;{% set dummy = var_export(style,true) %}{{ dummy }}
+                    <strong>Style:</strong>&#160;{{ dump(style) }}
                 </td>
             </tr>
         {% endfor %}
         {% for info in script %}
             <tr>
                 <td colspan="2">
-                    <strong>Script:</strong>&#160;{% set dummy = var_export(info,true) %}{{ dummy }}
+                    <strong>Script:</strong>&#160;{{ dump(info) }}
                 </td>
             </tr>
         {% endfor %}
         {% if tab == 'variable' %}
             <tr>
                 <td colspan="2">
-                {% set dummy = join("\n", lines) %}
+                {% set dummy = lines|join("\n") %}
 		<pre>{{ dummy }}</pre>
                 </td>
             </tr>

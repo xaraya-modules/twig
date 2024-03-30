@@ -86,7 +86,7 @@
                     <tr>
                       <td class="odd">{{ acts[ix]['name'] }}
                         {% if acts[ix]['isInteractive'] == 1 %}
-                          <a href="{{ xar_moduleurl('workflow','user','run_activity',{'activityId': acts[ix}['activityId'], 'iid' => iid]) }}">
+                          <a href="{{ xar_moduleurl('workflow','user','run_activity',{'activityId': acts[ix]['activityId'], 'iid': iid}) }}">
                             {% set imgtitle = xar_translate('run') %}
                             {% set imgalt = xar_translate('run') %}
                             {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/next.gif", alt: imgalt, title: imgtitle}) -}}</a>

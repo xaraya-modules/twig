@@ -11,7 +11,7 @@
                 <li class="xar-menu-section">
                     <h4>{{ catname }}</h4>
                     <ul class="xar-menu-item">
-                        <xar:foreach in="$cats" value="$mod" key="$modname">
+                        {% for modname, mod in cats %}
                             {# <!--
                                 here we are dealing with 3 main conditions:
                                 - if module is active and main/overview function is loaded, we display item as having *-current state
@@ -38,7 +38,8 @@
                                     </a>
                                 {% endif %}
                                 {# <!-- Render the menu part --> #}
-                                <xar:template file="menu-part" subdata="['mod' => $mod]"/>
+                                {% set subdata = {'mod': mod} %}
+                                {{ include('@modules/includes/menu-part.html.twig', subdata) }}
                             </li>
                         {% endfor %}
                     </ul>

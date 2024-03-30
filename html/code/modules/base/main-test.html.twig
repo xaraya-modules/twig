@@ -21,10 +21,8 @@
 </pre>
 
         {# <!-- @todo Here we create the object --> #}
-        {% set dummy = 1;
-            xar_coremethod('sys', 'import', ['modules.dynamicdata.class.objects.factory']);
-            roles = DataObjectFactory..getObjectList({'name': 'roles_users'});
-            roles.dataquery.eq('uname','admin'); %}
+        {% set roles = xar_coremethod('DataObjectFactory', 'getObjectList', {'name': 'roles_users'}) %}
+        {% set foo = roles.dataquery.eq('uname','admin') %}
 
 
         <h4>1. A simple example</h4>
@@ -54,9 +52,7 @@
 &lt;/xar:data-getitems>
 </pre>
         {# <!-- Here we create the object --> #}
-        {% set dummy = 1;
-            xar_coremethod('sys', 'import', ['modules.dynamicdata.class.objects.factory']);
-            roles = DataObjectFactory..getObjectList({'name': 'roles_users'}); %}
+        {% set roles = xar_coremethod('DataObjectFactory', 'getObjectList', {'name': 'roles_users'}) %}
         
         {# <!-- Here we create the object --> #}
         <xar:data-getitems object="$roles" properties="$properties" values="$items" tplmodule="dynamicdata">
@@ -120,7 +116,7 @@
         {% set foo = myquery.qecho() %}
         <br /><br />
         <h4>3.3. Result of running the query</h4>
-        {% set foo = var_dump(items) %}
+        {{ dump(items) }}
     
     
     </div>

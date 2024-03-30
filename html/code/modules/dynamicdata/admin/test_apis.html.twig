@@ -28,6 +28,7 @@
             <div class="xar-row">
                 <div class="xar-col">
                 {% if openapi %}
+                    {# @todo get this from function #}
                     <a href="./var/cache/api/openapi.json">var/cache/api/openapi.json</a>
                     {% set mtime = filemtime(openapi) %}
                     ({{ xar_coremethod('xarLocale', 'formatUTCDate', ["%Y-%m-%d", mtime]) }})
@@ -70,6 +71,7 @@
             <div class="xar-row">
                 <div class="xar-col">
                 {% if schema %}
+                    {# @todo get this from function #}
                     <a href="./var/cache/api/schema.graphql">var/cache/api/schema.graphql</a>
                     {% set mtime = filemtime(schema) %}
                     ({{ xar_coremethod('xarLocale', 'formatUTCDate', ["%Y-%m-%d", mtime]) }})

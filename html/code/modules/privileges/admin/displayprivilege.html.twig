@@ -38,7 +38,7 @@
                         {% if prevgroup != parents[i]['parentname'] %}
                             <li class="xar-tab">
                                 {% set label = 'Show this privilege' %}
-                                <a href="{{ xar_moduleurl('privileges','admin','displayprivilege',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                <a href="{{ xar_moduleurl('privileges','admin','displayprivilege',{'id': parents[i]['parentid']}) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
                                     {{ parents[i]['parentname'] }}
                                 </a>
                             </li>

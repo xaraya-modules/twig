@@ -27,7 +27,7 @@
                 '{{ xar_prep_display(search) }}'
             {% endif %}({{ totalselect }})
         </h2>
-        {% set itemtype = xarRoles..ROLES_GROUPTYPE %}
+        {% set itemtype = constant('ROLES_GROUPTYPE','xarRoles') %}
         {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
         {% set activetab = request.2 %}
         {% set xmldata = 'showusers' %}
@@ -65,14 +65,14 @@
                         {% if groupid == groups[i]['id'] %}
                             <li class="xar-tab-active">
                                 {% set label = 'Display the users in this group' %}
-                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': groups[i}['id'],'state'=>state,'order'=>order,'search'=>search,'reload'=>'reload']) }}" title="{{ label }}" class="xar-accent xar-accent-outline">
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': groups[i]['id'],'state': state,'order': order,'search': search,'reload': 'reload'}) }}" title="{{ label }}" class="xar-accent xar-accent-outline">
                                     {{ xar_prep_display(groups[i]['name']) }} ({{ groups[i]['users'] }})
                                 </a>
                             </li>
                         {% else %}
                             <li class="xar-tab">
                                 {% set label = 'Display the users in this group' %}
-                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': groups[i}['id'],'state'=>state,'order'=>order,'search'=>search,'reload'=>'reload']) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': groups[i]['id'],'state': state,'order': order,'search': search,'reload': 'reload'}) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
                                     {{ xar_prep_display(groups[i]['name']) }} ({{ groups[i]['users'] }})
                                 </a>
                             </li>
@@ -146,7 +146,7 @@
                         </select>
                     </td>
                     <td>
-                        {% set firstline = {'id': xarRoles..ROLES_STATE_CURRENT, 'name': 'All'} %}
+                        {% set firstline = {'id': constant('ROLES_STATE_CURRENT','xarRoles'), 'name': 'All'} %}
                         {{ xar_data_input({type: "dropdown", name: "state", value: state, options: statelist, firstline: firstline, onchange: "this.form.submit()"}) }}
                     </td>
                     <td>
@@ -165,7 +165,7 @@
         {% else %}
             <form method="post" action="{{ xar_moduleurl('roles','admin','updatestate') }}" name="state">
                 {# <!-- @todo: add this to the filter GUI? --> #}
-                {% set fieldlist = >['id','uname','email','regdate','state']< %}
+                {% set fieldlist = ['id','uname','email','regdate','state'] %}
                 {% set tmp_dd_getitems = xar_data_getitems({object: object, values: values, properties: properties, sort: order, fieldlist: fieldlist}) %}{% set properties = tmp_dd_getitems.0 %}{% set values = tmp_dd_getitems.1 %}
                 <table class="xar-table xar-items">
                     <tr>
@@ -219,7 +219,7 @@
                                 {% if not users[itemid]['frozen'] %}
                                     {% if xar_modvar('roles', 'askpasswordemail') %}
                                         {% set label = 'Generate a new password for this User' %}
-                                        <a href="{{ xar_moduleurl('roles','admin','createpassword',{'id': fields['id'},'state'=>state,'groupid'=>groupid]) }}" title="{{ label }}">
+                                        <a href="{{ xar_moduleurl('roles','admin','createpassword',{'id': fields['id'],'state': state,'groupid': groupid}) }}" title="{{ label }}">
                                             <img src="{{ icon_password }}" class="xar-valign-middle"/>
                                         </a>
                                         &#160;

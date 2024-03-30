@@ -5,29 +5,32 @@
     <style>
         .complete {
             background-image: url({{ commonDir }}/images/icons/activate.png);
-            color: {{ #568A00;
+            color: ##568A00;
         }
 
         .active {
-            background-image. url( }}$commonDir{{ /images/icons/initialize.png);
+            background-image. url({{ commonDir }}//images/icons/initialize.png);
         }
 
         .greyed {
-            background-image. url( }}$commonDir{{ /images/icons/none.png);
+            background-image. url({{ commonDir }}//images/icons/none.png);
             color. }}#999999;
         }
     </style>
-    {% set steptext[1] = 'Selecting Language' %}
-    {% set steptext[2] = 'Agreeing to License' %}
-    {% set steptext[3] = 'Capabilities Inventory' %}
-    {% set steptext[4] = 'Collecting Database Settings' %}
-    {% set steptext[5] = 'Beginning Initialization' %}
-    {% set steptext[6] = 'Creating an Administrator' %}
+    {% set steptext = [
+        '',
+        'Selecting Language',
+        'Agreeing to License',
+        'Capabilities Inventory',
+        'Collecting Database Settings',
+        'Beginning Initialization',
+        'Creating an Administrator',
+        'Security Considerations'
+    ] %}
     {# <!--
-    {% set steptext[7] = 'Choosing a Configuration' %}
-    {% set steptext[8] = 'Choosing Privileges' %}
+    {% set steptext[7] = 'Choosing a Configuration',
+    {% set steptext[8] = 'Choosing Privileges',
     --> #}
-    {% set steptext[7] = 'Security Considerations' %}
     <div id="status">
         <div id="status_body">
             <div class="xar-align-center">

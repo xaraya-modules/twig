@@ -11,7 +11,7 @@
                     <a href="{{ mod['link'] }}">{{ mod['label'] }}</a> 
                     {% if indlinks is not null and indlinks|length > 0 and mod['modactive'] == 1 %}
                         <ul class="xar-menu-subitem">
-                            <xar:foreach in="$indlinks" value="$sublinks" key="$sublink">
+                            {% for sublink, sublinks in indlinks %}
                                 <li class="xar-menu-subitem">
                                     <a href="{{ sublinks['adminlink'] }}" title="{{ sublinks['admintitle'] }}">{{ sublinks['adminlabel'] }}</a>
                                 </li>
@@ -27,12 +27,12 @@
                 <li class="xar-menu-section">
                     {{ catname }} 
                     <ul class="xar-menu-item">
-                        <xar:foreach in="$cats" value="$mod" key="$modname">
+                        {% for modname, mod in cats %}
                             <li class="xar-menu-item">
                                 <a href="{{ mod[0]['link'] }}">{{ mod['features']['label'] }}</a> 
                                 {% if mod['indlinks'] is not null and mod['indlinks']|length > 0 %}
                                     <ul class="xar-menu-subitem">
-                                        <xar:foreach in="$mod['indlinks']" value="$sublinks" key="$sublink">
+                                        {% for sublink, sublinks in mod['indlinks'] %}
                                             <li class="xar-menu-subitem">
                                                 <a href="{{ sublinks['adminlink'] }}" title="{{ sublinks['admintitle'] }}">{{ sublinks['adminlabel'] }}</a>
                                             </li>

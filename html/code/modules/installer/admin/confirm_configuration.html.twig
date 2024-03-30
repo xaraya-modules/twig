@@ -23,7 +23,7 @@
                             <label for="chosen1_{{ loop_index1 }}">{{ loop_item1['comment'] }}</label>
                         {% endif %}
                     </p>
-                </xar:loop>
+                {% endfor %}
                 <p>
                     Disabling the options above will leave your registered and unregistered users with minimal access. The administrator you created in Step 6 will always have full access to the site.
                 </p>
@@ -40,7 +40,7 @@
                             This configuration does not need to load any modules.
                             </p>
                         {% else %}
-                            <xar:loop name="$options2">
+                        {% for loop_key1, loop_item1 in options2 %}{% set loop_index1 = loop.index %}
                             {% if loop_item1['option'] == '' %}
                                 <p class="xar-normal">
                                     {{ loop_item1['comment'] }}

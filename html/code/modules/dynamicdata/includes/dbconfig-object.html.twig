@@ -42,7 +42,7 @@
                     <label class="xar-form-label" for="datastore" title="" style="">Datastore</label>
                 </div>
                 <div class="xar-col">
-                    {% set options = >['relational', 'external']< %}
+                    {% set options = ['relational', 'external'] %}
                     <select id="datastore" name="config[datastore]">
                         {% for option in options %}
                             {% if config['datastore'] and option == config['datastore'] %}

@@ -20,7 +20,7 @@
             {# <!-- @checkme for each workflow for this subject, set to initial place with empty trackerId --> #}
             {% for workflow, info in workflows %}
                 {% set place = config[workflow]['initial_marking'][0] %}
-                {% set item = {'id': 0, 'workflow': workflow, 'object': objectref.name, 'item': objectref.itemid, 'user': userId, 'marking': place, 'updated': time()} %}
+                {% set item = {'id': 0, 'workflow': workflow, 'object': objectref.name, 'item': objectref.itemid, 'user': userId, 'marking': place, 'updated': date().getTimestamp()} %}
                 {{ xar_workflow_actions({name: "actions", config: config, item: item, title: place, template: place}) }}
             {% endfor %}
         {% endif %}

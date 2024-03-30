@@ -42,10 +42,10 @@
 				</p>
 				<ul>
 					{% if metRequiredPHPVersion %}
-						<li class="success">PHP Version is greater than or equal that the required version {{ xarInst..PHP_REQUIRED_VERSION }}. Your PHP
+						<li class="success">PHP Version is greater than or equal that the required version {{ constant('PHP_REQUIRED_VERSION','xarInst') }}. Your PHP
 						Version is {{ phpVersion }}</li>
 					{% else %}
-						<li class="failure">PHP Version is less than {{ xarInst..PHP_REQUIRED_VERSION }}. Your PHP Version is
+						<li class="failure">PHP Version is less than {{ constant('PHP_REQUIRED_VERSION','xarInst') }}. Your PHP Version is
 						{{ phpVersion }} please upgrade PHP.</li>
 					{% endif %}
 					{% if metMinMemRequirement and not memory_warning %}
@@ -208,12 +208,12 @@
 							{% if mysqliextension and mysqli_version_ok %}
 								<li>MySQL is available through the MySQLi extension and Creole.</li>
 							{% else %}
-								<li>FAIL: The current version of the MySQLi extension ({{ mysqli_version }}) does not meet the minimum required version ({{ xarInst..MYSQL_REQUIRED_VERSION }}).</li>
+								<li>FAIL: The current version of the MySQLi extension ({{ mysqli_version }}) does not meet the minimum required version ({{ constant('MYSQL_REQUIRED_VERSION','xarInst') }}).</li>
 							{% endif %}
 							{% if pdomysqlextension and pdo_mysql_version_ok %}
 								<li>MySQL is available through the PDO MySQL extension.</li>
 							{% else %}
-								<li>FAIL: The current version of the PDO MySQL extension ({{ pdo_mysql_version }}) does not meet the minimum required version ({{ xarInst..MYSQL_REQUIRED_VERSION }}).</li>
+								<li>FAIL: The current version of the PDO MySQL extension ({{ pdo_mysql_version }}) does not meet the minimum required version ({{ constant('MYSQL_REQUIRED_VERSION','xarInst') }}).</li>
 							{% endif %}
 						</li>
 					{% else %}
@@ -228,12 +228,12 @@
 							{% if pgsqlextension and pgsql_version_ok %}
 								<li>PostgreSQL is available through the PostgreSQL extension and Creole.</li>
 							{% else %}
-								<li>FAIL: The current version of the PostgreSQL extension ({{ pgsql_version }}) does not meet the minimum required version ({{ xarInst..PGSQL_REQUIRED_VERSION }}).</li>
+								<li>FAIL: The current version of the PostgreSQL extension ({{ pgsql_version }}) does not meet the minimum required version ({{ constant('PGSQL_REQUIRED_VERSION','xarInst') }}).</li>
 							{% endif %}
 							{% if pdopgsqlextension and pdo_pgsql_version_ok %}
 								<li>PostgreSQL is available through the PDO PostgreSQL extension.</li>
 							{% else %}
-								<li>FAIL:The current version of the PDO PostgreSQL extension ({{ pdo_pgsql_version }}) does not meet the minimum required version ({{ xarInst..PGSQL_REQUIRED_VERSION }}).</li>
+								<li>FAIL:The current version of the PDO PostgreSQL extension ({{ pdo_pgsql_version }}) does not meet the minimum required version ({{ constant('PGSQL_REQUIRED_VERSION','xarInst') }}).</li>
 							{% endif %}
 						</li>
 						<li class="warning">WARNING: PostgreSQL support is limited to the Xaraya core and core modules</li>
@@ -249,12 +249,12 @@
 							{% if sqlite3extension and sqlite3_version_ok %}
 								<li>SQLite is available through the SQLite extension and Creole.</li>
 							{% else %}
-								<li>FAIL: The current version of the SQLite extension ({{ sqlite3_version }}) does not meet the minimum required version ({{ xarInst..SQLITE_REQUIRED_VERSION }}).</li>
+								<li>FAIL: The current version of the SQLite extension ({{ sqlite3_version }}) does not meet the minimum required version ({{ constant('SQLITE_REQUIRED_VERSION','xarInst') }}).</li>
 							{% endif %}
 							{% if pdosqliteextension and pdo_sqlite_version_ok %}
 								<li>SQLite is available through the PDO SQLite extension.</li>
 							{% else %}
-								<li>FAIL: The current version of the PDO SQLite extension ({{ pdo_sqlite_version }}) does not meet the minimum required version ({{ xarInst..SQLITE_REQUIRED_VERSION }}).</li>
+								<li>FAIL: The current version of the PDO SQLite extension ({{ pdo_sqlite_version }}) does not meet the minimum required version ({{ constant('SQLITE_REQUIRED_VERSION','xarInst') }}).</li>
 							{% endif %}
 						</li>
 						<li class="warning">WARNING: SQLite is currently not supported.</li>

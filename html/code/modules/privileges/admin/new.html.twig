@@ -50,7 +50,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            <input type="radio" name="ptype" id="ptype_empty" value="empty" checked="checked" onclick="this.form.action='&xar-modurl-privileges-admin-new;';this.form.submit();"/>
+                            <input type="radio" name="ptype" id="ptype_empty" value="empty" checked="checked" onclick="this.form.action='{{ xar_moduleurl('privileges','admin','new') }}';this.form.submit();"/>
                         </div>
                     </div>
                     <div class="xar-row">
@@ -61,7 +61,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            <input type="radio" name="ptype" id="ptype_full" value="full" onclick="this.form.action='&xar-modurl-privileges-admin-new;';this.form.submit();"/>
+                            <input type="radio" name="ptype" id="ptype_full" value="full" onclick="this.form.action='{{ xar_moduleurl('privileges','admin','new') }}';this.form.submit();"/>
                         </div>
                     </div>
                 {% else %}
@@ -73,7 +73,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            <input type="radio" name="ptype" id="ptype_empty" value="empty" onclick="this.form.action='&xar-modurl-privileges-admin-new;';this.form.submit();"/>
+                            <input type="radio" name="ptype" id="ptype_empty" value="empty" onclick="this.form.action='{{ xar_moduleurl('privileges','admin','new') }}';this.form.submit();"/>
                         </div>
                     </div>
                     <div class="xar-row">
@@ -84,7 +84,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            <input type="radio" name="ptype" id="ptype_full" value="full" checked="checked" onclick="this.form.action='&xar-modurl-privileges-admin-new;';this.form.submit();"/>
+                            <input type="radio" name="ptype" id="ptype_full" value="full" checked="checked" onclick="this.form.action='{{ xar_moduleurl('privileges','admin','new') }}';this.form.submit();"/>
                         </div>
                     </div>
                     <div class="xar-row">
@@ -131,7 +131,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            <select name="pcomponent" id="pcomponent" onchange="this.form.action = '&xar-modurl-privileges-admin-new;';this.form.submit();">
+                            <select name="pcomponent" id="pcomponent" onchange="this.form.action = '{{ xar_moduleurl('privileges','admin','new') }}';this.form.submit();">
                                 {% for loop_key1, loop_item1 in components %}{% set loop_index1 = loop.index %}
                                     {% if loop_item1['name'] == pcomponent %}
                                         <option value="{{ loop_item1['name'] }}" selected="selected">
@@ -142,7 +142,7 @@
                                             {{ loop_item1['name'] }}
                                         </option>
                                     {% endif %}
-                                </xar:loop>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -166,20 +166,20 @@
                         {% for loop_key2, loop_item2 in instances %}{% set loop_index2 = loop.index %}
                             <div class="xar-row">
                                 <div class="xar-col">
-                                    <label for="pinstance{{ loop_index1 }}" class="xar-form-label">
-                                        {{ loop_item1['header'] }}
+                                    <label for="pinstance{{ loop_index2 }}" class="xar-form-label">
+                                        {{ loop_item2['header'] }}
                                     </label>
                             </div>
                             <div class="xar-col">
-                                    {% if loop_item1['type'] == 'manual' %}
-                                        <input type="text" name="pinstance[]" id="pinstance{{ loop_index1 }}" value="All" class="xar-form-textmedium"/>
+                                    {% if loop_item2['type'] == 'manual' %}
+                                        <input type="text" name="pinstance[]" id="pinstance{{ loop_index2 }}" value="All" class="xar-form-textmedium"/>
                                         &#160;                                    
                                         This field must contain a value                                    
                                     {% else %}
                                         <select name="pinstance[]">
-                                            <xar:loop name="loop_item1['dropdown']">
-                                                <option value="{{ loop_item1['name'] }}">
-                                                    {{ loop_item1['name'] }}
+                                            {% for loop_key3, loop_item3 in loop_item2['dropdown'] %}{% set loop_index3 = loop.index %}
+                                                <option value="{{ loop_item3['name'] }}">
+                                                    {{ loop_item3['name'] }}
                                                 </option>
                                             {% endfor %}
                                         </select>

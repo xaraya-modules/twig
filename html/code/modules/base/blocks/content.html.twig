@@ -11,7 +11,7 @@
             {% for loop_key1, loop_item1 in content_lines %}{% set loop_index1 = loop.index %}
             {% if loop_index1 > 0 %}
                 <br />
-            {% endif %}{{ xar_prep_display(loop_item1) }}</xar:loop>
+            {% endif %}{{ xar_prep_display(loop_item1) }}{% endfor %}
         </div>
     {% endif %}
     {# <!--
@@ -50,7 +50,7 @@
     --> #}
     {% if content_type == 'php' and custom_format == 'text' %}
         <div>
-            <xar:loop name="$content_lines">
+            {% for loop_key1, loop_item1 in content_lines %}{% set loop_index1 = loop.index %}
             {% if loop_index1 > 0 %}
                 <br />
             {% endif %}{{ xar_prep_display(loop_item1) }}{% endfor %}

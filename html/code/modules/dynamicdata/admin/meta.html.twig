@@ -170,9 +170,9 @@
             DDL</a>| 
             <a href="{{ xar_moduleurl('dynamicdata','admin','meta',{'showdb': 1}) }}">Show other databases</a></p>
         {% elseif export == 'view' %}
-            {# <!-- example of using virtual object descriptor to show database table --> #}
+            {# <!-- @todo example of using virtual object descriptor to show database table --> #}
             {% set dummy = xar_coremethod('sys', 'import', ['modules.dynamicdata.class.objects.virtual']) %}
-            {% set descriptor = new TableObjectDescriptor({'table': table, 'fields': tables[table}, 'dbConnIndex' => dbConnIndex]) %}
+            {% set descriptor = new TableObjectDescriptor({'table': table, 'fields': tables[table], 'dbConnIndex': dbConnIndex}) %}
             {% set object = new DataObjectList(descriptor) %}
             {% set dummy = object.getItems() %}
             <h3>
@@ -186,11 +186,10 @@
             </h3>
             {{ xar_data_view({object: object, table: table, layout: "meta"}) }}
         {% elseif export == 'display' %}
-            {# <!-- example of using virtual object descriptor to show database table --> #}
-            {% set dummy = xar_coremethod('sys', 'import', ['modules.dynamicdata.class.objects.virtual']) %}
-            {% set descriptor = new TableObjectDescriptor({'table': table, 'fields': tables[table}, 'dbConnIndex' => dbConnIndex]) %}
+            {# <!-- @todo example of using virtual object descriptor to show database table --> #}
+            {% set descriptor = new TableObjectDescriptor({'table': table, 'fields': tables[table], 'dbConnIndex': dbConnIndex}) %}
             {% set object = new DataObject(descriptor) %}
-            {% set dummy = xar_coremethod('xarVar', 'fetch', ['itemid', 'notempty', itemid, 1, xarVar..NOT_REQUIRED]) %}
+            {% set dummy = xar_coremethod('xarVar', 'fetch', ['itemid', 'notempty', itemid, 1, constant('NOT_REQUIRED','xarVar')]) %}
             {% set dummy = object.getItem({'itemid': itemid}) %}
             <h3>
                 Table: {{ table }}&#160;

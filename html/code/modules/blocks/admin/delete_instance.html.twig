@@ -41,7 +41,7 @@
                             {% for loop_key1, loop_item1 in instance_groups %}{% set loop_index1 = loop.index %}
                                 <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_instance', {'block_id': loop_item1.block_id}) }}">{{ loop_item1.name }}</a>
                                 {% if loop_index1 < instance_groups|length %},&#160;{% endif %}
-                            </xar:loop>
+                            {% endfor %}
                         </div>
                     </div>
                 {% elseif group_instances %}
@@ -49,7 +49,7 @@
                         <div class="xar-col">Group Instances:</div>
                         <div class="xar-col">
                             <p class="xar-note">The following instances belong to this block group</p>
-                            <xar:loop name="$group_instances">
+                            {% for loop_key1, loop_item1 in group_instances %}{% set loop_index1 = loop.index %}
                                 <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_instance', {'block_id': loop_item1.block_id}) }}">{{ loop_item1.name }}</a>
                                 {% if loop_index1 < group_instances|length %},&#160;{% endif %}
                             {% endfor %}

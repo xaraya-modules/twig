@@ -2,7 +2,7 @@
 
 {% block showinput_categories %}
 {% if size %}
-        {% set sizestring = 'size="'.size.'"' %}
+        {% set sizestring = 'size="' ~ size ~ '"' %}
     {% else %}
         {% set sizestring = '' %}
     {% endif %}
@@ -58,7 +58,7 @@
     {% endfor %}
 
     {% if show_edit and current_id %}
-        <xar:sec id="showEdit" mask="EditCategories" catch="false" component="All" instance="All:$current_id">
+        {% if xar_security_check({mask: "EditCategories", catch: "false", component: "All", instance: "All:" ~ current_id}) %}
             [&#160;<a href="{{ xar_moduleurl('categories','admin','modify',{'cid': current_id}) }}">
             Edit
             </a> ]

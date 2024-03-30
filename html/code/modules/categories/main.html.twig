@@ -10,7 +10,7 @@
     </h2>
 
     {% if parents and parents|length > 0 %}
-      <a href="&xar-modurl-categories-user-main;">Browse</a>
+      <a href="{{ xar_moduleurl('categories','user','main') }}">Browse</a>
       {% for parent in parents %}
         &gt;
         {% if parent['link'] %}

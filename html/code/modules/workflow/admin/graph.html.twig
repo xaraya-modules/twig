@@ -13,10 +13,10 @@
 {# <!-- Show some help if we enabled that feature --> #}
     {% if info['graph'] %}
       {% if info['map'] %}
-        <img src="{{ info['graph'] }}" alt="{{ info['name'] }}" usemap="{{ procmap"/>
-        <map name="procmap"> }}$info['map']{{ </map>
+        <img src="{{ info['graph'] }}" alt="{{ info['name'] }}" usemap="#procmap"/>
+        <map name="procmap">{{info['map'] }}</map>
         {% else %}
-        <img src=" }}$info['graph']{{ " alt=" }}$info['name']#" border="0"/>
+        <img src="{{ info['graph'] }}" alt="{{ info['name'] }}" border="0"/>
       {% endif %}
       {% else %}
       <p>

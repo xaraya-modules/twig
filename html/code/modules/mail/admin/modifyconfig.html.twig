@@ -116,6 +116,7 @@
                         </div>
                     </div>
                 </fieldset>
+                {# @todo to be checked in function #}
                 {% set library_exists = file_exists(xar_coremethod('sys', 'lib') ~ 'PHPMailer') %}
                 {% if library_exists %}
                     <fieldset>

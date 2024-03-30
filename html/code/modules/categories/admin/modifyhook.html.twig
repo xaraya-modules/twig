@@ -4,9 +4,9 @@
 {% set firstline = xar_translate('Select Category') %}
     {% if preview %}
         {# <!-- Note: we might get a single value here instead of an array, if there is only one tree --> #}
-        {% set dummy = xar_coremethod('xarVar', 'fetch', ['hookedcategories_categories', 'isset', categories, [], xarVar..NOT_REQUIRED]) %}
+        {% set dummy = xar_coremethod('xarVar', 'fetch', ['hookedcategories_categories', 'isset', categories, [], constant('NOT_REQUIRED','xarVar')]) %}
         {% if categories is not iterable %}
-            {% set categories = >[$categories]< %}
+            {% set categories = [categories] %}
         {% endif %}
         {{ xar_data_input({type: "categories", name: "hookedcategories", module: module, itemtype: itemtype, itemid: itemid, firstline: firstline, categories: categories}) }}
     {% else %}

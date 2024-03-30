@@ -12,6 +12,7 @@
 {# <!-- END: This can be modified (the text) or moved around as a block --> #}
     
     <div id="item_content_{{ fieldprefix }}">
+        {# @todo support ${$index} in Twig? #}
         {% set index = 'index_' ~ fieldprefix %}
         {% set $index = 0 %}
         {% set prefix = object.getFieldPrefix() %}

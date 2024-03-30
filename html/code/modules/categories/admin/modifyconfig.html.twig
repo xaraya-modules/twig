@@ -10,7 +10,7 @@
         {{ include('@base/includes/admin-menu-skel.html.twig') }}
 
         {% if tab == 'general' %}
-            <form method="post" action="&xar-modurl-categories-admin-modifyconfig;" enctype="application/x-www-form-urlencoded">
+            <form method="post" action="{{ xar_moduleurl('categories','admin','modifyconfig') }}" enctype="application/x-www-form-urlencoded">
                 <fieldset>
                     <legend>General options</legend>
                     {{ xar_data_form({object: module_settings}) }}

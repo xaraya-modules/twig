@@ -4,7 +4,7 @@
 {% if not value %}
         {% set value = [] %}
     {% elseif value is not iterable %}
-        {% set value = >[$value]< %}
+        {% set value = [value] %}
     {% endif %}
     {% if not options %}
         <input type="text" id="{{ id }}" name="{{ name }}" value="[{{ value|join(',') }}]"/>

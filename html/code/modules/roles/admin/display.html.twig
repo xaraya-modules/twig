@@ -10,7 +10,7 @@
     --> #}
     <div class="xar-mod-body">
         <div class="xar-mod-page-head">
-            {% if itemtype == xarRoles..ROLES_USERTYPE %}
+            {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
                 {% set thisname = object.properties['uname'].getValue() %}
             {% else %}
                 {% set thisname = object.properties['name'].getValue() %}
@@ -31,7 +31,7 @@
                         {% if prevgroup != parents[i]['parentname'] %}
                             <li class="xar-tab">
                                 {% set label = 'Show this group' %}
-                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i}['parentid']]) }}" title="{{ label }}">{{ parents[i]['parentname'] }}</a>
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i]['parentid']}) }}" title="{{ label }}">{{ parents[i]['parentname'] }}</a>
                             </li>
                         {% endif %}
                         {% set prevgroup = parents[i]['parentname'] %}
@@ -42,10 +42,10 @@
         <div class="xar-mod-page-body">
             <fieldset>
                 <legend>Role properties</legend>
-                {% set fields = >['id','name','uname','email','state','regdate']< %}
+                {% set fields = ['id','name','uname','email','state','regdate'] %}
                 {{ xar_data_display({object: object, fieldlist: fields}) }}
-                {% if itemtype == xarRoles..ROLES_USERTYPE %}
-                    {% set settings = '|split(')) %}
+                {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
+                    {% set settings = xar_modvar('roles', 'duvsettings')|split(',') %}
                     {% if 'userhome' in settings %}
                         <div class="xar-row">
                             <div class="xar-col">
@@ -94,8 +94,8 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {{ xar_localedate(xarModUserVars..get('roles', 'medium', '')) }}
-                                {{ xar_localedate(xarModUserVars..get('roles', '', 'medium')) }}
+                                {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', 'medium', ''])) }}
+                                {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', '', 'medium'])) }}
                             </div>
                         </div>
                     {% endif %}
@@ -107,8 +107,8 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {{ xar_localedate(xarModUserVars..get('roles', 'medium', '')) }}
-                                {{ xar_localedate(xarModUserVars..get('roles', '', 'medium')) }}
+                                {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', 'medium', ''])) }}
+                                {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', '', 'medium'])) }}
                             </div>
                         </div>
                     {% endif %}

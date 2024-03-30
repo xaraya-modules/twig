@@ -12,9 +12,9 @@
             </div>
             <div class="xar-col">
                 {% set options = [
-                        {'id': 'High', 'name': {{ xar_translate('High') }}},
-                        {'id': 'Medium', 'name': {{ xar_translate('Medium') }}},
-                        {'id': 'Low', 'name': {{ xar_translate('Low') }}},
+                        {'id': 'High', 'name': xar_translate('High')},
+                        {'id': 'Medium', 'name': xar_translate('Medium')},
+                        {'id': 'Low', 'name': xar_translate('Low')},
                     ] %}
                 {% set value = xar_coremethod('xarConfigVars', 'get', [null,'Site.Session.SecurityLevel']) %}
                 {{ xar_data_input({type: "dropdown", name: "securitylevel", options: options, value: value}) }}
@@ -61,14 +61,14 @@
         <div class="xar-row">
             <div class="xar-col">
                 {% set label = 'Override the default cookie name' %}
-                <label for="cookiename" title="{{ label }}{{ " class="xar-form-label">
+                <label for="cookiename" title="{{ label }}" class="xar-form-label">
                     Cookie Name.
                 </label>
             </div>
             <div class="xar-col">
-                {% set value = xar_var({scope. "config", name. "Site.Session.CookieName"}) %}
-                <input type="text" id="cookiename" name="cookiename" value=" }}$value{{ " maxlength="20" class="xar-form-textmedium"/>
-                & }}160;Default: XARAYASID
+                {% set value = xar_var({scope: "config", name: "Site.Session.CookieName"}) %}
+                <input type="text" id="cookiename" name="cookiename" value="{{ value }}" maxlength="20" class="xar-form-textmedium"/>
+                &#160;Default: XARAYASID
             </div>
         </div>
         <div class="xar-row">

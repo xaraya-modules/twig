@@ -222,12 +222,12 @@
                     <div class="xar-row">
                         <div class="xar-col">
                             {% set options = [
-                                    {'id': 'default', 'name': {{ xar_translate('Site Name - Module Name - Page Name') }}},
-                                    {'id': 'sp', 'name': {{ xar_translate('Site Name - Page Name') }}},
-                                    {'id': 'mps', 'name': {{ xar_translate('Module Name - Page Name - Site Name') }}},
-                                    {'id': 'pms', 'name': {{ xar_translate('Page Name - Module Name - Site Name') }}},
-                                    {'id': 'to', 'name': {{ xar_translate('Page Name') }}},
-                                    {'id': 'theme', 'name': {{ xar_translate('Theme Driven') }}},
+                                    {'id': 'default', 'name': xar_translate('Site Name - Module Name - Page Name')},
+                                    {'id': 'sp', 'name': xar_translate('Site Name - Page Name')},
+                                    {'id': 'mps', 'name': xar_translate('Module Name - Page Name - Site Name')},
+                                    {'id': 'pms', 'name': xar_translate('Page Name - Module Name - Site Name')},
+                                    {'id': 'to', 'name': xar_translate('Page Name')},
+                                    {'id': 'theme', 'name': xar_translate('Theme Driven')},
                                 ] %}
                             {% set value = xar_var({scope: "module", module: "themes", name: "SiteTitleOrder"}) %}
                             <label for="pagetitle">
@@ -327,8 +327,8 @@
                         </div>
                         <div class="xar-col">
                             {% set options = [
-                                    {'id': 0, 'name': {{ xar_translate('No') }}},
-                                    {'id': 1, 'name': {{ xar_translate('Yes') }}},
+                                    {'id': 0, 'name': xar_translate('No')},
+                                    {'id': 1, 'name': xar_translate('Yes')},
                                 ] %}
                             {% set checked = xar_var({scope: "config", name: "Site.BL.CompressWhitespace"}) %}
                             {{ xar_data_input({type: "radio", name: "compresswhitespace", value: checked, options: options}) }}
@@ -403,11 +403,10 @@
                         </div>
                         <div class="xar-col">
                             {% set options = [
-                                    {'id': 'templates', 'name': {{ xar_translate('Templates') }}},
-                                    {'id': 'rss', 'name': {{ xar_translate('RSS') }}},
-                                    {'id': 'database', 'name': {{ xar_translate('Database') }}},
-                                    {'id': 'css', 'name': {{ xar_translate('CSS') }}},
-
+                                    {'id': 'templates', 'name': xar_translate('Templates')},
+                                    {'id': 'rss', 'name': xar_translate('RSS')},
+                                    {'id': 'database', 'name': xar_translate('Database')},
+                                    {'id': 'css', 'name': xar_translate('CSS')},
                                 ] %}
                             {% set value = xar_modvar('themes', 'flushcaches') %}
                             {{ xar_data_input({type: "checkboxlist", name: "flushcaches", value: value, options: options}) }}
@@ -423,7 +422,7 @@
                         </div>
                         <div class="xar-col">
                             {% set options = [
-                                    {'id': 'dynamicdata', 'name': {{ xar_translate('Dynamicdata') }}},
+                                    {'id': 'dynamicdata', 'name': xar_translate('Dynamicdata')},
                                 ] %}
                             {% set value = xar_modvar('themes', 'flushdbcaches') %}
                             {{ xar_data_input({type: "checkboxlist", name: "flushdbcaches", value: value, options: options}) }}

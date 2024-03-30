@@ -2,7 +2,7 @@
 
 {% block type_status %}
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
-    {% if block['type_state'] == xarBlock..TYPE_STATE_MISSING %}
+    {% if block['type_state'] == constant('TYPE_STATE_MISSING','xarBlock') %}
         <h3>Block Type Missing</h3>
         <p class="xar-error">
             Block type file(s) not found or could not be loaded.
@@ -27,7 +27,7 @@
             <p>Please notify the site administrator</p>
         {% endif %}
 
-    {% elseif block['type_state'] == xarBlock..TYPE_STATE_ERROR %}
+    {% elseif block['type_state'] == constant('TYPE_STATE_ERROR','xarBlock') %}
         <h3>Block Type Error</h3>
         <p class="xar-error">
             Block type could not be instantiated.
@@ -48,7 +48,7 @@
         {% else %}
             <p>Please notify the site administrator</p>
         {% endif %}
-    {% elseif block['type_state'] == xarBlock..TYPE_STATE_MOD_UNAVAILABLE %}
+    {% elseif block['type_state'] == constant('TYPE_STATE_MOD_UNAVAILABLE','xarBlock') %}
         <h3>Block Type Unavailable</h3>
         <p class="xar-error">
             Block type module unavailable.

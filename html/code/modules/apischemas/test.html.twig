@@ -22,15 +22,15 @@
             <ul>
                 {% for k, v in doc['info'] %}
                     {% if v is iterable %}
-                        <li>{{ ucfirst(k) }}:
+                        <li>{{ k|title }}:
                             <ul>
                             {% for key, value in v %}
-                                <li>{{ ucfirst(key) }}: {{ value }}</li>
+                                <li>{{ key|title }}: {{ value }}</li>
                             {% endfor %}
                             </ul>
                         </li>
                     {% else %}
-                        <li>{{ ucfirst(k) }}: {{ v }}</li>
+                        <li>{{ k|title }}: {{ v }}</li>
                     {% endif %}
                 {% endfor %}
             </ul>

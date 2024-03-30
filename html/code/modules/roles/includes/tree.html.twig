@@ -31,8 +31,8 @@
                                     {% else %}
                                         {% set numofsubgroups = count(xar_coremethod('xarRoles', 'getsubgroups', [node['id']])) %}
                                         {% set numofsubgroups = 1 %}
-                                        {% set subgroups = numofsubgroups == 1 ? {{ xar_translate('subgroup') }} : {{ xar_translate('subgroups') }} %}
-                                        {% set users = node['users'] == 1 ? {{ xar_translate('user') }} : {{ xar_translate('users') }} %}
+                                        {% set subgroups = numofsubgroups == 1 ? xar_translate('subgroup') : xar_translate('subgroups') %}
+                                        {% set users = node['users'] == 1 ? xar_translate('user') : xar_translate('users') %}
                                         {% set description = numofsubgroups ~ " " ~ subgroups ~ ' | ' ~ node['users'] ~ " " ~ users %}
                                         {% set label = 'Modify this Group' %}
                                         <a href="{{ xar_moduleurl('roles', 'admin', 'modify', {'id': node['id']}) }}" title="{{ label }}" style="margin: 0 0.25em 0 0.25em;">
@@ -52,7 +52,7 @@
                                     {# <!-- Users item --> #}
                                     {% if (node['users'] > 0) and (drawchildren) %}
                                         {% set label = 'Show the Users in this Group' %}
-                                        <a href="{{ xar_moduleurl('roles', 'admin', 'showusers', {'id': node['id'}, 'reload' => 1]) }}" title="{{ label }}" style="margin: 0 0.25em 0 0.25em;">
+                                        <a href="{{ xar_moduleurl('roles', 'admin', 'showusers', {'id': node['id'], 'reload': 1}) }}" title="{{ label }}" style="margin: 0 0.25em 0 0.25em;">
                                             {{- xar_image({scope: "theme", file: "icons/system-users.png", class: "xar-icon"}) -}}
                                         </a>
                                     {% endif %}
@@ -84,7 +84,8 @@
                     </span>
                     {# <!-- Now do the children --> #}
                     {% if childrennode %}
-                        <xar:template file="tree" subdata="['treenode' => $childrennode]"/>
+                        {% set subdata = {'treenode': childrennode} %}
+                        {{ include('@roles/includes/tree.html.twig', subdata) }}
                     {% endif %}
                 </li>
             {% endfor %}

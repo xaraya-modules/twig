@@ -9,7 +9,7 @@
             <div style="text-align: right">
                 {% if xar_modvar('categories', 'use_module_icons') %}
                     <a href="{{ xar_moduleurl('categories','admin','new') }}" title="{{ title }}">
-                        <img src="{{ xar_imageurl('icons/'.'document-new.png', 'base') }}" width="16" height="16" alt="{{ title }}"/>
+                        <img src="{{ xar_imageurl('icons/' ~ 'document-new.png', 'base') }}" width="16" height="16" alt="{{ title }}"/>
                     </a>
                 {% else %}
                     <a href="{{ xar_moduleurl('categories','admin','new') }}" title="{{ title }}">

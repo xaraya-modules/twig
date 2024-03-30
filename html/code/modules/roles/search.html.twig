@@ -22,9 +22,12 @@
     <p></p>
     {% if properties and properties|length > 0 %}
         {# <!-- @todo arrange by columns of 4 fields each --> #}
+        {% set columns = {0: []} %}
         {% set i = 0 %}
         {% for field in properties|keys %}
-            {% set dummy = 1; col = intval(i/4); columns[col][] = field; i++ %}
+            {% set col = (i/4)|round %}
+            {% set columns = columns|merge({(col): columns[col] + [field]}) %}
+            {% set i = i + 1 %}
         {% endfor %}
         <table class="xar-table" border="0" cellpadding="2" cellspacing="0">
             <tr>

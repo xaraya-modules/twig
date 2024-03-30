@@ -1,13 +1,13 @@
 {# @roles/admin/modify.html.twig #}
 
 {% block modify %}
-{% set id = object-&gt;getID() %}
-    {% set itemtype = object-&gt;getType() %}
+{% set id = object.getID() %}
+    {% set itemtype = object.getType() %}
     {{ include('@roles/includes/admin-mod-head.html.twig') }}
     <div class="xar-mod-body">
         <div class="xar-mod-page-head">
             {% set properties = object.properties %}
-            {% if itemtype == xarRoles..ROLES_USERTYPE %}
+            {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
                 {% set thisname = object.properties['uname'].getValue() %}
             {% else %}
                 {% set thisname = object.properties['name'].getValue() %}
@@ -28,7 +28,7 @@
                             {% if prevgroup != parents[i]['parentname'] %}
                                 <li class="xar-tab">
                                     {% set label = 'Show this group' %}
-                                    <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                    <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i]['parentid']}) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
                                         {{ xar_prep_display(parents[i]['parentname']) }}
                                     </a>
                                 </li>
@@ -51,7 +51,7 @@
                         {{ xar_data_display({object: object, tplmodule: "roles"}) }}
                         <p>This {{ object.label }} cannot be edited or deleted.</p>
                     {% else %}
-                        {% if itemtype == xarRoles..ROLES_GROUPTYPE and object.countChildren() %}
+                        {% if itemtype == constant('ROLES_GROUPTYPE','xarRoles') and object.countChildren() %}
                             <div class="xar-row">
                                 <div class="xar-col">
                                     {% set label = 'Type of Role' %}
@@ -79,15 +79,15 @@
                                 <div class="xar-col">
                                     {% set onchange = "this.form.action='" ~ xar_currenturl() ~ "';this.form.submit();" %}
                                         {% set options = [ 
-                                                {'id': xarRoles..ROLES_USERTYPE, 'name': 'User'},
-                                                {'id': xarRoles..ROLES_GROUPTYPE, 'name': 'Group'},
+                                                {'id': constant('ROLES_USERTYPE','xarRoles'), 'name': 'User'},
+                                                {'id': constant('ROLES_GROUPTYPE','xarRoles'), 'name': 'Group'},
                                             ] %}
                                         {{ xar_data_output({type: "dropdown", name: "itemtype", value: itemtype, options: options}) }}
                                 </div>
                             </div>
                         {% endif %}
                         {{ xar_data_form({object: object, tplmodule: "roles"}) }}
-                        {% set settings = '|split(')) %}
+                        {% set settings = xar_modvar('roles', 'duvsettings')|split(',') %}
                         {% if 'primaryparent' in settings %}
                             <div class="xar-row">
                                 <div class="xar-col">
@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                         {% endif %}
-                        {% if itemtype == xarRoles..ROLES_USERTYPE %}
+                        {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
                             {% if 'useremailformat' in settings %}
                                 <div class="xar-row">
                                     <div class="xar-col">
@@ -151,7 +151,7 @@
                                 </div>
                             {% endif %}
                             --> #}
-                            {% if (bool)xar_modvar('roles', 'allowemail') %}
+                            {% if xar_modvar('roles', 'allowemail') %}
                                 <div class="xar-row">
                                     <div class="xar-col">
                                         {% set label = 'Allow users to send emails?' %}
@@ -160,7 +160,7 @@
                                         </label>
                                     </div>
                                     <div class="xar-col">
-                                        {% set checked = (bool)xar_coremethod('xarModUserVars', 'get', ['roles', 'allowemail',id]) %}
+                                        {% set checked = xar_coremethod('xarModUserVars', 'get', ['roles', 'allowemail', id]) %}
                                         {{ xar_data_input({type: "checkbox", name: "duvs[allowemail]", id: "duvs_allowemail", checked: checked}) }}
                                     </div>
                                 </div>
@@ -173,8 +173,8 @@
                                         </label>
                                     </div>
                                     <div class="xar-col">
-                                        {{ xar_localedate(xarModUserVars..get('roles', 'medium', '')) }}
-                                        {{ xar_localedate(xarModUserVars..get('roles', '', 'medium')) }}
+                                        {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', 'medium', ''])) }}
+                                        {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', '', 'medium'])) }}
                                     </div>
                                 </div>
                             {% endif %}
@@ -186,8 +186,8 @@
                                         </label>
                                     </div>
                                     <div class="xar-col">
-                                        {{ xar_localedate(xarModUserVars..get('roles', 'medium', '')) }}
-                                        {{ xar_localedate(xarModUserVars..get('roles', '', 'medium')) }}
+                                        {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', 'medium', ''])) }}
+                                        {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', '', 'medium'])) }}
                                     </div>
                                 </div>
                             {% endif %}
@@ -234,12 +234,12 @@
                             </td>
                             <td class="xar-align-center">
                                 {% if parents|length != 1 %}
-                                    <a href="{{ xar_moduleurl('roles','admin','removemember',{'childid': id, 'parentid': loop_item1['parentid'},'authid'=>xar_coremethod('xarSec', 'genAuthKey')]) }}">
+                                    <a href="{{ xar_moduleurl('roles','admin','removemember',{'childid': id, 'parentid': loop_item1['parentid'], 'authid': xar_coremethod('xarSec', 'genAuthKey')}) }}">
                                 Remove</a>
                                 {% else %}Cannot Remove{% endif %}
                             </td>
                         </tr>
-                    </xar:loop>
+                    {% endfor %}
                 </table>
                 {% if not xar_security_check('EditRoles',0,'Roles',object.getName()) %}
                     <p>This {{ object.label }} cannot be edited or deleted.</p>
@@ -252,7 +252,7 @@
                             </div>
                             <div class="xar-col">
                                 <select name="roleid" id="roleid">
-                                    <xar:loop name="$groups">
+                                    {% for loop_key1, loop_item1 in groups %}{% set loop_index1 = loop.index %}
                                         <option value="{{ loop_item1['did'] }}">
                                             {{ loop_item1.dname }}
                                         </option>

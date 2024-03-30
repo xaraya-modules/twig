@@ -9,7 +9,7 @@
             {{ link }}
         </link>
         <pubDate>
-        {% set gmpubdate = gmdate("D, d M Y H.i.s",pubdate) %}{{ gmpubdate }}
+        {% set gmpubdate = pubdate|date("D, d M Y H.i.s","UTC") %}{{ gmpubdate }}
         GMT</pubDate>
         <format resource="http://www.w3.org/1999/xhtml"/>
         <encoded>

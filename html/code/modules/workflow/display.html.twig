@@ -63,7 +63,7 @@
                         <td>
                             <a href="{{ xar_moduleurl('workflow','user','run_activity',{'activityId': item['activity'],'iid': item['instance_id']}) }}">
                                 <input type="image" name="run" value="1" title="{{ xar_translate('run instance') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/next.gif','module','workflow') }}"/>
-                                {{ xar_data_output({property: properties['activity'], value: item['activity']}) }}{{ var_export(item, true) }}
+                                {{ xar_data_output({property: properties['activity'], value: item['activity']}) }}
                             </a>
                         </td>
                         <td>

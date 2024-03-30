@@ -5,23 +5,26 @@
     <style>
         .complete {
             background-image: url({{ commonDir }}/images/icons/activate.png);
-            color: {{ #568A00;
+            color: ##568A00;
         }
 
         .active {
-            background-image. url( }}$commonDir{{ /images/icons/initialize.png);
+            background-image. url({{ commonDir }}/images/icons/initialize.png);
         }
 
         .greyed {
-            background-image. url( }}$commonDir{{ /images/icons/none.png);
+            background-image. url({{ commonDir }}/images/icons/none.png);
             color. }}#999999;
         }
     </style>
-    {% set steptext[1] = 'Log in' %}
-    {% set steptext[2] = 'Prepare for the Upgrade' %}
-    {% set steptext[3] = 'Running the Upgrade' %}
-    {% set steptext[4] = 'Database Checks' %}
-    {% set steptext[5] = 'Notes on this Version' %}
+    {% set steptext = [
+        '',
+        'Log in',
+        'Prepare for the Upgrade',
+        'Running the Upgrade',
+        'Database Checks',
+        'Notes on this Version'
+    ] %}
     <div id="status">
         <div id="status_body">
             <div class="xar-align-center">

@@ -77,36 +77,39 @@
     </table>
     {# <!-- show from place - to place 1 - to place 2 - ... with transitions in cells --> #}
     {% set fromto = [] %}
+    {% for where in config[workflow]['places'] %}
+      {% set fromto = fromto|merge({(where): {'_dummy_': false}}) %}
+    {% endfor %}
     {% for name, info in config[workflow]['transitions'] %}
       {# <!-- @checkme state machine only supports 1 to, use 2 for status change --> #}
       {% set to = info['to'] is iterable ? info['to'][0] : info['to'] %}
       {% if info['from'] is iterable %}
         {% for from in info['from'] %}
-          {% set dummy = fromto[from] ??= [] %}
-          {% set dummy = fromto[from][to] = name %}
+          {% set value = name %}
           {% if info['admin'] or info['roles'] or info['access'] or info['property'] or info['guard'] %}
-            {% set dummy = fromto[from][to] = guarded ~ ' ' ~ fromto[from][to] %}
+            {% set value = guarded ~ ' ' ~ value %}
           {% endif %}
           {% if info['update'] or info['completed'] or (info['to'] is iterable and info['to']|length > 1) %}
-            {% set dummy = fromto[from][to] .= ' ' ~ updated %}
+            {% set value = value ~ ' ' ~ updated %}
           {% endif %}
           {% if info['delete'] %}
-            {% set dummy = fromto[from][to] .= ' ' ~ deleted %}
+            {% set value = value ~ ' ' ~ deleted %}
           {% endif %}
+          {% set fromto = fromto|merge({(from): fromto[from]|merge({(to): value}) }) %}
         {% endfor %}
       {% else %}
-        {% set dummy = fromto[info['from']] ??= [] %}
-        {% set dummy = fromto[info['from']][to] = name %}
+        {% set value = name %}
         {% if info['admin'] or info['roles'] or info['access'] or info['property'] or info['guard'] %}
-          {% set dummy = fromto[info['from']][to] = guarded ~ ' ' ~ fromto[info['from']][to] %}
+          {% set value = guarded ~ ' ' ~ value %}
         {% endif %}
         {% if info['update'] or info['completed'] or (info['to'] is iterable and info['to']|length > 1) %}
-          {% set dummy = fromto[info['from']][to] .= ' ' ~ updated %}
+          {% set value = value ~ ' ' ~ updated %}
         {% endif %}
         {% if info['delete'] %}
-          {% set dummy = fromto[info['from']][to] .= ' ' ~ deleted %}
+          {% set value = value ~ ' ' ~ deleted %}
         {% endif %}
       {% endif %}
+      {% set fromto = fromto|merge({(info['from']): fromto[info['from']]|merge({(to): value}) }) %}
     {% endfor %}
     <table style="border-collapse: separate; width: 50%">
       <tr>

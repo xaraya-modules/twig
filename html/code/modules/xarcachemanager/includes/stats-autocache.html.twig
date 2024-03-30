@@ -5,7 +5,7 @@
 {#  Cache Statistics Auto-Cache #}
 
         {% if not withlog %}
-            <a href="{{ xar_moduleurl('xarcachemanager','admin','stats',array('tab' => tab, 'withlog' => 1)) }}">{{ xar_translate('Analyze Logfile') }}</a>
+            <a href="{{ xar_moduleurl('xarcachemanager','admin','stats',{'tab': tab, 'withlog': 1}) }}">{{ xar_translate('Analyze Logfile') }}</a>
         {% endif %}
         <form method="post" action="{{ xar_moduleurl('xarcachemanager', 'admin', 'stats') }}">
           <strong>{{ xar_translate('Overall Cache Hit Ratio : #(1)%', totals['ratio']) }}</strong>
@@ -17,19 +17,19 @@
           {% endif %}
           <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}" />
           <input type="submit" name="reset" value="{{ xar_translate('Reset') }}" />
-          <br/>{{ xar_translate('Note: 304 \\'Not Modified\\' hits are not logged') }}
+          <br/>{{ xar_translate('Note: 304 \'Not Modified\' hits are not logged') }}
         </form>
         <table class="xar-norm">
         <tr>
-          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',array('tab' => 'autocache','sort' => 'ratio')) }}">{{ xar_translate('Ratio') }}</a></th>
-          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',array('tab' => 'autocache','sort' => 'hit')) }}">{{ xar_translate('Hit') }}</a></th>
-          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',array('tab' => 'autocache','sort' => 'miss')) }}">{{ xar_translate('Miss') }}</a></th>
-          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',array('tab' => 'autocache','sort' => 'total')) }}">{{ xar_translate('Total') }}</a></th>
-          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',array('tab' => 'autocache','sort' => 'first')) }}">{{ xar_translate('First Seen') }}</a></th>
-          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',array('tab' => 'autocache','sort' => 'last')) }}">{{ xar_translate('Last Seen') }}</a></th>
+          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',{'tab': 'autocache','sort': 'ratio'}) }}">{{ xar_translate('Ratio') }}</a></th>
+          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',{'tab': 'autocache','sort': 'hit'}) }}">{{ xar_translate('Hit') }}</a></th>
+          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',{'tab': 'autocache','sort': 'miss'}) }}">{{ xar_translate('Miss') }}</a></th>
+          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',{'tab': 'autocache','sort': 'total'}) }}">{{ xar_translate('Total') }}</a></th>
+          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',{'tab': 'autocache','sort': 'first'}) }}">{{ xar_translate('First Seen') }}</a></th>
+          <th><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',{'tab': 'autocache','sort': 'last'}) }}">{{ xar_translate('Last Seen') }}</a></th>
         </tr>
         <tr>
-          <th colspan="6"><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',array('tab' => 'autocache','sort' => 'page')) }}">{{ xar_translate('Page') }}</a></th>
+          <th colspan="6"><a href="{{ xar_moduleurl('xarcachemanager','admin','stats',{'tab': 'autocache','sort': 'page'}) }}">{{ xar_translate('Page') }}</a></th>
         </tr>
         {% for page, count in items %}
         <tr class="xar-alt">

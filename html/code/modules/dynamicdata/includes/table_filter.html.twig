@@ -3,8 +3,8 @@
 {% block table_filter %}
 {% set proptypes = DataPropertyMaster..getPropertyTypes() %}
     {% set currenturl = xar_currenturl() %}
-    {% set itemcount = object.itemcount ?. items|length %}
-    {% set where = object.where ?. [] %}
+    {% set itemcount = object.itemcount ?: items|length %}
+    {% set where = object.where ?: [] %}
     <tr>
         <form method="post" action="{{ currenturl }}">
             {% for name, property in properties %}
@@ -15,29 +15,31 @@
                         - 
                     {% elseif proptype['name'] == 'calendar' %}
                         &#160; 
-                    {% elseif proptype['name'] in ['dropdown' %}
-                        {% set dummy = property.initialization_firstline = {'id': '', 'name': ''} %}
+                    {% elseif proptype['name'] in ['dropdown', 'object', 'objectref'] %}
+                        {% set property = property|merge({initialization_firstline: {'id': '', 'name': ''}}) %}
                         {% set ddname = 'dd_' ~ property.id %}
-                        {{ xar_data_input({property: property, name: "where[" ~ name], value: curvalue}) }}
-                    {% elseif proptype['name'] in ['textbox' %}
+                        {{ xar_data_input({property: property, name: "where[" ~ name ~ "]", value: curvalue}) }}
+                    {% elseif proptype['name'] in ['textbox', 'integerbox', 'username'] %}
                         {% set values = [] %}
                         {% for itemid, fields in items %}
-                            {% set values[$fields[$name]] = 1 %}
+                            {% set key = fields[name] %}
+                            {% set values = values|merge({(key): 1}) %}
                         {% endfor %}
+                        {# @todo support sorting by key #}
                         {% set dummy = ksort(values) %}
                         {% set options = [] %}
-                        {% set dummy = options[] = {'id': '', 'name': ''} %}
+                        {% set options = options + [{'id': '', 'name': ''}] %}
                         {% for option, dummy in values %}
                             {% if proptype['name'] == 'username' %}
                                 {% set option = xar_username(option, 'uname') %}
-                                {% set dummy = options[] = {'id': option, 'name': option} %}
+                                {% set options = options + [{'id': option, 'name': option}] %}
                             {% else %}
-                                {% set dummy = options[] = {'id': option, 'name': option} %}
+                                {% set options = options + [{'id': option, 'name': option}] %}
                             {% endif %}
                         {% endfor %}
                         {% set ddname = 'dd_' ~ property.id %}
                         {% if itemcount < 10 or options|length < itemcount / 2 %}
-                            {{ xar_data_input({type: "dropdown", name: "where[" ~ name], options: options, value: curvalue}) }}
+                            {{ xar_data_input({type: "dropdown", name: "where[" ~ name ~ "]", options: options, value: curvalue}) }}
                         {% else %}
                             {# <!-- xar:data-input type="textbox" name="where[$name]" value="$curvalue"/ --> #}&#160;
                         {% endif %}

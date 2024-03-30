@@ -16,7 +16,7 @@
       {# <!-- @checkme state machine only supports 1 to, use 2 for status change --> #}
       {% set to = info['to'] is iterable ? info['to'][0] : info['to'] %}
       <tr>
-        <td>{{ ucfirst(name) }}</td>
+        <td>{{ name|title }}</td>
         <td>
           {% for where in from %}
             {% if place and place == where %}

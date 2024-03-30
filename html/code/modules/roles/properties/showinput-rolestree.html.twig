@@ -12,12 +12,12 @@
         <ul class="xar-tree">
             {% set nodecount = nodes.size() %}
             {% for node in nodes %}
-                {% set children = node-&gt;children %}
-                {% set level = node-&gt;getLevel() %}
-                {% set users = node-&gt;users %}
-                {% set id = node-&gt;id %}
+                {% set children = node.children %}
+                {% set level = node.getLevel() %}
+                {% set users = node.users %}
+                {% set id = node.id %}
                 {% set drawchildren = true %}
-                {% set seccheck = xar_security_check('ManageRoles',0,'Roles',node-&gt;name) %}
+                {% set seccheck = xar_security_check('ManageRoles',0,'Roles',node.name) %}
 
                 <li class="leaf">
                     <div class="leaf-actions">
@@ -70,7 +70,7 @@
                     {% set indent = level * 1.5 %}
                     <div class="leaf-body" style="padding-left: {{ indent }}em;">
                         {% if drawchildren == false %}
-                            {{ node-&gt;name }} <strong>see the entry above</strong>
+                            {{ node.name }} <strong>see the entry above</strong>
                         {% else %}
                             {% set numofsubgroups = children|length %}
                             {% set subgroups = numofsubgroups == 1 ? {{ xar_translate('subgroup') }} : {{ xar_translate('subgroups') }} %}
@@ -78,7 +78,7 @@
                             {% set description = numofsubgroups ~ " " ~ subgroups ~ ' | ' ~ users ~ " " ~ numofusers %}
                             {% set label = 'Modify this Group' %}
                             <a href="{{ xar_moduleurl('roles', 'admin', 'modify', {'id': id}) }}" title="{{ label }}">
-                                {{ node-&gt;name }}
+                                {{ node.name }}
                             </a>
                             {{ description }}
                         {% endif %}

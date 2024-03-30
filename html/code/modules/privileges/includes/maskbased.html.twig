@@ -11,7 +11,7 @@
             {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges','maskbasedsecurity',true]) %}
             {% set isenabled = 1 %}
         {% endif %}
-        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'enable': null}])) }}
+        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'enable': null})]) }}
     {% endif %}
 {% endif %}
 
@@ -23,6 +23,7 @@
 {% endif %}
 
 {% if xar_security_check('AdminPrivilege') %}
+    {# @todo replace with xarController getVar #}
     {% if _REQUEST['flip'] %}
         {% set val = xar_modvar('privileges', _REQUEST['flip']) %}
         {% if val %}
@@ -32,7 +33,7 @@
         {% else %}
             {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges',_REQUEST['flip'],1]) %}
         {% endif %}
-        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'flip': null}])) }}
+        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'flip': null})]) }}
     {% endif %}
 {% endif %}
 
@@ -44,13 +45,13 @@ function by_name(a,b) {
 uasort(groups,'by_name') %}
 {# <!-- priv_type 3 means a mask --> #}
 {% set tmp_dd_getitems = xar_data_getitems({properties: properties, values: items, objectname: "privileges_privileges", where: "priv_type eq 3", sort: "module,component,level"}) %}{% set properties = tmp_dd_getitems.0 %}{% set items = tmp_dd_getitems.1 %}
-{% set fieldlist = >['name','module','component','level']< %}
+{% set fieldlist = ['name','module','component','level'] %}
 
 {% if xar_security_check('AdminPrivilege') %}
     {% if _REQUEST['refresh'] %}
         {% for group in groups %}
             {% for itemid, fields in items %}
-                {% set code = 'SC.'.fields['name'].'.'.group['id'] %}
+                {% set code = 'SC.' ~ fields['name'] ~ '.' ~ group['id'] %}
                 {% set dummy = xar_security_check(fields['name'], 0, '', '', '', group['name'],0,0) %}
                 {% if dummy %}
                     {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges',code, 1]) %}
@@ -59,7 +60,7 @@ uasort(groups,'by_name') %}
                 {% endif %}
             {% endfor %}
         {% endfor %}
-        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'refresh': null}])) }}
+        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'refresh': null})]) }}
     {% endif %}
 {% endif %}
 
@@ -78,7 +79,7 @@ uasort(groups,'by_name') %}
         <td>{{ xar_data_output({property: properties[name], value: fields[name]}) }}</td>
     {% endfor %}
     {% for group in groups %}
-        {% set code = 'SC.'.fields['name'].'.'.group['id'] %}
+        {% set code = 'SC.' ~ fields['name'] ~ '.' ~ group['id'] %}
         {% set val = xar_modvar('privileges', code) %}
         <td align="center"><a href="{{ xar_currenturl({'flip': code}) }}" title="Flip Setting">
         {% if val %}

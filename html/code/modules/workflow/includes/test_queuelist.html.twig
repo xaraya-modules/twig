@@ -34,7 +34,7 @@
       </tr>
       {% for item in items %}
         {% set pieces = queue.fromSubjectId(item['subject']) %}
-        {% set displaylink = xar_objecturl(pieces[0], 'display', {'itemid': pieces[1}]) %}
+        {% set displaylink = xar_objecturl(pieces[0], 'display', {'itemid': pieces[1]}) %}
         {% set infolink = xar_objecturl('workflow_queue', 'display', {'itemid': item['id']}) %}
         {% set params = {'workflow': item['workflow'], 'subjectId': item['subject']} %}
         {% set filterlink = xar_moduleurl('workflow', 'user', 'test', params) %}

@@ -6,7 +6,7 @@
         {{ value }}
         </pre>
     {% elseif layout and layout == 'linebreak' %}
-        {{ nl2br(value) }}
+        {{ value|nl2br }}
     {% else %}
         {{ value }}
     {% endif %}

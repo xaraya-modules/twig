@@ -8,10 +8,10 @@
 <div class="xar-mod-body">
   {{ include('@xarcachemanager/includes/admin-menu.html.twig') }}
   <h2>{{ xar_translate('Configuration') }}</h2>
-  {% if xar_coremethod('xarSession', 'getVar', ['statusmsg']) not = '' %}
+  {% if xar_coremethod('xarSession', 'getVar', ['statusmsg']) != '' %}
     <p>{{ xar_coremethod('xarSession', 'getVar', ['statusmsg']) }}</p>
   {% endif %}
-    <form action="&xar-modurl-xarcachemanager-admin-updateconfig;" method="post" enctype="application/x-www-form-urlencoded" >
+    <form action="{{ xar_moduleurl('xarcachemanager','admin','updateconfig') }}" method="post" enctype="application/x-www-form-urlencoded" >
         <fieldset>
             <legend>{{ xar_translate('Global Settings') }}</legend>
             <div class="xar-form-input-wrapper-after">
@@ -61,7 +61,7 @@
                 </label>
                 {{ settings.OutputCookieName }}
                 &#160;
-                <xar:set name="updatecookielink">'<a href="'.$cookieupdatelink.'">'.{{ xar_translate('Global Cookie Name') }}.'</a>'</xar:set>
+                {% set updatecookielink = '<a href="' ~ cookieupdatelink ~ '">' ~ xar_translate('Global Cookie Name') ~ '</a>' %}
                 {{ xar_translate('[On update this will be saved as', CookieName, updatecookielink) }}
             </div>
             <div class="xar-form-input-wrapper">
@@ -70,7 +70,7 @@
                 </label>
                 {{ settings.OutputDefaultLocale }}
                 &#160;
-                <xar:set name="updatelink">'<a href="'.$localeupdatelink.'">'.{{ xar_translate('Global Site Locale') }}.'</a>'</xar:set>
+                {% set updatelink = '<a href="' ~ localeupdatelink ~ '">' ~ xar_translate('Global Site Locale') ~ '</a>' %}
                 {{ xar_translate('[On update this will be saved as', defaultlocale, updatelink) }}
             </div>                        
             <div class="xar-form-input-wrapper">

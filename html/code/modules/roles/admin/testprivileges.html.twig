@@ -3,7 +3,7 @@
 {% block testprivileges %}
 {{ include('@roles/includes/admin-mod-head.html.twig') }}
     <div class="xar-mod-body">
-        {% if itemtype == xarRoles..ROLES_USERTYPE %}
+        {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
             {% set pname = object.properties['uname'].getValue() %}
         {% else %}
             {% set pname = object.properties['name'].getValue() %}
@@ -25,7 +25,7 @@
                         {% if prevgroup != parents[i]['parentname'] %}
                             <li class="xar-tab">
                                 {% set label = 'Show this group' %}
-                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i]['parentid']}) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
                                     {{ parents[i]['parentname'] }}
                                 </a>
                             </li>
@@ -76,7 +76,7 @@
                     {% for mask in masks %}
                         <tr>
                             <td>
-                                <a href="{{ xar_moduleurl('roles','admin','testprivileges',{'id': xarVar('id'), 'name': mask.getName(), 'test': true}) }}">
+                                <a href="{{ xar_moduleurl('roles','admin','testprivileges',{'id': xar_uservar('id'), 'name': mask.getName(), 'test': true}) }}">
                                 {{ mask.getName() }}</a>
                             </td>
                             {% if xar_modvar('privileges', 'showrealms') %}

@@ -26,7 +26,7 @@
                     {% else %}
                         <a href="{{ loop_catitems_item['catlink'] }}">{{ loop_catitems_item['catlabel'] }}</a>
                     {% endif %}
-                </xar:loop>
+                {% endfor %}
                 {% if loop_trails_item['catcount'] %}
                     ({{ loop_trails_item['catcount'] }})
                 {% endif %}
@@ -52,6 +52,7 @@
         <table class="xar-table" border="0" cellpadding="2" cellspacing="0" width="100%">
             {% for i in range(0, caticons|length) %}
                 {% set j = 0 %}
+                {# @todo replace while #}
                 <xar:while condition="1">
                     <tr>
                         <td align="center" valign="middle">
@@ -75,16 +76,16 @@
     <table class="xar-table" border="0" cellpadding="2" cellspacing="0" width="100%">
     <tr>
         <td valign="top">
-        <xar:loop id="catlines" name="$catlines">
-            {{ loop.catlines.item['beforetags'] }}
-            <a href="{{ loop.catlines.item['catlink'] }}">{{ loop.catlines.item['catlabel'] }}</a>
-            {% if loop.catlines.item['catcount'] %}
-                ({{ loop.catlines.item['catcount'] }})
+        {% for loop_key1, loop_item1 in cattrails %}{% set loop_index1 = loop.index %}{% set loop_catlines_index = loop_index1 %}{% set loop_catlines_item = loop_item1 %}{% set loop_catlines_key = loop_key1 %}
+            {{ loop_catlines_item['beforetags'] }}
+            <a href="{{ loop_catlines_item['catlink'] }}">{{ loop_catlines_item['catlabel'] }}</a>
+            {% if loop_catlines_item['catcount'] %}
+                ({{ loop_catlines_item['catcount'] }})
             {% endif %}
-            {% if loop.catlines.item['catdescr'] %}
-                : {{ loop.catlines.item['catdescr'] }}
+            {% if loop_catlines_item['catdescr'] %}
+                : {{ loop_catlines_item['catdescr'] }}
             {% endif %}
-            {{ loop.catlines.item['aftertags'] }}
+            {{ loop_catlines_item['aftertags'] }}
         {% endfor %}
         </td>
     </tr>

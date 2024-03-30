@@ -38,7 +38,7 @@
 	                        {% if prevgroup != parents[i]['parentname'] %}
 	                            <li class="xar-tab">
 	                                {% set label = 'Show this privilege' %}
-	                                <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+	                                <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': parents[i]['parentid']}) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
 	                                    {{ parents[i]['parentname'] }}
 	                                </a>
 	                            </li>
@@ -98,7 +98,7 @@
                             <td class="xar-align-center">
                                 {% set label = 'Remove this Privilege assignment' %}
                                 <a href="{{ removeurl }}&amp;roleid={{ role['roleid'] }}" title="{{ label }}">
-                                    <img src="{{ xar_imageurl('icons/'.'delete.png', 'base') }}" class="xar-valign-middle"/>
+                                    <img src="{{ xar_imageurl('icons/' ~ 'delete.png', 'base') }}" class="xar-valign-middle"/>
                                 </a>
                             </td>
                         </tr>
@@ -140,8 +140,8 @@
                 <p>
                     Show Privileges that are: 
                     {% set options = [
-                            {'id': 'assigned', 'name': {{ xar_translate('Assigned') }}},
-                            {'id': 'unassigned', 'name': {{ xar_translate('Unassigned') }}},
+                            {'id': 'assigned', 'name': xar_translate('Assigned')},
+                            {'id': 'unassigned', 'name': xar_translate('Unassigned')},
                         ] %}
                 </p>
                 {{ xar_data_input({type: "radio", options: options, value: show, onclick: "this.form.submit();"}) }}

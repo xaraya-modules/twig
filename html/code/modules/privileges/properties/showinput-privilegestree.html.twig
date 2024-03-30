@@ -26,11 +26,11 @@
         {% for tree in trees %}
             <ul class="xar-tree">
                 {% for index, node in tree %}
-                    {% set id = node-&gt;id %}
-                    {% set name = node-&gt;name %}
-                    {% set description = node-&gt;description %}
-                    {% set parentid = node-&gt;parent %}
-                    {% set level = node-&gt;getLevel() %}
+                    {% set id = node.id %}
+                    {% set name = node.name %}
+                    {% set description = node.description %}
+                    {% set parentid = node.parent %}
+                    {% set level = node.getLevel() %}
                     <li class="leaf">
                         <div class="leaf-actions">
                             {% set label1 = 'Delete' %}

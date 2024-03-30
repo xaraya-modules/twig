@@ -27,7 +27,7 @@
                     {% else %}
                         <a href="{{ loop_catitems_item['catlink'] }}">{{ loop_catitems_item['catlabel'] }}</a>
                     {% endif %}
-                </xar:loop>
+                {% endfor %}
                 {% if loop_trails_item['catcount'] %}
                     ({{ loop_trails_item['catcount'] }})
                 {% endif %}
@@ -35,7 +35,7 @@
                     [<a href="{{ loop_trails_item['viewall'] }}">include children</a>]
                 {% endif %}
                 <br />
-            </xar:loop>
+            {% endfor %}
         </td>
     </tr>
     </table>
@@ -64,15 +64,15 @@
     {% if caticons and caticons|length > 0 %}
         <br />
         <table class="xar-table" border="0" cellpadding="8" cellspacing="0" width="95%">
-                <xar:loop id="icons" name="$caticons">
+            {% for loop_key1, loop_item1 in caticons %}{% set loop_index1 = loop.index %}{% set loop_icons_index = loop_index1 %}{% set loop_icons_item = loop_item1 %}{% set loop_icons_key = loop_key1 %}
             <tr>
                     <td align="center" valign="middle">
-                        <a href="{{ loop.icons.item['catlink'] }}"><img src="{{ loop.icons.item['catimage'] }}" border="0" alt="{{ loop.icons.item['catlabel'] }}"/><br />{{ loop.icons.item['catlabel'] }}</a>
-                        {% if loop.icons.item['catcount'] %}
-                            ({{ loop.icons.item['catcount'] }})
+                        <a href="{{ loop_icons_item['catlink'] }}"><img src="{{ loop_icons_item['catimage'] }}" border="0" alt="{{ loop_icons_item['catlabel'] }}"/><br />{{ loop_icons_item['catlabel'] }}</a>
+                        {% if loop_icons_item['catcount'] %}
+                            ({{ loop_icons_item['catcount'] }})
                         {% endif %}
                     </td>
-                    {% if loop.icons.item['catnum'] % 2 == 0 %}
+                    {% if loop_icons_item['catnum'] % 2 == 0 %}
                     {% endif %}
             </tr>
                 {% endfor %}
@@ -84,16 +84,16 @@
         <table class="xar-table" border="0" cellpadding="8" cellspacing="0">
             <tr>
                 <td valign="top">
-                <xar:loop id="catlines" name="$catlines">
-                    {{ loop.catlines.item['beforetags'] }}
-                    <a href="{{ loop.catlines.item['catlink'] }}">{{ loop.catlines.item['catlabel'] }}</a>
-                    {% if loop.catlines.item['catcount'] %}
-                        ({{ loop.catlines.item['catcount'] }})
+                {% for loop_key1, loop_item1 in catlines %}{% set loop_index1 = loop.index %}{% set loop_catlines_index = loop_index1 %}{% set loop_catlines_item = loop_item1 %}{% set loop_catlines_key = loop_key1 %}
+                    {{ loop_catlines_item['beforetags'] }}
+                    <a href="{{ loop_catlines_item['catlink'] }}">{{ loop_catlines_item['catlabel'] }}</a>
+                    {% if loop_catlines_item['catcount'] %}
+                        ({{ loop_catlines_item['catcount'] }})
                     {% endif %}
-                    {% if loop.catlines.item['catdescr'] %}
-                        : {{ loop.catlines.item['catdescr'] }}
+                    {% if loop_catlines_item['catdescr'] %}
+                        : {{ loop_catlines_item['catdescr'] }}
                     {% endif %}
-                    {{ loop.catlines.item['aftertags'] }}
+                    {{ loop_catlines_item['aftertags'] }}
                 {% endfor %}
                 </td>
             </tr>

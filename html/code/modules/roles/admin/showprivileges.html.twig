@@ -4,7 +4,7 @@
 {{ xar_style({scope: "module", file: "privileges"}) }}
     {{ include('@roles/includes/admin-mod-head.html.twig') }}
     <div class="xar-mod-body">
-        {% if itemtype == xarRoles..ROLES_USERTYPE %}
+        {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
             {% set pname = object.properties['uname'].getValue() %}
         {% else %}
             {% set pname = object.properties['name'].getValue() %}
@@ -28,7 +28,7 @@
                         {% if prevgroup != parents[i]['parentname'] %}
                             <li class="xar-tab">
                                 {% set label = 'Show this group' %}
-                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i}['parentid']]) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
+                                <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': parents[i]['parentid']}) }}" title="{{ label }}" class="xar-norm xar-norm-outline">
                                     {{ parents[i].parentname }}
                                 </a>
                             </li>
@@ -87,7 +87,7 @@
                                     </a>
                                 </td>
                             </tr>
-                        </xar:loop>
+                        {% endfor %}
                     </table>
                 </div>
             {% endif %}
@@ -111,7 +111,7 @@
                         <th>Override</th>
                         <th>&#160;</th>
                     </tr>
-                    <xar:loop name="$privileges">
+                    {% for loop_key1, loop_item1 in privileges %}{% set loop_index1 = loop.index %}
                         <tr>
                             <td>
                                 <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': loop_item1['privid']}) }}">

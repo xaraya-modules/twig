@@ -9,7 +9,8 @@
                 {% set positions = [] %}
             {% endif %}
             {% for types in positions %}
-                {% if not types %}<xar:contine/>{% endif %}
+                {% if not types %}
+                {% else %}
                 {% for scopes in types %}
                     {% if not scopes %}
                         {% set scopes = [] %}
@@ -17,7 +18,7 @@
                     {% for script in scopes %}
                         {% if script['type'] == 'lib' %}
                             <script type="text/javascript" src="{{ script['url'] }}"/>
-                            {% set dummy = 1;libs[] = script['lib'] %}
+                            {% set libs = libs + [script['lib']] %}
                         {% elseif script['type'] == 'plugin' %}
                             {# <!-- Plugins are loaded only if the corresponding library was loaded --> #}
                             {% if script['lib'] in libs %}
@@ -36,6 +37,7 @@
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
+                {% endif %}
             {% endfor %}
         {% endfor %}
     {% endif %}

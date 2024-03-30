@@ -96,15 +96,15 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if item['type_state'] != xarBlock..TYPE_STATE_ACTIVE %}
-                            <a href="xarController::URL('blocks', 'admin', 'modify_instance', ['interface' => 'display', 'block_method' => 'state', 'block_id' => $block_id]){{ ">Type }}$type_states[$item['type_state']]['name']{{ </a>
-                        {% else %} }}$instance_states[$item['state']]['name']{{ {% endif %}
+                        {% if item['type_state'] != constant('TYPE_STATE_ACTIVE','xarBlock') %}
+                            <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_instance', {'interface': 'display', 'block_method': 'state', 'block_id': block_id}) }}">Type{{ type_states[item['type_state']]['name'] }}</a>
+                        {% else %}{{ instance_states[item['state']]['name'] }}{% endif %}
                     </td>
                     <td class="xar-align-right">
                         {% if item['info_link']['url'] %}
-                            <a href=" }}$item['info_link']['url']{{ " class="xar-icon" title=" }}$item['info_link']['title']{{ "><img src=" }}$icon_info{{ " class="xar-icon" alt=" }}$item['info_link']['label']{{ "/></a>
+                            <a href="{{ item['info_link']['url'] }}" class="xar-icon" title="{{ item['info_link']['title'] }}"><img src="{{ icon_info }}" class="xar-icon" alt="{{ item['info_link']['label'] }}"/></a>
                         {% else %}
-                            <img src=" }}$icon_info{{ " class="xar-icon-disabled" alt=" }}$item['info_link']['label']{{ " title=" }}$item['info_link']['title']{{ "/>
+                            <img src="{{ icon_info }}" class="xar-icon-disabled" alt="{{ item['info_link']['label'] }}" title="{{ item['info_link']['title'] }}"/>
                         {% endif %}& }}160;
                         {% if item['modify_link']['url'] %}
                             <a href="{{ item['modify_link']['url'] }}" class="xar-icon" title="{{ item['modify_link']['title'] }}"><img src="{{ icon_modify }}" class="xar-icon" alt="{{ item['modify_link']['label'] }}"/></a>

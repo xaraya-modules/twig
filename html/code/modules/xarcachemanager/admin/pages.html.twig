@@ -11,7 +11,7 @@
     {% if not pages or pages|length < 1 %}
         {{ xar_translate('Page caching is currently disabled...') }}
     {% else %}
-    <form action="&xar-modurl-xarcachemanager-admin-pages;" method="post">
+    <form action="{{ xar_moduleurl('xarcachemanager','admin','pages') }}" method="post">
 
     {#  this just shows the current rules for now #}
     <fieldset>
@@ -122,7 +122,7 @@
   <td>
     <input type="text" name="autocache[period]" id="autocache_period" size="9" value="{{ settings['AutoCachePeriod'] }}" />
     {{ xar_translate('hh:mm:ss') }}
-    [ <a href="{{ xar_currenturl() }}{{ viewlog">{{ xar_translate('view log') }}</a> ]
+    [ <a href="{{ xar_currenturl() }}#viewlog">{{ xar_translate('view log') }}</a> ]
   </td>
     </tr>
     <tr>
@@ -130,7 +130,7 @@
         <label for="autocache_threshold">{{ xar_translate('Threshold for inclusion') }}</label>
       </td>
       <td>
-        <input type="text" name="autocache[threshold]" id="autocache_threshold" size="5" value=" }}$settings['AutoCacheThreshold']{{ " />
+        <input type="text" name="autocache[threshold]" id="autocache_threshold" size="5" value="{{ settings['AutoCacheThreshold'] }}" />
         {{ xar_translate('hits in that period') }}
       </td>
     </tr>
@@ -139,7 +139,7 @@
         <label for="autocache_maxpages">{{ xar_translate('Maximum number of pages') }}</label>
       </td>
       <td>
-        <input type="text" name="autocache[maxpages]" id="autocache_maxpages" size="5" value=" }}$settings['AutoCacheMaxPages']{{ " />
+        <input type="text" name="autocache[maxpages]" id="autocache_maxpages" size="5" value="{{ settings['AutoCacheMaxPages'] }}" />
         {{ xar_translate('pages in cache') }}
       </td>
     </tr>
@@ -150,7 +150,7 @@
       <td>
         {% if settings['AutoCacheKeepStats'] %}
           <input type="checkbox" name="autocache[keepstats]" id="autocache_keepstats" value="1" checked="checked" />
-          [ <a href=" }}xarController::URL('xarcachemanager','admin','stats',array('tab' => 'autocache')){{ ">{{ xar_translate('view stats') }}</a> ]
+          [ <a href="{{ xar_moduleurl('xarcachemanager','admin','stats',{'tab': 'autocache'}) }}">{{ xar_translate('view stats') }}</a> ]
         {% else %}
           <input type="checkbox" name="autocache[keepstats]" id="autocache_keepstats" value="1" />
         {% endif %}
@@ -163,7 +163,7 @@
     </tr>
     <tr>
       <td colspan="3">
-        <textarea name="autocache[include]" id="autocache_include" rows="5" cols="80"> }}$settings['AutoCacheInclude']{{ </textarea>
+        <textarea name="autocache[include]" id="autocache_include" rows="5" cols="80">{{ settings['AutoCacheInclude'] }}</textarea>
       </td>
     </tr>
     <tr>
@@ -173,25 +173,25 @@
     </tr>
     <tr>
       <td colspan="3">
-        <textarea name="autocache[exclude]" id="autocache_exclude" rows="5" cols="80"> }}$settings['AutoCacheExclude']{{ </textarea>
+        <textarea name="autocache[exclude]" id="autocache_exclude" rows="5" cols="80">{{ settings['AutoCacheExclude'] }}</textarea>
       </td>
     </tr>
     </table>
     </fieldset>
     <div class="xar-form-input-wrapper">
-        <input type="hidden" name="authid" value=" }}$authid{{ " />
-        <input type="submit" name="submit" value=" }}{{ xar_translate('Submit') }}{{ " />
+        <input type="hidden" name="authid" value="{{ authid }}" />
+        <input type="submit" name="submit" value=" }}{{ xar_translate('Submit') }} }}" />
     </div>
     </form>
 
 <a name="viewlog"></a>
-    <h2>{{ xar_translate('Current Auto-Cache Log') }} [ <a href=" }}xarServer::getCurrentURL(){{ #config">{{ xar_translate('up') }}</a> ]</h2>
+    <h2>{{ xar_translate('Current Auto-Cache Log') }} [ <a href="{{ xar_currenturl() }}#config">{{ xar_translate('up') }}</a> ]</h2>
     {% if autocachepages %}
     <p>{{ xar_translate('From #(1) to #(2)', xar_coremethod('xarLocale', 'formatDate', ['%a, %d %B %Y %H.%M.%S %Z',autocachestart]), xar_coremethod('xarLocale', 'formatDate', ['%a, %d %B %Y %H.%M.%S %Z',autocacheend])) }}</p>
     <table border="1" cellpadding="4" cellspacing="0">
     <tr>
       {% for status in autocachehits|keys %}
-        <th> }}$status{{ </th>
+        <th>{{ status }}</th>
       {% endfor %}
       <th>{{ xar_translate('Page') }}</th>
     </tr>
@@ -199,17 +199,17 @@
     <tr>
       {% for status in autocachehits|keys %}
     {% if count[status] %}
-          <td> }}$count[$status]{{ </td>
+          <td>{{ count[status] }}</td>
         {% else %}
           <td>-</td>
         {% endif %}
       {% endfor %}
-      <td> }}$page{{ </td>
+      <td>{{ page }}</td>
     </tr>
     {% endfor %}
     <tr>
       {% for status in autocachehits|keys %}
-        <th> }}$autocachehits[$status]{{ </th>
+        <th>{{ autocachehits[status] }}</th>
       {% endfor %}
       <th>{{ xar_translate('Total') }}</th>
     </tr>
@@ -218,7 +218,7 @@
     <p>{{ xar_translate('Current URLs proposed for session-less caching .') }}</p>
     <ol>
     {% for url, count in autocacheproposed %}
-  <li> }}$url{{ ( }}$count#)</li>
+  <li>{{ url }}({{ count }})</li>
     {% endfor %}
     </ol>
     {% endif %}

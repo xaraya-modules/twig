@@ -2,9 +2,9 @@
 
 {% block view_meta %}
 {# <!-- TODO: multi-column output --> #}
-    {% set dummy = xar_coremethod('xarVar', 'fetch', ['table', 'notempty', table, '', xarVar..NOT_REQUIRED]) %}
-    {% set dummy = xar_coremethod('xarVar', 'fetch', ['dbtype', 'notempty', dbtype, '', xarVar..NOT_REQUIRED]) %}
-    {% set dummy = xar_coremethod('xarVar', 'fetch', ['db', 'notempty', db, '', xarVar..NOT_REQUIRED]) %}
+    {% set dummy = xar_coremethod('xarVar', 'fetch', ['table', 'notempty', table, '', constant('NOT_REQUIRED','xarVar')]) %}
+    {% set dummy = xar_coremethod('xarVar', 'fetch', ['dbtype', 'notempty', dbtype, '', constant('NOT_REQUIRED','xarVar')]) %}
+    {% set dummy = xar_coremethod('xarVar', 'fetch', ['db', 'notempty', db, '', constant('NOT_REQUIRED','xarVar')]) %}
     {% if not dbtype %}
         {% set itemlink = xar_moduleurl('dynamicdata','admin','meta', {'table': table, 'export': 'display'}) %}
     {% else %}

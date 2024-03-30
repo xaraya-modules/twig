@@ -63,7 +63,7 @@
                     </div>
                     <div class="xar-col">
                         {#  only show properties with status ACTIVE, DISPLAYONLY and VIEWONLY #}
-                        {% set filterstatus = >[1, 2, 4]< %}
+                        {% set filterstatus = [1, 2, 4] %}
                         {% set show_props = [] %}
                         {% for name, property in object.properties %}
                             {% set displaystatus = property.getDisplayStatus() %}
@@ -117,7 +117,7 @@
                     </div>
                 </div>
                 {#  only show properties with status ACTIVE, DISPLAYONLY and VIEWONLY #}
-                {% set filterstatus = >[1, 2, 4]< %}
+                {% set filterstatus = [1, 2, 4] %}
                 {% for name, property in object.properties %}
                     {% set displaystatus = property.getDisplayStatus() %}
                     {% if displaystatus not in filterstatus %}

@@ -27,29 +27,29 @@
             </p>
             <fieldset>
                 <legend>Groups</legend>
-                <xar:loop name="$roles">
+                {% for loop_key1, loop_item1 in roles %}{% set loop_index1 = loop.index %}
                     <div class="xar-row">
                         <div class="xar-col">
-                            {% set this_name = 'notify[' ~ loop.item['id'] ~ ']' %}
-                            {% set this_id = 'notify_' ~ loop.item['id'] %}
-                            <label class="xar-form-label">{{ loop.item['name'] }}</label>
-                            {{ xar_data_input({type: "checkbox", name: this_name, id: this_id, value: loop.item['notify']}) }}
-                            <label for="{{ this_id }}" title="{{ xar_translate('Toggle notifications sent to this Group') }}{{ ">
+                            {% set this_name = 'notify[' ~ loop_item1['id'] ~ ']' %}
+                            {% set this_id = 'notify_' ~ loop_item1['id'] %}
+                            <label class="xar-form-label">{{ loop_item1['name'] }}</label>
+                            {{ xar_data_input({type: "checkbox", name: this_name, id: this_id, value: loop_item1['notify']}) }}
+                            <label for="{{ this_id }}" title="{{ xar_translate('Toggle notifications sent to this Group') }} }}">
                                 notify
                             </label>
-                            {% set onclick = xar_moduleurl('roles', 'admin', 'sitelock', {'cmd': 'delete', 'id': loop.item['id']}) %}
+                            {% set onclick = xar_moduleurl('roles', 'admin', 'sitelock', {'cmd': 'delete', 'id': loop_item1['id']}) %}
                             {% if roles|length > 1 %}
-                                {{- xar_button({type. "button", value. deletelabel, submittotarget. onclick}) -}}
+                                {{- xar_button({type: "button", value: deletelabel, submittotarget: onclick}) -}}
                             {% else %}
-                                {{- xar_button({type. "button", value. deletelabel, submittotarget. onclick, disabled. "disabled"}) -}}
+                                {{- xar_button({type: "button", value: deletelabel, submittotarget: onclick, disabled: "disabled"}) -}}
                             {% endif %}
                         </div>
                     </div>
-                </xar.loop>
+                {% endfor %}
                 <div class="xar-row">
                     <div class="xar-col">
                         {% set label = 'Add a Group to the lock notification list' %}
-                        <label for="newname" title=" }}$label{{ " class="xar-form-label">
+                        <label for="newname" title="{{ label }}" class="xar-form-label">
                             Add Group.
                         </label>
                     </div>
@@ -57,7 +57,7 @@
                         <input type="text" name="newname" id="newname" value="" class="xar-form-textlong xar-margin-thickright"/>
                         {% set label = 'Add' %}
                         {% set onclick = xar_moduleurl('roles', 'admin', 'sitelock', {'cmd': 'add'}) %}
-                        {{- xar_button({type. "button", value. label, submittotarget. onclick}) -}}
+                        {{- xar_button({type: "button", value: label, submittotarget: onclick}) -}}
                     </div>
                 </div>
             </fieldset>
@@ -70,12 +70,12 @@
                 <div class="xar-row">
                     <div class="xar-col">
                         {% set label = 'Message sent when site lock status changes' %}
-                        <label for="notifymsg" title=" }}$label{{ " class="xar-form-label">
+                        <label for="notifymsg" title="{{ label }}" class="xar-form-label">
                             Site Lock Email.
                         </label>
                     </div>
                     <div class="xar-col">
-                        <textarea name="notifymsg" id="notifymsg" class="xar-form-textarealarge"> }}$notifymsg{{ </textarea>
+                        <textarea name="notifymsg" id="notifymsg" class="xar-form-textarealarge">{{ notifymsg }}</textarea>
                     </div>
                 </div>
             </fieldset>
@@ -87,12 +87,12 @@
                 <div class="xar-row">
                     <div class="xar-col">
                         {% set label = 'Text shown to users attempting to log in to a locked site' %}
-                        <label for="notifymsg" title=" }}$label{{ " class="xar-form-label">
+                        <label for="notifymsg" title="{{ label }}" class="xar-form-label">
                             Site Lock Message.
                         </label>
                     </div>
                     <div class="xar-col">
-                        <textarea name="lockedoutmsg" id="lockedoutmsg" class="xar-form-textarealarge"> }}$lockedoutmsg{{ </textarea>
+                        <textarea name="lockedoutmsg" id="lockedoutmsg" class="xar-form-textarealarge">{{ lockedoutmsg }}</textarea>
                     </div>
                 </div>
             </fieldset>
@@ -100,8 +100,8 @@
                 <div class="xar-row">
                     <div class="xar-col"></div>
                     <div class="xar-col">
-                        <input type="hidden" name="serialroles" id="serialroles" value=" }}$serialroles{{ "/>
-                        <input type="hidden" name="toggle" id="toggle" value=" }}$toggle#"/>
+                        <input type="hidden" name="serialroles" id="serialroles" value="{{ serialroles }}"/>
+                        <input type="hidden" name="toggle" id="toggle" value="{{ toggle }}"/>
                         {% set label = 'Save Site Lock Settings' %}
                         {% set onclick = xar_moduleurl('roles', 'admin', 'sitelock', {'cmd': 'save'}) %}
                         {{- xar_button({type: "button", value: label, tabindex: "2", submittotarget: onclick}) -}}

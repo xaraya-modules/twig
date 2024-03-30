@@ -723,7 +723,7 @@
 					</div>
 				</div>
 				{% if retry == 1 %}
-					<p style="color: {{ f00;">
+					<p style="color: #f00;">
 						We ask you agree to the Terms and Conditions above in order to continue installing.
 					</p>
 				{% endif %}
@@ -731,11 +731,11 @@
 					<div class="xar-row">
 						<div class="xar-col"></div>
 						<div class="xar-col">
-							<input type="hidden" name="install_language" id="install_language" value=" }}$language{{ "/>
+							<input type="hidden" name="install_language" id="install_language" value="{{ language }}"/>
 							<input type="hidden" name="install_phase" id="install_phase" value="3"/>
 			
 							{% set label = 'Back' %}
-							{{- xar_button({type. "cancel", label. label}) -}}
+							{{- xar_button({type: "cancel", label: label}) -}}
 							& }}160;
 							{% set label = 'Continue' %}
 							{{- xar_button({type: "submit", label: label}) -}}

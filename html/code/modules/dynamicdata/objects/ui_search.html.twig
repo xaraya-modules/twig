@@ -66,18 +66,18 @@
                     </div>
                     <div class="xar-col">
                         {# <!-- only show properties with status ACTIVE, DISPLAYONLY and VIEWONLY --> #}
-                        {% set filterstatus = >[1, 2, 4]< %}
+                        {% set filterstatus = [1, 2, 4] %}
                         {% set show_props = [] %}
                         {% for name, property in object.properties %}
                             {% set displaystatus = property.getDisplayStatus() %}
                             {% if displaystatus not in filterstatus %}
                             {% else %}
-                            {% set dummy = array_push(show_props, name) %}
+                            {% set show_props = show_props + [name] %}
                             {% endif %}
                         {% endfor %}
                         {# <!-- show properties in three columns to save screen space --> #}
-                        {% set size = floor((show_props|length - 0.5) / 3) + 1 %}
-                        {% set columns = array_chunk(show_props,size) %}
+                        {% set size = ((show_props|length - 0.5) / 3)|round + 1 %}
+                        {% set columns = show_props|batch(size) %}
                         <table class="xar-table">
                             <tr>
                             {% for proplist in columns %}

@@ -103,11 +103,11 @@
                                 </div>
                                 <div class="xar-col">
                                     {% set realmoptions = [ 
-                                            {'id': 'none', 'name': {{ xar_translate('No Value') }}}, 
-                                            {'id': 'domain', 'name': {{ xar_translate('Current Domain') }}}, 
-                                            {'id': 'theme', 'name': {{ xar_translate('Current Theme') }}}, 
-                                            {'id': 'group', 'name': {{ xar_translate('Primary Parent Group') }}}, 
-                                            {'id': 'string', 'name': {{ xar_translate('Text Value') }}} 
+                                            {'id': 'none', 'name': xar_translate('No Value')}, 
+                                            {'id': 'domain', 'name': xar_translate('Current Domain')}, 
+                                            {'id': 'theme', 'name': xar_translate('Current Theme')}, 
+                                            {'id': 'group', 'name': xar_translate('Primary Parent Group')}, 
+                                            {'id': 'string', 'name': xar_translate('Text Value')} 
                                         ] %}
                                     {{ xar_data_input({type: "radio", name: "realmvalue", options: realmoptions, value: realmvalue, layout: "vertical"}) }}
                                 </div>
@@ -219,7 +219,7 @@
                         This option is provided for Web Developer convenience. In general most Site Administrators should not need to access the Masks list provided below. Editing of the masks without an understanding of how they function can result in access problems to content on your site.
                     </p>
                     {% set where = 'priv_type eq 3' %}
-                    {% set object = DataObjectFactory..getObjectList({'name': 'privileges_privileges', 'where': where}) %}
+                    {% set object = xar_coremethod('DataObjectFactory', 'getObjectList', {'name': 'privileges_privileges', 'where': where}) %}
                     {{ xar_data_view({object: object}) }}
                 </fieldset>
                 <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>

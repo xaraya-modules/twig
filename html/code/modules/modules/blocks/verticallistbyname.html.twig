@@ -8,7 +8,7 @@
     <ul class="xar-menu-section">
         <li class="xar-menu-section">
             <ul class="xar-menu-item">
-                <xar:foreach in="$adminmods" value="$mod" key="$modname">
+                {% for modname, mod in adminmods %}
                     {% set menuitemclass = 'xar-menu-item' %}
                     {% if mod['features']['modactive'] %}
                         {% set menuitemclass = 'xar-menu-item-current' %}
@@ -28,7 +28,8 @@
                             </a>
                         {% endif %}
                         {# <!-- Render the menu part --> #}
-                        <xar:template file="menu-part" subdata="['mod' => $mod]"/>
+                        {% set subdata = {'mod': mod} %}
+                        {{ include('@modules/includes/menu-part.html.twig', subdata) }}
                     </li>
                 {% endfor %}
             </ul>

@@ -11,6 +11,7 @@
                 <option value="0">No category</option>
             {% endif %}
         {% endif %}
-        <xar:template module="categories" file="categories-treeoptions" subdata="['nodes' => $nodes, 'value' => $value, 'include_all_cats' => $include_all_cats, 'include_self' => $include_self]"/>
+        {% set subdata = {'nodes': nodes, 'value': value, 'include_all_cats': include_all_cats, 'include_self': include_self} %}
+        {{ include('@categories/includes/categories-treeoptions.html.twig', subdata) }}
     </select>
 {% endblock %}

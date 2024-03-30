@@ -54,10 +54,11 @@
             </tr>
             {% set adminlistserial = xar_modvar('dynamicdata', 'administrators') %}
             {% set adminrole = xar_modvar('roles', 'admin') %}
+            {# @todo assume we get this from function #}
             {% if adminlistserial %}
                 {% set adminlist = array_merge(unserialize(adminlistserial),[xar_username(adminrole, 'uname')]) %}
             {% else %}
-                {% set adminlist = >[xarUser::getVar('uname',$adminrole)]< %}
+                {% set adminlist = [xar_username(adminrole, 'uname')] %}
             {% endif %}
             {% set username = xar_uservar('uname') %}
             {% set issuperadmin = username in adminlist %}

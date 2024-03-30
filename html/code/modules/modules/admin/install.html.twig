@@ -56,10 +56,10 @@
                         <h3>Module dependencies which cannot be satisfied</h3>
                         <ul>
                             {% for modInfo in moduledependencies['unsatisfiable'] %}                                
-                                {% if modInfo is iterable and (modInfo['displayname'] != {{ xar_translate('Unknown') }} and modInfo['displayname']) %}
+                                {% if modInfo is iterable and (modInfo['displayname'] != xar_translate('Unknown') and modInfo['displayname']) %}
                                     Missing a module {{ modInfo['displayname'] }}. 
                                     <br />Install this module first, then try this installation again. 
-                                {% elseif modInfo is iterable and (modInfo['displayname'] == {{ xar_translate('Unknown') }} or not modInfo['displayname']) %}
+                                {% elseif modInfo is iterable and (modInfo['displayname'] == xar_translate('Unknown') or not modInfo['displayname']) %}
                                     <li>
                                         {% if dependencyinfo[modInfo['regid']] is not null and not dependencyinfo[modInfo['regid']] is numeric %}
                                             Missing a module {{ modInfo['name'] }} (ID {{ modInfo['regid'] }}). 

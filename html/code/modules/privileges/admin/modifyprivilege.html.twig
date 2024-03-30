@@ -36,7 +36,7 @@
 	                    {% for i in range(0, parents|length - 1) %}
 	                        {% if prevgroup != parents[i]['parentname'] %}
 	                            <li class="xar-tab">
-	                                <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': parents[i}['parentid']]) }}" title="{{ xar_translate('Show this privilege') }}" class="xar-norm xar-norm-outline">
+	                                <a href="{{ xar_moduleurl('privileges','admin','modifyprivilege',{'id': parents[i]['parentid']}) }}" title="{{ xar_translate('Show this privilege') }}" class="xar-norm xar-norm-outline">
 	                                    {{ parents[i]['parentname'] }}
 	                                </a>
 	                            </li>
@@ -96,7 +96,7 @@
                                 <input type="text" name="pname" id="pname" value="{{ pname }}" maxlength="40" class="xar-form-textlong"/>
                             </div>
                         </div>
-	                    {% set onclick = "this.form.action='" ~ xar_moduleurl('privileges','admin','modifyprivilege') ."';this.form.submit()"; %}
+	                    {% set onclick = "this.form.action='" ~ xar_moduleurl('privileges','admin','modifyprivilege') ~ "';this.form.submit();" %}
 	                    {# <!-- FIXME: make this dprop support onclick, cause IE6 doesn't do onchange
 	                    <div class="xar-col dummy">
 	                        {% set options = [
@@ -124,7 +124,7 @@
                                     </label>
                                 </div>
                                 <div class="xar-col">
-                                    <input type="radio" name="ptype" id="ptype1_full" value="full" onclick="this.form.action='&xar-modurl-privileges-admin-modifyprivilege;';this.form.submit();"/>
+                                    <input type="radio" name="ptype" id="ptype1_full" value="full" onclick="this.form.action='{{ xar_moduleurl('privileges','admin','modifyprivilege') }}';this.form.submit();"/>
                                 </div>
                             </div>
 	                    {% else %}
@@ -135,7 +135,7 @@
                                     </label>
                                 </div>
                                  <div class="xar-col">
-                                    <input type="radio" name="ptype" id="ptype_empty" value="empty" onclick="this.form.action='&xar-modurl-privileges-admin-modifyprivilege;';this.form.submit();"/>
+                                    <input type="radio" name="ptype" id="ptype_empty" value="empty" onclick="this.form.action='{{ xar_moduleurl('privileges','admin','modifyprivilege') }}';this.form.submit();"/>
                                 </div>
                            </div>
                             <div class="xar-row">
@@ -145,7 +145,7 @@
                                     </label>
                                 </div>
                                 <div class="xar-col">
-                                    <input type="radio" name="ptype" id="ptype_full" value="full" checked="checked" onclick="this.form.action='&xar-modurl-privileges-admin-modifyprivilege;';this.form.submit();"/>
+                                    <input type="radio" name="ptype" id="ptype_full" value="full" checked="checked" onclick="this.form.action='{{ xar_moduleurl('privileges','admin','modifyprivilege') }}';this.form.submit();"/>
                                 </div>
                             </div>
 	                        {% if xar_modvar('privileges', 'showrealms') %}
@@ -177,9 +177,9 @@
                                     </label>
                                 </div>
                                 <div class="xar-col">
-                                    <select name="pcomponent" id="pcomponent" onchange="this.form.action='&xar-modurl-privileges-admin-modifyprivilege;';this.form.submit();">
+                                    <select name="pcomponent" id="pcomponent" onchange="this.form.action='{{ xar_moduleurl('privileges','admin','modifyprivilege') }}';this.form.submit();">
                                         {% for loop_key1, loop_item1 in components %}{% set loop_index1 = loop.index %}
-                                            {% if strtolower(loop_item1['name']) == strtolower(pcomponent) %}
+                                            {% if loop_item1['name']|lower == pcomponent|lower %}
         
                                                 <option value="{{ loop_item1['name'] }}" selected="selected">
                                                 {{ loop_item1['name'] }}</option>
@@ -187,7 +187,7 @@
                                                 <option value="{{ loop_item1['name'] }}">
                                                 {{ loop_item1['name'] }}</option>
                                             {% endif %}
-                                        </xar:loop>
+                                        {% endfor %}
                                     </select>
                                 </div>
                             </div>
@@ -199,12 +199,12 @@
                                 </div>
                                 <div class="xar-col">
                                     {% set levels = SecurityLevel..displayMap %}
-                                    {# <!-- TODO: this needs to go --> #}
-                                    {% set foo = 1; array_shift(levels) %}
+                                    {# <!-- @todo this needs to go --> #}
+                                    {# set foo = 1; array_shift(levels) #}
                                     {% set options = [] %}
                                     {% for key, value in levels %}
-                                        {# <!-- TODO: this needs to go --> #}
-                                        {% set foo = 1; options[] = {'id': key * 100, 'name': value} %}
+                                        {# <!-- @todo this needs to go --> #}
+                                        {% set options = options + [{'id': key * 100, 'name': value}] %}
                                     {% endfor %}
                                     {{ xar_data_input({type: "dropdown", name: "plevel", value: plevel, options: options, tabindex: "6"}) }}
                                 </div>
@@ -280,7 +280,7 @@
                         <div class="xar-col">
                             <select name="privid" id="privid">
                                 <option value=""></option>
-                                {% for loop_key2, loop_item2 in privileges %}{% set loop_index2 = loop.index %}
+                                {% for loop_key1, loop_item1 in privileges %}{% set loop_index1 = loop.index %}
                                     <option value="{{ loop_item1['id'] }}">{{ loop_item1['name'] }}</option>
                                 {% endfor %}
                             </select>
@@ -295,7 +295,7 @@
                             <input type="hidden" name="poldcomponent" id="poldcomponent" value="{{ oldcomponent }}"/>
                             <input type="hidden" name="id" id="id" value="{{ ppid }}"/>
                             {% set value = 'Add' %}
-                            <input type="button" value="{{ value }}" onclick="javascript:this.form.action = '&xar-modurl-privileges-admin-addmember;&amp;ppid={{ ppid }}&amp;authid={{ authid }}';this.form.submit();"/>
+                            <input type="button" value="{{ value }}" onclick="javascript:this.form.action = '{{ xar_moduleurl('privileges','admin','addmember') }}&amp;ppid={{ ppid }}&amp;authid={{ authid }}';this.form.submit();"/>
                         </div>
                     </div>
 	            </div>
@@ -305,7 +305,7 @@
 	            {% if parents|length == 0 %}
 	                <p>'{{ pname }}' is not a member of any other privileges.</p>
 	            {% else %}
-	                <xar:loop name="$parents">
+                    {% for loop_key1, loop_item1 in parents %}{% set loop_index1 = loop.index %}
                         <div class="xar-row">
                             <div class="xar-col">
                                 <span class="xar-form-label">
@@ -313,7 +313,7 @@
                                         {{ loop_item1['parentname'] }}
                                     </a>
                                 </span>
-                                <a href="{{ xar_moduleurl('privileges','admin','removemember',{'childid': ppid, 'parentid': loop_item1['parentid'},'authid'=>authid]) }}">
+                                <a href="{{ xar_moduleurl('privileges','admin','removemember',{'childid': ppid, 'parentid': loop_item1['parentid'], 'authid': authid}) }}">
                                     <img src="{{ xar_coremethod('sys', 'code') }}modules/privileges/xarimages/remove.gif" alt="{{ xar_translate('Remove') }}" title="Remove {{ pname }} from {{ loop_item1['parentname'] }}"/>
                                 </a>
                             </div>

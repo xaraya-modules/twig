@@ -93,7 +93,7 @@
                                     <option value="{{ item }}">{{ item }}</option>
                                 {% endif %}
                             {% endfor %}
-                            {% if table and strstr(table, '.') %}
+                            {% if table and '.' in table %}
                                 <option value="{{ table }}" selected="selected">{{ table }}</option>
                             {% endif %}
                         </select>
@@ -130,7 +130,7 @@
                         {% for name in properties|keys %}
                             <td>
                                 {% if name == '_extra_' %}
-                                    <select name="field[$name]">
+                                    <select name="field[{{ name }}]">
                                         <option value="">
                                         Select:
                                         </option>
@@ -260,7 +260,7 @@
                         <tr>
                             <td>
                                 {% if name == '_extra_' %}
-                                    <select name="field[$name]">
+                                    <select name="field[{{ name }}]">
                                         <option value="">Select:</option>
                                         {% for name2 in properties|keys %}
                                             {% if field[name] and field[name] == name2 %}

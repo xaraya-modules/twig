@@ -161,7 +161,7 @@
                     {% if hookobservers %}
                         {% for scope, events in hookobservers %}
                             <div>
-                                <span>{{ ucfirst(scope) }} Scope</span>
+                                <span>{{ scope|title }} Scope</span>
                                 <ul>
                                     {% for event, hook in events %}
                                         <li>{{ hook['area'] }}: {{ event }}</li>

@@ -73,7 +73,7 @@
         {% endif %}
         {% set places = item['marking']|split(constant('AND_OPERATOR', tracker)) %}
         {% for here in places %}
-          {% set placelink = xar_moduleurl('workflow', 'user', 'test', {'workflow': item['workflow'}, 'place' => prefix ~ here]) %}
+          {% set placelink = xar_moduleurl('workflow', 'user', 'test', {'workflow': item['workflow'], 'place': prefix ~ here}) %}
           {% set where = here|replace({'_':' '})|title %}
           <a href="{{ placelink }}" title="Filter Place {{ where }}">{{ where }}</a>&#160;
         {% endfor %}
@@ -101,9 +101,12 @@
         <label>Context</label>
       </div>
       <div class="xar-col">
+        {# @todo prettify json dump
         {% set decoded = json_decode(item['context']) %}
         {% set encoded = decoded|json_encode(constant('JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR')) %}
         <pre>{{ encoded }}</pre>
+        #}
+        <pre>{{ item['context'] }}</pre>
       </div>
     </div>
   </fieldset>

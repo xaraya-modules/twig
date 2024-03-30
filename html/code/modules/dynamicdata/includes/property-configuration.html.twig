@@ -11,7 +11,7 @@
         <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','showpropval') }}" enctype="{{ enc_type }}">
             <fieldset>
                 <legend>Property summary</legend>
-                {% set fieldlist = >['name','label','objectid','type']< %}
+                {% set fieldlist = ['name','label','objectid','type'] %}
                 {{ xar_data_display({object: object, fieldlist: fieldlist}) }}
             </fieldset>
             <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>

@@ -10,16 +10,16 @@
             This is the layout used by the roles module itself when a user is editing their basic account info
             Any data not provided by the object is provided by the $formdata array
         --> #}
-        {% set settings = '|split(')) %}
+        {% set settings = xar_modvar('roles', 'duvsettings')|split(',') %}
         <h2>Edit {{ object.properties['name'].getValue() }}</h2>
         <fieldset>
             <legend>User Details</legend>
-            {% if (bool)xar_modvar('roles', 'requirevalidation') %}
+            {% if xar_modvar('roles', 'requirevalidation') %}
                 <div class="xar-row">
                         Changing your email address will require you to revalidate your account.
                 </div>
             {% endif %}
-            {% set fields = >['name','uname','email','password','regdate']< %}
+            {% set fields = ['name','uname','email','password','regdate'] %}
             {% for name in fields %}
                 {% if properties[name] is null %}
                 {% else %}

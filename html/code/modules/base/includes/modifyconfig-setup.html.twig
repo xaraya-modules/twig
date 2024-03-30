@@ -97,8 +97,9 @@
                 </label>
             </div>
             <div class="xar-col">
+                {# @todo to be checked in function #}
                 {% set value = realpath('index.php') %}
-                {% if value === false %}
+                {% if value == false %}
                 	Cannot display this path
                 {% else %}
 	                {{ value }}

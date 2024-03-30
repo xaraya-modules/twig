@@ -35,7 +35,7 @@
             <div class="xar-row">
                 <div class="xar-col">Status:</div>
                 <div class="xar-col">
-                    {% if block['type_state'] != xarBlock..TYPE_STATE_ACTIVE %}
+                    {% if block['type_state'] != constant('TYPE_STATE_ACTIVE','xarBlock') %}
                         <a href="{{ xar_currenturl({'interface': 'display', 'block_method': 'status'}) }}">{{ type_states[block['type_state']]['name'] }}</a>
                     {% else %}
                         {{ instance_states[block['state']]['name'] }}
@@ -50,7 +50,7 @@
                             {% for loop_key1, loop_item1 in instance_groups %}{% set loop_index1 = loop.index %}
                                 <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_instance', {'block_id': loop_item1.block_id}) }}">{{ loop_item1.name }}</a>
                                 {% if loop_index1 < instance_groups|length %},&#160;{% endif %}
-                            </xar:loop>
+                            {% endfor %}
                         {% else %}
                             [ none ]
                         {% endif %}
@@ -61,7 +61,7 @@
                     <div class="xar-col">Group Instances:</div>
                     <div class="xar-col">
                         {% if group_instances %}
-                            <xar:loop name="$group_instances">
+                            {% for loop_key1, loop_item1 in group_instances %}{% set loop_index1 = loop.index %}
                                 <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_instance', {'block_id': loop_item1.block_id}) }}">{{ loop_item1.name }}</a>
                                 {% if loop_index1 < group_instances|length %},&#160;{% endif %}
                             {% endfor %}

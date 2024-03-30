@@ -10,7 +10,7 @@
     {% if not blocks or blocks|length < 1 %}
         {{ xar_translate('Block caching is currently disabled') }}
     {% else %}
-        <form action="&xar-modurl-xarcachemanager-admin-blocks;" method="post">
+        <form action="{{ xar_moduleurl('xarcachemanager','admin','blocks') }}" method="post">
         <fieldset>
             <legend>
             {{ xar_translate('Block Caching Options') }}
@@ -34,7 +34,7 @@
                 <input type="checkbox" name="docache[{{ block['bid'] }}]" id="docache_{{ block['bid'] }}" value="1"/>
               {% endif %}</td>
           <td>
-              <a href="&xar-modurl-blocks-admin-modify_instance;&amp;bid={{ block['bid'] }}">{{ block['name'] }}</a>
+              <a href="{{ xar_moduleurl('blocks','admin','modify_instance') }}&amp;bid={{ block['bid'] }}">{{ block['name'] }}</a>
           </td>
           <td>{{ block['module'] }}</td>
           <td>{{ block['type'] }}</td>
