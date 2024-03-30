@@ -1,7 +1,7 @@
 {# @themes/meta/render.html.twig #}
 
 {% block render %}
-{% set lang = xar_coremethod('xarUser'|slice( 'getNavigationLocale'),0,2) %}
+{% set lang = xar_coremethod('xarUser','getNavigationLocale')|slice(0,2) %}
     {% if meta and meta is iterable %}
         {% for type, values in meta %}
             {% if not values %}

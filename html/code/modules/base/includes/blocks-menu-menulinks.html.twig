@@ -61,10 +61,10 @@
                         'menuid': menuid,
                         'marker': linkmarker,
                         'maxlevels': maxlevels,
-                        'parentactive': link['isactive'],// let sublinks know if parent is active
+                        'parentactive': link['isactive']
                     } %}
                     {# <!-- pass the subdata to this template, and do the dance again :) --> #}
-                    {{ include('@base/includes/blocks-menu-menulinks.html.twig') }}
+                    {{ include('@base/includes/blocks-menu-menulinks.html.twig', subdata) }}
                 {% endif %}
             </li>
         {% endfor %}
