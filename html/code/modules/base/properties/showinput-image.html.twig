@@ -7,7 +7,7 @@
     {% elseif image_source == 'url' %}
         {{ xar_data_input({type: "url", name: name, value: value}) }}
     {% else %}
-        {% set firstline = {'id': '', 'name': {{ xar_translate('Select Image') }}} %}
+        {% set firstline = {'id': '', 'name': xar_translate('Select Image')} %}
         {{ xar_data_input({type: "filepicker", name: name, value: value, basedir: basedirectory, extensions: extensions, firstline: firstline}) }}
         {% set showlabel = 'check' %}
         {% if value %} 

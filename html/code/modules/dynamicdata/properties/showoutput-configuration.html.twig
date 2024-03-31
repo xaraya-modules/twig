@@ -1,7 +1,7 @@
 {# @dynamicdata/properties/showoutput-configuration.html.twig #}
 
 {% block showoutput_configuration %}
-{% set settings = @unserialize(value) %}
+{% set settings = xar_unserialize(value) %}
     {% if settings is iterable %}
         <table class="xar-table">
             <tr>

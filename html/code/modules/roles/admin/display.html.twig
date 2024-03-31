@@ -10,7 +10,7 @@
     --> #}
     <div class="xar-mod-body">
         <div class="xar-mod-page-head">
-            {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
+            {% if itemtype == constant('xarRoles::ROLES_USERTYPE') %}
                 {% set thisname = object.properties['uname'].getValue() %}
             {% else %}
                 {% set thisname = object.properties['name'].getValue() %}
@@ -44,7 +44,7 @@
                 <legend>Role properties</legend>
                 {% set fields = ['id','name','uname','email','state','regdate'] %}
                 {{ xar_data_display({object: object, fieldlist: fields}) }}
-                {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
+                {% if itemtype == constant('xarRoles::ROLES_USERTYPE') %}
                     {% set settings = xar_modvar('roles', 'duvsettings')|split(',') %}
                     {% if 'userhome' in settings %}
                         <div class="xar-row">

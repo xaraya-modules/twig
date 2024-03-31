@@ -54,7 +54,7 @@
                                     {'id': 'xhtml-math-svg', 'name': 'xhtml-math-svg'},
                                     {'id': 'svg-xhtml-math', 'name': 'svg-xhtml-math'},
                                     {'id': 'rss', 'name': 'rss'},
-                                    {'id': 'html5', 'name': 'html5'},
+                                    {'id': 'html5', 'name': 'html5'}
                                 ] %}
                             {{ xar_data_input({type: "dropdown", id: "doctype", name: "doctype", value: value, options: options, class: "xar-form-textlong"}) }}
                         </div>
@@ -227,7 +227,7 @@
                                     {'id': 'mps', 'name': xar_translate('Module Name - Page Name - Site Name')},
                                     {'id': 'pms', 'name': xar_translate('Page Name - Module Name - Site Name')},
                                     {'id': 'to', 'name': xar_translate('Page Name')},
-                                    {'id': 'theme', 'name': xar_translate('Theme Driven')},
+                                    {'id': 'theme', 'name': xar_translate('Theme Driven')}
                                 ] %}
                             {% set value = xar_var({scope: "module", module: "themes", name: "SiteTitleOrder"}) %}
                             <label for="pagetitle">
@@ -328,7 +328,7 @@
                         <div class="xar-col">
                             {% set options = [
                                     {'id': 0, 'name': xar_translate('No')},
-                                    {'id': 1, 'name': xar_translate('Yes')},
+                                    {'id': 1, 'name': xar_translate('Yes')}
                                 ] %}
                             {% set checked = xar_var({scope: "config", name: "Site.BL.CompressWhitespace"}) %}
                             {{ xar_data_input({type: "radio", name: "compresswhitespace", value: checked, options: options}) }}
@@ -406,7 +406,7 @@
                                     {'id': 'templates', 'name': xar_translate('Templates')},
                                     {'id': 'rss', 'name': xar_translate('RSS')},
                                     {'id': 'database', 'name': xar_translate('Database')},
-                                    {'id': 'css', 'name': xar_translate('CSS')},
+                                    {'id': 'css', 'name': xar_translate('CSS')}
                                 ] %}
                             {% set value = xar_modvar('themes', 'flushcaches') %}
                             {{ xar_data_input({type: "checkboxlist", name: "flushcaches", value: value, options: options}) }}
@@ -422,7 +422,7 @@
                         </div>
                         <div class="xar-col">
                             {% set options = [
-                                    {'id': 'dynamicdata', 'name': xar_translate('Dynamicdata')},
+                                    {'id': 'dynamicdata', 'name': xar_translate('Dynamicdata')}
                                 ] %}
                             {% set value = xar_modvar('themes', 'flushdbcaches') %}
                             {{ xar_data_input({type: "checkboxlist", name: "flushdbcaches", value: value, options: options}) }}

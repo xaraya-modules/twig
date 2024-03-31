@@ -4,7 +4,7 @@
 {{ xar_style({scope: "module", file: "privileges"}) }}
     {{ include('@roles/includes/admin-mod-head.html.twig') }}
     <div class="xar-mod-body">
-        {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
+        {% if itemtype == constant('xarRoles::ROLES_USERTYPE') %}
             {% set pname = object.properties['uname'].getValue() %}
         {% else %}
             {% set pname = object.properties['name'].getValue() %}

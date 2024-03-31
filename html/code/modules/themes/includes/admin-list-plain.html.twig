@@ -32,7 +32,7 @@
                         <td>{{ theme['version'] }}</td>
                         <td>{{ classes[theme['class']]['name'] }}</td>
                         <td>{{ states[theme['state']]['name'] }}</td>
-                        {% if theme['class'] == 2 and theme['state'] == constant('STATE_ACTIVE','xarTheme') %}
+                        {% if theme['class'] == 2 and theme['state'] == constant('xarTheme::STATE_ACTIVE') %}
                             {% set themename = strtolower(theme['name']) %}
                             <td>
                                 {% if themename == user_theme %}
@@ -70,7 +70,7 @@
                                     <a href="{{ theme['deactivate_url'] }}" title="{{ deactivatetitle }}">{{ deactivatelabel }}</a>
                                 {% elseif theme['upgrade_url'] %}
                                     <a href="{{ theme['upgrade_url'] }}" title="{{ upgradetitle }}">{{ upgradelabel }}</a>
-                                {% elseif theme['state'] == constant('STATE_ACTIVE','xarTheme') %}
+                                {% elseif theme['state'] == constant('xarTheme::STATE_ACTIVE') %}
                                     {{ nonelabel }}
                                 {% elseif theme['class'] == 4 %}
                                     {{ nonelabel }}
@@ -79,7 +79,7 @@
                                 {% endif %}&#160;
                                 {% if theme['remove_url'] %}
                                     <a href="{{ theme['remove_url'] }}" class="xar-icon" title="{{ removetitle }}">{{ removelabel }}</a> 
-                                {% elseif theme['state'] == constant('STATE_ACTIVE','xarTheme') %}
+                                {% elseif theme['state'] == constant('xarTheme::STATE_ACTIVE') %}
                                     {{ nonelabel }}
                                 {% else %}
                                     {{ nonelabel }}
@@ -94,7 +94,7 @@
                                     <a href="{{ theme['deactivate_url'] }}" class="xar-icon" title="{{ deactivatetitle }}"><img src="{{ deactivateicon }}" class="xar-icon" alt="{{ deactivatelabel }}"/></a>
                                 {% elseif theme['upgrade_url'] %}
                                     <a href="{{ theme['upgrade_url'] }}" class="xar-icon" title="{{ upgradetitle }}"><img src="{{ upgradeicon }}" class="xar-icon" alt="{{ upgradelabel }}"/></a>
-                                {% elseif theme['state'] == constant('STATE_ACTIVE','xarTheme') %}
+                                {% elseif theme['state'] == constant('xarTheme::STATE_ACTIVE') %}
                                     <img src="{{ deactivateicon }}" class="xar-icon-disabled" alt="{{ deactivatelabel }}" title="{{ deactivatetitle }}"/>
                                 {% elseif theme['class'] == 4 %}
                                     <img src="{{ noneicon }}" class="xar-icon" alt="{{ nonelabel }}" title="{{ nonetitle }}"/>
@@ -103,7 +103,7 @@
                                 {% endif %}&#160;
                                 {% if theme['remove_url'] %}
                                     <a href="{{ theme['remove_url'] }}" class="xar-icon" title="{{ removetitle }}"><img src="{{ removeicon }}" class="xar-icon" alt="{{ removelabel }}"/></a> 
-                                {% elseif theme['state'] == constant('STATE_ACTIVE','xarTheme') %}
+                                {% elseif theme['state'] == constant('xarTheme::STATE_ACTIVE') %}
                                     <img src="{{ removeicon }}" class="xar-icon-disabled" alt="{{ removelabel }}" title="{{ removetitle }}"/>
                                 {% else %}
                                     <img src="{{ noneicon }}" class="xar-icon" alt="{{ nonelabel }}" title="{{ nonetitle }}"/>

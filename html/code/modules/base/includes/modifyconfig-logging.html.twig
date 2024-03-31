@@ -10,14 +10,14 @@
     {% else %}
     
 		{% set levels = [
-					{'id': 1, 'name': {{ xar_translate('Emergency') }}},
-					{'id': 2, 'name': {{ xar_translate('Alert') }}},
-					{'id': 4, 'name': {{ xar_translate('Critical') }}},
-					{'id': 8, 'name': {{ xar_translate('Error') }}},
-					{'id': 16, 'name': {{ xar_translate('Warning') }}},
-					{'id': 32, 'name': {{ xar_translate('Notice') }}},
-					{'id': 64, 'name': {{ xar_translate('Info') }}},
-					{'id': 128, 'name': {{ xar_translate('Debug') }}},
+					{'id': 1, 'name': xar_translate('Emergency')},
+					{'id': 2, 'name': xar_translate('Alert')},
+					{'id': 4, 'name': xar_translate('Critical')},
+					{'id': 8, 'name': xar_translate('Error')},
+					{'id': 16, 'name': xar_translate('Warning')},
+					{'id': 32, 'name': xar_translate('Notice')},
+					{'id': 64, 'name': xar_translate('Info')},
+					{'id': 128, 'name': xar_translate('Debug')}
 				] %}
 
         <form action="{{ xar_currenturl() }}" method="post" onsubmit="return xar_base_formCheck(this, base_fieldRequired, base_fieldDescription);" enctype="application/x-www-form-urlencoded">
@@ -32,8 +32,8 @@
                     </div>
                     <div class="xar-col">
                         {% set options = [
-                                {'id': 0, 'name': {{ xar_translate('No') }}},
-                                {'id': 1, 'name': {{ xar_translate('Yes') }}},
+                                {'id': 0, 'name': xar_translate('No')},
+                                {'id': 1, 'name': xar_translate('Yes')}
                             ] %}
                         {% set log_enabled = xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'Log.Enabled']) %}
                         {{ xar_data_input({type: "radio", name: "logenabled", value: log_enabled, options: options}) }}
@@ -85,7 +85,7 @@
                         </label>
                     </div>
                     <div class="xar-col">
-                        {% set value = @unserialize(xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'Log.Level'])) %}
+                        {% set value = xar_unserialize(xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'Log.Level'])) %}
                         {{ xar_data_input({type: "checkboxlist", name: "loglevel", value: value, options: levels}) }}
                     </div>
                 </div>

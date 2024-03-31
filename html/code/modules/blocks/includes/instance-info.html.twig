@@ -35,7 +35,7 @@
             <div class="xar-row">
                 <div class="xar-col">Status:</div>
                 <div class="xar-col">
-                    {% if block['type_state'] != constant('TYPE_STATE_ACTIVE','xarBlock') %}
+                    {% if block['type_state'] != constant('xarBlock::TYPE_STATE_ACTIVE') %}
                         <a href="{{ xar_currenturl({'interface': 'display', 'block_method': 'status'}) }}">{{ type_states[block['type_state']]['name'] }}</a>
                     {% else %}
                         {{ instance_states[block['state']]['name'] }}

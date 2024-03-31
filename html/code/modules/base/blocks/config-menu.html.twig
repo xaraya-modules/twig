@@ -236,7 +236,7 @@
                             {'id': 'none', 'name': '--- do nothing ---'},
                             {'id': 'show', 'name': 'Make Visible'},
                             {'id': 'hide', 'name': 'Make Invisible'},
-                            {'id': 'delete', 'name': 'Delete'},
+                            {'id': 'delete', 'name': 'Delete'}
                         ] %}
                         <label for="links_select">With selected links</label>:&#160;
                         {{ xar_data_input({type: "dropdown", name: "links_select", id: "links_select", options: link_selects}) }}
@@ -289,10 +289,10 @@
                         {{ xar_data_input({type: "dropdown", name: new_relation_id, id: new_relation_id, options: userlinks}) }}&#160;&#160;
                         {% set new_position_id = 'links_new_position' %}
                         {% set positions = [
-                            {'id': 0, 'name': 'Right before, in the same level': },
-                            {'id': 1, 'name': 'Right after, in the same level': },
+                            {'id': 0, 'name': 'Right before, in the same level'},
+                            {'id': 1, 'name': 'Right after, in the same level'},
                             {'id': 2, 'name': 'The first child link'},
-                            {'id': 3, 'name': 'The last child link'},
+                            {'id': 3, 'name': 'The last child link'}
                         ] %}
                         <label for="{{ new_position_id }}">Position</label>&#160;
                         {{ xar_data_input({type: "dropdown", name: new_position_id, id: new_position_id, options: positions}) }}

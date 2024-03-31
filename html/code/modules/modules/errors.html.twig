@@ -15,7 +15,7 @@
             {% elseif layout == 'general' %}
                 <div style="margin-top: 20px">{{ message }}</div>
             {% elseif layout == 'invalid_core' %}
-                <div style="margin-top: 20px">The current Xaraya core {{ constant('VERSION_NUM','xarCore') }} is not compatible with the module {{ modname }}</div>
+                <div style="margin-top: 20px">The current Xaraya core {{ constant('xarCore::VERSION_NUM') }} is not compatible with the module {{ modname }}</div>
             {% else %}
                 <div style="margin-top: 20px">No error message is available. 
                 <br />Please contact the system administrator.</div>

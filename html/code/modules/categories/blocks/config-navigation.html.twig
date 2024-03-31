@@ -75,9 +75,9 @@
         </span>
         <span style="float: right; width: 78%; text-align: left;">
             {% set options = [
-                    {'id': 0, 'name': {{ xar_translate('None') }}},
-                    {'id': 1, 'name': {{ xar_translate('Simple count') }}},
-                    {'id': 2, 'name': {{ xar_translate('Cascading count') }}}
+                    {'id': 0, 'name': xar_translate('None')},
+                    {'id': 1, 'name': xar_translate('Simple count')},
+                    {'id': 2, 'name': xar_translate('Cascading count')}
                 ] %}
             {% set id1 = "showcatcount" ~ blockid %}
             {{ xar_data_input({type: "dropdown", name: "showcatcount", id: id1, options: options, value: showcatcount}) }}
@@ -90,9 +90,9 @@
         </span>
         <span style="float: right; width: 78%; text-align: left;">
             {% set options = [
-                    {'id': 0, 'name': {{ xar_translate('None') }}},
-                    {'id': 1, 'name': {{ xar_translate('Direct children only') }}},
-                    {'id': 2, 'name': {{ xar_translate('All children') }}},
+                    {'id': 0, 'name': xar_translate('None')},
+                    {'id': 1, 'name': xar_translate('Direct children only')},
+                    {'id': 2, 'name': xar_translate('All children')}
                 ] %}
             {% set id2 = "showchildren" ~ blockid %}
             {{ xar_data_input({type: "dropdown", name: "showchildren", id: id2, options: options, value: showchildren}) }}

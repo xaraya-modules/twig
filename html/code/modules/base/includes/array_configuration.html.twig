@@ -44,7 +44,7 @@
                     {% endfor %}
                     {% if value[i][j-1] is not null %}
                         <td>
-                            <a href="{{ xar_moduleurl('dynamicdata','admin','showpropval',{'proptype': value[i}[1]]) }}"><img src="{{ xar_imageurl('icons/document-properties.png', 'base') }}"/></a>
+                            <a href="{{ xar_moduleurl('dynamicdata','admin','showpropval',{'proptype': value[i][1]}) }}"><img src="{{ xar_imageurl('icons/document-properties.png', 'base') }}"/></a>
                         </td>
                     {% endif %}
                     <td class="xar-align-right">&#160;</td>

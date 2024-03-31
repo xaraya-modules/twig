@@ -15,10 +15,10 @@
                 </div>
                 <div class="xar-col">
                     {% set options = [
-                            {'id': 'plain', 'name': {{ xar_translate('Plain') }}},
-                            {'id': 'compact', 'name': {{ xar_translate('Compact') }}},
-                            {'id': 'bygroup', 'name': {{ xar_translate('By Group') }}},
-                            {'id': 'bytype', 'name': {{ xar_translate('By Type') }}},
+                            {'id': 'plain', 'name': xar_translate('Plain')},
+                            {'id': 'compact', 'name': xar_translate('Compact')},
+                            {'id': 'bygroup', 'name': xar_translate('By Group')},
+                            {'id': 'bytype', 'name': xar_translate('By Type')}
                         ] %}
                     {{ xar_data_input({type: "dropdown", name: "selstyle", options: options, value: selstyle}) }}&#160;
                     {% set label = 'Refresh' %}

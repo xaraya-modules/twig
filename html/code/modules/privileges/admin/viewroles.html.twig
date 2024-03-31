@@ -141,7 +141,7 @@
                     Show Privileges that are: 
                     {% set options = [
                             {'id': 'assigned', 'name': xar_translate('Assigned')},
-                            {'id': 'unassigned', 'name': xar_translate('Unassigned')},
+                            {'id': 'unassigned', 'name': xar_translate('Unassigned')}
                         ] %}
                 </p>
                 {{ xar_data_input({type: "radio", options: options, value: show, onclick: "this.form.submit();"}) }}

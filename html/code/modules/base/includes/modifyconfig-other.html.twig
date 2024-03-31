@@ -65,9 +65,9 @@
                 <label for="sitetimezone" title="{{ label }}{{ " class="xar-form-label">Site Timezone.</label>
             </div>
             <div class="xar-col">
-                {% set sitetimezone = xar_var({scope. "config", name. "Site.Core.TimeZone"}) %}
+                {% set sitetimezone = xar_var({scope: "config", name: "Site.Core.TimeZone"}) %}
                 <xar.data-input type="timezone" name="sitetimezone" id="sitetimezone" value="sitetimezone"/>
-                & }}160;The time is {{ sitedatetime.format(DATE_RSS) }}
+                &#160;The time is {{ sitedatetime.format(DATE_RSS) }}
             </div>
         </div>
     </fieldset>

@@ -77,7 +77,7 @@
     --> #}
     {% set from = info['from'] is iterable ? info['from'] : [ info['from'] ] %}
     {% for where in from %}
-      {% set fromlist = fromlist|merge({(where): fromlist.where|merge({(name): enabled}) }) %}
+      {% set fromlist = fromlist|merge({(where): fromlist[where]|merge({(name): enabled}) }) %}
     {% endfor %}
   {% endfor %}
   <fieldset>

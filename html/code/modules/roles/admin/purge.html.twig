@@ -54,10 +54,10 @@
                         </td>
                         <td class="xar-align-center">
                             {% set options = [
-                                {'id': constant('ROLES_STATE_ACTIVE','xarRoles'), 'name': 'Active'},
-                                {'id': constant('ROLES_STATE_INACTIVE','xarRoles'), 'name': 'Inactive'},
-                                {'id': constant('ROLES_STATE_NOTVALIDATED','xarRoles'), 'name': 'Not Validated'},
-                                {'id': constant('ROLES_STATE_PENDING','xarRoles'), 'name': 'Pending'},
+                                {'id': constant('xarRoles::ROLES_STATE_ACTIVE'), 'name': 'Active'},
+                                {'id': constant('xarRoles::ROLES_STATE_INACTIVE'), 'name': 'Inactive'},
+                                {'id': constant('xarRoles::ROLES_STATE_NOTVALIDATED'), 'name': 'Not Validated'},
+                                {'id': constant('xarRoles::ROLES_STATE_PENDING'), 'name': 'Pending'}
                                 ] %}
                             {{ xar_data_input({type: "dropdown", name: "recallstate", options: options, value: recallstate}) }}
                             </td>
@@ -144,11 +144,11 @@
                         <td class="xar-align-center">
                             {% set options = [
                                     {'id': -1, 'name': ''},
-                                    {'id': constant('ROLES_STATE_ACTIVE','xarRoles'), 'name': 'Active'},
-                                    {'id': constant('ROLES_STATE_DELETED','xarRoles'), 'name': 'Deleted'},
-                                    {'id': constant('ROLES_STATE_INACTIVE','xarRoles'), 'name': 'Inactive'},
-                                    {'id': constant('ROLES_STATE_NOTVALIDATED','xarRoles'), 'name': 'Not Validated'},
-                                    {'id': constant('ROLES_STATE_PENDING','xarRoles'), 'name': 'Pending'},
+                                    {'id': constant('xarRoles::ROLES_STATE_ACTIVE'), 'name': 'Active'},
+                                    {'id': constant('xarRoles::ROLES_STATE_DELETED'), 'name': 'Deleted'},
+                                    {'id': constant('xarRoles::ROLES_STATE_INACTIVE'), 'name': 'Inactive'},
+                                    {'id': constant('xarRoles::ROLES_STATE_NOTVALIDATED'), 'name': 'Not Validated'},
+                                    {'id': constant('xarRoles::ROLES_STATE_PENDING'), 'name': 'Pending'}
                                 ] %}
                             {{ xar_data_input({type: "dropdown", name: "purgestate", options: options, value: purgestate}) }}
                             {% set label = 'Search' %}

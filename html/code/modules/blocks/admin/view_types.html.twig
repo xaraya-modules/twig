@@ -53,7 +53,7 @@
                         {% endif %}
                         </td>
                         <td>
-                            {% if item['type_state'] != constant('TYPE_STATE_ACTIVE','xarBlock') %}
+                            {% if item['type_state'] != constant('xarBlock::TYPE_STATE_ACTIVE') %}
                                 <a href="{{ xar_moduleurl('blocks', 'admin', 'modify_type',{'type_id': item['type_id'], 'tab': 'status'}) }}">{{ type_states[item['type_state']]['name'] }}</a>
                             {% else %}
                                 {{ type_states[item['type_state']]['name'] }}

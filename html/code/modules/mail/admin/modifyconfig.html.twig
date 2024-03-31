@@ -166,7 +166,7 @@
                             {{ xar_data_input({type: "checkbox", name: "htmluseheadfoot", checked: htmluseheadfoot, onchange: "this.form.submit();"}) }}
                         </div>
                     </div>
-                    {% if {{ htmluseheadfoot }} %}
+                    {% if htmluseheadfoot %}
                         <div class="xar-row">
                             <div class="xar-col">
                                 {% set label = 'Enter the header that you wish displayed in your HTML emails.' %}
@@ -215,9 +215,9 @@
                         <div class="xar-col">
                             {% set priority = xar_var({scope: "module", module: "mail", name: "priority"}) %}
                             {% set options = [
-                                    {'id': 1, 'name': {{ xar_translate('High') }}},
-                                    {'id': 3, 'name': {{ xar_translate('Normal') }}},
-                                    {'id': 5, 'name': {{ xar_translate('Low') }}}
+                                    {'id': 1, 'name': xar_translate('High')},
+                                    {'id': 3, 'name': xar_translate('Normal')},
+                                    {'id': 5, 'name': xar_translate('Low')}
                                 ] %}
                             {{ xar_data_input({type: "dropdown", name: "priority", value: priority, options: options}) }}
                         </div>
@@ -229,11 +229,11 @@
                         </div>
                         <div class="xar-col">
                             {% set options = [
-                                    {'id': '7bit', 'name': {{ xar_translate('7-bit') }}},
-                                    {'id': '8bit', 'name': {{ xar_translate('8-bit') }}},
-                                    {'id': 'binary', 'name': {{ xar_translate('binary') }}},
-                                    {'id': 'quoted-printable', 'name': {{ xar_translate('quoted-printable') }}},
-                                    {'id': 'base64', 'name': {{ xar_translate('base64') }}},
+                                    {'id': '7bit', 'name': xar_translate('7-bit')},
+                                    {'id': '8bit', 'name': xar_translate('8-bit')},
+                                    {'id': 'binary', 'name': xar_translate('binary')},
+                                    {'id': 'quoted-printable', 'name': xar_translate('quoted-printable')},
+                                    {'id': 'base64', 'name': xar_translate('base64')}
                                 ] %}
                             {{ xar_data_input({type: "dropdown", value: encoding, name: "encoding", options: options}) }}
                         </div>
@@ -304,10 +304,10 @@
                         <div class="xar-col">
                             {% set server = xar_var({scope: "module", module: "mail", name: "server"}) %}
                             {% set options = [
-                                    {'id': 'smtp', 'name': {{ xar_translate('SMTP-server') }}},
-                                    {'id': 'qmail', 'name': {{ xar_translate('QMail') }}},
-                                    {'id': 'mail', 'name': {{ xar_translate('Mail') }}},
-                                    {'id': 'sendmail', 'name': {{ xar_translate('SendMail') }}},
+                                    {'id': 'smtp', 'name': xar_translate('SMTP-server')},
+                                    {'id': 'qmail', 'name': xar_translate('QMail')},
+                                    {'id': 'mail', 'name': xar_translate('Mail')},
+                                    {'id': 'sendmail', 'name': xar_translate('SendMail')}
                                 ] %}
                             {{ xar_data_input({type: "dropdown", name: "server", value: server, onchange: "this.form.submit()", options: options}) }}
                         </div>
@@ -399,9 +399,9 @@
                                 <div class="xar-col">
                                     {% set smtpSecure = xar_var({scope: "module", module: "mail", name: "smtpSecure"}) %}
                                     {% set options = [
-                                            {'id': '', 'name': {{ xar_translate('None') }}},
-                                            {'id': 'ssl', 'name': {{ xar_translate('ssl') }}},
-                                            {'id': 'tls', 'name': {{ xar_translate('tls') }}}
+                                            {'id': '', 'name': xar_translate('None')},
+                                            {'id': 'ssl', 'name': xar_translate('ssl')},
+                                            {'id': 'tls', 'name': xar_translate('tls')}
                                         ] %}
                                     {{ xar_data_input({type: "dropdown", name: "smtpSecure", value: smtpSecure, options: options}) }}
                                 </div>
@@ -443,7 +443,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set searchstrings = unserialize(xar_modvar('mail', 'searchstrings')) %}
+                            {% set searchstrings = xar_unserialize(xar_modvar('mail', 'searchstrings')) %}
                             {{ xar_data_input({type: "textarea_medium", name: "searchstrings", value: searchstrings}) }}
                         </div>
                     </div>
@@ -455,7 +455,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set replacestrings = unserialize(xar_modvar('mail', 'replacestrings')) %}
+                            {% set replacestrings = xar_unserialize(xar_modvar('mail', 'replacestrings')) %}
                             {{ xar_data_input({type: "textarea_medium", name: "replacestrings", value: replacestrings}) }}
                         </div>
                     </div>

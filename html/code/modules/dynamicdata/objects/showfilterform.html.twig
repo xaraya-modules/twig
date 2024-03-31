@@ -21,7 +21,7 @@
 						{% else %}
 							{{ xar_data_filter({property: properties[name], name: fieldname}) }}
 						{% endif %}
-						{% set dummy = properties[name].setDisplayStatus(DataPropertyMaster..DD_DISPLAYSTATE_VIEWONLY) %}
+						{% set dummy = properties[name].setDisplayStatus(constant('DataPropertyMaster::DD_DISPLAYSTATE_VIEWONLY')) %}
 					</div>
 					{# <!-- The value --> #}
 					<div class="xar-col-expanded">

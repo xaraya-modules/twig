@@ -14,7 +14,7 @@
                 {% set options = [
                         {'id': 'High', 'name': xar_translate('High')},
                         {'id': 'Medium', 'name': xar_translate('Medium')},
-                        {'id': 'Low', 'name': xar_translate('Low')},
+                        {'id': 'Low', 'name': xar_translate('Low')}
                     ] %}
                 {% set value = xar_coremethod('xarConfigVars', 'get', [null,'Site.Session.SecurityLevel']) %}
                 {{ xar_data_input({type: "dropdown", name: "securitylevel", options: options, value: value}) }}

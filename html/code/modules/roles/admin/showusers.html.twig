@@ -27,7 +27,7 @@
                 '{{ xar_prep_display(search) }}'
             {% endif %}({{ totalselect }})
         </h2>
-        {% set itemtype = constant('ROLES_GROUPTYPE','xarRoles') %}
+        {% set itemtype = constant('xarRoles::ROLES_GROUPTYPE') %}
         {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
         {% set activetab = request.2 %}
         {% set xmldata = 'showusers' %}
@@ -146,7 +146,7 @@
                         </select>
                     </td>
                     <td>
-                        {% set firstline = {'id': constant('ROLES_STATE_CURRENT','xarRoles'), 'name': 'All'} %}
+                        {% set firstline = {'id': constant('xarRoles::ROLES_STATE_CURRENT'), 'name': 'All'} %}
                         {{ xar_data_input({type: "dropdown", name: "state", value: state, options: statelist, firstline: firstline, onchange: "this.form.submit()"}) }}
                     </td>
                     <td>

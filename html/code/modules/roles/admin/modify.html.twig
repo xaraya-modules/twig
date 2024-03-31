@@ -7,7 +7,7 @@
     <div class="xar-mod-body">
         <div class="xar-mod-page-head">
             {% set properties = object.properties %}
-            {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
+            {% if itemtype == constant('xarRoles::ROLES_USERTYPE') %}
                 {% set thisname = object.properties['uname'].getValue() %}
             {% else %}
                 {% set thisname = object.properties['name'].getValue() %}
@@ -51,7 +51,7 @@
                         {{ xar_data_display({object: object, tplmodule: "roles"}) }}
                         <p>This {{ object.label }} cannot be edited or deleted.</p>
                     {% else %}
-                        {% if itemtype == constant('ROLES_GROUPTYPE','xarRoles') and object.countChildren() %}
+                        {% if itemtype == constant('xarRoles::ROLES_GROUPTYPE') and object.countChildren() %}
                             <div class="xar-row">
                                 <div class="xar-col">
                                     {% set label = 'Type of Role' %}
@@ -79,8 +79,8 @@
                                 <div class="xar-col">
                                     {% set onchange = "this.form.action='" ~ xar_currenturl() ~ "';this.form.submit();" %}
                                         {% set options = [ 
-                                                {'id': constant('ROLES_USERTYPE','xarRoles'), 'name': 'User'},
-                                                {'id': constant('ROLES_GROUPTYPE','xarRoles'), 'name': 'Group'},
+                                                {'id': constant('xarRoles::ROLES_USERTYPE'), 'name': 'User'},
+                                                {'id': constant('xarRoles::ROLES_GROUPTYPE'), 'name': 'Group'}
                                             ] %}
                                         {{ xar_data_output({type: "dropdown", name: "itemtype", value: itemtype, options: options}) }}
                                 </div>
@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                         {% endif %}
-                        {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
+                        {% if itemtype == constant('xarRoles::ROLES_USERTYPE') %}
                             {% if 'useremailformat' in settings %}
                                 <div class="xar-row">
                                     <div class="xar-col">
@@ -130,7 +130,7 @@
                                         {% set value = xar_coremethod('xarModUserVars', 'get', ['roles','useremailformat',id]) %}
                                         {% set options = [ 
                                                 {'id': 'text', 'name': 'text'},
-                                                {'id': 'html', 'name': 'html'},
+                                                {'id': 'html', 'name': 'html'}
                                             ] %}
                                         {{ xar_data_input({type: "dropdown", name: "duvs[useremailformat]", id: "duvs_useremailformat", value: value, options: options}) }}
                                     </div>

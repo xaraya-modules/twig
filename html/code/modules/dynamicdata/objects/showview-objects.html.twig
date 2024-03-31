@@ -56,17 +56,17 @@
             {% set adminrole = xar_modvar('roles', 'admin') %}
             {# @todo assume we get this from function #}
             {% if adminlistserial %}
-                {% set adminlist = array_merge(unserialize(adminlistserial),[xar_username(adminrole, 'uname')]) %}
+                {% set adminlist = xar_unserialize(adminlistserial)|merge([xar_username(adminrole, 'uname')]) %}
             {% else %}
                 {% set adminlist = [xar_username(adminrole, 'uname')] %}
             {% endif %}
             {% set username = xar_uservar('uname') %}
-            {% set issuperadmin = username in adminlist %}
+            {% set issuperadmin = (username in adminlist) %}
             {% set item_no = 0 %}
             {% for itemid, fields in items %}
                 {% if not issuperadmin and (itemid <= 3) %}
                 {% else %}
-                {% set item_no = item_no+1 %}
+                {% set item_no = item_no + 1 %}
                 {% set rowclass = 'xar-norm' %}
                 {% if item_no % 2 == 0 %}
                     {% set rowclass = 'xar-alt' %}

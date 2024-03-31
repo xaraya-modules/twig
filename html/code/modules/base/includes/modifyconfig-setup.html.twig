@@ -115,7 +115,7 @@
             </div>
             <div class="xar-col">
                 {% set value = realpath('bootstrap.php') %}
-                {% if value === false %}
+                {% if value == false %}
                 	Cannot display this path
                 {% else %}
 	                {{ value }}
@@ -131,7 +131,7 @@
             </div>
             <div class="xar-col">
                 {% set value = realpath(xar_coremethod('sys', 'varpath') ~ '/' ~ 'config.system.php') %}
-                {% if value === false %}
+                {% if value == false %}
                 	Cannot display this path
                 {% else %}
 	                {{ value }}
@@ -147,7 +147,7 @@
             </div>
             <div class="xar-col">
                 {% set value = realpath(xar_coremethod('sys', 'varpath') ~ '/logs/' ~ 'config.log.php') %}
-                {% if value === false %}
+                {% if value == false %}
                 	Cannot display this path
                 {% else %}
 	                {{ value }}

@@ -3,7 +3,7 @@
 {% block delete %}
 {{ include('@roles/includes/admin-mod-head.html.twig') }}
     <div class="xar-mod-body">
-        {% if itemtype == constant('ROLES_USERTYPE','xarRoles') %}
+        {% if itemtype == constant('xarRoles::ROLES_USERTYPE') %}
             {% set thisname = object.properties['uname'].getValue() %}
         {% else %}
             {% set thisname = object.properties['name'].getValue() %}

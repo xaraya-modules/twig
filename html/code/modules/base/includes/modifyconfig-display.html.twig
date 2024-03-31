@@ -112,9 +112,9 @@
                 {% set firstline = 'Automatic' %}
                 {% set firstline = "'',firstline" %}
                 {% set options = [
-                        {'id': '', 'name': {{ xar_translate('Automatic') }}},
-                        {'id': 'default', 'name': {{ xar_translate('Xaraya URLs') }}},
-                        {'id': 'short', 'name': {{ xar_translate('Short URLs') }}},
+                        {'id': '', 'name': xar_translate('Automatic')},
+                        {'id': 'default', 'name': xar_translate('Xaraya URLs')},
+                        {'id': 'short', 'name': xar_translate('Short URLs')}
                     ] %}
                 {{ xar_data_input({type: "dropdown", name: "shorturl", id: "shorturl", value: value, options: options}) }}
                 &#160;

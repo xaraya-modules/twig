@@ -43,7 +43,7 @@
                     <a href="{{ xar_moduleurl('roles','admin','showprivileges',{'id': roleid}) }}" class="xar-accent xar-accent-outline">
                     Privileges</a>
                 </li>
-                {% if ptype == constant('ROLES_GROUPTYPE','xarRoles') %}
+                {% if ptype == constant('xarRoles::ROLES_GROUPTYPE') %}
                     <li class="xar-tab">
                         <a href="{{ xar_moduleurl('roles','admin','showusers',{'id': roleid}) }}" class="xar-norm xar-norm-outline">Users</a>
                     </li>
@@ -58,7 +58,7 @@
                 <input type="hidden" name="confirmation" id="confirmation" value="1"/>
                 <p>
                     <span class="xar-title">Confirm the removal of '{{ privname }}' from&#160; 
-                    {% if ptype == constant('ROLES_GROUPTYPE','xarRoles') %}Group 
+                    {% if ptype == constant('xarRoles::ROLES_GROUPTYPE') %}Group 
                     {% else %}User{% endif %}&#160;'{{ rolename }}'</span>
                 </p>
                 <p>

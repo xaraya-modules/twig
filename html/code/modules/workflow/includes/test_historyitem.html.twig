@@ -101,12 +101,7 @@
         <label>Context</label>
       </div>
       <div class="xar-col">
-        {# @todo prettify json dump
-        {% set decoded = json_decode(item['context']) %}
-        {% set encoded = decoded|json_encode(constant('JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR')) %}
-        <pre>{{ encoded }}</pre>
-        #}
-        <pre>{{ item['context'] }}</pre>
+        <pre>{{ xar_json_pretty(item['context']) }}</pre>
       </div>
     </div>
   </fieldset>

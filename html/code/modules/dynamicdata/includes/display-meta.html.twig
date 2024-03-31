@@ -9,7 +9,7 @@
             <div class="xar-col">
                 {% if get_class(property) == 'TextAreaProperty' and is_string(property.value) %}
                     {% if property.value starts with 'a.' %}
-                        {% set value = unserialize(property.value|json_encode(), JSON_PRETTY_PRINT) %}
+                        {% set value = xar_unserialize(property.value)|json_encode('JSON_PRETTY_PRINT') %}
                         (serialized)<pre>{{ value }}</pre>
                     {% else %}
                         {{ xar_data_output({property: properties[name], layout: "preformat"}) }}

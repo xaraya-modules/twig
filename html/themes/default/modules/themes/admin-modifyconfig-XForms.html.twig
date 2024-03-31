@@ -97,12 +97,12 @@ xmlns:xf="http://www.w3.org/2002/xforms" xml:lang="en">
                     </div>
                     <div class="selectContainer">
                         {% set options = [
-                            {'id': 'default', 'name': {{ xar_translate('Site Name - Module Name - Page Name') }}},
-                            {'id': 'sp', 'name': {{ xar_translate('Site Name - Page Name') }}},
-                            {'id': 'mps', 'name': {{ xar_translate('Module Name - Page Name - Site Name') }}},
-                            {'id': 'pms', 'name': {{ xar_translate('Page Name - Module Name - Site Name') }}},
-                            {'id': 'to', 'name': {{ xar_translate('Page Name') }}},
-                            {'id': 'theme', 'name': {{ xar_translate('Theme Driven') }}},
+                            {'id': 'default', 'name': xar_translate('Site Name - Module Name - Page Name')},
+                            {'id': 'sp', 'name': xar_translate('Site Name - Page Name')},
+                            {'id': 'mps', 'name': xar_translate('Module Name - Page Name - Site Name')},
+                            {'id': 'pms', 'name': xar_translate('Page Name - Module Name - Site Name')},
+                            {'id': 'to', 'name': xar_translate('Page Name')},
+                            {'id': 'theme', 'name': xar_translate('Theme Driven')}
                         ] %}
                         {% set value = xar_var({scope: "module", module: "themes", name: "SiteTitleOrder"}) %}
                         <label for="pagetitle">Page Title Order</label>

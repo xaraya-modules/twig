@@ -1,7 +1,7 @@
 {# @dynamicdata/includes/table_filter.html.twig #}
 
 {% block table_filter %}
-{% set proptypes = DataPropertyMaster..getPropertyTypes() %}
+{% set proptypes = xar_coremethod('DataPropertyMaster', 'getPropertyTypes') %}
     {% set currenturl = xar_currenturl() %}
     {% set itemcount = object.itemcount ?: items|length %}
     {% set where = object.where ?: [] %}
@@ -16,26 +16,32 @@
                     {% elseif proptype['name'] == 'calendar' %}
                         &#160; 
                     {% elseif proptype['name'] in ['dropdown', 'object', 'objectref'] %}
-                        {% set property = property|merge({initialization_firstline: {'id': '', 'name': ''}}) %}
+                        {% do xar_set(property, 'initialization_firstline', {'id': '', 'name': ''}) %}
                         {% set ddname = 'dd_' ~ property.id %}
-                        {{ xar_data_input({property: property, name: "where[" ~ name ~ "]", value: curvalue}) }}
+                        {{  xar_data_input({property: property, name: "where[" ~ name ~ "]", value: curvalue}) }}
                     {% elseif proptype['name'] in ['textbox', 'integerbox', 'username'] %}
                         {% set values = [] %}
+                        {% set dotrim = false %}
                         {% for itemid, fields in items %}
                             {% set key = fields[name] %}
-                            {% set values = values|merge({(key): 1}) %}
+                            {% if key is numeric %}
+                                {% set dotrim = true %}
+                                {% set values = values|merge({("'" ~ key ~ "'"): 1}) %}
+                            {% else %}
+                                {% set values = values|merge({(key): 1}) %}
+                            {% endif %}
                         {% endfor %}
-                        {# @todo support sorting by key #}
-                        {% set dummy = ksort(values) %}
+                        {% set values = xar_ksort(values) %}
                         {% set options = [] %}
-                        {% set options = options + [{'id': '', 'name': ''}] %}
+                        {% set options = options|merge([{'id': '', 'name': ''}]) %}
                         {% for option, dummy in values %}
+                            {% if dotrim %}
+                                {% set option = option|trim("'") %}
+                            {% endif %}
                             {% if proptype['name'] == 'username' %}
                                 {% set option = xar_username(option, 'uname') %}
-                                {% set options = options + [{'id': option, 'name': option}] %}
-                            {% else %}
-                                {% set options = options + [{'id': option, 'name': option}] %}
                             {% endif %}
+                            {% set options = options|merge([{'id': option, 'name': option}]) %}
                         {% endfor %}
                         {% set ddname = 'dd_' ~ property.id %}
                         {% if itemcount < 10 or options|length < itemcount / 2 %}
@@ -51,7 +57,7 @@
             {% endfor %}
             {% if not linkfield or true %}
                 <th class="xar-form-textlong" style="text-align: center;">
-                    {% set src =  xar_image({scope: "theme", file: "icons/system-search.png"})  %}
+                    {% set src = xar_imageurl("icons/system-search.png", "theme")  %}
                     {{- xar_button({type: "submit", name: "filter", src: src, submittotarget: currenturl, title: "Filter", style: "vertical-align: text-bottom;"}) -}}&#160;
                     <a href="{{ currenturl }}" title="Reset Filter">
                         {{- xar_image({scope: "theme", file: "icons/view-refresh.png", class: "xar-button", style: "vertical-align: text-bottom;", alt: "reset"}) -}}
