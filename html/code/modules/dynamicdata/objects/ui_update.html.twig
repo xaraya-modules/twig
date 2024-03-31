@@ -52,7 +52,7 @@
                 <input type="hidden" name="method" id="method" value="update"/>
                 <input type="hidden" name="itemid" id="itemid" value="{{ object.itemid }}"/>
                 {% if object.fieldlist|length < object.properties|length %}
-                    {% set fieldlist = array_values(object.fieldlist|join(',')) %}
+                    {% set fieldlist = object.fieldlist|join(',') %}
                     <input type="hidden" name="fieldlist" id="fieldlist" value="{{ fieldlist }}"/>
                 {% endif %}
                 <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>

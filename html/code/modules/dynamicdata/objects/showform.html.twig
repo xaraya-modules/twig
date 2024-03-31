@@ -7,7 +7,7 @@
     {% endif %}
     {% if layout == 'default' %}
         {% for name, property in properties %}
-            {% if property.getDisplayStatus() == DataPropertyMaster..DD_DISPLAYSTATE_HIDDEN %}
+            {% if property.getDisplayStatus() == constant('DataPropertyMaster::DD_DISPLAYSTATE_HIDDEN') %}
                 {{ xar_data_input({property: properties[name], hidden: "hidden"}) }}
             {% else %}
             <div class="xar-row">

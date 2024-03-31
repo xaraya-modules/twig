@@ -2,7 +2,7 @@
 
 {% block user %}
 {{ xar_style({scope: "block", file: "onlineblock"}) }}
-    {% set thisuser = xar_apifunc('roles','user','get',{'id': xarSession..getVar('role_id')}) %}
+    {% set thisuser = xar_apifunc('roles','user','get',{'id': xar_uservar('id')}) %}
     <table class="xar-table xar-fullwidth xar-roles-nicetable">
          <tr>
              <td class="xar-threequarterswidth">

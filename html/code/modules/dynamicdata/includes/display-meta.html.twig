@@ -7,7 +7,7 @@
                 {{ xar_data_label({property: properties[name], for: "id"}) }}
             </div>
             <div class="xar-col">
-                {% if get_class(property) == 'TextAreaProperty' and is_string(property.value) %}
+                {% if xar_classname(property) == 'TextAreaProperty' and property.value is string %}
                     {% if property.value starts with 'a.' %}
                         {% set value = xar_unserialize(property.value)|json_encode('JSON_PRETTY_PRINT') %}
                         (serialized)<pre>{{ value }}</pre>

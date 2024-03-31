@@ -69,12 +69,12 @@
                             {% set displaystatus = property.getDisplayStatus() %}
                             {% if displaystatus not in filterstatus %}
                             {% else %}
-                            {% set dummy = array_push(show_props, name) %}
+                            {% set dummy = show_props|merge([name]) %}
                             {% endif %}
                         {% endfor %}
                         {#  show properties in three columns to save screen space #}
                         {% set size = floor((show_props|length - 0.5) / 3) + 1 %}
-                        {% set columns = array_chunk(show_props,size) %}
+                        {% set columns = show_props|batch(size) %}
                         <table class="xar-table">
                             <tr>
                             {% for proplist in columns %}
@@ -94,7 +94,7 @@
                                     {% endif %}
                                     <select name="field[{{ name }}]" id="field_{{ name }}">
                                         {% for value, label in stats.options %}
-                                            {% if (value == 'sum' or value == 'avg') and not is_a(property, 'NumberBoxProperty') %}
+                                            {% if (value == 'sum' or value == 'avg') and not xar_subclass(property, 'NumberBoxProperty') %}
                                                 <option value="{{ value }}" disabled="disabled">{{ label }}</option>
                                             {% elseif stats['field'][name] and stats['field'][name] == value %}
                                                 <option value="{{ value }}" selected="selected">{{ label }}</option>
@@ -134,7 +134,7 @@
                             {% endif %}
                             <select name="field[{{ name }}]" id="field_{{ name }}">
                                 {% for value, label in stats.options %}
-                                    {% if (value == 'sum' or value == 'avg') and not is_a(property, 'NumberBoxProperty') %}
+                                    {% if (value == 'sum' or value == 'avg') and not xar_subclass(property, 'NumberBoxProperty') %}
                                         <option value="{{ value }}" disabled="disabled">{{ label }}</option>
                                     {% elseif stats['field'][name] and stats['field'][name] == value %}
                                         <option value="{{ value }}" selected="selected">{{ label }}</option>

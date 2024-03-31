@@ -26,7 +26,7 @@
                         {% if val is object or val is iterable %}
                             {% set val = val|json_encode() %}
                             <textarea name="{{ namekey }}[]" id="{{ idkey }}">{{ val }}</textarea>
-                        {% elseif is_string(val) %}
+                        {% elseif val is string %}
                             {% set val = htmlspecialchars(val) %}
                             <input type="text" name="{{ namekey }}" id="{{ idkey }}" value="{{ val }}"/>
                         {% else %}
@@ -48,7 +48,7 @@
         {% set encoded = value|json_encode() %}
         (array)<br/>
         <textarea name="{{ name }}[]" id="{{ id }}">{{ encoded }}</textarea>
-    {% elseif value and is_string(value) %}
+    {% elseif value and value is string %}
         {% set value = htmlspecialchars(value) %}
         (bson)<br/>
         <input type="text" name="{{ name }}" id="{{ id }}" value="{{ value }}"/>

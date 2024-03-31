@@ -6,7 +6,7 @@
     {% endif %}
     {% set userid = object.itemid %}
     {% set currentid = xar_uservar('id') %}
-    {% set settings = '|split(')) %}
+    {% set settings = xar_modvar('roles', 'duvsettings')|split(',') %}
     {% if layout == 'default' %}
         <h2>Profile for {{ xar_data_output({property: properties['name']}) }}</h2>
         <fieldset>
@@ -33,11 +33,13 @@
                     </label>
                 </div>
                 <div class="xar-col">
-                    {{ xar_localedate(xarModUserVars..get('roles', 'medium', '')) }}  {{ xar_localedate(xarModUserVars..get('roles', '', 'medium')) }}
+                    {% set userlastlogin = xar_coremethod('xarModUserVars', 'get', ['roles', 'userlastlogin', userid]) %}
+                    {{ xar_localedate(userlastlogin, 'medium', '') }}
+                    {{ xar_localedate(userlastlogin, '', 'medium') }}
                 </div>
             </div>
         {% endif %}
-        {% if (bool)xar_modvar('roles', 'allowemail') and (bool)xar_coremethod('xarModUserVars', 'get', ['roles', 'allowemail', userid]) and (currentid != userid) %}
+        {% if xar_modvar('roles', 'allowemail') and xar_coremethod('xarModUserVars', 'get', ['roles', 'allowemail', userid]) and (currentid != userid) %}
             <div class="xar-row">
                 <div class="xar-col">
                     <label class="xar-form-label">
@@ -60,7 +62,7 @@
                     </label>
                 </div>
                 <div class="xar-col">
-                    {% set url = xar_apifunc('roles','user','parseuserhome',{'url': homelink, 'truecurrenturl': xarServer..getCurrentURL([}, false)]); %}
+                    {% set url = xar_apifunc('roles','user','parseuserhome',{'url': homelink, 'truecurrenturl': xar_currenturl([], false)}); %}
                     {% set label = 'My Home Page' %}
                     <a href="{{ url['redirecturl'] }}" title="{{ label }}" target="_blank">{{ label }}</a>
                 </div>

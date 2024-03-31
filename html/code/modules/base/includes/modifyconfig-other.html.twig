@@ -54,7 +54,7 @@
                 <label for="mytimezone" title="{{ label }}" class="xar-form-label">Host Timezone:</label>
             </div>
             <div class="xar-col">
-                {% set hosttimezone = xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'SystemTimeZone']) %}
+                {% set hosttimezone = xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'SystemTimeZone']) %}
                 {{ xar_data_input({type: "timezone", name: "hosttimezone", id: "hosttimezone", value: hosttimezone}) }}
                 &#160;The time is {{ hostdatetime.format(DATE_RSS) }}
             </div>

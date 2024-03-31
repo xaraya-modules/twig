@@ -198,7 +198,7 @@
                                     </label>
                                 </div>
                                 <div class="xar-col">
-                                    {% set levels = SecurityLevel..displayMap %}
+                                    {% set levels = xar_coremethod('SecurityLevel','displayMap') %}
                                     {# <!-- @todo this needs to go --> #}
                                     {# set foo = 1; array_shift(levels) #}
                                     {% set options = [] %}

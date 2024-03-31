@@ -61,14 +61,15 @@
         {% elseif layout == 'columns' or layout == 'column' %}
             {% set opt_count = options|length %}
             {% if opt_count > 0 %}
-                {% set col_count = floor(opt_count / rows_cols) %}
+                {% set col_count = (opt_count / rows_cols)|round %}
                 {% set long_cols = opt_count % rows_cols %}
                 {% if long_cols > 0 %}
                     {% set col_count = col_count + 1 %}
                 {% endif %}
                 {% set col_options = [] %}
                 {% for i in range(1, rows_cols) %}
-                    {% if array_push(col_options, array_slice(options, ((i - 1 ) * col_count), col_count, true)) %}{% endif %}
+                    {% set slice = options|slice((i - 1) * col_count, col_count, true) %}
+                    {% set col_options = col_options + slice %}
                 {% endfor %}
                 {% set col_width = round(100 / rows_cols) - 1 %}
                 {% for c, col_opts in col_options %}

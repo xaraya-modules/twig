@@ -61,7 +61,7 @@
                 </td>
                 <td class="{{ displayclass }}">
                     {% if xar_modvar('dynamicdata', 'use_module_icons') %}
-                        {% set title = {{ xar_translate('Edit configuration for property \"#(1) }}\"',field['name']) %}
+                        {% set title = xar_translate('Edit configuration for property \"#(1)\"',field['name']) %}
                         {% set link = xar_moduleurl('dynamicdata', 'admin', 'showpropval', {'itemid': field['id']}) %}
                         {% set label = 'Edit' %}
                         {% set icon = xar_imageurl('icons/modify.png', 'theme') %}
@@ -72,7 +72,7 @@
                         {% set icon = xar_imageurl('icons/go-up.png', 'theme') %}
                         {% set label = 'Up' %}
                         {% if index > 1 and numprops > 1 %}
-                            {% set link = xar_moduleurl('dynamicdata', 'admin', 'orderprops', {'objectid': objectid, 'itemid': field['id'}, 'direction' => 'up', 'authid' => authid]) %}
+                            {% set link = xar_moduleurl('dynamicdata', 'admin', 'orderprops', {'objectid': objectid, 'itemid': field['id'], 'direction': 'up', 'authid': authid}) %}
                             {{ xar_data_output({type: "urlicon", link: link, icon: icon, label: label, title: title}) }}
                         {% else %}
                             <img class="xar-icon-disabled" src="{{ icon }}" alt="Up" title="{{ title }}"/>
@@ -83,7 +83,7 @@
                         {% set icon = xar_imageurl('icons/go-down.png', 'theme') %}
                         {% set label = 'Down' %}
                         {% if index < numprops and numprops != 1 %}
-                            {% set link = xar_moduleurl('dynamicdata', 'admin', 'orderprops', {'objectid': objectid, 'itemid': field['id'}, 'direction' => 'down', 'authid' => authid]) %}
+                            {% set link = xar_moduleurl('dynamicdata', 'admin', 'orderprops', {'objectid': objectid, 'itemid': field['id'], 'direction': 'down', 'authid': authid}) %}
                             {{ xar_data_output({type: "urlicon", link: link, icon: icon, label: label, title: title}) }}
                         {% else %}
                             <img class="xar-icon-disabled" src="{{ icon }}" alt="Down" title="{{ title }}"/>
@@ -95,14 +95,14 @@
                             Edit Configuration
                         </a>
                         &#160;
-                        {% set link = xar_moduleurl('dynamicdata', 'admin', 'orderprops', {'objectid': objectid, 'itemid': field['id'}, 'direction' => 'up', 'authid' => authid]) %}
+                        {% set link = xar_moduleurl('dynamicdata', 'admin', 'orderprops', {'objectid': objectid, 'itemid': field['id'], 'direction': 'up', 'authid': authid}) %}
                         {% if index > 1 and numprops > 1 %}
                             <a href="{{ link }}">
                                 Move Up
                             </a>
                             &#160;
                         {% endif %}
-                        {% set link = xar_moduleurl('dynamicdata', 'admin', 'orderprops', {'objectid': objectid, 'itemid': field['id'}, 'direction' => 'down', 'authid' => authid]) %}
+                        {% set link = xar_moduleurl('dynamicdata', 'admin', 'orderprops', {'objectid': objectid, 'itemid': field['id'], 'direction': 'down', 'authid': authid}) %}
                         {% if index < numprops and numprops != 1 %}
                             <a href="{{ link }}">
                                 Move Down

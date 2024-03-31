@@ -45,7 +45,7 @@
                     </label>
                 </div>
                 <div class="xar-col">
-                    {% set value = get_class(cache_settings['Variable.CacheProvider']) %}
+                    {% set value = xar_classname(cache_settings['Variable.CacheProvider']) %}
                     {{ xar_data_output({type: "textbox", name: "persistent_cacheprovider", value: value}) }}
                 </div>
             </div>

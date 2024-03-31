@@ -94,8 +94,9 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', 'medium', ''])) }}
-                                {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', '', 'medium'])) }}
+                                {% set userlastlogin = xar_coremethod('xarModUserVars', 'get', ['roles', 'userlastlogin', id]) %}
+                                {{ xar_localedate(userlastlogin, 'medium', '') }}
+                                {{ xar_localedate(userlastlogin, '', 'medium') }}
                             </div>
                         </div>
                     {% endif %}
@@ -107,8 +108,9 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', 'medium', ''])) }}
-                                {{ xar_localedate(xar_coremethod('xarModUserVars', 'get', ['roles', '', 'medium'])) }}
+                                {% set passwordupdate = xar_coremethod('xarModUserVars', 'get', ['roles', 'passwordupdate', id]) %}
+                                {{ xar_localedate(passwordupdate, 'medium', '') }}
+                                {{ xar_localedate(passwordupdate, '', 'medium') }}
                             </div>
                         </div>
                     {% endif %}

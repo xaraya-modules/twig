@@ -35,12 +35,12 @@
             This is the layout used to display the form that users see for the roles_user_settings object
         --> #}
         <h2>Edit Settings</h2>
-        {% set settings = '|split(')) %}
+        {% set settings = xar_modvar('roles', 'duvsettings')|split(',') %}
         <fieldset>
             <legend>{{ object.label }}</legend>
             {% set optionsactive = false %}
             
-            {% if 'userhome' in settings and (bool)xar_modvar('roles', 'allowuserhomeedit') == true %}
+            {% if 'userhome' in settings and xar_modvar('roles', 'allowuserhomeedit') == true %}
                 {% set optionsactive = true %}
                 <div class="xar-row">
                     <div class="xar-col">
@@ -48,7 +48,7 @@
                     </div>
                     <div class="xar-col">
                         {{ xar_data_input({property: properties['userhome']}) }}
-                        {% if (bool)xar_modvar('roles', 'loginredirect') %}&#160;
+                        {% if xar_modvar('roles', 'loginredirect') %}&#160;
                             You will be redirected to your homepage whenever you log in
                         {% endif %}
                     </div>
@@ -67,7 +67,7 @@
                 </div>
             {% endif %}
             
-            {% if (bool)xar_modvar('roles', 'allowemail') == true %}
+            {% if xar_modvar('roles', 'allowemail') == true %}
                 {% set optionsactive = true %}
                 <div class="xar-row">
                     <div class="xar-col">
@@ -109,7 +109,7 @@
         {# <!--
             This is the layout used to display the form to admins for the roles_user_settings object
         --> #}
-        {% set settings = '|split(')) %}
+        {% set settings = xar_modvar('roles', 'duvsettings')|split(',') %}
         <fieldset>
             <legend>Member Options</legend>
             <div class="xar-row">

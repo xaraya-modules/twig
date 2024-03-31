@@ -11,7 +11,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {{ xarCore..VERSION_ID }} version {{ xarCore..VERSION_NUM }} ({{ xarCore..VERSION_SUB }})
+                {{ constant('xarCore::VERSION_ID') }} version {{ constant('xarCore::VERSION_NUM') }} ({{ constant('xarCore::VERSION_SUB') }})
             </div>
         </div>
         <div class="xar-row">
@@ -22,7 +22,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {{ xarCore..build }}
+                {# @todo xarCore::$build #}
             </div>
         </div>
     </fieldset>
@@ -38,7 +38,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {{ xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'DB.Host']) }}
+                {{ xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'DB.Host']) }}
             </div>
         </div>
         <div class="xar-row">
@@ -49,7 +49,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {{ xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'DB.Type']) }}
+                {{ xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'DB.Type']) }}
             </div>
         </div>
         <div class="xar-row">
@@ -60,12 +60,12 @@
                 </label>
             </div>
             <div class="xar-col">
-            	{% if xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'DB.Switching']) %}
-                	{% set value = xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'DB.Name']) %}
-	                {{ xar_data_input({type: "dropdown", name: "database", value: value, options: allowed_dbs}) }}
-            	{% else %}
-	                {{ xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'DB.Name']) }}
-            	{% endif %}
+                {% if xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'DB.Switching']) %}
+                    {% set value = xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'DB.Name']) %}
+                    {{ xar_data_input({type: "dropdown", name: "database", value: value, options: allowed_dbs}) }}
+                {% else %}
+                    {{ xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'DB.Name']) }}
+                {% endif %}
             </div>
         </div>
         <div class="xar-row">
@@ -80,7 +80,7 @@
                         {'id': 'Creole', 'name': 'Creole'}, 
                         {'id': 'PDO', 'name': 'PDO'}, 
                     ] %}
-                {% set value = xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'DB.Middleware']) %}
+                {% set value = xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'DB.Middleware']) %}
                 {{ xar_data_input({type: "dropdown", name: "middleware", id: "middleware", options: options, value: value}) }}
             </div>
         </div>
@@ -100,9 +100,9 @@
                 {# @todo to be checked in function #}
                 {% set value = realpath('index.php') %}
                 {% if value == false %}
-                	Cannot display this path
+                    Cannot display this path
                 {% else %}
-	                {{ value }}
+                    {{ value }}
                 {% endif %}
             </div>
         </div>
@@ -116,9 +116,9 @@
             <div class="xar-col">
                 {% set value = realpath('bootstrap.php') %}
                 {% if value == false %}
-                	Cannot display this path
+                    Cannot display this path
                 {% else %}
-	                {{ value }}
+                    {{ value }}
                 {% endif %}
             </div>
         </div>
@@ -132,9 +132,9 @@
             <div class="xar-col">
                 {% set value = realpath(xar_coremethod('sys', 'varpath') ~ '/' ~ 'config.system.php') %}
                 {% if value == false %}
-                	Cannot display this path
+                    Cannot display this path
                 {% else %}
-	                {{ value }}
+                    {{ value }}
                 {% endif %}
             </div>
         </div>
@@ -148,9 +148,9 @@
             <div class="xar-col">
                 {% set value = realpath(xar_coremethod('sys', 'varpath') ~ '/logs/' ~ 'config.log.php') %}
                 {% if value == false %}
-                	Cannot display this path
+                    Cannot display this path
                 {% else %}
-	                {{ value }}
+                    {{ value }}
                 {% endif %}
             </div>
         </div>

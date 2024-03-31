@@ -56,7 +56,7 @@
             </option>
         {% endif %}
         {% if childobject %} 
-            {% set childlist = DataObjectFactory..getObjectList({'name': childobject}) %}
+            {% set childlist = xar_coremethod('DataObjectFactory', 'getObjectList', {'name': childobject}) %}
             {% set childitems = childlist.getItems({'sort': 'name'}) %}
             {% for childitem in childitems %}
                 {% set fulllink = nodeid ~ "." ~ childitem['id'] %}

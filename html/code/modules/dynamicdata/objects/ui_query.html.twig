@@ -43,7 +43,7 @@
                     {% set displaystatus = property.getDisplayStatus() %}
                     {% if displaystatus not in filterstatus %}
                     {% else %}
-                    {% set dummy = array_push(show_props, name) %}
+                    {% set dummy = show_props|merge([name]) %}
                     <div class="xar-row">
                         <div class="xar-col">
                             <label class="xar-form-label" for="field_{{ name }}">{{ property.label }}</label>
@@ -65,12 +65,12 @@
                             {% endif %}
     
                             {# <!-- handle input depending on the property type --> #}
-                            {% if is_a(property, 'SelectProperty') or is_a(property, 'UsernameProperty') %}
+                            {% if xar_subclass(property, 'SelectProperty') or xar_subclass(property, 'UsernameProperty') %}
                                 <select name="{{ fieldname }}" id="{{ fieldid }}">
                                     {# <!-- make sure we have an empty default entry --> #}
                                     <option value="">Undefined</option>
                                     {# <!-- get the options for this select property --> #}
-                                    {% if is_a(property, 'UsernameProperty') %}
+                                    {% if xar_subclass(property, 'UsernameProperty') %}
                                         {% set options = xar_apifunc('roles', 'user', 'getall') %}
                                     {% else %}
                                         {% set options = property.getOptions() %}
@@ -86,7 +86,7 @@
                                     {% endfor %}
                                 </select>
     
-                            {% elseif is_a(property, 'CalendarProperty') %}
+                            {% elseif xar_subclass(property, 'CalendarProperty') %}
                                 {% set name2 = name ~ '2' %}
                                 {% set fieldname2 = 'field[' ~ name2 ~ ']' %}
                                 {% set fieldid2 = 'field_' ~ name2 %}
@@ -109,7 +109,7 @@
                                 {{ xar_data_input({type: "calendar", name: fieldname2, id: fieldid2, value: fieldvalue2}) }}
                                 </div>
     
-                            {% elseif is_a(property, 'NumberBoxProperty') %}
+                            {% elseif xar_subclass(property, 'NumberBoxProperty') %}
                                 {% set name2 = name ~ '2' %}
                                 {% set fieldname2 = 'field[' ~ name2 ~ ']' %}
                                 {% set fieldid2 = 'field_' ~ name2 %}
@@ -131,14 +131,14 @@
                                 &#160;
                                 <input type="text" name="{{ fieldname2 }}" id="{{ fieldid2 }}" value="{{ fieldvalue2 }}" size="5" />
     
-                            {% elseif is_a(property, 'CheckboxProperty') %}
+                            {% elseif xar_subclass(property, 'CheckboxProperty') %}
                                 {% if fieldvalue %}
                                     <input type="checkbox" name="{{ fieldname }}" id="{{ fieldid }}" value="{{ fieldvalue }}" checked="checked" />
                                 {% else %}
                                     <input type="checkbox" name="{{ fieldname }}" id="{{ fieldid }}" value="1" />
                                 {% endif %}
     
-                            {% elseif is_a(property, 'HiddenProperty') %}
+                            {% elseif xar_subclass(property, 'HiddenProperty') %}
                                 &#160;<input type="hidden" name="{{ fieldname }}" id="{{ fieldid }}" value="{{ fieldvalue }}" />
     
                             {% else %}

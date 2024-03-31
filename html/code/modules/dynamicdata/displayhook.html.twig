@@ -12,7 +12,7 @@
     --> #}
     <table class="xar-table" width="100%" border="0" cellspacing="0" cellpadding="4">
         {% for name, property in properties %}
-            {% if properties[name].getDisplayStatus() != DataPropertyMaster..DD_DISPLAYSTATE_DISABLED %}
+            {% if properties[name].getDisplayStatus() != constant('DataPropertyMaster::DD_DISPLAYSTATE_DISABLED') %}
 
                 <tr class="xar-align-left">
                     <td>

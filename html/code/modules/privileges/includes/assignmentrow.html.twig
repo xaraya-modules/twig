@@ -14,7 +14,7 @@
             {{ row['component'] }}
         </td>
         <td>
-            {% set level = SecurityLevel..displayMap[row['level']] %}
+            {% set level = xar_coremethod('SecurityLevel','displayMap')[row['level']] %}
             {{ level }}
         </td>
         {# <!--
@@ -23,7 +23,7 @@
         </td>
         --> #}
         <td style="text-align: center;">
-            <a href="{{ xar_moduleurl('privileges','admin','assignprivileges',{'phase': 'remove', 'assignment': row['role_id'} ~ ',' ~ row['id']]) }}">
+            <a href="{{ xar_moduleurl('privileges','admin','assignprivileges',{'phase': 'remove', 'assignment': row['role_id'] ~ ',' ~ row['id']}) }}">
                 Remove
             </a>
         </td>

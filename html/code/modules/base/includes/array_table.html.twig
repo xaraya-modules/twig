@@ -67,9 +67,9 @@
                         {# <!-- property[row][column] --> #}
                         {# <!-- we need to instantiate the property this way so we can insert a default value --> #}
                         {% if column_defaults[k] is not null %}
-                            {% set property = DataPropertyMaster..getProperty({'type': column_types[k},'defaultvalue'=>column_defaults[k]]) %}
+                            {% set property = xar_coremethod('DataPropertyMaster', 'getProperty', {'type': column_types[k],'defaultvalue': column_defaults[k]}) %}
                         {% else %}
-                            {% set property = DataPropertyMaster..getProperty({'type': column_types[k}]) %}
+                            {% set property = xar_coremethod('DataPropertyMaster', 'getProperty', {'type': column_types[k]}) %}
                         {% endif %}
                         <td>
                             {# <!-- row {{ i }} column {{ k }} --> #}
