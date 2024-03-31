@@ -7,9 +7,9 @@
         </span>
         <span style="float: right; width: 78%; text-align: left;">
             {% set options = [
-                    {'id': 1, 'name': {{ xar_translate('Tree (Side Block}') }}),
-                    {'id': 2, 'name': {{ xar_translate('Crumbtrail (Top Block}') }}),
-                    {'id': 3, 'name': {{ xar_translate('Prev/Next (Bottom Block}') }})
+                    {'id': 1, 'name': xar_translate('Tree (Side Block}')},
+                    {'id': 2, 'name': xar_translate('Crumbtrail (Top Block}')},
+                    {'id': 3, 'name': xar_translate('Prev/Next (Bottom Block}')}
                 ] %}
             {% set id = "layout" ~ blockid %}
             {{ xar_data_input({type: "dropdown", name: "layout", id: id, options: options, value: layout}) }}
