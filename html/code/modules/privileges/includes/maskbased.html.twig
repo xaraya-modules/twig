@@ -5,13 +5,13 @@
 {% if xar_security_check('AdminPrivilege') %}
     {% if _REQUEST['enable'] %}
         {% if _REQUEST['enable'] < 0 %}
-            {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges','maskbasedsecurity',false]) %}
+            {% set dummy = xar_coremethod('xarModVars', 'set', 'privileges','maskbasedsecurity',false) %}
             {% set isenabled = 0 %}
         {% else %}
-            {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges','maskbasedsecurity',true]) %}
+            {% set dummy = xar_coremethod('xarModVars', 'set', 'privileges','maskbasedsecurity',true) %}
             {% set isenabled = 1 %}
         {% endif %}
-        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'enable': null})]) }}
+        {{ xar_coremethod('xarController', 'redirect', xar_currenturl({'enable': null})) }}
     {% endif %}
 {% endif %}
 
@@ -27,13 +27,13 @@
     {% if _REQUEST['flip'] %}
         {% set val = xar_modvar('privileges', _REQUEST['flip']) %}
         {% if val %}
-            {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges',_REQUEST['flip'],'']) %}
+            {% set dummy = xar_coremethod('xarModVars', 'set', 'privileges',_REQUEST['flip'],'') %}
         {% elseif val is not null %}
-            {% set dummy = xar_coremethod('xarModVars', 'delete', ['privileges',_REQUEST['flip']]) %}
+            {% set dummy = xar_coremethod('xarModVars', 'delete', 'privileges',_REQUEST['flip']) %}
         {% else %}
-            {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges',_REQUEST['flip'],1]) %}
+            {% set dummy = xar_coremethod('xarModVars', 'set', 'privileges',_REQUEST['flip'],1) %}
         {% endif %}
-        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'flip': null})]) }}
+        {{ xar_coremethod('xarController', 'redirect', xar_currenturl({'flip': null})) }}
     {% endif %}
 {% endif %}
 
@@ -55,13 +55,13 @@ uasort(groups,'by_name') %}
                 {% set code = 'SC.' ~ fields['name'] ~ '.' ~ group['id'] %}
                 {% set dummy = xar_security_check(fields['name'], 0, '', '', '', group['name'],0,0) %}
                 {% if dummy %}
-                    {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges',code, 1]) %}
+                    {% set dummy = xar_coremethod('xarModVars', 'set', 'privileges',code, 1) %}
                 {% else %}
-                    {% set dummy = xar_coremethod('xarModVars', 'set', ['privileges',code, 0]) %}
+                    {% set dummy = xar_coremethod('xarModVars', 'set', 'privileges',code, 0) %}
                 {% endif %}
             {% endfor %}
         {% endfor %}
-        {{ xar_coremethod('xarController', 'redirect', [xar_currenturl({'refresh': null})]) }}
+        {{ xar_coremethod('xarController', 'redirect', xar_currenturl({'refresh': null})) }}
     {% endif %}
 {% endif %}
 

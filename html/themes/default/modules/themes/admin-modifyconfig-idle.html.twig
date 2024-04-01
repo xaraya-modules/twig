@@ -56,7 +56,7 @@
                         {{ xar_data_label({label: "Enable InPage Admin SubMenus", for: "adminpagemenu", title: "Use submenus in the page for admin functions."}) }}
                     </div>
                     <div class="checkInputContainer">
-                        {% set checkUsermenu = xar_coremethod('xarModHooks', 'isHooked', ['themes', 'roles']) %}
+                        {% set checkUsermenu = xar_coremethod('xarModHooks', 'isHooked', 'themes', 'roles') %}
                         {{ xar_data_input({type: "checkbox", name: "usermenu", id: "usermenu", checked: checkUsermenu}) }}
                         {{ xar_data_label({label: "Allow users to set their theme in User Account page", for: "usermenu", title: "Allow users to select themes from their Account Details page."}) }}
                     </div>
@@ -79,12 +79,12 @@
                     {% set valCopyright = xar_modvar('themes', 'SiteCopyRight') %}
                     {{ xar_data_label({label: "Copyright", for: "copyright"}) }}
                     {{ xar_data_input({type: "textbox", name: "copyright", id: "copyright", value: valCopyright}) }}
-                </div>{{ xar_coremethod('xarVar', 'delCached', ['Mod.Variables.themes','SiteCopyRight']) }} 
+                </div>{{ xar_coremethod('xarVar', 'delCached', 'Mod.Variables.themes','SiteCopyRight') }} 
                 <div class="textareaContainer">
                     {% set valFooternote = xar_modvar('themes', 'SiteFooter') %}
                     {{ xar_data_label({label: "Footer Note", for: "footer"}) }}
                     {{ xar_data_input({type: "textarea", id: "footer", name: "footer", cols: "60", rows: "5", value: valFooternote}) }}
-                </div>{{ xar_coremethod('xarVar', 'delCached', ['Mod.Variables.themes','SiteFooter']) }} 
+                </div>{{ xar_coremethod('xarVar', 'delCached', 'Mod.Variables.themes','SiteFooter') }} 
                 <div class="textInputContainer">
                     {% set valSeperator = xar_modvar('themes', 'SiteTitleSeparator') %}
                     {{ xar_data_label({label: "Page Title Separator", for: "separator"}) }}
@@ -105,7 +105,7 @@
                 </div></fieldset>
                 <fieldset>
                     <legend>Template Debugging options</legend>
-            {% if xar_coremethod('xarConfigVars', 'get', [null,'Site.BL.CacheTemplates']) %}
+            {% if xar_coremethod('xarConfigVars', 'get', null,'Site.BL.CacheTemplates') %}
                 <div class="checkInputContainer">
                     {% set checkShowphpcbit = xar_var({scope: "module", module: "themes", name: "ShowPHPCommentBlockInTemplates"}) %}
                     {{ xar_data_input({type: "checkbox", name: "showphpcbit", id: "showphpcbit", checked: checkShowphpcbit}) }}
@@ -128,7 +128,7 @@
                         {{ xar_data_input({type: "checkbox", name: "var_dump", id: "var_dump", checked: checkVardump}) }}
                         {{ xar_data_label({label: "Debug Templates by Showing Variables Available", for: "var_dump"}) }}
                     </div>
-                    {% if xar_coremethod('xarTheme', 'isAvailable', ['atom']) %}
+                    {% if xar_coremethod('xarTheme', 'isAvailable', 'atom') %}
                         {# <!-- This should be moved if we ever fully support the atom spec --> #}
                         <div class="textInputContainer">
                             {% set valAtomtag = xar_modvar('themes', 'AtomTag') %}

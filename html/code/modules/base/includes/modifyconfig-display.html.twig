@@ -24,7 +24,7 @@
                 {{ xar_data_input({type: "module", name: "defaultmodule", id: "defaultmodule", filter: filter, value: value, store_prop: "name"}) }}
             </div>
         </div>
-        {% if xar_modvar('modules', 'defaultmodule') == xar_coremethod('xarMod', 'getID', ['base']) %}
+        {% if xar_modvar('modules', 'defaultmodule') == xar_coremethod('xarMod', 'getID', 'base') %}
             <div class="xar-row">
                 <div class="xar-col">
                     {% set label = 'Use an alternate default page template.' %}

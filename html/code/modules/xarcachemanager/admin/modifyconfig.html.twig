@@ -8,8 +8,8 @@
 <div class="xar-mod-body">
   {{ include('@xarcachemanager/includes/admin-menu.html.twig') }}
   <h2>{{ xar_translate('Configuration') }}</h2>
-  {% if xar_coremethod('xarSession', 'getVar', ['statusmsg']) != '' %}
-    <p>{{ xar_coremethod('xarSession', 'getVar', ['statusmsg']) }}</p>
+  {% if xar_coremethod('xarSession', 'getVar', 'statusmsg') != '' %}
+    <p>{{ xar_coremethod('xarSession', 'getVar', 'statusmsg') }}</p>
   {% endif %}
     <form action="{{ xar_moduleurl('xarcachemanager','admin','updateconfig') }}" method="post" enctype="application/x-www-form-urlencoded" >
         <fieldset>
@@ -428,5 +428,5 @@
         </div>
     </form>
 </div>
-{% if xar_coremethod('xarSession', 'setVar', ['statusmsg', '']) %}{% endif %}
+{% if xar_coremethod('xarSession', 'setVar', 'statusmsg', '') %}{% endif %}
 {% endblock %}

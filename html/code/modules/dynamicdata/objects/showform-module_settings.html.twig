@@ -47,7 +47,7 @@
                 {{ xar_data_label({property: properties['module_alias_name'], for: "id", label: label, title: title}) }}
             </div>
             <div class="xar-col">
-                {% set aliasmap = xar_coremethod('xarConfigVars', 'get', [null,'System.ModuleAliases']) %}
+                {% set aliasmap = xar_coremethod('xarConfigVars', 'get', null,'System.ModuleAliases') %}
                 {% set options = [] %}
                 {% if aliasmap %}
                 	{% set modname = xar_coremethod('xarMod', 'getName') %}

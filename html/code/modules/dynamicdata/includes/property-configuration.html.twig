@@ -17,7 +17,7 @@
             <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
             <input type="hidden" name="itemid" id="itemid" value="{{ itemid }}"/>
             {# <!-- This is the main part of the page --> #}
-            {{ showval }} 
+            {{ showval|raw }} 
             <div class="xar-form-actions">
                 <div class="xar-row">
                     <div class="xar-col"></div>
@@ -77,7 +77,7 @@
                 </table>
             </fieldset>
             <input type="hidden" name="proptype" value="{{ proptype }}"/>
-            {{ showval }}
+            {{ showval|raw }}
             <div class="xar-row">
                 <div class="xar-col">
                 </div>

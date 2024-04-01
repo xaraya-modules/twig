@@ -9,7 +9,7 @@
            We want to show this option so people know it is available.
            We only show this if we can use it eg scheduler is installed and hooked to mail
        --> #}
-        {% if xar_coremethod('xarMod', 'isAvailable', ['scheduler']) and xar_coremethod('xarModHooks', 'isHooked', ['mail','scheduler']) %}
+        {% if xar_coremethod('xarMod', 'isAvailable', 'scheduler') and xar_coremethod('xarModHooks', 'isHooked', 'mail','scheduler') %}
             {# <!-- We only show this if we can use it eg scheduler is installed and hooked to mail --> #}
             {% if log %}
                 <pre>

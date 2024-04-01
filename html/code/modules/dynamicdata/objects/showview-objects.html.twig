@@ -4,7 +4,7 @@
 {# <!-- TODO: multi-column output --> #}
     <div class="xar-mod-page-head">
         {{ xar_style({scope: "module", module: "dynamicdata", file: "dd"}) }}
-        {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', ['categories',modname,itemtype]) %}
+        {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', 'categories',modname,itemtype) %}
             {{ include('@dynamicdata/includes/catnavigation.html.twig') }}
         {% endif %}
     

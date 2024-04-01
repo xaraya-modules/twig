@@ -54,7 +54,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {{ xar_coremethod('xarModUserVars', 'get', ['roles','userhome',id]) }}&#160;
+                                {{ xar_coremethod('xarModUserVars', 'get', 'roles','userhome',id) }}&#160;
                             </div>
                         </div>
                     {% endif %}
@@ -67,7 +67,7 @@
                                     </label>
                                 </div>
                                 <div class="xar-col">
-                                    {% set value = xar_coremethod('xarModUserVars', 'get', ['roles','primaryparent',id]) %}
+                                    {% set value = xar_coremethod('xarModUserVars', 'get', 'roles','primaryparent',id) %}
                                     {{ xar_data_output({type: "grouplist", value: value, tabindex: "8"}) }}
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set userlastlogin = xar_coremethod('xarModUserVars', 'get', ['roles', 'userlastlogin', id]) %}
+                                {% set userlastlogin = xar_coremethod('xarModUserVars', 'get', 'roles', 'userlastlogin', id) %}
                                 {{ xar_localedate(userlastlogin, 'medium', '') }}
                                 {{ xar_localedate(userlastlogin, '', 'medium') }}
                             </div>
@@ -108,7 +108,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set passwordupdate = xar_coremethod('xarModUserVars', 'get', ['roles', 'passwordupdate', id]) %}
+                                {% set passwordupdate = xar_coremethod('xarModUserVars', 'get', 'roles', 'passwordupdate', id) %}
                                 {{ xar_localedate(passwordupdate, 'medium', '') }}
                                 {{ xar_localedate(passwordupdate, '', 'medium') }}
                             </div>
@@ -122,7 +122,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set value = xar_coremethod('xarModUserVars', 'get', ['roles','usertimezone',id]) %}
+                                {% set value = xar_coremethod('xarModUserVars', 'get', 'roles','usertimezone',id) %}
                                 {{ xar_data_input({type: "timezone", name: "duvs[usertimezone]", id: "duvs_usertimezone", value: value}) }}
                             </div>
                         </div>

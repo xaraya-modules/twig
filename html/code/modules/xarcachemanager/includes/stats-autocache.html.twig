@@ -37,8 +37,8 @@
           <td>{{ count['hit'] }}</td>
           <td>{{ count['miss'] }}</td>
           <td>{{ count['total'] }}</td>
-          <td>{{ xar_coremethod('xarLocale', 'formatDate', ['%a, %d %B %Y %H.%M.%S %Z',count['first']]) }}</td>
-          <td>{{ xar_coremethod('xarLocale', 'formatDate', ['%a, %d %B %Y %H.%M.%S %Z',count['last']]) }}</td>
+          <td>{{ xar_coremethod('xarLocale', 'formatDate', '%a, %d %B %Y %H.%M.%S %Z',count['first']) }}</td>
+          <td>{{ xar_coremethod('xarLocale', 'formatDate', '%a, %d %B %Y %H.%M.%S %Z',count['last']) }}</td>
         </tr>
         <tr>
           <td colspan="6">{{ count['page'] }}</td>
@@ -50,8 +50,8 @@
           <th>{{ totals['hit'] }}</th>
           <th>{{ totals['miss'] }}</th>
           <th>{{ totals['total'] }}</th>
-          <th>{{ xar_coremethod('xarLocale', 'formatDate', ['%a, %d %B %Y %H.%M.%S %Z',totals['first']]) }}</th>
-          <th>{{ xar_coremethod('xarLocale', 'formatDate', ['%a, %d %B %Y %H.%M.%S %Z',totals['last']]) }}</th>
+          <th>{{ xar_coremethod('xarLocale', 'formatDate', '%a, %d %B %Y %H.%M.%S %Z',totals['first']) }}</th>
+          <th>{{ xar_coremethod('xarLocale', 'formatDate', '%a, %d %B %Y %H.%M.%S %Z',totals['last']) }}</th>
         </tr>
         {% endif %}
         {% if pager %}

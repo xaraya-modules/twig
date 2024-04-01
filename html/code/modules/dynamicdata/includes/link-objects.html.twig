@@ -230,7 +230,7 @@
     <form method="post" action="{{ xar_moduleurl('dynamicdata','admin','relations') }}">
         <fieldset>
             <legend>Display Options for {{ object.label }}</legend>
-            {% set getlinkedobjects = xar_coremethod('xarModItemVars', 'get', ['dynamicdata','getlinkedobjects',objectid]) %}
+            {% set getlinkedobjects = xar_coremethod('xarModItemVars', 'get', 'dynamicdata','getlinkedobjects',objectid) %}
             <div class="xar-row">
                 <div class="xar-col">
                     {% if getlinkedobjects %}

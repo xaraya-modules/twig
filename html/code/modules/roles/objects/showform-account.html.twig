@@ -41,7 +41,7 @@
             {{ xar_data_input({property: object.properties['role_type'], hidden: "hidden"}) }}
 
             {% if 'passwordupdate' in settings %}
-                {% set passwordupdate = xar_coremethod('xarModUserVars', 'get', ['roles', 'passwordupdate']) %}
+                {% set passwordupdate = xar_coremethod('xarModUserVars', 'get', 'roles', 'passwordupdate') %}
                     <div class="xar-row">
                         <div class="xar-col">
                             <label for="passwordupdate" class="xar-form-label">
@@ -60,7 +60,7 @@
             {% endif %}
 
             {% if 'userlastlogin' in settings %}
-                {% set userlastlogin = xar_coremethod('xarModUserVars', 'get', ['roles', 'userlastlogin']) %}
+                {% set userlastlogin = xar_coremethod('xarModUserVars', 'get', 'roles', 'userlastlogin') %}
                 {% if userlastlogin %}
                     <div class="xar-row">
                         <div class="xar-col">

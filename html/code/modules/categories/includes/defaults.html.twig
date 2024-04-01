@@ -2,7 +2,7 @@
 
 {% block defaults %}
 {% if tabmodule != 'categories' %}
-        {% set regid = xar_coremethod('xarMod', 'getRegID', [tabmodule]) %}
+        {% set regid = xar_coremethod('xarMod', 'getRegID', tabmodule) %}
     {% else %}
         {% set regid = 0 %}
     {% endif %}
@@ -24,7 +24,7 @@
             </label>
         </div>
         <div class="xar-col">
-            {% set checked = xar_coremethod('xarModItemVars', 'get', ['categories', 'usejsdisplay', regid]) %}
+            {% set checked = xar_coremethod('xarModItemVars', 'get', 'categories', 'usejsdisplay', regid) %}
             {{ xar_data_input({type: "checkbox", name: "usejsdisplay", checked: checked}) }}
         </div>
     </div>
@@ -35,7 +35,7 @@
             </label>
         </div>
         <div class="xar-col">
-            {% set value = xar_coremethod('xarModItemVars', 'get', ['categories', 'numstats', regid]) %}
+            {% set value = xar_coremethod('xarModItemVars', 'get', 'categories', 'numstats', regid) %}
             <input type="text" name="numstats" id="numstats" value="{{ value }}"/>
         </div>
     </div>
@@ -46,7 +46,7 @@
             </label>
         </div>
         <div class="xar-col">
-            {% set checked = xar_coremethod('xarModItemVars', 'get', ['categories', 'showtitle', regid]) %}
+            {% set checked = xar_coremethod('xarModItemVars', 'get', 'categories', 'showtitle', regid) %}
             {{ xar_data_input({type: "checkbox", name: "showtitle", checked: checked}) }}
         </div>
     </div>
@@ -57,7 +57,7 @@
             </label>
         </div>
         <div class="xar-col">
-            {% set checked = xar_coremethod('xarModItemVars', 'get', ['categories', 'allowbatch', regid]) %}
+            {% set checked = xar_coremethod('xarModItemVars', 'get', 'categories', 'allowbatch', regid) %}
             {{ xar_data_input({type: "checkbox", name: "allowbatch", checked: checked}) }}
         </div>
     </div>

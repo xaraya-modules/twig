@@ -36,7 +36,7 @@
                                 {'id': 0, 'name': xar_translate('No')},
                                 {'id': 1, 'name': xar_translate('Yes')}
                             ] %}
-                        {% set log_enabled = xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'Log.Enabled']) %}
+                        {% set log_enabled = xar_coremethod('xarSystemVars', 'get', constant('sys::CONFIG'), 'Log.Enabled') %}
                         {{ xar_data_input({type: "radio", name: "logenabled", value: log_enabled, options: options}) }}
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                         </label>
                     </div>
                     <div class="xar-col">
-                        {% set value = xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'Log.Available']) %}
+                        {% set value = xar_coremethod('xarSystemVars', 'get', constant('sys::CONFIG'), 'Log.Available') %}
                         {{ xar_data_input({property: logavailable, name: "available_loggers", value: value, layout: "horizontal"}) }}
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                         </label>
                     </div>
                     <div class="xar-col">
-                        {% set value = xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'Log.Filename']) %}
+                        {% set value = xar_coremethod('xarSystemVars', 'get', constant('sys::CONFIG'), 'Log.Filename') %}
                         {{ xar_data_input({type: "textbox", name: "logfilename", value: value}) }}
                         <br/>Allowed extensions are txt and html
                         <br/>If the file does not exist, Xaraya will try to create it
@@ -86,11 +86,11 @@
                         </label>
                     </div>
                     <div class="xar-col">
-                        {% set value = xar_unserialize(xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'Log.Level'])) %}
+                        {% set value = xar_unserialize(xar_coremethod('xarSystemVars', 'get', constant('sys::CONFIG'), 'Log.Level')) %}
                         {{ xar_data_input({type: "checkboxlist", name: "loglevel", value: value, options: levels}) }}
                     </div>
                 </div>
-                {% if xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'Log.Enabled']) and not xar_coremethod('xarLog', 'availables') and xar_coremethod('xarLog', 'fallbackPossible') %}
+                {% if xar_coremethod('xarSystemVars', 'get', constant('sys::CONFIG'), 'Log.Enabled') and not xar_coremethod('xarLog', 'availables') and xar_coremethod('xarLog', 'fallbackPossible') %}
 					<div style="color: green">
 						Fallback logging is currently active.
 					</div>

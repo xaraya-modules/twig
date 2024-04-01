@@ -22,7 +22,7 @@
             <author>{{ xar_data_output({property: properties['author'], value: fields['author']}) }}</author>
         {% endif %}
         {% if properties['pubdate'] is not null and fields['pubdate'] %}
-            <pubDate>{{ xar_coremethod('xarLocale', 'formatUTCDate', ["%a, %d %b %Y %H.%M.%S GMT",fields['pubdate']]) }}</pubDate>
+            <pubDate>{{ xar_coremethod('xarLocale', 'formatUTCDate', "%a, %d %b %Y %H.%M.%S GMT",fields['pubdate']) }}</pubDate>
         {% endif %}
         {# <!-- uncomment these if you want to eg use a property value as a description
         <content:format rdf:resource="http://www.w3.org/1999/xhtml" />

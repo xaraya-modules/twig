@@ -58,7 +58,7 @@ xmlns:xf="http://www.w3.org/2002/xforms" xml:lang="en">
                         {{ xar_data_label({label: "Enable InPage Admin SubMenus", for: "adminpagemenu", title: "Use submenus in the page for admin functions."}) }}
                     </div>
                     <div class="checkInputContainer">
-                        {% set checked = xar_coremethod('xarModHooks', 'isHooked', ['themes', 'roles']) %}
+                        {% set checked = xar_coremethod('xarModHooks', 'isHooked', 'themes', 'roles') %}
                         {{ xar_data_input({type: "checkbox", name: "usermenu", id: "usermenu", checked: checked}) }}
                         {{ xar_data_label({label: "Allow users to set their theme in User Account page", for: "usermenu", title: "Allow users to select themes from their Account Details page."}) }}
                     </div>
@@ -111,7 +111,7 @@ xmlns:xf="http://www.w3.org/2002/xforms" xml:lang="en">
                 </xf:group>
                 <xf:group>
                     <xf:label>Template Debugging options</xf:label>
-          {% if xar_coremethod('xarConfigVars', 'get', [null,'Site.BL.CacheTemplates']) %}
+          {% if xar_coremethod('xarConfigVars', 'get', null,'Site.BL.CacheTemplates') %}
             <div class="checkInputContainer">
               {% set checked = xar_var({scope: "module", module: "themes", name: "ShowPHPCommentBlockInTemplates"}) %}
               {{ xar_data_input({type: "checkbox", name: "showphpcbit", id: "showphpcbit", checked: checked}) }}
@@ -139,7 +139,7 @@ xmlns:xf="http://www.w3.org/2002/xforms" xml:lang="en">
                         <label for="var_dump">Debug Templates by Showing Variables
                         Available</label>
                     </div>
-                    {% if xar_coremethod('xarTheme', 'isAvailable', ['atom']) %}
+                    {% if xar_coremethod('xarTheme', 'isAvailable', 'atom') %}
                         {# <!-- This should be moved if we ever fully support the atom spec --> #}
                         <div class="textInputContainer">
                             <label for="AtomTag">Atom Tag</label>

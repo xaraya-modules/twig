@@ -171,7 +171,7 @@
             <a href="{{ xar_moduleurl('dynamicdata','admin','meta',{'showdb': 1}) }}">Show other databases</a></p>
         {% elseif export == 'view' %}
             {# <!-- @todo example of using virtual object descriptor to show database table --> #}
-            {% set dummy = xar_coremethod('sys', 'import', ['modules.dynamicdata.class.objects.virtual']) %}
+            {% set dummy = xar_coremethod('sys', 'import', 'modules.dynamicdata.class.objects.virtual') %}
             {% set descriptor = xar_new('TableObjectDescriptor', {'table': table, 'fields': tables[table], 'dbConnIndex': dbConnIndex}) %}
             {% set object = xar_new('DataObjectList', descriptor) %}
             {% set dummy = object.getItems() %}
@@ -189,7 +189,7 @@
             {# <!-- @todo example of using virtual object descriptor to show database table --> #}
             {% set descriptor = xar_new('TableObjectDescriptor', {'table': table, 'fields': tables[table], 'dbConnIndex': dbConnIndex}) %}
             {% set object = xar_new('DataObject', descriptor) %}
-            {% set dummy = xar_coremethod('xarVar', 'fetch', ['itemid', 'notempty', itemid, 1, constant('xarVar::NOT_REQUIRED')]) %}
+            {% set dummy = xar_coremethod('xarVar', 'fetch', 'itemid', 'notempty', itemid, 1, constant('xarVar::NOT_REQUIRED')) %}
             {% set dummy = object.getItem({'itemid': itemid}) %}
             <h3>
                 Table: {{ table }}&#160;
@@ -229,12 +229,12 @@
                                     {% if export == 'ddl' %}
                                     {# <!-- xar:template file="exportddl"/ --> #}
                                     <textarea name="xml" id="xml" class="xar-form-textarealarge">
-                                        {{ htmlspecialchars(xml) }}
+                                        {{ xml }}
                                     </textarea>
                                     {% else %}
                                     <textarea name="xml" id="xml" class="xar-form-textarealarge">
                                     {% for curtable, fields in tables %}
-                                    {% set tablename = strtr(curtable,'.','_') %}
+                                    {% set tablename = curtable|replace({'.': '_'}) %}
                                     {% set curlen = curtable|length %}
     &lt;object name="{{ tablename }}"&gt;
       &lt;label&gt;{{ curtable }}&lt;/label&gt;

@@ -1,7 +1,7 @@
 {# @dynamicdata/includes/showinvalids.html.twig #}
 
 {% block showinvalids %}
-{% set debugadmins = xar_coremethod('xarConfigVars', 'get', [null, 'Site.User.DebugAdmins']) %}
+{% set debugadmins = xar_coremethod('xarConfigVars', 'get', null, 'Site.User.DebugAdmins') %}
     {% set username = xar_uservar('uname') %}
     {% if xar_modvar('dynamicdata', 'debugmode') and username in debugadmins %}
         {% set invalids = object.getInvalids() %}

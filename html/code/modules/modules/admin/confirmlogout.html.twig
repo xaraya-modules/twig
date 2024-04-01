@@ -8,7 +8,7 @@
         <div class="xar-align-center">
         {% set authmodule = xar_var({scope: "module", module: "roles", name: "defaultauthmodule"}) %}
             {% if authmodule %}
-        {% set authmodule = xar_coremethod('xarMod', 'getName', [authmodule]) %}[ 
+        {% set authmodule = xar_coremethod('xarMod', 'getName', authmodule) %}[ 
         <a href="{{ xar_moduleurl(authmodule,'user','logout') }}">Logout</a>]{% endif %}[ 
         <a href="javascript:top.history.go(-1)">Cancel</a>]</div>
     </div>

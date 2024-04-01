@@ -416,7 +416,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% if xar_coremethod('xarMod', 'isAvailable', ['scheduler']) %}
+                            {% if xar_coremethod('xarMod', 'isAvailable', 'scheduler') %}
                                 {{ xar_data_input({type: "dropdown", name: "interval", options: intervals, value: interval}) }}
                             {% else %}
                                 {{ xar_data_input({type: "hidden", name: "interval"}) }}

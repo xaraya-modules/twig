@@ -13,7 +13,7 @@
             <modifylink>{{ modifylink }}</modifylink>
         {% endif %}
 
-        {% set getlinked = xar_coremethod('xarModItemVars', 'get', ['dynamicdata','getlinkedobjects',object.objectid]) %}
+        {% set getlinked = xar_coremethod('xarModItemVars', 'get', 'dynamicdata','getlinkedobjects',object.objectid) %}
         {% if getlinked %}
 
             {# <!-- Display object with linked objects --> #}

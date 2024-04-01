@@ -15,7 +15,7 @@
                         </label>
                     </div>
                     <div class="xar-col">
-                        {% set value = xar_coremethod('xarModUserVars', 'get', ['themes', 'default_theme']) %}{{ value }}
+                        {% set value = xar_coremethod('xarModUserVars', 'get', 'themes', 'default_theme') %}{{ value }}
                         {{ xar_data_input({property: user_themes, name: "default_theme", id: "default_theme", value: value}) }}
                     </div>
                 </div>

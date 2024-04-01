@@ -18,7 +18,7 @@
                             {{ type['type'] }}
                         {% endif %}
                         {% if type['module'] %}
-                            ({{ xar_coremethod('xarMod', 'getDisplayName', [type['module']]) }})
+                            ({{ xar_coremethod('xarMod', 'getDisplayName', type['module']) }})
                         {% endif %}
                             Block Type Instances
                     </th>

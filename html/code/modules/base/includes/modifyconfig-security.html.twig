@@ -16,11 +16,11 @@
                         {'id': 'Medium', 'name': xar_translate('Medium')},
                         {'id': 'Low', 'name': xar_translate('Low')}
                     ] %}
-                {% set value = xar_coremethod('xarConfigVars', 'get', [null,'Site.Session.SecurityLevel']) %}
+                {% set value = xar_coremethod('xarConfigVars', 'get', null,'Site.Session.SecurityLevel') %}
                 {{ xar_data_input({type: "dropdown", name: "securitylevel", options: options, value: value}) }}
             </div>
         </div>
-        {% if xar_coremethod('xarConfigVars', 'get', [null,'Site.Session.SecurityLevel']) == 'Medium' %}
+        {% if xar_coremethod('xarConfigVars', 'get', null,'Site.Session.SecurityLevel') == 'Medium' %}
 
             <div class="xar-row">
                 <div class="xar-col">
@@ -124,7 +124,7 @@
                 {% set value = xar_var({scope: "config", name: "Site.Session.RefererCheck"}) %}
                 <input type="text" id="referercheck" name="referercheck" value="{{ value }}" maxlength="40" class="xar-form-textmedium"/>
                 <span>
-                    &#160;Default: {{ xar_coremethod('xarServer', 'getVar', ['HTTP_HOST']) }} for security level 'High'
+                    &#160;Default: {{ xar_coremethod('xarServer', 'getVar', 'HTTP_HOST') }} for security level 'High'
                 </span>
             </div>
         </div>

@@ -4,8 +4,8 @@
 {{ include('@dynamicdata/includes/admin-mod-head.html.twig') }}
     <div class="xar-mod-body">
         {% set typename = propertytype.name %}
-        {# @todo to be checked in function #}
-        {% if file_exists(xar_coremethod('sys', 'code') ~ 'properties/' ~ typename ~ '/xartemplates/includes/overview.xt') %}
+        {# to be checked in function #}
+        {% if has_overview %}
             <![CDATA[
             <script type="text/javascript">
                 function showtab (selectedindex, items)
@@ -38,7 +38,8 @@
             </div>
 
             <div id="page-2" style="display: none">
-                {{ include('@dynamicdata/includes/overview.html.twig') }}
+                {# @todo sys::code() . 'properties/' . $typename . '/xartemplates/includes/overview.xt' #}
+                {{ include('@properties/' ~ typename ~ '/includes/overview.html.twig') }}
             </div>
             <script type="text/javascript">
                 showtab (1,2)

@@ -22,7 +22,7 @@ If debug mode is active, exception messages are visible to the debug administrat
             </label>
         </div>
         <div class="xar-col">
-            {% set checked = xar_coremethod('xarConfigVars', 'get', [null, 'Site.BL.ShowQueries']) %}
+            {% set checked = xar_coremethod('xarConfigVars', 'get', null, 'Site.BL.ShowQueries') %}
             {{ xar_data_input({type: "checkbox", name: "show_queries", checked: checked}) }}
         </div>
     </div>

@@ -3,7 +3,7 @@
 {% block showview_workflow_tracker %}
 {# <!-- Adapted from dynamicdata/xartemplates/objects/showview.xt --> #}
     {{ xar_style({scope: "module", module: "dynamicdata", file: "dd"}) }}
-    {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', ['categories',modname,itemtype]) %}
+    {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', 'categories',modname,itemtype) %}
         {{ include('@workflow/includes/catnavigation.html.twig') }}
     {% endif %}
     {# <!-- You can give a custom 'newlink' argument to showView() higher up --> #}
@@ -25,7 +25,7 @@
         {% set layout = 'default' %}
     {% endif %}
     {% if not userId %}
-        {% set userId = object.getContext().getUserId() ?? xar_coremethod('xarSession', 'getVar', ['role_id']) %}
+        {% set userId = object.getContext().getUserId() ?? xar_coremethod('xarSession', 'getVar', 'role_id') %}
     {% endif %}
     {{ include('@' ~ tplmodule ~ '/includes/view-' ~ layout ~ '.html.twig') }}
     {# <!-- xar:template file="test_trackerlist"/ --> #}

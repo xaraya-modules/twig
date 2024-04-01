@@ -195,7 +195,7 @@
                             <input type="text" name="copyright" id="copyright" value="{{ value }}" size="30" maxlength="100"/>
                         </div>
                     </div>
-                    {{ xar_coremethod('xarVar', 'delCached', ['Mod.Variables.themes','SiteCopyRight']) }} 
+                    {{ xar_coremethod('xarVar', 'delCached', 'Mod.Variables.themes','SiteCopyRight') }} 
                     <div class="xar-row">
                         <div class="xar-col">
                             <label for="footer">
@@ -207,7 +207,7 @@
                             {{ xar_data_input({type: "textarea", name: "footer", cols: "40", rows: "3", value: value, class: "xar-form-textareamedium"}) }}
                         </div>
                     </div>
-                    {{ xar_coremethod('xarVar', 'delCached', ['Mod.Variables.themes','SiteFooter']) }} 
+                    {{ xar_coremethod('xarVar', 'delCached', 'Mod.Variables.themes','SiteFooter') }} 
                     <div class="xar-row">
                         <div class="xar-col">
                             <label for="separator">
@@ -308,7 +308,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set allowajax = xar_coremethod('xarConfigVars', 'get', [null, 'Site.Core.AllowAJAX']) %}
+                            {% set allowajax = xar_coremethod('xarConfigVars', 'get', null, 'Site.Core.AllowAJAX') %}
                             {{ xar_data_input({type: "checkbox", name: "allowajax", id: "allowajax", checked: allowajax}) }}
                         </div>
                     </div>
@@ -338,7 +338,7 @@
                 <fieldset>
                     <legend>Template Debugging options</legend>
                     <p class="xar-note">The options activated below are visible to the debug administrators, <a href="{{ xar_moduleurl('roles','admin','modifyconfig',{'tab': 'debugging'}) }}">which are defined here</a>.</p>
-                    {% if xar_coremethod('xarConfigVars', 'get', [null,'Site.BL.CacheTemplates']) %}
+                    {% if xar_coremethod('xarConfigVars', 'get', null,'Site.BL.CacheTemplates') %}
                         <div class="xar-row">
                             <div class="xar-col">
                                 <label for="showphpcbit" class="xar-form-label">                            
@@ -373,7 +373,7 @@
                             {{ xar_data_input({type: "checkbox", name: "variable_dump", checked: checked}) }} Debug Templates by Showing Available Variables
                         </div>
                     </div>
-                    {% if xar_coremethod('xarMod', 'isAvailable', ['atom']) %}
+                    {% if xar_coremethod('xarMod', 'isAvailable', 'atom') %}
                         {# <!-- This should be moved if we ever fully support the atom spec --> #}
                         <div class="xar-row">
                             <div class="xar-col">

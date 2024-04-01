@@ -46,7 +46,7 @@
         </fieldset>
         <fieldset>
             Status:
-            {% set idsequal = constant('xarCore::VERSION_ID') == xar_coremethod('xarConfigVars', 'get', [null, 'System.Core.VersionId']) %}
+            {% set idsequal = constant('xarCore::VERSION_ID') == xar_coremethod('xarConfigVars', 'get', null, 'System.Core.VersionId') %}
             {% if idsequal %}
                 {% if versioncompare == 0 %}
                     Your installation is current.

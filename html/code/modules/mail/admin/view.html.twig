@@ -42,7 +42,7 @@
           {# <!-- Create form --> #}
                 <form style="display: inline;" method="post" action="{{ xar_moduleurl('dynamicdata','admin','create') }}">
                     {{ xar_data_form({module: qdef['moduleid'], itemid: itemid, itemtype: qdef['itemtype'], linkfield: "name"}) }}
-                    <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey', ['dynamicdata']) }}"/>
+                    <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey', 'dynamicdata') }}"/>
                     <input type="hidden" name="objectid" value="{{ qdef.objectid }}"/>
                     <input type="hidden" name="modid" value="{{ qdef.moduleid }}"/>
                     <input type="hidden" name="return_url" value="{{ xar_moduleurl('mail','admin','view') }}"/>

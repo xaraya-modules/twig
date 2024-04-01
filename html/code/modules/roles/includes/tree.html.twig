@@ -29,7 +29,7 @@
                                         <span style="padding-left: 1em">
                                         <strong>{{ node['name'] }}</strong>see the entry above</span>
                                     {% else %}
-                                        {% set numofsubgroups = count(xar_coremethod('xarRoles', 'getsubgroups', [node['id']])) %}
+                                        {% set numofsubgroups = count(xar_coremethod('xarRoles', 'getsubgroups', node['id'])) %}
                                         {% set numofsubgroups = 1 %}
                                         {% set subgroups = numofsubgroups == 1 ? xar_translate('subgroup') : xar_translate('subgroups') %}
                                         {% set users = node['users'] == 1 ? xar_translate('user') : xar_translate('users') %}

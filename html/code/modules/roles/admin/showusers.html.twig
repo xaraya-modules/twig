@@ -2,7 +2,7 @@
 
 {% block showusers %}
 {% set statelist = xar_apifunc('roles','user','getstates') %}
-    {% set modstatus = xar_coremethod('xarSession', 'getVar', ['statusmsg']) %}
+    {% set modstatus = xar_coremethod('xarSession', 'getVar', 'statusmsg') %}
     {{ xar_javascript({scope: "theme", filename: "checkall.js", position: "head"}) }}
     {{ xar_javascript({scope: "module", module: "roles", filename: "xarTree.js", position: "head"}) }}
     {{ xar_style({scope: "theme", file: "tree"}) }}
@@ -170,7 +170,7 @@
                 <table class="xar-table xar-items">
                     <tr>
                         {% for name in properties|keys %}
-                        	{% if xar_coremethod('xarController', 'getVar', ['order']) == name %}
+                        	{% if xar_coremethod('xarController', 'getVar', 'order') == name %}
                             	{% set xar_status = 'xar-active ' %}
                             {% else %}
                             	{% set xar_status = '' %}
@@ -191,7 +191,7 @@
                         {% else %}
                         <tr>
                             {% for name in properties|keys %}
-                            {% if xar_coremethod('xarController', 'getVar', ['order']) == name %}
+                            {% if xar_coremethod('xarController', 'getVar', 'order') == name %}
                             	{% set xar_status = 'xar-active ' %}
                             {% else %}
                             	{% set xar_status = '' %}

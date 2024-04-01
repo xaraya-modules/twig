@@ -1,7 +1,7 @@
 {# modules/dynamicdata/user-objectview.xml.twig #}
 
 {% block user_objectview %}
-{% set itemname = xar_coremethod('xarVar', 'getCached', ['XML','itemname']) %}
+{% set itemname = xar_coremethod('xarVar', 'getCached', 'XML','itemname') %}
     {% for itemid, fields in items %}
         <xar:element name="{{ itemname }}">
             {% for name, value in fields %}
