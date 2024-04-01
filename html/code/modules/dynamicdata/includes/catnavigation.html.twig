@@ -2,7 +2,7 @@
 
 {% block catnavigation %}
 {# <!--  we need to see if type is admin or user here, since we don't know who called us anymore --> #}
-    {% set tmpreq = xar_coremethod('xarController', 'getRequest').getInfo() %}
+    {% set tmpreq = xar_request().getInfo() %}
     {% if not viewfunc %}
         {% set viewfunc = 'view' %}
     {% endif %}

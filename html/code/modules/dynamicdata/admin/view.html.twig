@@ -18,7 +18,7 @@
                 {% if object.checkAccess('create') %}
                     <dd>
                         <a class="xar-icon xar-icon-add" href="{{ newlink }}" title="Create New Item in {{ label }}">
-                            {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                            {% if xar_modulevar('dynamicdata', 'use_module_icons') %}
                                 <img src="{{ xar_imageurl('icons/document-new.png','base') }}" class="xar-icon" alt="Create New Item in {{ label }}"/>
                             {% else %}
                                 Create New Item in {{ label }}
@@ -30,7 +30,7 @@
                     <dd>
                         {% set proplink = xar_moduleurl('dynamicdata','admin','modifyprop',{'itemid': object.objectid}) %}
                         <a class="xar-icon xar-icon-modify-config" href="{{ proplink }}" title="Configure {{ label }}">
-                            {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                            {% if xar_modulevar('dynamicdata', 'use_module_icons') %}
                                 <img src="{{ xar_imageurl('icons/modify-config.png','base') }}" class="xar-icon" alt="Configure {{ label }}"/>
                             {% else %}
                                 Configure {{ label }}
@@ -41,7 +41,7 @@
                 {% if querylink %}
                     <dd>
                         <a href="{{ querylink }}">
-                            {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                            {% if xar_modulevar('dynamicdata', 'use_module_icons') %}
                                 <img src="{{ xar_imageurl('icons/info.png','base') }}" class="xar-icon" alt="Query {{ label }}"/>
                             {% else %}
                                 Query {{ label }}
@@ -58,7 +58,7 @@
         {% if object is not null %}
             {% if object.visibility != 'public' %}
                 <h3 class="xar-align-center">Warning! This is a <em>{{ object.visibility }}</em> object used
-                internally by the {{ xar_coremethod('xarMod', 'getName', object.moduleid) }} module.<br/>
+                internally by the {{ xar_modname(object.moduleid) }} module.<br/>
                 Trying to modify items here may break the module. Please proceed with caution.</h3>
             {% endif %}
             {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}

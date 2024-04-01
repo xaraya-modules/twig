@@ -2,7 +2,7 @@
 
 {% block user_menu_skel %}
 {# <!-- Common user menu --> #}
-    {% if xar_modvar('themes', 'userpagemenu') %}
+    {% if xar_modulevar('themes', 'userpagemenu') %}
         {% if xmldata is null %}
             {% set xmldata = '' %}
         {% endif %}

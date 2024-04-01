@@ -44,7 +44,7 @@
                                 {{ xar_data_output({property: fieldtypeprop, value: field['format']}) }}
                             </td>
                             <td>
-                                {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                                {% if xar_modulevar('dynamicdata', 'use_module_icons') %}
                                     <a href="{{ xar_moduleurl('dynamicdata','admin','showpropval',{'proptype': field['name']}) }}" title="Edit">
                                         {{- xar_image({scope: "theme", file: "icons/modify-config.png", class: "xar-icon", alt: "modify-config"}) -}}
                                     </a>

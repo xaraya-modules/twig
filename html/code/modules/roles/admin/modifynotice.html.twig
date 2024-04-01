@@ -6,7 +6,7 @@
         <h2>
             <a href="{{ xar_moduleurl('roles','admin','createmail') }}">Messaging System:</a> Modify Notification Options
         </h2>
-        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set request = xar_request().getInfo() %}
         {% set tab = request.2 %}
         {% set xmldata = 'mail' %}
         {{ include('@base/includes/admin-menu-skel.html.twig') }}
@@ -19,49 +19,49 @@
                 </div>
                 <div class="xar-row">
                     <div class="xar-col">
-                        {% set label = 'When user state is changed to 'pending'' %}
+                        {% set label = 'When user state is changed to \'pending\'' %}
                         <label for="askpendingemail" title="{{ label }}">
                             Pending
                         </label>
                     </div>
                     <div class="xar-col">
-                        {% set checked = xar_var({scope: "module", module: "roles", name: "askpendingemail"}) %}
+                        {% set checked = xar_modulevar('roles', 'askpendingemail') %}
                         {{ xar_data_input({type: "checkbox", name: "askpendingemail", id: "askpendingemail", checked: checked}) }}
                     </div>
                 </div>
                 <div class="xar-row">
                     <div class="xar-col">
-                        {% set label = 'When user state is changed to 'active'' %}
+                        {% set label = 'When user state is changed to \'active\'' %}
                         <label for="askwelcomeemail" title="{{ label }}">
                             Active
                         </label>
                     </div>
                     <div class="xar-col">
-                        {% set checked = xar_var({scope: "module", module: "roles", name: "askwelcomeemail"}) %}
+                        {% set checked = xar_modulevar('roles', 'askwelcomeemail') %}
                         {{ xar_data_input({type: "checkbox", name: "askwelcomeemail", id: "askwelcomeemail", checked: checked}) }}
                     </div>
                 </div>
                 <div class="xar-row">
                     <div class="xar-col">
-                        {% set label = 'When user state is changed to 'inactive'' %}
+                        {% set label = 'When user state is changed to \'inactive\'' %}
                         <label for="askdeactivationemail" title="{{ label }}">
                             Inactive
                         </label>
                     </div>
                     <div class="xar-col">
-                        {% set checked = xar_var({scope: "module", module: "roles", name: "askdeactivationemail"}) %}
+                        {% set checked = xar_modulevar('roles', 'askdeactivationemail') %}
                         {{ xar_data_input({type: "checkbox", name: "askdeactivationemail", id: "askdeactivationemail", checked: checked}) }}
                     </div>
                 </div>
                 <div class="xar-row">
                     <div class="xar-col">
-                        {% set label = 'When user state is changed to 'not validated'' %}
+                        {% set label = 'When user state is changed to \'not validated\'' %}
                         <label for="askvalidationemail" title="{{ label }}">
                             Not Validated
                         </label>
                     </div>
                     <div class="xar-col">
-                        {% set checked = xar_var({scope: "module", module: "roles", name: "askvalidationemail"}) %}
+                        {% set checked = xar_modulevar('roles', 'askvalidationemail') %}
                         {{ xar_data_input({type: "checkbox", name: "askvalidationemail", id: "askvalidationemail", checked: checked}) }}
                     </div>
                 </div>
@@ -70,25 +70,16 @@
                 </div>
                 <div class="xar-row">
                     <div class="xar-col">
-                        {% set label = 'When administrator changes a user's password' %}
+                        {% set label = 'When administrator changes a user\'s password' %}
                         <label for="askpasswordemail" title="{{ label }}">
                             Changes A User's Password
                         </label>
                     </div>
                     <div class="xar-col">
-                        {% set checked = xar_var({scope: "module", module: "roles", name: "askpasswordemail"}) %}
+                        {% set checked = xar_modulevar('roles', 'askpasswordemail') %}
                         {{ xar_data_input({type: "checkbox", name: "askpasswordemail", id: "askpasswordemail", checked: checked}) }}
                     </div>
                 </div>
-                {# <!-- jojodee - we already have user hooks in the modifyconfig user hooks sections,
-                     so comment out until we know if there is another good reason to have them here as well --> #}
-                {# <!--
-                {% if hooks %}
-                    {% for module, output in hooks %}
-                        {{ output }}
-                    {% endfor %}
-                {% endif %}
-                --> #}
             </fieldset>
             <div class="xar-form-actions">
                 <div class="xar-row">

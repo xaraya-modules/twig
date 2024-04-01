@@ -3,13 +3,13 @@
 {% block main_objects %}
 {# <!--
         Template variables from user-main.xt passed to xarobject/main.php
-        $startlist = list of main objects to show
-        $update = flag to indicate we want to update
+        - startlist = list of main objects to show
+        - update = flag to indicate we want to update
 
         Template variables added by ui_view handler
-        $object = current object list
-        $context = current context
-        $tpltitle = generic template title
+        - object = current object list
+        - context = current context
+        - tpltitle = generic template title
     --> #}
 
     {# <!-- define the list of main objects --> #}
@@ -35,7 +35,7 @@
                 {% endfor %}
             </ul>
             <input type="hidden" name="update" value="1"/>
-            <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+            <input type="hidden" name="authid" value="{{ xar_security_authkey() }}"/>
             {% set label = 'Update List' %}
             {{- xar_button({type: "submit", label: label}) -}}
         </form>

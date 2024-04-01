@@ -2,7 +2,7 @@
 
 {% block admin_realms %}
 {#  Common Administration menu #}
-    {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+    {% set request = xar_request().getInfo() %}
     {% set activetab = request.2 %}
     <h2>Manage Realms</h2>
     <div>

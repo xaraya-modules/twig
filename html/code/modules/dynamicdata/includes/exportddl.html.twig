@@ -6,9 +6,9 @@
     <description>Auto generated schema file for development purposes</description>
     {% for table in tables %}
         <table class="xar-table" name="{{ table.getName() }}">
-            {% for column in {{ table.getColumns() }} %}
-                {% set required = !column.isNullable()?'true'.'false' %}
-                {% set auto = column.isAutoIncrement()?'true'.'false' %}
+            {% for column in table.getColumns() %}
+                {% set required = not column.isNullable() ? 'true' : 'false' %}
+                {% set auto = column.isAutoIncrement() ? 'true' : 'false' %}
                 {% set default = column.getDefaultValue() %}
                 {% set size = column.getSize() %}
                 {% set scale = column.getScale()?column.getScale().0 %}
@@ -20,14 +20,14 @@
                     <xar:attribute name="auto">
                         {{ auto }}
                     </xar:attribute>
-                    {% if {{ strtolower(column.getType()) == 'boolean' }} %}
+                    {% if column.getType()|lower == 'boolean' %}
                         <boolean>
                             <xar:attribute name="defaultvalue">
                                 {{ default }}
                             </xar:attribute>
                         </boolean>
-                    {% elseif {{ strtolower(column.getType()) == 'number' }} %}
-                        {% if {{ column.isAutoIncrement() or (column.getDefaultValue() == '') }} %}
+                    {% elseif column.getType()|lower == 'number' %}
+                        {% if column.isAutoIncrement() or (column.getDefaultValue() == '') %}
                             <number>
                                 {# <!-- Size should be easy, if Creole has done its job. No number without size --> #}
                                 <xar:attribute name="size">
@@ -54,8 +54,8 @@
                                 </xar:attribute>
                             </number>
                         {% endif %}
-                    {% elseif {{ strtolower(column.getType()) == 'text' }} %}
-                        {% if {{ column.getSize() != '' }} %}
+                    {% elseif column.getType()|lower == 'text' %}
+                        {% if column.getSize() != '' %}
                             <text>
                                 <xar:attribute name="size">
                                     {{ size }}
@@ -67,7 +67,7 @@
                         {% else %}
                             <text></text>
                         {% endif %}
-                    {% elseif {{ strtolower(column.getType()) == 'time' }} %}
+                    {% elseif column.getType()|lower == 'time' %}
                         {# <!-- well, yes, this originates from date, timestamp and other date related values --> #}
                         {# <!-- for now, we just copy the size attribute --> #}
                         <time>
@@ -75,7 +75,7 @@
                                 {{ size }}
                             </xar:attribute>
                         </time>
-                    {% elseif {{ strtolower(column.getType()) == 'binary' }} %}
+                    {% elseif column.getType()|lower == 'binary' %}
                         <binary />
                     {% endif %}
                 </column>
@@ -97,13 +97,13 @@
                 {% for index in indexes %}
                     {% if index.isUnique() %}
                         <unique name="{{ index.getName() }}">
-                            {% for indexColumn in {{ index.getColumns() }} %}
+                            {% for indexColumn in index.getColumns() %}
                                 <columnref id="{{ table.getName() }}.{{ indexColumn.getName() }}"/>
                             {% endfor %}
                         </unique>
                     {% else %}
                         <index name="{{ index.getName() }}">
-                            {% for indexColumn in {{ index.getColumns() }} %}
+                            {% for indexColumn in index.getColumns() %}
                                 <columnref id="{{ table.getName() }}.{{ indexColumn.getName() }}"/>
                             {% endfor %}
                         </index>

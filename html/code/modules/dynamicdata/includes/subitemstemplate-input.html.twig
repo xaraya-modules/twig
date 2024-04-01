@@ -14,23 +14,23 @@
     <div id="item_content_{{ fieldprefix }}">
         {# @todo support ${$index} in Twig? #}
         {% set index = 'index_' ~ fieldprefix %}
-        {% set $index = 0 %}
+        {% set varname = _context[index]|default(0) %}
         {% set prefix = object.getFieldPrefix() %}
         {% for key, item in items %}
             {# <!-- xar:set name="$index">$$index+1</xar:set> --> #}
-            {% set $index = key %}
-            {% set dummy = object.setFieldPrefix(index ~ '_' ~ prefix) %}
+            {% set varname = key %}
+            {% set dummy = object.setFieldPrefix(varname ~ '_' ~ prefix) %}
             {% set dummy = object.setFieldValues(item) %}
             <div id="{{ key }}">
 
 {# <!-- START: This can be modified (the text) or moved around as a block --> #}
                 {% if addremove == 2 %}
-                    <div id="template_{{ fieldprefix }}_{{ index }}">
+                    <div id="template_{{ fieldprefix }}_{{ varname }}">
                         <span style="cursor: pointer">
                             Remove
                         </span>
                         <script>
-                            el = document.getElementById('template_{{ fieldprefix }}_{{ index }}');
+                            el = document.getElementById('template_{{ fieldprefix }}_{{ varname }}');
                             setRemove(el);
                         </script>
                     </div>

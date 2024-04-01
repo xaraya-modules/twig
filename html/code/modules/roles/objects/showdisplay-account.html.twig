@@ -5,8 +5,8 @@
         {% set layout = 'default' %}
     {% endif %}
     {% set userid = object.itemid %}
-    {% set currentid = xar_uservar('id') %}
-    {% set settings = xar_modvar('roles', 'duvsettings')|split(',') %}
+    {% set currentid = xar_userid() %}
+    {% set settings = xar_modulevar('roles', 'duvsettings')|split(',') %}
     {% if layout == 'default' %}
         <h2>Profile for {{ xar_data_output({property: properties['name']}) }}</h2>
         <fieldset>
@@ -39,7 +39,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if xar_modvar('roles', 'allowemail') and xar_coremethod('xarModUserVars', 'get', 'roles', 'allowemail', userid) and (currentid != userid) %}
+        {% if xar_modulevar('roles', 'allowemail') and xar_coremethod('xarModUserVars', 'get', 'roles', 'allowemail', userid) and (currentid != userid) %}
             <div class="xar-row">
                 <div class="xar-col">
                     <label class="xar-form-label">

@@ -68,12 +68,13 @@
               {% if group['id'] == 1 %}
                   {#  skip Everybody #}
                   <xar:continue/>
-              {% endif %}
+              {% else %}
               <br/>
               {% if group['checked'] %}
                  <input type="checkbox" name="groups[{{ group['id'] }}]" id="groups_{{ group['id'] }}" value="1" checked="checked">{{ group['name'] }} ({{ group['users'] }})</input>
               {% else %}
                  <input type="checkbox" name="groups[{{ group['id'] }}]" id="groups_{{ group['id'] }}" value="1">{{ group['name'] }} ({{ group['users'] }})</input>
+              {% endif %}
               {% endif %}
           {% endfor %}
       </td>
@@ -98,7 +99,7 @@
         <label for="autoregenerate">{{ xar_translate('Auto-regenerate session-less URL cache') }}</label>
       </td>
       <td>
-        {% if xar_modvar('xarcachemanager', 'AutoRegenSessionless') %}
+        {% if xar_modulevar('xarcachemanager', 'AutoRegenSessionless') %}
           <input type="checkbox" name="autoregenerate" id="autoregenerate" value="1" checked="checked" />
         {% else %}
           <input type="checkbox" name="autoregenerate" id="autoregenerate" value="1" />
@@ -180,7 +181,7 @@
     </fieldset>
     <div class="xar-form-input-wrapper">
         <input type="hidden" name="authid" value="{{ authid }}" />
-        <input type="submit" name="submit" value=" }}{{ xar_translate('Submit') }} }}" />
+        <input type="submit" name="submit" value="{{ xar_translate('Submit') }}" />
     </div>
     </form>
 

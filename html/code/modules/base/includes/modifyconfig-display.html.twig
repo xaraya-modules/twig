@@ -15,16 +15,16 @@
                 <label for="defaultmodule" title="{{ label }}" class="xar-form-label">Default Module:</label>
             </div>
             <div class="xar-col">
-                {% if xar_modvar('modules', 'defaultmoduletype') == 'admin' %}
+                {% if xar_modulevar('modules', 'defaultmoduletype') == 'admin' %}
                     {% set filter = {'AdminCapable': 1} %}
                 {% else %}
                     {% set filter = {'UserCapable': 1} %}
                 {% endif %}
-                {% set value = xar_var({scope: "module", module: "modules", name: "defaultmodule"}) %}
+                {% set value = xar_modulevar('modules', 'defaultmodule') %}
                 {{ xar_data_input({type: "module", name: "defaultmodule", id: "defaultmodule", filter: filter, value: value, store_prop: "name"}) }}
             </div>
         </div>
-        {% if xar_modvar('modules', 'defaultmodule') == xar_coremethod('xarMod', 'getID', 'base') %}
+        {% if xar_modulevar('modules', 'defaultmodule') == xar_coremethod('xarMod', 'getID', 'base') %}
             <div class="xar-row">
                 <div class="xar-col">
                     {% set label = 'Use an alternate default page template.' %}
@@ -33,7 +33,7 @@
                     </label>
                 </div>
                 <div class="xar-col">
-                    {% set checked = xar_var({scope: "module", module: "base", name: "UseAlternatePageTemplate"}) %}
+                    {% set checked = xar_modulevar('base', 'UseAlternatePageTemplate') %}
                     {{ xar_data_input({type: "checkbox", name: "alternatepagetemplate", id: "alternatepagetemplate", checked: checked}) }}
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     </label>
                 </div>
                 <div class="xar-col">
-                    {% set value = xar_var({scope: "module", module: "base", name: "AlternatePageTemplateName"}) %}
+                    {% set value = xar_modulevar('base', 'AlternatePageTemplateName') %}
                     <input type="text" id="alternatepagetemplatename" name="alternatepagetemplatename" value="{{ value }}" class="xar-form-textlong"/>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                         {'id': 'admin', 'name': 'admin'}, 
                         {'id': 'user', 'name': 'user'}, 
                     ] %}
-                {% set value = xar_var({scope: "module", module: "modules", name: "defaultmoduletype"}) %}
+                {% set value = xar_modulevar('modules', 'defaultmoduletype') %}
                 {{ xar_data_input({type: "dropdown", name: "defaulttype", id: "defaulttype", options: options, value: value}) }}
             </div>
         </div>
@@ -74,7 +74,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {% set value = xar_var({scope: "module", module: "modules", name: "defaultmodulefunction"}) %}
+                {% set value = xar_modulevar('modules', 'defaultmodulefunction') %}
                 <input type="text" id="defaultfunction" name="defaultfunction" value="{{ value }}" maxlength="100" class="xar-form-textlong"/>
             </div>
         </div>
@@ -92,7 +92,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {% set value = xar_var({scope: "module", module: "modules", name: "defaultdatapath"}) %}
+                {% set value = xar_modulevar('modules', 'defaultdatapath') %}
                 <input type="text" id="defaultdatapath" name="defaultdatapath" value="{{ value }}" maxlength="100" class="xar-form-textlong"/>
             </div>
         </div>
@@ -108,7 +108,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {% set value = xar_var({scope: "config", name: "Site.Core.EnableShortURLsSupport"}) %}
+                {% set value = xar_configvar('Site.Core.EnableShortURLsSupport') %}
                 {% set firstline = 'Automatic' %}
                 {% set firstline = "'',firstline" %}
                 {% set options = [
@@ -129,7 +129,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {% set checked = xar_var({scope: "config", name: "Site.Core.WebserverAllowsSlashes"}) %}
+                {% set checked = xar_configvar('Site.Core.WebserverAllowsSlashes') %}
                 {{ xar_data_input({type: "checkbox", name: "allowsslashes", id: "allowsslashes", checked: checked}) }}
             </div>
         </div>
@@ -141,7 +141,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {% set checked = xar_var({scope: "config", name: "Site.Core.FixHTMLEntities"}) %}
+                {% set checked = xar_configvar('Site.Core.FixHTMLEntities') %}
                 {{ xar_data_input({type: "checkbox", name: "htmlentites", id: "htmlentites", checked: checked}) }} Fix HTML Entities
             </div>
         </div>

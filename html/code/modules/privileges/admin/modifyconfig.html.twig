@@ -26,7 +26,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set checked = xar_var({scope: "module", module: "privileges", name: "exceptionredirect"}) %}
+                                {% set checked = xar_modulevar('privileges', 'exceptionredirect') %}
                                 {{ xar_data_input({type: "checkbox", name: "exceptionredirect", id: "exceptionredirect", checked: checked}) }}&#160;This redirects a non-logged in user to the login screen if
                                 they don't have the proper privileges.
                             </div>
@@ -43,7 +43,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set checked = xar_var({scope: "module", module: "privileges", name: "inheritdeny"}) %}
+                                {% set checked = xar_modulevar('privileges', 'inheritdeny') %}
                                 {{ xar_data_input({type: "checkbox", name: "inheritdeny", id: "inheritdeny", checked: checked}) }}
                             Warning: This setting affects the way privileges work on your site. If changed you should retest all the privileges on your site.
                             </div>
@@ -60,7 +60,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set checked = xar_var({scope: "module", module: "privileges", name: "lastresort"}) %}
+                                {% set checked = xar_modulevar('privileges', 'lastresort') %}
                                 {{ xar_data_input({type: "checkbox", name: "lastresort", id: "lastresort", checked: checked}) }}&#160;Warning: This setting opens a tab to enable you to create an administrator whose privileges cannot be removed.
                             </div>
                         </div>
@@ -82,13 +82,13 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set checked = xar_var({scope: "module", module: "privileges", name: "showrealms"}) %}
+                                {% set checked = xar_modulevar('privileges', 'showrealms') %}
                                 {{ xar_data_input({type: "checkbox", name: "enablerealms", id: "enablerealms", checked: checked}) }}
                                     &#160;Checking this enables the Manage Realms item on the Privileges menu
                             </div>
                         </div>
                     </fieldset>
-                    {% if xar_modvar('privileges', 'showrealms') %}
+                    {% if xar_modulevar('privileges', 'showrealms') %}
                         <fieldset>
                             <legend>Realm Privilege Options</legend>
                             <p class="xar-col dummy xar-padding-endsthick">
@@ -136,7 +136,7 @@
                                             {'id': 'exact', 'name': 'Exact Match'}, 
                                             {'id': 'contains', 'name': 'Privilege Contains Mask Name'}
                                         ] %}
-                                    {% set realmcomparison = xar_var({scope: "module", module: "privileges", name: "realmcomparison"}) %}
+                                    {% set realmcomparison = xar_modulevar('privileges', 'realmcomparison') %}
                                     <div class="xar-form-container-after">
                                         {{ xar_data_input({type: "radio", name: "realmcomparison", id: "realmvalue", options: options, value: realmcomparison, layout: "vertical"}) }}
                                     </div>
@@ -152,7 +152,7 @@
                 </form>
             {% endif %}
             {# <!-- Begin Last Resort --> #}
-            {% if tab == 'lastresort' and xar_modvar('privileges', 'lastresort') %}
+            {% if tab == 'lastresort' and xar_modulevar('privileges', 'lastresort') %}
                 <form method="post" action="{{ xar_currenturl() }}" enctype="application/x-www-form-urlencoded">
                     <fieldset>
                         <legend>Manage Last Resort Admin</legend>
@@ -219,7 +219,7 @@
                         This option is provided for Web Developer convenience. In general most Site Administrators should not need to access the Masks list provided below. Editing of the masks without an understanding of how they function can result in access problems to content on your site.
                     </p>
                     {% set where = 'priv_type eq 3' %}
-                    {% set object = xar_coremethod('DataObjectFactory', 'getObjectList', {'name': 'privileges_privileges', 'where': where}) %}
+                    {% set object = xar_data_objectlist({'name': 'privileges_privileges', 'where': where}) %}
                     {{ xar_data_view({object: object}) }}
                 </fieldset>
                 <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
@@ -245,7 +245,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set checked = xar_var({scope: "module", module: "privileges", name: "test"}) %}
+                                {% set checked = xar_modulevar('privileges', 'test') %}
                                 {{ xar_data_input({type: "checkbox", name: "test", id: "test", checked: checked}) }}
                                 &#160;Show checks not involving DENYs
                             </div>
@@ -258,7 +258,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set checked = xar_var({scope: "module", module: "privileges", name: "testdeny"}) %}
+                                {% set checked = xar_modulevar('privileges', 'testdeny') %}
                                 {{ xar_data_input({type: "checkbox", name: "testdeny", id: "testdeny", checked: checked}) }} 
                                 &#160;Show checks involving DENYs
                             </div>
@@ -271,7 +271,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set value = xar_modvar('privileges'|trim( 'testmask')) %}
+                                {% set value = xar_modulevar('privileges'|trim( 'testmask')) %}
                                 {% if not value %}
                                     {% set value = 'All' %}
                                 {% endif %}

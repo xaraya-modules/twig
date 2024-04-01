@@ -122,7 +122,7 @@
                         </select>
                         {% set label = 'Assign' %}
                         {{- xar_button({type: "submit", label: label}) -}}
-                        <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey', 'roles') }}"/>
+                        <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey('roles') }}"/>
                         <input type="hidden" name="privid" id="privid" value="{{ id }}"/>
                         <input type="hidden" name="return_url" id="return_url"
                         value="{{ xar_moduleurl('privileges','admin','viewroles',{'id': id}) }}"/>

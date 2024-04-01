@@ -15,7 +15,7 @@
         <h2>
             <a href="{{ xar_moduleurl('roles','admin','createmail') }}">Messaging System:</a> Send Mail To Users/Groups
         </h2>
-        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set request = xar_request().getInfo() %}
         {% set tab = request.2 %}
         {% set xmldata = 'mail' %}
         {{ include('@base/includes/admin-menu-skel.html.twig') }}

@@ -13,7 +13,7 @@
         </table>
         <input type="hidden" name="objectid" id="objectid" value="{{ objectid }}"/>
         <input type="hidden" name="itemid" id="itemid" value="0"/>
-        <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey', 'dynamicdata') }}"/>
+        <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey('dynamicdata') }}"/>
         <input type="hidden" name="return_url" id="return_url"
         value="{{ xar_currenturl() }}"/>
     </form>

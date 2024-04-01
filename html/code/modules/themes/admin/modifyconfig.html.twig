@@ -22,7 +22,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set value = xar_var({scope: "config", name: "Site.BL.ThemesDirectory"}) %}
+                            {% set value = xar_configvar('Site.BL.ThemesDirectory') %}
                             <input type="text" id="themedir" name="themedir" value="{{ value }}" maxlength="100" class="xar-form-textlong"/>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set value = xar_var({scope: "config", name: "Site.BL.DocType"}) %}
+                            {% set value = xar_configvar('Site.BL.DocType') %}
                             {% set options = [
                                     {'id': 'html2', 'name': 'html2'},
                                     {'id': 'html32', 'name': 'html32'},
@@ -68,7 +68,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_var({scope: "module", module: "themes", name: "usedashboard"}) %}
+                            {% set checked = xar_modulevar('themes', 'usedashboard') %}
                         </div>
                         <div class="xar-col">
                             {{ xar_data_input({type: "checkbox", name: "usedashboard", checked: checked}) }}
@@ -98,7 +98,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_var({scope: "module", module: "themes", name: "adminpagemenu"}) %}
+                            {% set checked = xar_modulevar('themes', 'adminpagemenu') %}
                             {{ xar_data_input({type: "checkbox", name: "adminpagemenu", checked: checked}) }}
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_var({scope: "module", module: "themes", name: "userpagemenu"}) %}
+                            {% set checked = xar_modulevar('themes', 'userpagemenu') %}
                             {{ xar_data_input({type: "checkbox", name: "userpagemenu", checked: checked}) }}
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                 </fieldset>
                 <fieldset>
                     <legend>User Settings</legend>
-                    {% set enable_user_menu = xar_var({scope: "module", module: "themes", name: "enable_user_menu"}) %}
+                    {% set enable_user_menu = xar_modulevar('themes', 'enable_user_menu') %}
                     <div class="xar-row">
                         <div class="xar-col">
                             {% set varlabel = 'Allow users to select a theme from their profile' %}
@@ -154,9 +154,7 @@
                     </div>
                     {% if not enable_user_menu %}                
                         <script type="text/javascript">
-                            //<![CDATA[
                             setDisplayOff('user_themes_id');
-                            //]]>                    
                         </script>
                      {% endif %}
                 </fieldset>
@@ -169,7 +167,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteName"}) %}
+                            {% set value = xar_modulevar('themes', 'SiteName') %}
                             <input type="text" name="sitename" id="sitename" value="{{ value }}" size="30" maxlength="100"/>
                         </div>
                     </div>
@@ -180,7 +178,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteSlogan"}) %}
+                            {% set value = xar_modulevar('themes', 'SiteSlogan') %}
                             <input type="text" name="slogan" id="slogan" value="{{ value }}" size="30" maxlength="100"/>
                         </div>
                     </div>
@@ -191,7 +189,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteCopyRight"}) %}
+                            {% set value = xar_modulevar('themes', 'SiteCopyRight') %}
                             <input type="text" name="copyright" id="copyright" value="{{ value }}" size="30" maxlength="100"/>
                         </div>
                     </div>
@@ -203,7 +201,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteFooter"}) %}
+                            {% set value = xar_modulevar('themes', 'SiteFooter') %}
                             {{ xar_data_input({type: "textarea", name: "footer", cols: "40", rows: "3", value: value, class: "xar-form-textareamedium"}) }}
                         </div>
                     </div>
@@ -215,7 +213,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteTitleSeparator"}) %}
+                            {% set value = xar_modulevar('themes', 'SiteTitleSeparator') %}
                             <input type="text" name="separator" id="separator" value="{{ value }}" size="10" maxlength="15"/>
                         </div>
                     </div>
@@ -229,7 +227,7 @@
                                     {'id': 'to', 'name': xar_translate('Page Name')},
                                     {'id': 'theme', 'name': xar_translate('Theme Driven')}
                                 ] %}
-                            {% set value = xar_var({scope: "module", module: "themes", name: "SiteTitleOrder"}) %}
+                            {% set value = xar_modulevar('themes', 'SiteTitleOrder') %}
                             <label for="pagetitle">
                                 Page Title Order
                             </label>
@@ -248,7 +246,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_var({scope: "config", name: "Site.BL.CacheTemplates"}) %}
+                            {% set checked = xar_configvar('Site.BL.CacheTemplates') %}
                             {{ xar_data_input({type: "checkbox", name: "cachetemplates", checked: checked}) }} Enable template caching
                         </div>
                     </div>
@@ -259,7 +257,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_var({scope: "config", name: "Site.BL.MemCacheTemplates"}) %}
+                            {% set checked = xar_configvar('Site.BL.MemCacheTemplates') %}
                             {{ xar_data_input({type: "checkbox", name: "memcachetemplates", checked: checked}) }} Enable memory caching for templates
                         </div>
                     </div>
@@ -274,7 +272,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set combined = xar_var({scope: "module", module: "themes", name: "css.combined"}) %}
+                            {% set combined = xar_modulevar('themes', 'css.combined') %}
                             {% if combined %}
                                 <input type="checkbox" name="combinecss" id="combinecss" checked="checked" onclick="toggleDisplay('compressedcss');"/>
                             {% else %}
@@ -290,15 +288,13 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set compressed = xar_var({scope: "module", module: "themes", name: "css.compressed"}) %}
+                            {% set compressed = xar_modulevar('themes', 'css.compressed') %}
                             {{ xar_data_input({type: "checkbox", name: "compresscss", id: "compresscss", checked: compressed}) }} Compresses combined CSS stylesheet, eliminating whitespace, comments and linebreaks.
                         </div>
                     </div>
                     {% if not combined %}
                         <script type="text/javascript">
-                            //<![CDATA[
                             setDisplayOff('compressedcss');
-                            //]]>                    
                         </script>
                      {% endif %}
                     <div class="xar-row">
@@ -308,7 +304,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set allowajax = xar_coremethod('xarConfigVars', 'get', null, 'Site.Core.AllowAJAX') %}
+                            {% set allowajax = xar_configvar('Site.Core.AllowAJAX') %}
                             {{ xar_data_input({type: "checkbox", name: "allowajax", id: "allowajax", checked: allowajax}) }}
                         </div>
                     </div>
@@ -330,7 +326,7 @@
                                     {'id': 0, 'name': xar_translate('No')},
                                     {'id': 1, 'name': xar_translate('Yes')}
                                 ] %}
-                            {% set checked = xar_var({scope: "config", name: "Site.BL.CompressWhitespace"}) %}
+                            {% set checked = xar_configvar('Site.BL.CompressWhitespace') %}
                             {{ xar_data_input({type: "radio", name: "compresswhitespace", value: checked, options: options}) }}
                         </div>
                     </div>
@@ -338,7 +334,7 @@
                 <fieldset>
                     <legend>Template Debugging options</legend>
                     <p class="xar-note">The options activated below are visible to the debug administrators, <a href="{{ xar_moduleurl('roles','admin','modifyconfig',{'tab': 'debugging'}) }}">which are defined here</a>.</p>
-                    {% if xar_coremethod('xarConfigVars', 'get', null,'Site.BL.CacheTemplates') %}
+                    {% if xar_configvar('Site.BL.CacheTemplates') %}
                         <div class="xar-row">
                             <div class="xar-col">
                                 <label for="showphpcbit" class="xar-form-label">                            
@@ -346,7 +342,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set checked = xar_var({scope: "module", module: "themes", name: "ShowPHPCommentBlockInTemplates"}) %}
+                                {% set checked = xar_modulevar('themes', 'ShowPHPCommentBlockInTemplates') %}
                                 {{ xar_data_input({type: "checkbox", name: "showphpcbit", id: "showphpcbit", checked: checked}) }} Block header is displayed in compiled templates.
                             </div>
                         </div>
@@ -358,7 +354,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_var({scope: "module", module: "themes", name: "ShowTemplates"}) %}
+                            {% set checked = xar_modulevar('themes', 'ShowTemplates') %}
                             {{ xar_data_input({type: "checkbox", name: "showtemplates", checked: checked}) }} Filenames are shown as HTML comments.
                         </div>
                     </div>
@@ -369,7 +365,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_var({scope: "module", module: "themes", name: "variable_dump"}) %}
+                            {% set checked = xar_modulevar('themes', 'variable_dump') %}
                             {{ xar_data_input({type: "checkbox", name: "variable_dump", checked: checked}) }} Debug Templates by Showing Available Variables
                         </div>
                     </div>
@@ -382,7 +378,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set value = xar_var({scope: "module", module: "themes", name: "AtomTag"}) %}
+                                {% set value = xar_modulevar('themes', 'AtomTag') %}
                                 <input type="text" name="AtomTag" id="AtomTag" value="{{ value }}" size="30" maxlength="100"/>
                             </div>
                         </div>
@@ -408,7 +404,7 @@
                                     {'id': 'database', 'name': xar_translate('Database')},
                                     {'id': 'css', 'name': xar_translate('CSS')}
                                 ] %}
-                            {% set value = xar_modvar('themes', 'flushcaches') %}
+                            {% set value = xar_modulevar('themes', 'flushcaches') %}
                             {{ xar_data_input({type: "checkboxlist", name: "flushcaches", value: value, options: options}) }}
                         </div>
                     </div>
@@ -424,7 +420,7 @@
                             {% set options = [
                                     {'id': 'dynamicdata', 'name': xar_translate('Dynamicdata')}
                                 ] %}
-                            {% set value = xar_modvar('themes', 'flushdbcaches') %}
+                            {% set value = xar_modulevar('themes', 'flushdbcaches') %}
                             {{ xar_data_input({type: "checkboxlist", name: "flushdbcaches", value: value, options: options}) }}
                         </div>
                     </div>
@@ -434,7 +430,7 @@
                         <div class="xar-col"></div>
                         <div class="xar-col">
                             {{ xar_data_input({type: "hidden", name: "phase", id: "phase", value: "flush"}) }}
-                            <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                            <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
                             {% set label = 'Flush' %}
                             {{- xar_button({type: "submit", label: label}) -}}
                         </div>

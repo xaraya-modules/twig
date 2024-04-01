@@ -1,7 +1,7 @@
 {# @privileges/includes/maskbased.html.twig #}
 
 {% block maskbased %}
-{% set isenabled = xar_modvar('privileges', 'maskbasedsecurity') %}
+{% set isenabled = xar_modulevar('privileges', 'maskbasedsecurity') %}
 {% if xar_security_check('AdminPrivilege') %}
     {% if _REQUEST['enable'] %}
         {% if _REQUEST['enable'] < 0 %}
@@ -25,7 +25,7 @@
 {% if xar_security_check('AdminPrivilege') %}
     {# @todo replace with xarController getVar #}
     {% if _REQUEST['flip'] %}
-        {% set val = xar_modvar('privileges', _REQUEST['flip']) %}
+        {% set val = xar_modulevar('privileges', _REQUEST['flip']) %}
         {% if val %}
             {% set dummy = xar_coremethod('xarModVars', 'set', 'privileges',_REQUEST['flip'],'') %}
         {% elseif val is not null %}
@@ -39,13 +39,17 @@
 
 {% set groups = xar_apifunc('roles','user','getallgroups') %}
 {# @todo check if twig sort can help or add function #}
+{#
 {% set dummy = 1;
 function by_name(a,b) {
     return strcmp(a['name'], b['name']);
 }
 uasort(groups,'by_name') %}
+#}
 {# <!-- priv_type 3 means a mask --> #}
-{% set tmp_dd_getitems = xar_data_getitems({properties: properties, values: items, objectname: "privileges_privileges", where: "priv_type eq 3", sort: "module,component,level"}) %}{% set properties = tmp_dd_getitems.0 %}{% set items = tmp_dd_getitems.1 %}
+{% set tmp_dd_getitems = xar_data_getitems({properties: properties, values: items, objectname: "privileges_privileges", where: "priv_type eq 3", sort: "module,component,level"}) %}
+{% set properties = tmp_dd_getitems.0 %}
+{% set items = tmp_dd_getitems.1 %}
 {% set fieldlist = ['name','module','component','level'] %}
 
 {% if xar_security_check('AdminPrivilege') %}
@@ -81,7 +85,7 @@ uasort(groups,'by_name') %}
     {% endfor %}
     {% for group in groups %}
         {% set code = 'SC.' ~ fields['name'] ~ '.' ~ group['id'] %}
-        {% set val = xar_modvar('privileges', code) %}
+        {% set val = xar_modulevar('privileges', code) %}
         <td align="center"><a href="{{ xar_currenturl({'flip': code}) }}" title="Flip Setting">
         {% if val %}
             {{- xar_image({scope: "theme", file: "icons/activate.png", class: "xar-icon"}) -}}

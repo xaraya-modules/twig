@@ -34,7 +34,7 @@
                     <li class="leaf">
                         <div class="leaf-actions">
                             {% set label1 = 'Delete' %}
-                            <xar:sec mask="DeletePrivilege" catch="false" component="Privileges" instance="{{ name }}">
+                            {% if xar_security_check('DeletePrivilege', 0, 'Privileges', name) %}
                                 {% set dellink = xar_moduleurl('privileges','admin','deleteprivilege',{'id': id}) %}
                                 {% set label = 'Delete this privilege' %}
                                 <a href="{{ dellink }}" title="{{ label }}">

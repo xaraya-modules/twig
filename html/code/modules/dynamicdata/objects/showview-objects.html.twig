@@ -52,13 +52,13 @@
                     <th class="xar-form-textlong" style="text-align: center;">Actions</th>
                 {% endif %}
             </tr>
-            {% set adminlistserial = xar_modvar('dynamicdata', 'administrators') %}
-            {% set adminrole = xar_modvar('roles', 'admin') %}
+            {% set adminlistserial = xar_modulevar('dynamicdata', 'administrators') %}
+            {% set adminrole = xar_modulevar('roles', 'admin') %}
             {# @todo assume we get this from function #}
             {% if adminlistserial %}
-                {% set adminlist = xar_unserialize(adminlistserial)|merge([xar_username(adminrole, 'uname')]) %}
+                {% set adminlist = xar_unserialize(adminlistserial)|merge([xar_uservar('uname', adminrole)]) %}
             {% else %}
-                {% set adminlist = [xar_username(adminrole, 'uname')] %}
+                {% set adminlist = [xar_uservar('uname', adminrole)] %}
             {% endif %}
             {% set username = xar_uservar('uname') %}
             {% set issuperadmin = (username in adminlist) %}
@@ -87,7 +87,7 @@
                     {% if not linkfield %}
                         <td class="xar-align-center">
                             {% if links[itemid] and links[itemid]|length > 0 %}
-                                {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                                {% if xar_modulevar('dynamicdata', 'use_module_icons') %}
                                     {% for otype, option in links[itemid] %}
                                         {% if otype == 'display' %}
                                             {# <!-- skip display for dataobjects --> #}

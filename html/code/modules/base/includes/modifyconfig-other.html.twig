@@ -11,7 +11,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {% set checked = xar_var({scope: "config", name: "Site.Core.LoadLegacy"}) %}
+                {% set checked = xar_configvar('Site.Core.LoadLegacy') %}
                 {{ xar_data_input({type: "checkbox", name: "loadlegacy", id: "loadlegacy", checked: checked}) }}
             </div>
         </div>
@@ -29,7 +29,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {% set value = xar_var({scope: "module", module: "base", name: "proxyhost"}) %}
+                {% set value = xar_modulevar('base', 'proxyhost') %}
                 <input type="text" id="proxyhost" name="proxyhost" value="{{ value }}" maxlength="100" class="xar-form-inputlong"/>
             </div>
         </div>
@@ -41,7 +41,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {% set value = xar_var({scope: "module", module: "base", name: "proxyport"}) %}
+                {% set value = xar_modulevar('base', 'proxyport') %}
                 <input type="text" id="proxyport" name="proxyport" value="{{ value }}" maxlength="10" class="xar-form-textshort"/>
             </div>
         </div>
@@ -65,7 +65,7 @@
                 <label for="sitetimezone" title="{{ label }}" class="xar-form-label">Site Timezone.</label>
             </div>
             <div class="xar-col">
-                {% set sitetimezone = xar_var({scope: "config", name: "Site.Core.TimeZone"}) %}
+                {% set sitetimezone = xar_configvar('Site.Core.TimeZone') %}
                 <xar.data-input type="timezone" name="sitetimezone" id="sitetimezone" value="sitetimezone"/>
                 &#160;The time is {{ sitedatetime.format(constant('DATE_RSS')) }}
             </div>

@@ -33,7 +33,7 @@
             {% elseif phase == 'form' %}
                 <input type="hidden" name="type_id" id="type_id" value="{{ type['type_id'] }}"/>
                 <input type="hidden" name="phase" id="phase" value="update"/>
-                <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
                 <fieldset>
                     <legend>Create Instance</legend>
                     <div class="xar-row">

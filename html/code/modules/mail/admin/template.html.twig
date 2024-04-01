@@ -1,7 +1,7 @@
 {# @mail/admin/template.html.twig #}
 
 {% block template %}
-{% if xar_modvar('base', 'editor') == 'htmlarea' %}
+{% if xar_modulevar('base', 'editor') == 'htmlarea' %}
         {{ include('@htmlarea/includes/htmlarea_insert.html.twig') }}
     {% endif %}
     {% set messagetitle = xar_translate('Write this string in the message body or subject to display the corresponding information') %}
@@ -51,22 +51,22 @@
                 <p>
                     {% if mailtype == 'createhook' %}
                         This email will be sent to 
-                        {{ xar_var({scope: "module", module: "mail", name: "adminname"}) }}[ 
-                        {{ xar_var({scope: "module", module: "mail", name: "adminmail"}) }}] when a hooked item
+                        {{ xar_modulevar('mail', 'adminname') }}[ 
+                        {{ xar_modulevar('mail', 'adminmail') }}] when a hooked item
                         is created. 
                     {% elseif mailtype == 'changehook' %}
                         This email will be sent to 
-                        {{ xar_var({scope: "module", module: "mail", name: "adminname"}) }}[ 
-                        {{ xar_var({scope: "module", module: "mail", name: "adminmail"}) }}] when a hooked item
+                        {{ xar_modulevar('mail', 'adminname') }}[ 
+                        {{ xar_modulevar('mail', 'adminmail') }}] when a hooked item
                         is updated. 
                     {% elseif mailtype == 'deletehook' %}
                         This email will be sent to 
-                        {{ xar_var({scope: "module", module: "mail", name: "adminname"}) }}[ 
-                        {{ xar_var({scope: "module", module: "mail", name: "adminmail"}) }}] when a hooked item
+                        {{ xar_modulevar('mail', 'adminname') }}[ 
+                        {{ xar_modulevar('mail', 'adminmail') }}] when a hooked item
                         is deleted. 
                     {% else %}This email will be sent to 
-                        {{ xar_var({scope: "module", module: "mail", name: "adminname"}) }}[ 
-                        {{ xar_var({scope: "module", module: "mail", name: "adminmail"}) }}].
+                        {{ xar_modulevar('mail', 'adminname') }}[ 
+                        {{ xar_modulevar('mail', 'adminmail') }}].
                     {% endif %}
                 </p>
             </fieldset>

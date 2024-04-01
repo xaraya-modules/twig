@@ -26,8 +26,8 @@
 	{# <!-- !HEADER --> #}
     <div id="header">
     <div id="header-enclosure">
-        <h1 id="sitename">{{ xar_var({name: "SiteName", scope: "module", module: "themes"}) }}</h1>
-        <div id="siteslogan">{{ xar_var({name: "SiteSlogan", scope: "module", module: "themes"}) }}</div>
+        <h1 id="sitename">{{ xar_modulevar("themes", "SiteName") }}</h1>
+        <div id="siteslogan">{{ xar_modulevar("themes", "SiteSelogan") }}</div>
     </div>{# <!--/header-enclosure--> #}
     </div>{# <!--/header--> #}
     

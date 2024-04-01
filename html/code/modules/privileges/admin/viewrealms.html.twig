@@ -3,7 +3,7 @@
 {% block viewrealms %}
 {{ include('@privileges/includes/admin-mod-head.html.twig') }}
     <div class="xar-mod-body">
-        {% if xar_modvar('privileges', 'showrealms') %}
+        {% if xar_modulevar('privileges', 'showrealms') %}
             {{ include('@privileges/includes/admin-realms.html.twig') }}
             <table class="xar-table xar-fullwidth xar-clearboth">
                 <tr>

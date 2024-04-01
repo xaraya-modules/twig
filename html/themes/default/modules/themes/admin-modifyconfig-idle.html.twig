@@ -23,7 +23,7 @@
                 <fieldset>
                     <legend>Configuration Options</legend>
                     <div class="textInputContainer">
-                        {% set valThemedir = xar_modvar('themes', 'themesdirectory') %}
+                        {% set valThemedir = xar_modulevar('themes', 'themesdirectory') %}
                         {{ xar_data_label({label: "Default Theme Directory", for: "themedir", title: "The default directory for site themes - no trailing slash."}) }}
                         {{ xar_data_input({id: "themedir", name: "themedir", type: "textbox", size: "15", maxlength: "100", value: valThemedir}) }}
                     </div>
@@ -36,7 +36,7 @@
                         <div class="textInputContainer">
                             {{ xar_data_label({label: "Dashboard Template name", for: "dashtemplate", title: "Template name for the dashboard - no trailing suffix, defaults to \'dashboard\'"}) }}
                             <div class="infoAddedInput">
-                                {% set valDashtamplate = xar_var({scope: "module", module: "themes", name: "dashtemplate"}) %}
+                                {% set valDashtamplate = xar_modulevar('themes', 'dashtemplate') %}
                                 {{ xar_data_input({id: "dashtamplate", name: "dashtamplate", type: "textbox", value: valDashtamplate, size: "30", maxlength: "100"}) }}
                                 <span class="inputIndication">(without the .xt extension)</span>
                                 <p>The Admin Dashboard is automatically used with all admin
@@ -63,30 +63,30 @@
                 </fieldset>
                 <fieldset>
                 <legend>Site Display Options</legend>
-                {% set valAuthid = xar_var({scope: "module", module: "authsystem", name: "authid"}) %}
+                {% set valAuthid = xar_modulevar('authsystem', 'authid') %}
                 {{ xar_data_input({id: "authid", name: "authid", type: "hidden", value: valAuthid}) }}
                 <div class="textInputContainer">
-                    {% set valSitename = xar_modvar('themes', 'SiteName') %}
+                    {% set valSitename = xar_modulevar('themes', 'SiteName') %}
                     {{ xar_data_label({label: "Site Name", for: "sitename"}) }}
                     {{ xar_data_input({type: "textbox", name: "sitename", id: "sitename", value: valSitename}) }}
                 </div>
                 <div class="textInputContainer">
-                    {% set valSiteslogan = xar_modvar('themes', 'SiteSlogan') %}
+                    {% set valSiteslogan = xar_modulevar('themes', 'SiteSlogan') %}
                     {{ xar_data_label({label: "Site Slogan", for: "slogan"}) }}
                     {{ xar_data_input({type: "textbox", id: "slogan", name: "slogan", value: valSiteslogan}) }}
                 </div>
                 <div class="textInputContainer">
-                    {% set valCopyright = xar_modvar('themes', 'SiteCopyRight') %}
+                    {% set valCopyright = xar_modulevar('themes', 'SiteCopyRight') %}
                     {{ xar_data_label({label: "Copyright", for: "copyright"}) }}
                     {{ xar_data_input({type: "textbox", name: "copyright", id: "copyright", value: valCopyright}) }}
                 </div>{{ xar_coremethod('xarVar', 'delCached', 'Mod.Variables.themes','SiteCopyRight') }} 
                 <div class="textareaContainer">
-                    {% set valFooternote = xar_modvar('themes', 'SiteFooter') %}
+                    {% set valFooternote = xar_modulevar('themes', 'SiteFooter') %}
                     {{ xar_data_label({label: "Footer Note", for: "footer"}) }}
                     {{ xar_data_input({type: "textarea", id: "footer", name: "footer", cols: "60", rows: "5", value: valFooternote}) }}
                 </div>{{ xar_coremethod('xarVar', 'delCached', 'Mod.Variables.themes','SiteFooter') }} 
                 <div class="textInputContainer">
-                    {% set valSeperator = xar_modvar('themes', 'SiteTitleSeparator') %}
+                    {% set valSeperator = xar_modulevar('themes', 'SiteTitleSeparator') %}
                     {{ xar_data_label({label: "Page Title Separator", for: "separator"}) }}
                     {{ xar_data_input({type: "textbox", name: "separator", id: "separator", value: valSeperator}) }}
                 </div>
@@ -99,39 +99,39 @@
                         {'id': 'to', 'name': xar_translate('Page Name')},
                         {'id': 'theme', 'name': xar_translate('Theme Driven')}
                     ] %}
-                    {% set valPagetitle = xar_var({scope: "module", module: "themes", name: "SiteTitleOrder"}) %}
+                    {% set valPagetitle = xar_modulevar('themes', 'SiteTitleOrder') %}
                     {{ xar_data_label({label: "Page Title Order", for: "pagetitle"}) }}
                     {{ xar_data_input({type: "dropdown", name: "pagetitle", options: options, value: valPagetitle}) }}
                 </div></fieldset>
                 <fieldset>
                     <legend>Template Debugging options</legend>
-            {% if xar_coremethod('xarConfigVars', 'get', null,'Site.BL.CacheTemplates') %}
+            {% if xar_configvar('Site.BL.CacheTemplates') %}
                 <div class="checkInputContainer">
-                    {% set checkShowphpcbit = xar_var({scope: "module", module: "themes", name: "ShowPHPCommentBlockInTemplates"}) %}
+                    {% set checkShowphpcbit = xar_modulevar('themes', 'ShowPHPCommentBlockInTemplates') %}
                     {{ xar_data_input({type: "checkbox", name: "showphpcbit", id: "showphpcbit", checked: checkShowphpcbit}) }}
                     {{ xar_data_label({label: "Show php comment block header in compiled templates", for: "showphpcbit"}) }}
                 </div>
             {% endif %}
 
                     <div class="checkInputContainer">
-                        {% set checkShowtemplates = xar_var({scope: "module", module: "themes", name: "ShowTemplates"}) %}
+                        {% set checkShowtemplates = xar_modulevar('themes', 'ShowTemplates') %}
                         {{ xar_data_input({type: "checkbox", name: "showtemplates", id: "showtemplates", checked: checkShowtemplates}) }}
                         {{ xar_data_label({label: "Show template filenames in HTML comments", for: "showtemplates"}) }}
                     </div>
                     <div class="checkInputContainer">
-                        {% set checkCachetemplates = xar_var({scope: "config", name: "Site.BL.CacheTemplates"}) %}
+                        {% set checkCachetemplates = xar_configvar('Site.BL.CacheTemplates') %}
                         {{ xar_data_input({type: "checkbox", name: "cachetemplates", id: "cachetemplates", checked: checkCachetemplates}) }}
                         {{ xar_data_label({label: "Cache templates", for: "cachetemplates"}) }}
                     </div>
                     <div class="checkInputContainer">
-                        {% set checkVardump = xar_var({scope: "module", module: "themes", name: "var_dump"}) %}
+                        {% set checkVardump = xar_modulevar('themes', 'var_dump') %}
                         {{ xar_data_input({type: "checkbox", name: "var_dump", id: "var_dump", checked: checkVardump}) }}
                         {{ xar_data_label({label: "Debug Templates by Showing Variables Available", for: "var_dump"}) }}
                     </div>
                     {% if xar_coremethod('xarTheme', 'isAvailable', 'atom') %}
                         {# <!-- This should be moved if we ever fully support the atom spec --> #}
                         <div class="textInputContainer">
-                            {% set valAtomtag = xar_modvar('themes', 'AtomTag') %}
+                            {% set valAtomtag = xar_modulevar('themes', 'AtomTag') %}
                             {{ xar_data_label({label: "Atom Tag", for: "AtomTag"}) }}
                             {{ xar_data_input({type: "textbox", name: "AtomTag", id: "AtomTag", value: valAtomtag}) }}
                         </div>

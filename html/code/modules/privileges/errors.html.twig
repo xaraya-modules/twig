@@ -28,7 +28,7 @@
                 {% if redirecturl is not null %}
                     <input type="hidden" name="redirecturl" id="returnurl" value="{{ redirecturl }}"/>
                 {% endif %}
-                {% if not xar_coremethod('xarUser', 'isLoggedIn') %}
+                {% if not xar_userid() %}
                     <div style="margin-top: 20px; margin-left: 20px">
                         {% set label = 'Log in' %}
                         {% set link = xar_moduleurl('authsystem', 'user', 'showloginform') %}

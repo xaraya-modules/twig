@@ -10,7 +10,7 @@ If debug mode is active, exception messages are visible to the debug administrat
             </label>
         </div>
         <div class="xar-col">
-            {% set checked = xar_modvar('dynamicdata', 'debugmode') %}
+            {% set checked = xar_modulevar('dynamicdata', 'debugmode') %}
             {{ xar_data_input({type: "checkbox", name: "debugmode", checked: checked}) }}
         </div>
     </div>
@@ -22,7 +22,7 @@ If debug mode is active, exception messages are visible to the debug administrat
             </label>
         </div>
         <div class="xar-col">
-            {% set checked = xar_coremethod('xarConfigVars', 'get', null, 'Site.BL.ShowQueries') %}
+            {% set checked = xar_configvar('Site.BL.ShowQueries') %}
             {{ xar_data_input({type: "checkbox", name: "show_queries", checked: checked}) }}
         </div>
     </div>
@@ -34,7 +34,7 @@ If debug mode is active, exception messages are visible to the debug administrat
             </label>
         </div>
         <div class="xar-col">
-            {% set checked = xar_modvar('dynamicdata', 'suppress_updates') %}
+            {% set checked = xar_modulevar('dynamicdata', 'suppress_updates') %}
             {{ xar_data_input({type: "checkbox", name: "suppress_updates", checked: checked}) }}
             <span style="color: red">If this is checked, no data will be written to the database</span>
         </div>

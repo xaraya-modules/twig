@@ -9,7 +9,7 @@
             {% set thisname = object.properties['name'].getValue() %}
         {% endif %}
         <h2>Manage {{ itemtypename }} '{{ thisname }}':</h2>
-        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set request = xar_request().getInfo() %}
         {% set activetab = request.2 %}
         {% set xmldata = 'showusers' %}
         {% set urlargs = {'id': id, 'reload': 'reload'} %}

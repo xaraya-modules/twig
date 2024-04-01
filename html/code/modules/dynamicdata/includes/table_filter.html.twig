@@ -39,7 +39,7 @@
                                 {% set option = option|trim("'") %}
                             {% endif %}
                             {% if proptype['name'] == 'username' %}
-                                {% set option = xar_username(option, 'uname') %}
+                                {% set option = xar_uservar('uname', option) %}
                             {% endif %}
                             {% set options = options|merge([{'id': option, 'name': option}]) %}
                         {% endfor %}

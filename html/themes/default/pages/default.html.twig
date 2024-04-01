@@ -26,7 +26,7 @@
                             {{- xar_image({scope: "theme", file: "xarLogo2.png", width: "90", height: "90", alt: "Xaraya Logo", title: "home"}) -}}
                         </a>
                         <p>
-                            {{ xar_var({name: "SiteSlogan", scope: "module", module: "themes"}) }}
+                            {{ xar_modulevar("themes", "SiteSlogan") }}
                         </p>
                     </div>
                     {% block modulespace %}{{ _bl_mainModuleOutput|raw }}{% endblock %}

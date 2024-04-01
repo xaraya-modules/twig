@@ -2,7 +2,7 @@
 
 {% block modifyemail %}
 {# <!-- @todo make this editor configurable --> #}
-    {% if xar_modvar('base', 'editor') == 'htmlarea' %}
+    {% if xar_modulevar('base', 'editor') == 'htmlarea' %}
         {{ include('@htmlarea/includes/htmlarea_insert.html.twig') }}
     {% endif %}
     {% set messagetitle = 'Write this string in the message body or subject to display the corresponding information' %}
@@ -11,7 +11,7 @@
         <h2>
             <a href="{{ xar_moduleurl('roles','admin','createmail') }}">Messaging System:</a> Modify Notification Template: {{ mailtype }}
         </h2>
-        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set request = xar_request().getInfo() %}
         {% set tab = request.2 %}
         {% set xmldata = 'mail' %}
         {{ include('@base/includes/admin-menu-skel.html.twig') }}

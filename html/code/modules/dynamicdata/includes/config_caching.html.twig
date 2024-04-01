@@ -9,7 +9,7 @@
             </label>
         </div>
         <div class="xar-col">
-            {% set value = xar_modvar('dynamicdata', 'caching') %}
+            {% set value = xar_modulevar('dynamicdata', 'caching') %}
             {{ xar_data_input({type: "checkbox", name: "caching", value: value}) }}
         </div>
     </div>

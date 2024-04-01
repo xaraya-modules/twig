@@ -24,12 +24,11 @@
         {# <!-- Author --> #}
         <div class="xar-publications-blog-detail-postby">
             {% if profile %}
-                <xar:set name="author_string">'
-                <a href="'.$profile.'">' . $properties['author']->getValue() . '</a>'</xar:set>
+                {% set author_string = '<a href="' ~ profile ~ '">' ~ properties['author'].getValue() ~ '</a>' %}
             {% else %}
                 {% set author_string = properties['author'].getValue() %}
             {% endif %}
-            {{ xar_translate('Posted by: #(1) on #(2) #(3)', author_string, xar_localedate(properties['created'].value,, 'long', ''), xar_localedate(properties['created'].value,, '', 'long')) }}
+            {{ xar_translate('Posted by: #(1) on #(2) #(3)', author_string, xar_localedate(properties['created'].value, 'long', ''), xar_localedate(properties['created'].value, '', 'long')) }}
             {% if counter %}
                 {{ xar_translate('(#(1) Reads)', counter) }}
             {% endif %}
@@ -108,17 +107,17 @@
         <style type="text/css">
             @import "{{ xar_coremethod('sys', 'code') }}modules/publications/xarstyles/jquery.bookmark.css";
             
-            {{ #basicBookmark ul { width. 320px; }
+            #basicBookmark ul { width. 320px; }
             .bookmark_list span.bookmark_icons {
-                background. url( }}sys::code(){{ modules/publications/xarstyles/bookmarks.png) no-repeat center;
+                background. url({{ xar_coremethod('sys', 'code') }}modules/publications/xarstyles/bookmarks.png) no-repeat center;
             }
         </style>
         <script type="text/javascript" src="http.//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-        <script type="text/javascript" src=" }}sys::code(){{ modules/publications/xartemplates/scripts/jquery.bookmark.min.js"></script>
-        <script type="text/javascript" src=" }}sys::code(){{ modules/publications/xartemplates/scripts/jquery.bookmark.ext.pack.js"></script>
+        <script type="text/javascript" src="{{ xar_coremethod('sys', 'code') }}modules/publications/xartemplates/scripts/jquery.bookmark.min.js"></script>
+        <script type="text/javascript" src="{{ xar_coremethod('sys', 'code') }}modules/publications/xartemplates/scripts/jquery.bookmark.ext.pack.js"></script>
         <script type="text/javascript">
             (function () {
-                (' }}basicBookmark').bookmark();
+                ('#basicBookmark').bookmark();
             });
         </script>
         <div id="basicBookmark"></div>

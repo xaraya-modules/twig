@@ -3,7 +3,6 @@
 {% extends '@base/base.html.twig' %}
 
 {% block modulespace %}
-<![CDATA[
     <script type="text/javascript">
         function showtab (selectedindex, items)
         {
@@ -17,7 +16,6 @@
             document.getElementById('href-' + selectedindex).className = "xar-accent xar-accent-outline";
         }
     </script>
-    ]]>
     {{ include('@base/includes/user-mod-head.html.twig') }}
     <div class="xar-mod-body">
 

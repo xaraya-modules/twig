@@ -148,7 +148,7 @@
                                     <input type="radio" name="ptype" id="ptype_full" value="full" checked="checked" onclick="this.form.action='{{ xar_moduleurl('privileges','admin','modifyprivilege') }}';this.form.submit();"/>
                                 </div>
                             </div>
-	                        {% if xar_modvar('privileges', 'showrealms') %}
+	                        {% if xar_modulevar('privileges', 'showrealms') %}
                                 <div class="xar-row">
                                     <div class="xar-col">
                                         <label for="prealm" title="{{ xar_translate('Realm to which this privilege applies') }}" class="xar-form-label">Realm:</label>

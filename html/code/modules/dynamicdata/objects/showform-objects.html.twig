@@ -22,7 +22,7 @@
             Object Query
         </div>
         <div class="xar-form-input-wrapper">
-            {% set thisobject = xar_coremethod('DataObjectFactory', 'getObject', {'name': properties['name'].value}) %}
+            {% set thisobject = xar_data_object({'name': properties['name'].value}) %}
 	    {% if thisobject %}
                 {{ thisobject.dataquery.qecho() }}
             {% endif %}

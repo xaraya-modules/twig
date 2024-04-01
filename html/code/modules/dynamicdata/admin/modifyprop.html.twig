@@ -35,7 +35,7 @@
         {# <!-- This is where the list of properties shown starts --> #}
         {% if visibility != 'public' %}
             <h3 class="xar-align-center">Warning! This is a <em>{{ visibility }}</em> object used
-            internally by the {{ xar_coremethod('xarMod', 'getName', module_id) }} module.<br/>
+            internally by the {{ xar_modname(module_id) }} module.<br/>
             Trying to modify the properties of this object here may break the module. Please proceed with caution.</h3>
         {% endif %}
         {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}

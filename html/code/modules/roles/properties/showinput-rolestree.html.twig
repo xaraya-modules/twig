@@ -73,8 +73,8 @@
                             {{ node.name }} <strong>see the entry above</strong>
                         {% else %}
                             {% set numofsubgroups = children|length %}
-                            {% set subgroups = numofsubgroups == 1 ? {{ xar_translate('subgroup') }} : {{ xar_translate('subgroups') }} %}
-                            {% set numofusers = users == 1 ? {{ xar_translate('user') }} : {{ xar_translate('users') }} %}
+                            {% set subgroups = numofsubgroups == 1 ? xar_translate('subgroup') : xar_translate('subgroups') %}
+                            {% set numofusers = users == 1 ? xar_translate('user') : xar_translate('users') %}
                             {% set description = numofsubgroups ~ " " ~ subgroups ~ ' | ' ~ users ~ " " ~ numofusers %}
                             {% set label = 'Modify this Group' %}
                             <a href="{{ xar_moduleurl('roles', 'admin', 'modify', {'id': id}) }}" title="{{ label }}">

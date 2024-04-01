@@ -10,7 +10,7 @@
         {% set layout = 'default' %}
     {% endif %}
     {% if not userId %}
-        {% set userId = object.getContext().getUserId() ?? xar_coremethod('xarSession', 'getVar', 'role_id') %}
+        {% set userId = xar_userid(object.getContext()) %}
     {% endif %}
     {% if layout == 'default' %}
         {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}

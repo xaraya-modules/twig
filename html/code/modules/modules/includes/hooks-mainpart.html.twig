@@ -28,9 +28,9 @@
                     </div>
                     {# <!-- hide hook details on page load (only if js enabled :) ) --> #}
                     
-                    <script type="text/javascript"><![CDATA[
+                    <script type="text/javascript">
                         setDisplayOff('hookdetails{{ module }}');
-                    ]]></script>
+                    </script>
                                     
                 </li>
             {% endfor %}
@@ -53,9 +53,9 @@
                 </div>
                 {# <!-- hide hook details on page load (only if js enabled :) ) --> #}
                 
-                <script type="text/javascript"><![CDATA[
+                <script type="text/javascript">
                     setDisplayOff('hookdetails{{ curhook }}');
-                ]]></script>
+                </script>
                     
     {% endif %}
 
@@ -136,15 +136,15 @@
 
                             {% if modinfo['hookstate'] == 2 %}
                                 
-                                 <script type="text/javascript"><![CDATA[
+                                 <script type="text/javascript">
                                      setDisplayOn('{{ subject_id }}_itemtypes_0'); document.getElementById('{{ subject_id }}_hookstate_2').checked="checked";
-                                 ]]></script>
+                                 </script>
                                 
                             {% else %}
                                 
-                                 <script type="text/javascript"><![CDATA[
+                                 <script type="text/javascript">
                                      setDisplayOff('{{ subject_id }}_itemtypes_0');
-                                 ]]></script>
+                                 </script>
                                 
                             {% endif %}
 
@@ -234,15 +234,15 @@
                                     </ul>
                                     {% if typeinfo['scopes'][0] == 2 %}
                                         
-                                            <script type="text/javascript"><![CDATA[
+                                        <script type="text/javascript">
                                             setDisplayOn('{{ type_id }}_scopes'); document.getElementById('{{ type_id }}_scopes_0_2').checked="checked";
-                                            ]]></script>
+                                        </script>
                                         
                                     {% else %}
                                         
-                                            <script type="text/javascript"><![CDATA[
+                                        <script type="text/javascript">
                                             setDisplayOff('{{ type_id }}_scopes');
-                                            ]]></script>
+                                        </script>
                                         
                                     {% endif %}  
                                 {% endif %}
@@ -257,15 +257,15 @@
                         {# <!-- End subject module --> #}
                             {% if modinfo['hookstate'] == 3 %}
                                  
-                                 <script type="text/javascript"><![CDATA[
+                                 <script type="text/javascript">
                                      setDisplayOn('{{ subject_id }}_itemtypes'); document.getElementById('{{ subject_id }}_hookstate_3').checked="checked";
-                                 ]]></script>
+                                 </script>
                                 
                             {% else %}
                                 
-                                 <script type="text/javascript"><![CDATA[
+                                 <script type="text/javascript">
                                      setDisplayOff('{{ subject_id }}_itemtypes');
-                                 ]]></script>
+                                 </script>
                                 
                             {% endif %}                        
                     {% endfor %}

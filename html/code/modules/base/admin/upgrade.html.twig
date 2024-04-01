@@ -23,9 +23,9 @@
                         {{ constant('xarCore::VERSION_ID') }} version {{ constant('xarCore::VERSION_NUM') }} ({{ constant('xarCore::VERSION_SUB') }})
                     </td>
                     <td>
-                        {{ xar_var({scope: "config", name: "System.Core.VersionId"}) }} version
-                        {{ xar_var({scope: "config", name: "System.Core.VersionNum"}) }}
-                        ({{ xar_var({scope: "config", name: "System.Core.VersionSub"}) }})
+                        {{ xar_configvar('System.Core.VersionId') }} version
+                        {{ xar_configvar('System.Core.VersionNum') }}
+                        ({{ xar_configvar('System.Core.VersionSub') }})
                     </td>
                 </tr>
                 <tr>
@@ -39,14 +39,14 @@
                         {{ constant('xarCore::VERSION_REV') }}
                     </td>
                     <td>
-                        {{ xar_var({scope: "config", name: "System.Core.VersionRev"}) }}
+                        {{ xar_configvar('System.Core.VersionRev') }}
                     </td>
                 </tr>
             </table>
         </fieldset>
         <fieldset>
             Status:
-            {% set idsequal = constant('xarCore::VERSION_ID') == xar_coremethod('xarConfigVars', 'get', null, 'System.Core.VersionId') %}
+            {% set idsequal = constant('xarCore::VERSION_ID') == xar_configvar('System.Core.VersionId') %}
             {% if idsequal %}
                 {% if versioncompare == 0 %}
                     Your installation is current.

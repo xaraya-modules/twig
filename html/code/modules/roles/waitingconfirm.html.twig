@@ -4,7 +4,7 @@
 
 {% block modulespace %}
 {# <!-- Roles module confirmation for existing users revalidating their email --> #}
-    {% set adminemail = xar_var({scope: "module", module: "mail", name: "adminmail"}) %}
+    {% set adminemail = xar_modulevar('mail', 'adminmail') %}
     <div class="xar-mod-head">
         <span class="xar-mod-title">Change of Email</span>
     </div>

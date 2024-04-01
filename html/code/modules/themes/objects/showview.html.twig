@@ -54,7 +54,7 @@
                         </td>
                     {% endfor %}
                     <td class="action">
-                        {% if xar_modvar('themes', 'use_module_icons') %}
+                        {% if xar_modulevar('themes', 'use_module_icons') %}
                             {% set title = 'Display Configuration' %}
                             <a href="{{ xar_moduleurl('themes','admin','display_config',{'itemid': fields['id']}) }}" title="{{ title }}" class="xar-icon-display">
                                 {{- xar_image({scope: "theme", file: "icons/display.png", class: "xar-icon", alt: title}) -}}

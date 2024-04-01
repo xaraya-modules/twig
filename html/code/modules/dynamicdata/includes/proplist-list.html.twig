@@ -60,7 +60,7 @@
                     <input type="text" name="dd_default[{{ field['id'] }}]" id="dd_default_{{ field['id'] }}" value="{{ xar_prep_display(field['defaultvalue']) }}" class="xar-form-textmedium"/>
                 </td>
                 <td class="{{ displayclass }}">
-                    {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                    {% if xar_modulevar('dynamicdata', 'use_module_icons') %}
                         {% set title = xar_translate('Edit configuration for property \"#(1)\"',field['name']) %}
                         {% set link = xar_moduleurl('dynamicdata', 'admin', 'showpropval', {'itemid': field['id']}) %}
                         {% set label = 'Edit' %}

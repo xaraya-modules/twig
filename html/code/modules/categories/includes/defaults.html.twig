@@ -2,7 +2,7 @@
 
 {% block defaults %}
 {% if tabmodule != 'categories' %}
-        {% set regid = xar_coremethod('xarMod', 'getRegID', tabmodule) %}
+        {% set regid = xar_moduleid(tabmodule) %}
     {% else %}
         {% set regid = 0 %}
     {% endif %}
@@ -13,7 +13,7 @@
             </label>
         </div>
         <div class="xar-col">
-            {% set value = xar_var({scope: "module", module: "categories", name: "categoriesobject"}) %}
+            {% set value = xar_modulevar('categories', 'categoriesobject') %}
             {{ xar_data_input({type: "object", name: "categoriesobject", value: value, store_prop: "name"}) }}
         </div>
     </div>

@@ -3,7 +3,7 @@
 {% block showinput_categorymenu %}
 {{ xar_style({scope: "module", module: "base", file: "navtabs"}) }}
 
-    {% set urlinfo = xar_coremethod('xarController', 'getRequest').getInfo() %}
+    {% set urlinfo = xar_request().getInfo() %}
     <div>
         <ul class="xar-tabs xar-alt xar-norm-outline">
             {% if layout == 'toplevel' %}
@@ -32,7 +32,7 @@
                     {% set condition = id == activetab %}
                     {% if mask %}
                         {% set mask = tab['mask'] %}
-                        {% if xar_security_check(mask) }}
+                        {% if xar_security_check(mask) %}
                             {% if condition %}
                                 {% set tabclass = 'xar-tab-active' %}
                                 {% set linkclass = 'xar-accent xar-accent-outline' %}

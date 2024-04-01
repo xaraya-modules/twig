@@ -7,7 +7,7 @@
             Modify Category
         </h2>
         <form action="{{ xar_moduleurl('categories','admin','update') }}" method="post" enctype="application/x-www-form-urlencoded">
-            <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+            <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
             <fieldset class="xar-norm">
                 <legend>
                     <strong>

@@ -1,7 +1,6 @@
 {# @dynamicdata/properties/showoutput-subitems.html.twig #}
 
 {% block showoutput_subitems %}
-<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
     {% set count = items|length %}
     {% if count == 1 %}
         {{ xar_translate('[1 subitem]') }}

@@ -2,7 +2,7 @@
 
 {% block admin_menu_skel %}
 {# <!-- Common admin menu --> #}
-    {% if xar_modvar('themes', 'adminpagemenu') %}
+    {% if xar_modulevar('themes', 'adminpagemenu') %}
         {% if xmldata is null %}
             {% set xmldata = '' %}
         {% endif %}

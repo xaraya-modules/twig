@@ -34,7 +34,7 @@
             </div>
             <div class="xar-col">
                 {{ xar_data_input({id: "use_module_alias", property: properties['use_module_alias'], onchange: "toggle(\'aliaslink\',\'aliascheckbox\')"}) }}&#160;
-                {% set modname = xar_coremethod('xarMod', 'getName') %}
+                {% set modname = xar_modname() %}
                 <a href="{{ xar_moduleurl('modules','admin','aliases',{'name': modname}) }}">Manage Aliases</a>
             </div>
         </div>
@@ -47,10 +47,10 @@
                 {{ xar_data_label({property: properties['module_alias_name'], for: "id", label: label, title: title}) }}
             </div>
             <div class="xar-col">
-                {% set aliasmap = xar_coremethod('xarConfigVars', 'get', null,'System.ModuleAliases') %}
+                {% set aliasmap = xar_configvar('System.ModuleAliases') %}
                 {% set options = [] %}
                 {% if aliasmap %}
-                	{% set modname = xar_coremethod('xarMod', 'getName') %}
+                	{% set modname = xar_modname() %}
                     {% for aliasname, modulename in aliasmap %}
                         {% if modulename == modname %}
                             {% set options = options|merge({(aliasname): aliasname}) %}

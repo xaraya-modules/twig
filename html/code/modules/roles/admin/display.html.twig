@@ -16,7 +16,7 @@
                 {% set thisname = object.properties['name'].getValue() %}
             {% endif %}
             <h2>Manage {{ object.label }} '{{ thisname }}':</h2>
-            {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+            {% set request = xar_request().getInfo() %}
             {% set activetab = request.2 %}
             {% set xmldata = 'showusers' %}
             {% set urlargs = {'id': id, 'reload': 'reload'} %}
@@ -45,7 +45,7 @@
                 {% set fields = ['id','name','uname','email','state','regdate'] %}
                 {{ xar_data_display({object: object, fieldlist: fields}) }}
                 {% if itemtype == constant('xarRoles::ROLES_USERTYPE') %}
-                    {% set settings = xar_modvar('roles', 'duvsettings')|split(',') %}
+                    {% set settings = xar_modulevar('roles', 'duvsettings')|split(',') %}
                     {% if 'userhome' in settings %}
                         <div class="xar-row">
                             <div class="xar-col">

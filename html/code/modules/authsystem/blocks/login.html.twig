@@ -30,7 +30,7 @@
         </fieldset>
         
         <fieldset class="xar-form-actions">
-	        {% if xar_coremethod('xarConfigVars', 'get', null,'Site.Session.SecurityLevel') != 'High' %}
+	        {% if xar_configvar('Site.Session.SecurityLevel') != 'High' %}
 	            <label class="xar-displayblock" for="{{ remembermeid }}">
 	                {{ xar_data_input({type: "checkbox", name: "rememberme", id: remembermeid, value: "1"}) }}
 	                Remember me

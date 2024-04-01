@@ -6,7 +6,6 @@
         {% set typename = propertytype.name %}
         {# to be checked in function #}
         {% if has_overview %}
-            <![CDATA[
             <script type="text/javascript">
                 function showtab (selectedindex, items)
                 {
@@ -20,7 +19,6 @@
                     document.getElementById('href-' + selectedindex).className = "xar-accent xar-accent-outline";
                 }
             </script>
-            ]]>
             <ul class="xar-tabs xar-alt xar-norm-outline" style="clear:both">
                 <li id="tab-1">
                     <a id="href-1" href="javascript:showtab(1,2)">

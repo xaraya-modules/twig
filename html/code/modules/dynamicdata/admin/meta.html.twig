@@ -102,7 +102,7 @@
                             </td>
                             <td>
                                 <input type="hidden" name="db" value="{{ db }}"/>
-                                <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                                <input type="hidden" name="authid" value="{{ xar_security_authkey() }}"/>
                                 {% set label = 'Create DD Objects' %}
                                 {{- xar_button({type: "submit", label: label}) -}}
                             </td>
@@ -263,7 +263,7 @@
                 </fieldset>
                 {% if export != 'ddl' %}
                     <div class="xar-align-center">
-                        <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                        <input type="hidden" name="authid" value="{{ xar_security_authkey() }}"/>
                         {% set label = 'Import Object Definition' %}
                         {{- xar_button({type: "submit", label: label}) -}}
                     </div>

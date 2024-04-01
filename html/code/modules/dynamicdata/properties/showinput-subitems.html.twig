@@ -1,7 +1,6 @@
 {# @dynamicdata/properties/showinput-subitems.html.twig #}
 
 {% block showinput_subitems %}
-<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
     {# <!-- Variables from BL --> #}
     {% set itemkeys = items|join(','|keys) %}
     {% set itemkenumber_of_subitems = items|length %}
@@ -126,7 +125,6 @@
             }
 
     {# <!--
-    <![CDATA[
                 if (!Array.prototype.indexOf)
                 {
                   Array.prototype.indexOf = function(elt /*, from*/)
@@ -149,7 +147,6 @@
                     return -1;
                   };
                 }
-            ]]>
             --> #}
         </script>
     {% endif %}

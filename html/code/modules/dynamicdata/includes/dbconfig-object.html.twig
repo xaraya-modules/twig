@@ -98,7 +98,7 @@
             </div>
         </fieldset>
         <div class="xar-align-center">
-            <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey', 'dynamicdata') }}"/>
+            <input type="hidden" name="authid" value="{{ xar_security_authkey('dynamicdata') }}"/>
             <input type="hidden" name="obj" value="{{ obj }}"/>
             {% set label = 'Cancel' %}
             {{- xar_button({type: "cancel", label: label}) -}}&#160;

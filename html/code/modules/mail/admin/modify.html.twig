@@ -9,7 +9,7 @@
       {# <!-- Normal edit form --> #}
       <form style="display: inline;" method="post" action="{{ xar_moduleurl('dynamicdata','admin','update') }}">
         {{ xar_data_form({object: object, itemid: itemid, linkfield: "name"}) }}
-        <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey', 'dynamicdata') }}"/>
+        <input type="hidden" name="authid" value="{{ xar_security_authkey('dynamicdata') }}"/>
         <input type="hidden" name="itemid" value="{{ itemid }}"/>
         <input type="hidden" name="objectid" value="{{ object.objectid }}"/>
         <input type="hidden" name="modid" value="{{ object.moduleid }}"/>
@@ -21,7 +21,7 @@
 
       {# <!-- When editting, offer delete option --> #}
       <form style="display: inline;" method="post" action="{{ xar_moduleurl('mail','admin','delete') }}">
-        <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+        <input type="hidden" name="authid" value="{{ xar_security_authkey() }}"/>
         <input type="hidden" name="itemid" value="{{ itemid }}"/>
         <input type="hidden" name="objectid" value="{{ object.objectid }}"/>
         {% set label = 'Delete' %}

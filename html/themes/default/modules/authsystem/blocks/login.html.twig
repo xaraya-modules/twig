@@ -16,7 +16,7 @@
                 Password:</label>
                 <input type="password" name="pass" id="pass{{ blockid }}" maxlength="64"/>
             </div>
-            {% if xar_coremethod('xarConfigVars', 'get', null,'Site.Session.SecurityLevel') != 'High' %}
+            {% if xar_configvar('Site.Session.SecurityLevel') != 'High' %}
                 <div class="checkInputContainer">
                     <input type="checkbox" name="rememberme" id="rememberme{{ blockid }}" value="1"/>&#160;
                     <label for="rememberme{{ blockid }}">Don't ask for password</label>

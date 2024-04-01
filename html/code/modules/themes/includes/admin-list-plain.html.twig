@@ -33,7 +33,7 @@
                         <td>{{ classes[theme['class']]['name'] }}</td>
                         <td>{{ states[theme['state']]['name'] }}</td>
                         {% if theme['class'] == 2 and theme['state'] == constant('xarTheme::STATE_ACTIVE') %}
-                            {% set themename = strtolower(theme['name']) %}
+                            {% set themename = theme['name']|lower %}
                             <td>
                                 {% if themename == user_theme %}
                                     <input type="radio" name="user_theme" id="user_theme" value="{{ themename }}" checked="checked"/>

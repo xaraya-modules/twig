@@ -14,7 +14,7 @@
      --> #}
 
     {# <!-- We need $typeinfo for the menu labels--> #}
-    {% set pubtypes = xar_coremethod('DataObjectFactory','getObjectList',{'name': 'publications_types'}) %}
+    {% set pubtypes = xar_data_objectlist({'name': 'publications_types'}) %}
     {% set dummy = pubtypes.dataquery.gt(pubtypes.properties['state'].source,2) %}
     {% set typeinfo = pubtypes.getItems() %}
 

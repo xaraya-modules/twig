@@ -53,7 +53,7 @@
       {% endif %}
       &#160;Log Hit Ratio:&#160;<strong>{{ totals['ratio'] }}%</strong>&#160;of&#160;{{ totals['total'] }}
       <input type="hidden" name="tab" id="tab" value="{{ tab }}" />
-      <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}" />
+      <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}" />
       &#160;<input type="submit" name="reset" value="{{ xar_translate('Reset Logfile') }}" />
     </form>
 

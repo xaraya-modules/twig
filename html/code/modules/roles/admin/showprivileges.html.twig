@@ -13,7 +13,7 @@
           Show privileges of {{ itemtypename }} '{{ pname }}':
         </h2>
         {% set id = roleid %}
-        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set request = xar_request().getInfo() %}
         {% set activetab = request.2 %}
         {% set xmldata = 'showusers' %}
         {% set urlargs = {'id': id, 'reload': 'reload'} %}
@@ -50,7 +50,7 @@
                     <table class="xar-table xar-fullwidth">
                         <tr>
                             <th>Name</th>
-                            {% if xar_modvar('privileges', 'showrealms') %}
+                            {% if xar_modulevar('privileges', 'showrealms') %}
                                 <th>Realm</th>
                             {% endif %}
                             <th>Module</th>
@@ -67,7 +67,7 @@
                                         {{ loop_item1.name }}
                                     </a>
                                 </td>
-                                {% if xar_modvar('privileges', 'showrealms') %}
+                                {% if xar_modulevar('privileges', 'showrealms') %}
                                     <td>
                                         {{ loop_item1.realm }}
                                     </td>
@@ -101,7 +101,7 @@
                 <table class="xar-table xar-fullwidth">
                     <tr>
                         <th>Name</th>
-                        {% if xar_modvar('privileges', 'showrealms') %}
+                        {% if xar_modulevar('privileges', 'showrealms') %}
                             <th>Realm</th>
                         {% endif %}
                         <th>Module</th>
@@ -118,7 +118,7 @@
                                     {{ loop_item1.name }}
                                 </a>
                             </td>
-                            {% if xar_modvar('privileges', 'showrealms') %}
+                            {% if xar_modulevar('privileges', 'showrealms') %}
                                 <td class="xar-align-center">
                                     {{ loop_item1.realm }}
                                 </td>

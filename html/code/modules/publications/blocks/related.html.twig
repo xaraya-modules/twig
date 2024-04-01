@@ -8,7 +8,7 @@
         <br /><br />
     {% endif %}
     {% if showauthor and authorlink %}
-        {% set username = xar_coremethod('DataPropertyMaster','getProperty',{'name': 'username'}) %}
+        {% set username = xar_data_property({'name': 'username'}) %}
         {{ xar_set(username, 'initialization_store_type', 'id') }}
         {{ xar_set(username, 'value', authorid) }}
         {% set authorname = username.getValue() %}

@@ -29,11 +29,9 @@
                 </ul>
                     </div>
                     {# <!-- hide hook details on page load (only if js enabled :) ) --> #}
-                    <![CDATA[                        
                     <script type="text/javascript">
                         setDisplayOff('hookdetails{{ hookmod }}');
                     </script>
-                    ]]>
                     {# <!-- hooked to none --> #}
                     <div class="xar-row">
                         <div class="xar-col">
@@ -92,17 +90,13 @@
                         {% endif %}
 
                         {% if modinfo['hookstate'] == 2 %}
-                            <![CDATA[
                              <script type="text/javascript">
                                  setDisplayOn('{{ subject_id }}_itemtypes_0'); document.getElementById('{{ subject_id }}_hookstate_2').checked="checked";
                              </script>
-                            ]]>
                         {% else %}
-                            <![CDATA[
                              <script type="text/javascript">
                                  setDisplayOff('{{ subject_id }}_itemtypes_0');
                              </script>
-                            ]]>
                         {% endif %}
 
                         {% if modinfo['itemtypes'] %}
@@ -182,17 +176,13 @@
                                         {% endfor %}
                                     </ul>
                                     {% if typeinfo['scopes'][0] == 2 %}
-                                        <![CDATA[
-                                            <script type="text/javascript">
+                                        <script type="text/javascript">
                                             setDisplayOn('{{ type_id }}_scopes'); document.getElementById('{{ type_id }}_scopes_0_2').checked="checked";
-                                            </script>
-                                        ]]>
+                                        </script>
                                     {% else %}
-                                        <![CDATA[
-                                            <script type="text/javascript">
+                                        <script type="text/javascript">
                                             setDisplayOff('{{ type_id }}_scopes');
-                                            </script>
-                                        ]]>
+                                        </script>
                                     {% endif %}  
                                 {% endif %}
                                 </li>
@@ -203,17 +193,13 @@
                         {% endif %}
                         {# <!-- show/hide itemtype details on page load (only if js enabled :) ) --> #}
                         {% if modinfo['hookstate'] > 2 %}
-                             <![CDATA[                                 
                              <script type="text/javascript">
                                  setDisplayOn('{{ subject_id }}_itemtypes'); document.getElementById('{{ subject_id }}_hookstate_3').checked="checked";
                              </script>
-                             ]]>
                         {% else %}
-                            <![CDATA[                                 
                              <script type="text/javascript">
                                  setDisplayOff('{{ subject_id }}_itemtypes');
                              </script>
-                             ]]>
                         {% endif %}
                 </fieldset>
             {% endfor %}

@@ -28,7 +28,7 @@
             {% endif %}({{ totalselect }})
         </h2>
         {% set itemtype = constant('xarRoles::ROLES_GROUPTYPE') %}
-        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set request = xar_request().getInfo() %}
         {% set activetab = request.2 %}
         {% set xmldata = 'showusers' %}
         {% set urlargs = {'id': id, 'reload': 'reload'} %}
@@ -166,7 +166,9 @@
             <form method="post" action="{{ xar_moduleurl('roles','admin','updatestate') }}" name="state">
                 {# <!-- @todo: add this to the filter GUI? --> #}
                 {% set fieldlist = ['id','uname','email','regdate','state'] %}
-                {% set tmp_dd_getitems = xar_data_getitems({object: object, values: values, properties: properties, sort: order, fieldlist: fieldlist}) %}{% set properties = tmp_dd_getitems.0 %}{% set values = tmp_dd_getitems.1 %}
+                {% set tmp_dd_getitems = xar_data_getitems({object: object, values: values, properties: properties, sort: order, fieldlist: fieldlist}) %}
+                {% set properties = tmp_dd_getitems.0 %}
+                {% set values = tmp_dd_getitems.1 %}
                 <table class="xar-table xar-items">
                     <tr>
                         {% for name in properties|keys %}
@@ -217,7 +219,7 @@
                             {% endfor %}
                             <td>
                                 {% if not users[itemid]['frozen'] %}
-                                    {% if xar_modvar('roles', 'askpasswordemail') %}
+                                    {% if xar_modulevar('roles', 'askpasswordemail') %}
                                         {% set label = 'Generate a new password for this User' %}
                                         <a href="{{ xar_moduleurl('roles','admin','createpassword',{'id': fields['id'],'state': state,'groupid': groupid}) }}" title="{{ label }}">
                                             <img src="{{ icon_password }}" class="xar-valign-middle"/>

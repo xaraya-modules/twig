@@ -19,7 +19,7 @@
                         </label>
                     </div>
                     <div class="xar-col">
-                        {% set checked = xar_modvar('modules', 'disableoverview') %}
+                        {% set checked = xar_modulevar('modules', 'disableoverview') %}
                         {{ xar_data_input({type: "checkbox", name: "disableoverview", checked: checked}) }}&#160;(disable the display by default of the module overview pages)
                     </div>
                 </div>

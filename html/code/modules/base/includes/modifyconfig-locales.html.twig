@@ -2,7 +2,7 @@
 
 {% block modifyconfig_locales %}
 {# <!-- Initialization of some information --> #}
-    {% set mlsmode = xar_var({scope: "config", name: "Site.MLS.MLSMode"}) %}
+    {% set mlsmode = xar_configvar('Site.MLS.MLSMode') %}
     {% set single_checked = false %}
     {% if mlsmode == 'SINGLE' %}
         {% set single_checked = true %}
@@ -111,15 +111,15 @@
             </div>
             <div class="xar-col">
                 <select name="translationsbackend" id="translationsbackend" size="1">
-                    {% if xar_coremethod('xarConfigVars', 'get', null, 'Site.MLS.TranslationsBackend') == 'xml' %}
+                    {% if xar_configvar('Site.MLS.TranslationsBackend') == 'xml' %}
                     <option value="xml" selected="selected">XML (good for interoperability)</option>
                     <option value="php">PHP (good for programmed access)</option>
                     <option value="xml2php">XML with caching in PHP (new experimental)</option>
-                    {% elseif xar_coremethod('xarConfigVars', 'get', null, 'Site.MLS.TranslationsBackend') == 'php' %}
+                    {% elseif xar_configvar('Site.MLS.TranslationsBackend') == 'php' %}
                     <option value="xml">XML (good for interoperability)</option>
                     <option value="php" selected="selected">PHP (good for programmed access)</option>
                     <option value="xml2php">XML with caching in PHP (new experimental)</option>
-                    {% elseif xar_coremethod('xarConfigVars', 'get', null, 'Site.MLS.TranslationsBackend') == 'xml2php' %}
+                    {% elseif xar_configvar('Site.MLS.TranslationsBackend') == 'xml2php' %}
                     <option value="xml">XML (good for interoperability)</option>
                     <option value="php">PHP (good for programmed access)</option>
                     <option value="xml2php" selected="selected">XML with caching in PHP (new experimental)</option>

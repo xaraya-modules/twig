@@ -98,7 +98,7 @@
                             {{ xar_data_input({type: "dropdown", name: "pparentid", options: privileges, value: pparentid}) }}
                         </div>
                     </div>
-                    {% if xar_modvar('privileges', 'showrealms') %}
+                    {% if xar_modulevar('privileges', 'showrealms') %}
                         <div class="xar-row">
                             <div class="xar-col">
                                 {% set label = 'Realm in which this privilege applies' %}

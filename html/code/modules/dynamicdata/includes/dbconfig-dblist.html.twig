@@ -16,7 +16,7 @@
                                     <a href="{{ xar_moduleurl('dynamicdata', 'admin', 'dbconfig', {'db': dbname}) }}">{{ name }}</a>:
                                     {{ config['description'] }}
                                     {% if config['external'] %}
-                                        ({{ strtoupper(config['external']) }})
+                                        ({{ config['external']|upper }})
                                     {% endif %}
                                 </li>
                             {% endfor %}

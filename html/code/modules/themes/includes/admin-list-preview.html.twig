@@ -51,7 +51,7 @@
                         </div>                    
                     </div>
                     {% if theme['class'] == 2 and theme['state'] == constant('xarTheme::STATE_ACTIVE') %}
-                        {% set themename = strtolower(theme['name']) %}
+                        {% set themename = theme['name']|lower %}
                         <div class="xar-row xar-alt xar-padding-thick">
                             <div class="xar-col">
                                 User Default

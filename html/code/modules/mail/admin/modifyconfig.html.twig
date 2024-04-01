@@ -34,7 +34,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set curadmin = xar_var({scope: "module", module: "mail", name: "admin_outgoing"}) %}
+                            {% set curadmin = xar_modulevar('mail', 'admin_outgoing') %}
                             {{ xar_data_input({name: "admin_outgoing", value: curadmin, type: "userlist", group_list: "Administrators", onchange: "this.form.submit()"}) }}
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set adminmail = xar_var({scope: "user", name: "email", user: curadmin}) %}
+                            {% set adminmail = xar_uservar("email", curadmin) %}
                             {{ xar_data_output({type: "email", name: "adminmail", value: adminmail}) }}
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set replyto = xar_var({scope: "module", module: "mail", name: "replyto"}) %}
+                            {% set replyto = xar_modulevar('mail', 'replyto') %}
                             {{ xar_data_input({type: "checkbox", name: "replyto", checked: replyto, onchange: "this.form.submit();"}) }}
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set replytoname = xar_var({scope: "module", module: "mail", name: "replytoname"}) %}
+                                {% set replytoname = xar_modulevar('mail', 'replytoname') %}
                                 {{ xar_data_input({type: "textbox", name: "replytoname", value: replytoname}) }}
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set replytoemail = xar_var({scope: "module", module: "mail", name: "replytoemail"}) %}
+                                {% set replytoemail = xar_modulevar('mail', 'replytoemail') %}
                                 {{ xar_data_input({type: "email", name: "replytoemail", value: replytoemail}) }}
                             </div>
                         </div>
@@ -95,7 +95,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set showtemplates = xar_var({scope: "module", module: "mail", name: "ShowTemplates"}) %}
+                            {% set showtemplates = xar_modulevar('mail', 'ShowTemplates') %}
                             {{ xar_data_input({type: "checkbox", name: "showtemplates", checked: showtemplates}) }}&#160;(useful for debugging, normally off)
                         </div>
                     </div>
@@ -111,13 +111,14 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_modvar('mail', 'debugmode') %}
+                            {% set checked = xar_modulevar('mail', 'debugmode') %}
                             {{ xar_data_input({type: "checkbox", name: "debugmode", checked: checked}) }}
                         </div>
                     </div>
                 </fieldset>
                 {# @todo to be checked in function #}
-                {% set library_exists = file_exists(xar_coremethod('sys', 'lib') ~ 'PHPMailer') %}
+                {# set library_exists = file_exists(xar_coremethod('sys', 'lib') ~ 'PHPMailer') #}
+                {% set library_exists = "file_exists(xar_coremethod('sys', 'lib') ~ 'PHPMailer')" %}
                 {% if library_exists %}
                     <fieldset>
                         <legend>PHPMailer</legend>
@@ -129,7 +130,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set value = xar_var({scope: "module", module: "mail", name: "use_external_lib"}) %}
+                                {% set value = xar_modulevar('mail', 'use_external_lib') %}
                                 {{ xar_data_input({name: "use_external_lib", value: value, type: "checkbox"}) }}
                                 &#160;(the PHPMailer library must be present in the lib directory)
                             </div>
@@ -150,7 +151,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set htmlmail = xar_var({scope: "module", module: "mail", name: "html"}) %}
+                            {% set htmlmail = xar_modulevar('mail', 'html') %}
                             {{ xar_data_input({type: "checkbox", name: "html", checked: htmlmail}) }}
                         </div>
                     </div>
@@ -162,7 +163,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set htmluseheadfoot = xar_var({scope: "module", module: "mail", name: "htmluseheadfoot"}) %}
+                            {% set htmluseheadfoot = xar_modulevar('mail', 'htmluseheadfoot') %}
                             {{ xar_data_input({type: "checkbox", name: "htmluseheadfoot", checked: htmluseheadfoot, onchange: "this.form.submit();"}) }}
                         </div>
                     </div>
@@ -175,7 +176,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set htmlheader = xar_var({scope: "module", module: "mail", name: "htmlheader"}) %}
+                                {% set htmlheader = xar_modulevar('mail', 'htmlheader') %}
                                 {{ xar_data_input({type: "textarea_large", name: "htmlheader", value: htmlheader}) }}
                             </div>
                         </div>
@@ -185,7 +186,7 @@
                                 <label for="htmlfooter" title="{{ label }}" class="xar-form-label">HTML Email Footer:</label>
                             </div>
                             <div class="xar-col">
-                                {% set htmlfooter = xar_var({scope: "module", module: "mail", name: "htmlfooter"}) %}
+                                {% set htmlfooter = xar_modulevar('mail', 'htmlfooter') %}
                                 {{ xar_data_input({type: "textarea_large", name: "htmlfooter", value: htmlfooter}) }}
                             </div>
                         </div>
@@ -201,7 +202,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set wordwrap = xar_var({scope: "module", module: "mail", name: "wordwrap"}) %}
+                            {% set wordwrap = xar_modulevar('mail', 'wordwrap') %}
                             {{ xar_data_input({type: "integerbox", name: "wordwrap", value: wordwrap}) }}
                         </div>
                     </div>
@@ -213,7 +214,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set priority = xar_var({scope: "module", module: "mail", name: "priority"}) %}
+                            {% set priority = xar_modulevar('mail', 'priority') %}
                             {% set options = [
                                     {'id': 1, 'name': xar_translate('High')},
                                     {'id': 3, 'name': xar_translate('Normal')},
@@ -246,11 +247,11 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set textuseheadfoot = xar_var({scope: "module", module: "mail", name: "textuseheadfoot"}) %}
+                            {% set textuseheadfoot = xar_modulevar('mail', 'textuseheadfoot') %}
                             {{ xar_data_input({type: "checkbox", name: "textuseheadfoot", onchange: "this.form.submit()", checked: textuseheadfoot}) }}
                         </div>
                     </div>
-                    {% if xar_modvar('mail', 'textuseheadfoot') %}
+                    {% if xar_modulevar('mail', 'textuseheadfoot') %}
                         <div class="xar-row">
                             <div class="xar-col">
                                 {% set label = 'Enter the header that you wish displayed in your HTML emails.' %}
@@ -259,7 +260,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set textheader = xar_var({scope: "module", module: "mail", name: "textheader"}) %}
+                                {% set textheader = xar_modulevar('mail', 'textheader') %}
                                 {{ xar_data_input({type: "textarea_large", name: "textheader", value: textheader}) }}
                             </div>
                         </div>
@@ -271,7 +272,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set textfooter = xar_var({scope: "module", module: "mail", name: "textfooter"}) %}
+                                {% set textfooter = xar_modulevar('mail', 'textfooter') %}
                                 {{ xar_data_input({type: "textarea_large", name: "textfooter", value: textfooter}) }}
                             </div>
                         </div>
@@ -287,7 +288,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set embed_images = xar_var({scope: "module", module: "mail", name: "embed_images"}) %}
+                            {% set embed_images = xar_modulevar('mail', 'embed_images') %}
                             {{ xar_data_input({type: "checkbox", name: "embed_images", checked: embed_images}) }}
                         </div>
                     </div>
@@ -302,7 +303,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set server = xar_var({scope: "module", module: "mail", name: "server"}) %}
+                            {% set server = xar_modulevar('mail', 'server') %}
                             {% set options = [
                                     {'id': 'smtp', 'name': xar_translate('SMTP-server')},
                                     {'id': 'qmail', 'name': xar_translate('QMail')},
@@ -322,7 +323,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set sendmailpath = xar_var({scope: "module", module: "mail", name: "sendmailpath"}) %}
+                                {% set sendmailpath = xar_modulevar('mail', 'sendmailpath') %}
                                 {{ xar_data_input({type: "textbox", name: "sendmailpath", value: sendmailpath}) }}
                             </div>
                         </div>
@@ -336,7 +337,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set smtpHost = xar_var({scope: "module", module: "mail", name: "smtpHost"}) %}
+                                {% set smtpHost = xar_modulevar('mail', 'smtpHost') %}
                                 {{ xar_data_input({type: "textbox", name: "smtpHost", value: smtpHost}) }}
                             </div>
                         </div>
@@ -348,7 +349,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set smtpPort = xar_var({scope: "module", module: "mail", name: "smtpPort"}) %}
+                                {% set smtpPort = xar_modulevar('mail', 'smtpPort') %}
                                 {{ xar_data_input({type: "integerbox", name: "smtpPort", value: smtpPort}) }}
                             </div>
                         </div>
@@ -360,11 +361,11 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set smtpAuth = xar_var({scope: "module", module: "mail", name: "smtpAuth"}) %}
+                                {% set smtpAuth = xar_modulevar('mail', 'smtpAuth') %}
                                 {{ xar_data_input({type: "checkbox", name: "smtpAuth", checked: smtpAuth, onchange: "this.form.submit();"}) }}
                             </div>
                         </div>
-                        {% if xar_modvar('mail', 'smtpAuth') %}
+                        {% if xar_modulevar('mail', 'smtpAuth') %}
                             <div class="xar-row">
                                 <div class="xar-col">
                                     {% set label = 'Enter your SMTP username.' %}
@@ -373,7 +374,7 @@
                                     </label>
                                 </div>
                                 <div class="xar-col">
-                                    {% set smtpUserName = xar_var({scope: "module", module: "mail", name: "smtpUserName"}) %}
+                                    {% set smtpUserName = xar_modulevar('mail', 'smtpUserName') %}
                                     {{ xar_data_input({type: "textbox", name: "smtpUserName", value: smtpUserName}) }}
                                 </div>
                             </div>
@@ -385,7 +386,7 @@
                                     </label>
                                 </div>
                                 <div class="xar-col">
-                                    {% set smtpPassword = xar_var({scope: "module", module: "mail", name: "smtpPassword"}) %}
+                                    {% set smtpPassword = xar_modulevar('mail', 'smtpPassword') %}
                                     {{ xar_data_input({type: "password", name: "smtpPassword", value: smtpPassword}) }}
                                 </div>
                             </div>
@@ -397,7 +398,7 @@
                                     </label>
                                 </div>
                                 <div class="xar-col">
-                                    {% set smtpSecure = xar_var({scope: "module", module: "mail", name: "smtpSecure"}) %}
+                                    {% set smtpSecure = xar_modulevar('mail', 'smtpSecure') %}
                                     {% set options = [
                                             {'id': '', 'name': xar_translate('None')},
                                             {'id': 'ssl', 'name': xar_translate('ssl')},
@@ -443,7 +444,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set searchstrings = xar_unserialize(xar_modvar('mail', 'searchstrings')) %}
+                            {% set searchstrings = xar_unserialize(xar_modulevar('mail', 'searchstrings')) %}
                             {{ xar_data_input({type: "textarea_medium", name: "searchstrings", value: searchstrings}) }}
                         </div>
                     </div>
@@ -455,7 +456,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set replacestrings = xar_unserialize(xar_modvar('mail', 'replacestrings')) %}
+                            {% set replacestrings = xar_unserialize(xar_modulevar('mail', 'replacestrings')) %}
                             {{ xar_data_input({type: "textarea_medium", name: "replacestrings", value: replacestrings}) }}
                         </div>
                     </div>
@@ -470,7 +471,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_var({scope: "module", module: "mail", name: "redirectsending"}) %}
+                            {% set checked = xar_modulevar('mail', 'redirectsending') %}
                             {{ xar_data_input({type: "checkbox", name: "redirectsending", checked: checked}) }}&#160;(emails are redirected to the email address below)
                         </div>
                     </div>
@@ -482,7 +483,7 @@
                             </label>
                         </div>
                         <div class="xar-col" style="vertical-align: top">
-                            {% set value = xar_var({scope: "module", module: "mail", name: "redirectaddress"}) %}
+                            {% set value = xar_modulevar('mail', 'redirectaddress') %}
                             Enter one or more email addresses separated by commas<br/>
                             {{ xar_data_input({type: "textarea", name: "redirectaddress", value: value, rows: "5", cols: "20"}) }}
                         </div>
@@ -497,7 +498,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_var({scope: "module", module: "mail", name: "suppresssending"}) %}
+                            {% set checked = xar_modulevar('mail', 'suppresssending') %}
                             {{ xar_data_input({type: "checkbox", name: "suppresssending", checked: checked}) }}
                         </div>
                     </div>

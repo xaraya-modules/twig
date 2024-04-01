@@ -1,7 +1,6 @@
 {# @dynamicdata/properties/showhidden-subitems.html.twig #}
 
 {% block showhidden_subitems %}
-<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
     {% set itemkeys = items|join(','|keys) %}
     {% set itemkenumber_of_subitems = items|length %}
     <input type="hidden" name="number_of_subitems_{{ newprefix }}" id="number_of_subitems_{{ newprefix }}" value="{{ itemkenumber_of_subitems }}" />
@@ -12,12 +11,12 @@
     <div id="item_content_{{ fieldprefix }}" style="display: none">
         {# @todo support ${$index} in Twig? #}
         {% set index = 'index_' ~ fieldprefix %}
-        {% set $index = 0 %}
+        {% set varname = _context[index] %}
         {% set prefix = object.getFieldPrefix() %}
         {% for key, item in items %}
             {# <!-- xar:set name="$index">$$index+1</xar:set> --> #}
-            {% set $index = key %}
-            {% set dummy = object.setFieldPrefix(index ~ '_' ~ prefix) %}
+            {% set varname = key %}
+            {% set dummy = object.setFieldPrefix(varname ~ '_' ~ prefix) %}
             {% set dummy = object.setFieldValues(item) %}
             <div id="{{ key }}">
                 {{ xar_data_form({object: object, tplmodule: tplmodule, layout: layout}) }}

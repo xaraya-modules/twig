@@ -67,9 +67,9 @@
                         {# <!-- property[row][column] --> #}
                         {# <!-- we need to instantiate the property this way so we can insert a default value --> #}
                         {% if column_defaults[k] is not null %}
-                            {% set property = xar_coremethod('DataPropertyMaster', 'getProperty', {'type': column_types[k],'defaultvalue': column_defaults[k]}) %}
+                            {% set property = xar_data_property({'type': column_types[k],'defaultvalue': column_defaults[k]}) %}
                         {% else %}
-                            {% set property = xar_coremethod('DataPropertyMaster', 'getProperty', {'type': column_types[k]}) %}
+                            {% set property = xar_data_property({'type': column_types[k]}) %}
                         {% endif %}
                         <td>
                             {# <!-- row {{ i }} column {{ k }} --> #}
@@ -195,7 +195,6 @@
     {# <!-- Create the table js object and pass in configuration params --> #}  
     {# <!-- Set the debug option below to true to see debug info --> #}
     <script type="text/javascript">
-//<![CDATA[ 
         var {{ id }} = new arrayTable( {               // var name is the id of this property
             id: '{{ id }}',                            // the id of this property
             name: '{{ name }}',                        // the name of this property
@@ -218,7 +217,6 @@
         } );
         // initialise the object
         {{ id }}.init();
-//]]>
     </script>   
 {# <!-- Here we store config options for unbound properties, so checkInput knows what to do --> #}
 {# <!-- Should we support this? It's not generally supported --> #}

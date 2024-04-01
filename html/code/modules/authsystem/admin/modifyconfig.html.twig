@@ -7,6 +7,7 @@
     <div class="xar-mod-body">
         <div class="xar-mod-page-head">
             <h2 class="xar-mod-pagetitle">Modify Authsystem Configuration</h2>
+            {# @todo what was this again? #}
             <xar:ajax-form form="modifyconfig-form"/>
         </div>
         <div class="xar-mod-page-body">
@@ -24,7 +25,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set value = xar_modvar('authsystem', 'forwarding_page') %}
+                            {% set value = xar_modulevar('authsystem', 'forwarding_page') %}
                             {{ xar_data_input({type: "textbox", name: "forwarding_page", value: value}) }}
                         </div>
                     </div>
@@ -35,7 +36,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_modvar('authsystem', 'ask_forward') %}
+                            {% set checked = xar_modulevar('authsystem', 'ask_forward') %}
                             {{ xar_data_input({type: "checkbox", name: "ask_forward", checked: checked}) }}
                         </div>
                     </div>
@@ -49,7 +50,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set checked = xar_modvar('authsystem', 'uselockout') %}
+                            {% set checked = xar_modulevar('authsystem', 'uselockout') %}
                             {{ xar_data_input({type: "checkbox", name: "uselockout", id: "uselockout", checked: checked}) }}
                         </div>
                     </div>

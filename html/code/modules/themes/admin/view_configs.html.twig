@@ -9,7 +9,7 @@
 	        </h2>
 	        {% if object.checkAccess('create') %}
                 <div class="xar-mod-actions">
-                    {% if xar_modvar('themes', 'use_module_icons') %}
+                    {% if xar_modulevar('themes', 'use_module_icons') %}
                         {% set xar_icon = 'xar-icon-add' %}
                         {# <!-- {{- xar_image({scope: "theme", file: "icons/add.png", class: "xar-icon", alt: "new"}) -}} --> #}
                     {% else %}

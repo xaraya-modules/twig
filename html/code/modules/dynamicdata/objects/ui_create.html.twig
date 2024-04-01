@@ -24,7 +24,7 @@
         {% endif %}
         {% if object.visibility != 'public' %}
             <h3 class="xar-align-center">Warning! This is a <em>{{ object.visibility }}</em> object used
-            internally by the {{ xar_coremethod('xarMod', 'getName', object.moduleid) }} module.<br/>
+            internally by the {{ xar_modname(object.moduleid) }} module.<br/>
             Trying to create this item here may break the module. Please proceed with caution.</h3>
         {% endif %}
         {# <!-- TODO: distinguish between 'protected' and 'private' ? --> #}

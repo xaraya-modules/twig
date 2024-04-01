@@ -9,7 +9,7 @@
             {% set pname = object.properties['name'].getValue() %}
         {% endif %}
         <h2>Test Privileges of {{ itemtypename }} '{{ pname }}':</h2>
-        {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+        {% set request = xar_request().getInfo() %}
         {% set activetab = request.2 %}
         {% set xmldata = 'showusers' %}
         {% set urlargs = {'id': id, 'reload': 'reload'} %}
@@ -65,7 +65,7 @@
                 <table class="xar-table xar-fullwidth">
                     <tr>
                         <th>Mask</th>
-                        {% if xar_modvar('privileges', 'showrealms') %}
+                        {% if xar_modulevar('privileges', 'showrealms') %}
                             <th>Realm</th>
                         {% endif %}
                         <th>Module</th>
@@ -76,10 +76,10 @@
                     {% for mask in masks %}
                         <tr>
                             <td>
-                                <a href="{{ xar_moduleurl('roles','admin','testprivileges',{'id': xar_uservar('id'), 'name': mask.getName(), 'test': true}) }}">
+                                <a href="{{ xar_moduleurl('roles','admin','testprivileges',{'id': xar_userid(), 'name': mask.getName(), 'test': true}) }}">
                                 {{ mask.getName() }}</a>
                             </td>
-                            {% if xar_modvar('privileges', 'showrealms') %}
+                            {% if xar_modulevar('privileges', 'showrealms') %}
                                 <td>{{ mask.getRealm() }}</td>
                             {% endif %}
                             <td>{{ mask.getModule() }}</td>
@@ -97,7 +97,7 @@
                 <table class="xar-table xar-fullwidth">
                     <tr>
                         <th>Mask</th>
-                        {% if xar_modvar('privileges', 'showrealms') %}
+                        {% if xar_modulevar('privileges', 'showrealms') %}
                             <th>Realm</th>
                         {% endif %}
                         <th>Module</th>
@@ -108,7 +108,7 @@
                     {% for loop_key1, loop_item1 in testmasks %}{% set loop_index1 = loop.index %}
                         <tr>
                             <td>{{ loop_item1['sname'] }}</td>
-                            {% if xar_modvar('privileges', 'showrealms') %}
+                            {% if xar_modulevar('privileges', 'showrealms') %}
                                 <td>{{ loop_item1['srealm'] }}</td>
                             {% endif %}
                             <td>{{ loop_item1['smodule'] }}</td>
@@ -125,7 +125,7 @@
                     {% if testresult != false %}
                         <tr>
                             <th>Privilege</th>
-                            {% if xar_modvar('privileges', 'showrealms') %}
+                            {% if xar_modulevar('privileges', 'showrealms') %}
                                 <th>Realm</th>
                             {% endif %}
                             <th>Module</th>
@@ -135,7 +135,7 @@
                         </tr>
                         <tr>
                             <td>{{ rname }}</td>
-                            {% if xar_modvar('privileges', 'showrealms') %}
+                            {% if xar_modulevar('privileges', 'showrealms') %}
                                 <td>{{ rrealm }}</td>
                             {% endif %}
                             <td>{{ rmodule }}</td>

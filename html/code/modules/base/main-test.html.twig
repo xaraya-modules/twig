@@ -13,27 +13,32 @@
         <h3>XML to SQL Proof of Concept</h3>
         
         <h4>First create the roles object</h4>
+{% verbatim %}
 <pre>
-&lt;xar:set name="dummy">1;
-    sys::import('modules.dynamicdata.class.objects.factory');
-    $roles = DataObjectFactory::getObjectList(['name'=>'roles_users']);
-&lt;/xar:set>
+{% set roles = xar_data_objectlist({'name': 'roles_users'}) %}
 </pre>
+{% endverbatim %}
 
         {# <!-- @todo Here we create the object --> #}
-        {% set roles = xar_coremethod('DataObjectFactory', 'getObjectList', {'name': 'roles_users'}) %}
-        {% set foo = roles.dataquery.eq('uname','admin') %}
+        {% set roles = xar_data_objectlist({'name': 'roles_users'}) %}
 
 
-        <h4>1. A simple example</h4>
+        <h4>1. A simple example with dataquery</h4>
+{% verbatim %}
 <pre>
-&lt;xar:data-getitems properties="$properties" values="$items" object="$roles">
+{% set foo = roles.dataquery.eq('uname','anonymous') %}
+{% set result = xar_data_getitems({object: roles}) %}
+{% set properties = result[0] %}
+{% set items = result[1] %}
 </pre>
-        <xar:data-getitems properties="$properties" values="$items" object="$roles">
+{% endverbatim %}
+        {% set foo = roles.dataquery.eq('uname','anonymous') %}
         {# <!--
             Add SELECT with WHERE clauses here
         --> #}
-        </xar:data-getitems>
+        {% set result = xar_data_getitems({object: roles}) %}
+        {% set properties = result[0] %}
+        {% set items = result[1] %}
         
         <table class="xar-table">
             {% for key, value in items %}
@@ -41,33 +46,23 @@
             {% endfor %}
         </table>
         
-        <h4>2. Same example using a xar:select tag</h4>
+        <h4>2. Same example using a where parameter</h4>
+{% verbatim %}
 <pre>
-&lt;xar:data-getitems object="$roles" properties="$properties" values="$items" tplmodule="dynamicdata">
-  &lt;xar:select>
-    &lt;xar:andconditions>
-      &lt;xar:condition operator="eq" property="uname">'admin'&lt;/xar:condition>
-    &lt;/xar:andconditions>
-  &lt;/xar:select>
-&lt;/xar:data-getitems>
+{% set roles = xar_data_objectlist({'name': 'roles_users'}) %}
+{% set result = xar_data_getitems({object: roles, where: "uname = 'anonymous'"}) %}
 </pre>
+{% endverbatim %}
         {# <!-- Here we create the object --> #}
-        {% set roles = xar_coremethod('DataObjectFactory', 'getObjectList', {'name': 'roles_users'}) %}
+        {% set roles = xar_data_objectlist({'name': 'roles_users'}) %}
         
         {# <!-- Here we create the object --> #}
-        <xar:data-getitems object="$roles" properties="$properties" values="$items" tplmodule="dynamicdata">
-          <xar:select>
-            <xar:andconditions>
-              <xar:condition operator="eq" property="uname">'admin'</xar:condition>
-            </xar:andconditions>
-          </xar:select>
-        </xar:data-getitems>
-
+        {% set result = xar_data_getitems({object: roles, where: "uname = 'anonymous'"}) %}
         {% set foo = roles.dataquery.qecho() %}
 
         {{ xar_data_view({object: roles, tplmodule: "dynamicdata", fieldlist: "id,uname,name,email,state"}) }}
 
-        <hr/><h4>3. The xar:select tag</h4>
+        <hr/><h4>3. The xar:select tag (not supported)</h4>
         <h4>3.1. Markup</h4>
 <pre>
 &lt;xar:select objectname="modules" items="$items" name="myquery">
@@ -91,6 +86,7 @@
     &lt;/xar:orconditions>
 &lt;/xar:select>
 </pre>
+        {# 
         <xar:select objectname="modules" items="$items" name="myquery">
             <xar:orconditions>
                 <xar:andconditions>
@@ -111,11 +107,13 @@
                 <xar:condition operator="like" property="name">'themes'</xar:condition>
             </xar:orconditions>
         </xar:select>
+        #}
         <br /><br />
         <h4>3.2. Resulting query string</h4>
         {% set foo = myquery.qecho() %}
+        N/A
         <br /><br />
-        <h4>3.3. Result of running the query</h4>
+        <h4>3.3. Result of running the query (see point 2.)</h4>
         {{ dump(items) }}
     
     

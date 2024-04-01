@@ -172,7 +172,7 @@
             </fieldset>
             <fieldset class="xar-form-actions">
                 <input type="hidden" name="step" value="{{ step }}"/>
-                <input type="hidden" name="authid" value=" }}xarSec::genAuthKey() }}"/>
+                <input type="hidden" name="authid" value="{{ xar_security_authkey() }}"/>
                 {% set label = 'Back' %}
                 {% if step > 1 %}
                     {{- xar_button({type: "submit", label: label, name: "back"}) -}}

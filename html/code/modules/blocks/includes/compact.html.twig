@@ -17,7 +17,7 @@
                         {% if loop_item1.groups %}
                             {% for loop_key2, loop_item2 in loop_item1.groups %}{% set loop_index2 = loop.index %}{% set loop_groupsl_index = loop_index2 %}{% set loop_groupsl_item = loop_item2 %}{% set loop_groupsl_key = loop_key2 %}
                                 <a href="{{ xar_moduleurl('blocks','admin','modify_group') }}&amp;id={{ loop_groupsl_item.id }}" title="{{ xar_translate('Edit group') }}">{{ loop_groupsl_item.name }}</a>
-                            </xar:loop>
+                            {% endfor %}
                         {% else %}
                             none
                         {% endif %}|
@@ -50,9 +50,9 @@
                 <div class="xar-floatright xar-halfwidth xar-border-thinbottom">
                     <div class="xar-sub xar-floatright xar-align-right">[
                         {% if loop_item1.groups %}
-                            <xar:loop name="loop_item1.groups" id="groupsr">
-                                <a href="{{ xar_moduleurl('blocks','admin','modify_group') }}&amp;id={{ loop.groupsr.item.id }}" title="{{ xar_translate('Edit group') }}">
-                                    {{ loop.groupsr.item.name }}
+                            {% for loop_key2, loop_item2 in loop_item1.groups %}{% set loop_index2 = loop.index %}{% set loop_groupsr_index = loop_index2 %}{% set loop_groupsr_item = loop_item2 %}{% set loop_groupsr_key = loop_key2 %}
+                                <a href="{{ xar_moduleurl('blocks','admin','modify_group') }}&amp;id={{ loop_groupsr_item.id }}" title="{{ xar_translate('Edit group') }}">
+                                    {{ loop_groupsr_item.name }}
                                 </a>
                             {% endfor %}
                         {% else %}

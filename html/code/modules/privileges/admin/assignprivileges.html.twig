@@ -141,7 +141,7 @@
                         <div class="xar-col">
                             {{ xar_data_input({type: "dropdown", name: "privilege", options: options, firstline: "Select a privilege"}) }} &#160;
                             to the Anonymous (unregistered) user
-                            {% set anon = xar_coremethod('xarConfigVars', 'get', null,'Site.User.AnonymousUID') %}
+                            {% set anon = xar_configvar('Site.User.AnonymousUID') %}
                         </div>
                     </div>
                     <div class="xar-row">

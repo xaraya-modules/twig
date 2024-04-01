@@ -45,9 +45,9 @@
             Status             
         </label>
         {% set options = [
-                {'id': '2, 3': , 'name': {{ xar_translate('All Published') }}},
-                {'id': '3', 'name': {{ xar_translate('Frontpage') }}},
-                {'id': '2', 'name': {{ xar_translate('Approved') }}}
+                {'id': '2, 3', 'name': xar_translate('All Published')},
+                {'id': '3', 'name': xar_translate('Frontpage')},
+                {'id': '2', 'name': xar_translate('Approved')}
             ] %}        
         {{ xar_data_input({type: "dropdown", name: "stateoptions", options: options, value: state}) }}
     </div>

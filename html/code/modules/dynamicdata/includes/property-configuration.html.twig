@@ -14,7 +14,7 @@
                 {% set fieldlist = ['name','label','objectid','type'] %}
                 {{ xar_data_display({object: object, fieldlist: fieldlist}) }}
             </fieldset>
-            <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+            <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
             <input type="hidden" name="itemid" id="itemid" value="{{ itemid }}"/>
             {# <!-- This is the main part of the page --> #}
             {{ showval|raw }} 
@@ -87,7 +87,7 @@
                 </div>
             </div>
 {# <!-- See CHECKME in showpropval
-                <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
                 <input type="submit" name="confirm" value="{{ xar_translate('Update') }}" disabled="disabled"/>
 --> #}
         </form>

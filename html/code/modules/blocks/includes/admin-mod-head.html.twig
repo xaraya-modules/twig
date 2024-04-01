@@ -3,8 +3,8 @@
 {% block admin_mod_head %}
 <div class="xar-mod-head">
         <span class="xar-mod-title">
-            {% if xar_modvar('blocks', 'use_module_alias') %}
-                {{ xar_var({scope: "module", module: "blocks", name: "module_alias_name"}) }}
+            {% if xar_modulevar('blocks', 'use_module_alias') %}
+                {{ xar_modulevar('blocks', 'module_alias_name') }}
             {% else %}
                 Blocks Administration
             {% endif %}

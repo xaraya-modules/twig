@@ -13,7 +13,7 @@
                 {% set thisname = object.properties['name'].getValue() %}
             {% endif %}
             <h2>Manage {{ object.label }} '{{ thisname }}':</h2>
-            {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+            {% set request = xar_request().getInfo() %}
             {% set activetab = request.2 %}
             {% set xmldata = 'showusers' %}
             {% set urlargs = {'id': id, 'reload': 'reload'} %}
@@ -87,7 +87,7 @@
                             </div>
                         {% endif %}
                         {{ xar_data_form({object: object, tplmodule: "roles"}) }}
-                        {% set settings = xar_modvar('roles', 'duvsettings')|split(',') %}
+                        {% set settings = xar_modulevar('roles', 'duvsettings')|split(',') %}
                         {% if 'primaryparent' in settings %}
                             <div class="xar-row">
                                 <div class="xar-col">
@@ -151,7 +151,7 @@
                                 </div>
                             {% endif %}
                             --> #}
-                            {% if xar_modvar('roles', 'allowemail') %}
+                            {% if xar_modulevar('roles', 'allowemail') %}
                                 <div class="xar-row">
                                     <div class="xar-col">
                                         {% set label = 'Allow users to send emails?' %}
@@ -207,7 +207,7 @@
                                 <input type="hidden" name="objectid" id="objectid" value="{{ object.objectid }}"/>
                                 <input type="hidden" name="itemid" id="itemid" value="{{ id }}"/>
                                 <input type="hidden" name="tplmodule" id="tplmodule" value="roles"/>
-                                <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                                <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
                                 <input type="hidden" name="confirm" id="confirm" value="1"/>
                                 {% set label = 'Update' %}
                                 {{- xar_button({type: "submit", label: label}) -}}
@@ -236,7 +236,7 @@
                             </td>
                             <td class="xar-align-center">
                                 {% if parents|length != 1 %}
-                                    <a href="{{ xar_moduleurl('roles','admin','removemember',{'childid': id, 'parentid': loop_item1['parentid'], 'authid': xar_coremethod('xarSec', 'genAuthKey')}) }}">
+                                    <a href="{{ xar_moduleurl('roles','admin','removemember',{'childid': id, 'parentid': loop_item1['parentid'], 'authid': xar_security_authkey()}) }}">
                                 Remove</a>
                                 {% else %}Cannot Remove{% endif %}
                             </td>
@@ -261,7 +261,7 @@
                                     {% endfor %}
                                 </select>&#160;
                                 <input type="hidden" name="id" id="addid" value="{{ id }}"/>
-                                <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                                <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
                                 {% set label = 'Add' %}
                                 {{- xar_button({type: "submit", label: label}) -}}
                             </div>

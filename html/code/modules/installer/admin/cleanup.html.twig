@@ -5,9 +5,9 @@
     <div id="install">
         <h1>Installation Complete</h1>
         <h3>Congratulations, you have successfully installed Xaraya
-        {{ xar_var({scope: "config", name: "System.Core.VersionId"}) }}
-        {{ constant('xarCore::VERSION_NUM') }} ({{ xar_var({scope: "config", name: "System.Core.VersionSub"}) }}) Build 
-        {{ xar_var({scope: "config", name: "System.Core.VersionRev"}) }}
+        {{ xar_configvar('System.Core.VersionId') }}
+        {{ constant('xarCore::VERSION_NUM') }} ({{ xar_configvar('System.Core.VersionSub') }}) Build 
+        {{ xar_configvar('System.Core.VersionRev') }}
         !</h3>
 
         <h2>Next Steps:</h2>
