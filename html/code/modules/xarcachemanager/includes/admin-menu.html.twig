@@ -4,11 +4,8 @@
 {#   License: GPL http://www.gnu.org/copyleft/gpl.html  #}
 {#  Common Administration menu #}
 {{ xar_style({scope: "module", module: "base", file: "tabs"}) }}
-{% set pagevarCacheDir = file_exists(xar_coremethod('sys', 'varpath') ~ '/cache/output/cache.pagelevel'); %}
-{% set blockvarCacheDir = file_exists(xar_coremethod('sys', 'varpath') ~ '/cache/output/cache.blocklevel'); %}
-{% set modulevarCacheDir = file_exists(xar_coremethod('sys', 'varpath') ~ '/cache/output/cache.modulelevel'); %}
-{% set objectvarCacheDir = file_exists(xar_coremethod('sys', 'varpath') ~ '/cache/output/cache.objectlevel'); %}
-{% set variablevarCacheDir = file_exists(xar_coremethod('sys', 'varpath') ~ '/cache/output/cache.variablelevel'); %}
+{# @todo handle this in functions #}
+{% set status = xar_apifunc('xarcachemanager', 'admin', 'getstatus') %}
 {% set info = xar_coremethod('xarController', 'getRequest').getInfo() %}
 {% set activetab = info[2] %}
 <div>
@@ -32,7 +29,7 @@
           </a>
         </li>
 
-        {% if pagevarCacheDir %}
+        {% if status['PageCachingEnabled'] %}
 		{% if activetab == 'pages' %}
 		    {% set tabclass = 'xar-tab-active' %}
 		    {% set linkclass = 'xar-accent xar-accent-outline' %}
@@ -47,7 +44,7 @@
             </li>
         {% endif %}
 
-        {% if blockvarCacheDir %}
+        {% if status['BlockCachingEnabled'] %}
 		{% if activetab == 'blocks' %}
 		    {% set tabclass = 'xar-tab-active' %}
 		    {% set linkclass = 'xar-accent xar-accent-outline' %}
@@ -62,7 +59,7 @@
             </li>
         {% endif %}
 
-        {% if modulevarCacheDir %}
+        {% if status['ModuleCachingEnabled'] %}
 		{% if activetab == 'modules' %}
 		    {% set tabclass = 'xar-tab-active' %}
 		    {% set linkclass = 'xar-accent xar-accent-outline' %}
@@ -77,7 +74,7 @@
             </li>
         {% endif %}
 
-        {% if objectvarCacheDir %}
+        {% if status['ObjectCachingEnabled'] %}
 		{% if activetab == 'objects' %}
 		    {% set tabclass = 'xar-tab-active' %}
 		    {% set linkclass = 'xar-accent xar-accent-outline' %}
@@ -92,7 +89,7 @@
             </li>
         {% endif %}
 
-        {% if variablevarCacheDir %}
+        {% if status['VariableCachingEnabled'] %}
 		{% if activetab == 'variables' %}
 		    {% set tabclass = 'xar-tab-active' %}
 		    {% set linkclass = 'xar-accent xar-accent-outline' %}

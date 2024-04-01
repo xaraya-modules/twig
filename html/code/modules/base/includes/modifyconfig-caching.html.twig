@@ -5,8 +5,9 @@
         These options are set in var/cache/config.caching.php
     </div>
     {% set cache_config_file = xar_coremethod('sys', 'varpath') ~ '/cache/config.caching.php' %}
-    {% if file_exists(cache_config_file) %}
-       <fieldset>
+    {# @todo if file_exists(cache_config_file) #}
+    {% if "file_exists(cache_config_file)" %}
+            <fieldset>
             <legend>Persistent Caching</legend>
             <div class="xar-row">
                 <div class="xar-col">
@@ -119,8 +120,9 @@
                             {% set filepath = xar_coremethod('sys', 'varpath') ~ '/cache/core/' ~ pieces[0] ~ '.' ~ pieces[1] ~ '.php' %}
                             {% if value is null %}
                                 Scope: {{ pieces[0] }} - Name: {{ pieces[1] }} (disabled)<br/>
-                            {% elseif file_exists(filepath) %}
-                                Scope: {{ pieces[0] }} - Name: {{ pieces[1] }} ({{ filesize(filepath) }} bytes)<br/>
+                            {# @todo elseif file_exists(filepath) #}
+                            {% elseif "file_exists(filepath)" %}
+                                    Scope: {{ pieces[0] }} - Name: {{ pieces[1] }} ("filesize(filepath)"{# @todo filesize(filepath) #} bytes)<br/>
                             {% else %}
                                 Scope: {{ pieces[0] }} - Name: {{ pieces[1] }} (not cached)<br/>
                             {% endif %}
@@ -128,8 +130,9 @@
                             {% set filepath = xar_coremethod('sys', 'varpath') ~ '/cache/core/' ~ scope ~ '.php' %}
                             {% if value is null %}
                                 Scope: {{ scope }} (disabled)<br/>
-                            {% elseif file_exists(filepath) %}
-                                Scope: {{ scope }} ({{ filesize(filepath) }} bytes)<br/>
+                            {# @todo elseif file_exists(filepath) #}
+                            {% elseif "file_exists(filepath)" %}
+                                Scope: {{ scope }} ("filesize(filepath)"{# @todo filesize(filepath) #} bytes)<br/>
                             {% else %}
                                 Scope: {{ scope }} (not cached)<br/>
                             {% endif %}

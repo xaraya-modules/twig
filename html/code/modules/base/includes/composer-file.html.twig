@@ -1,7 +1,8 @@
 {# @base/includes/composer-file.html.twig #}
 
 {% block composer_file %}
-{% set writable = file_exists(composer_file) AND is_writeable(composer_file) %}
+{# @todo set writable = file_exists(composer_file) AND is_writeable(composer_file) #}
+{% set writable = "file_exists(composer_file) AND is_writeable(composer_file)" %}
     <fieldset>
         <legend>
             Manage composer.json

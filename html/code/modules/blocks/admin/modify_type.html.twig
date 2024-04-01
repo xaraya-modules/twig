@@ -167,13 +167,13 @@
          
             {% elseif method == 'preview' %}
                 {% if type_output %}
-                    {{ type_output }}
+                    {{ type_output|raw }}
                 {% else %}
                     <p class="xar-note">No preview available for this block type</p>
                 {% endif %}              
             {% elseif method == 'help' %}
                 {% if type_output %}
-                    {{ type_output }}
+                    {{ type_output|raw }}
                 {% else %}
                     <p class="xar-note">No help available for this block type</p>
                 {% endif %}
@@ -271,7 +271,7 @@
                         <fieldset>
                             <legend>Default Configuration</legend>
                             {% if type_output %}
-                                {{ type_output }}
+                                {{ type_output|raw }}
                                 {% set submitLabel = 'Update Config' %}
                             {% else %}
                                 <p class="xar-note">

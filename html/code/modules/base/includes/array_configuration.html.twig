@@ -30,7 +30,7 @@
                                 No value found at row {{ row_number }} col {{ j }}<br/>
                                 The value variable contains
                                 <pre>
-                                    {% set dummy = var_dump(value) %}
+                                    {{ dump(value) }}
                                 </pre>
                                 <xar:break/>
                             {% endif %}

@@ -137,7 +137,7 @@
                         {% for api, info in item['apilist'] %}
                         <tr>
                             {% if not info['type'] %}
-                                {% set dummy = info['type'] = 'rest' %}
+                                {% set info = info|merge({type: 'rest'}) %}
                             {% endif %}
                             <td>Module <a href="{{ xar_moduleurl(item['module']) }}">{{ item['module'] }}</a> {{ api }} with {{ info['type'] }} api {{ info['name'] }}() {% if info['caching'] %}<span>*</span>{% endif %}</td>
                             {% set moduleapi = item['module'] ~ '.' ~ api %}

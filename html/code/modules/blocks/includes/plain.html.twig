@@ -1,7 +1,7 @@
 {# @blocks/includes/plain.html.twig #}
 
 {% block plain %}
-<form method="get" action="{{ xar_currenturl()">
+<form method="get" action="{{ xar_currenturl() }}">
         <input type="hidden" name="module" id="module" value="blocks"/>
         <input type="hidden" name="type" id="type" value="admin"/>
         <input type="hidden" name="func" id="func" value="view_instances"/>
@@ -21,7 +21,6 @@
     {% set icon_help = xar_imageurl('icons/help-browser.png','theme') %}
     {% set icon_preview = xar_imageurl('icons/display.png','theme') %}
     {% set icon_delete = xar_imageurl('icons/delete.png','theme') %}
-
     <table class="xar-table xar-fullwidth xar-items">
         <thead>
             <tr>
@@ -77,7 +76,7 @@
                             <a href="{{ item['info_link']['url'] }}" class="xar-icon" title="{{ item['info_link']['title'] }}"><img src="{{ icon_info }}" class="xar-icon" alt="{{ item['info_link']['label'] }}"/></a>
                         {% else %}
                             <img src="{{ icon_info }}" class="xar-icon-disabled" alt="{{ item['info_link']['label'] }}" title="{{ item['info_link']['title'] }}"/>
-                        {% endif %}& }}160;
+                        {% endif %}&#160;
                         {% if item['modify_link']['url'] %}
                             <a href="{{ item['modify_link']['url'] }}" class="xar-icon" title="{{ item['modify_link']['title'] }}"><img src="{{ icon_modify }}" class="xar-icon" alt="{{ item['modify_link']['label'] }}"/></a>
                         {% else %}

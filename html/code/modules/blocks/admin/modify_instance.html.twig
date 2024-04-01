@@ -19,13 +19,13 @@
                 {{ include('@blocks/includes/tag-params.html.twig') }}                  
             {% elseif method == 'preview' %}
                 {% if block_output %}
-                    {{ block_output }}
+                    {{ block_output|raw }}
                 {% else %}
                     <p class="xar-note">No preview available for this block type.</p>
                 {% endif %}           
             {% elseif method == 'help' %}
                 {% if block_output %}
-                    {{ block_output }}
+                    {{ block_output|raw }}
                 {% else %}
                     <p class="xar-note">No help available for this block type.</p>
                 {% endif %}      
@@ -138,7 +138,7 @@
                         <fieldset>
                             <legend>Block Instance Configuration</legend>
                             {% if block_output %}
-                                {{ block_output }}
+                                {{ block_output|raw }}
                                 {% set submitLabel = 'Update Config' %}
                             {% else %}
                                 <p class="xar-note">No additional block configuration</p>

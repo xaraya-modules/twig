@@ -12,7 +12,7 @@
         <br />Your preferences can be reset to defaults from this page, so that you can, for instance,
         see the same startup page as a new admin.. 
         <br />
-        <form method="post" action="xar-modurl-modules-admin-pref;">
+        <form method="post" action="{{ xar_moduleurl('modules','admin','pref') }}">
             <div class="xar-form-actions">
                 {% set label = 'Restore' %}
                 {{- xar_button({type: "submit", label: label, name: "restore"}) -}}

@@ -16,7 +16,7 @@
                         <p>The {{ modinfo['displayname'] }} module supplies the following hook observers...</p>
                         <ul>
                             {% for scope, events in modinfo['scopes'] %}
-                                <li><h4>{{ ucfirst(scope) }} Hooks</h4>
+                                <li><h4>{{ scope|title }} Hooks</h4>
                                     <ul>                                
                                     {% for event, hook in events %}
                                         <li>{{ event }}</li>

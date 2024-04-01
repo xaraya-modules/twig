@@ -23,8 +23,8 @@
                     <li class="xar-tabs-label">{{ tabs.label }}</li>
                 {% endif %}
                 {# <!-- Get the value of the variable if it exists --> #}
-                {% if tabs['variable'] is not null and tabs['variable'] is not null %}
-                    {% set variable = tabs['variable'] %}
+                {% if tabs['variable'] is not null and _context[tabs['variable']]|default(null) is not null %}
+                    {% set variable = _context[tabs['variable']] %}
                 {% endif %}
                 
                 {% for tab in tabs['menulinks'] %}

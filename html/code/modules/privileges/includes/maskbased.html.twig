@@ -38,6 +38,7 @@
 {% endif %}
 
 {% set groups = xar_apifunc('roles','user','getallgroups') %}
+{# @todo check if twig sort can help or add function #}
 {% set dummy = 1;
 function by_name(a,b) {
     return strcmp(a['name'], b['name']);

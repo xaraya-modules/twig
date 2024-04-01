@@ -43,7 +43,7 @@
                     {% set displaystatus = property.getDisplayStatus() %}
                     {% if displaystatus not in filterstatus %}
                     {% else %}
-                    {% set dummy = show_props|merge([name]) %}
+                    {% set show_props = show_props|merge([name]) %}
                     <div class="xar-row">
                         <div class="xar-col">
                             <label class="xar-form-label" for="field_{{ name }}">{{ property.label }}</label>

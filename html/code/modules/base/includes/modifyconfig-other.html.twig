@@ -56,18 +56,18 @@
             <div class="xar-col">
                 {% set hosttimezone = xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'SystemTimeZone']) %}
                 {{ xar_data_input({type: "timezone", name: "hosttimezone", id: "hosttimezone", value: hosttimezone}) }}
-                &#160;The time is {{ hostdatetime.format(DATE_RSS) }}
+                &#160;The time is {{ hostdatetime.format(constant('DATE_RSS')) }}
             </div>
         </div>
         <div class="xar-row">
             <div class="xar-col">
                 {% set label = 'This is the timezone the server/site is based in.' %}
-                <label for="sitetimezone" title="{{ label }}{{ " class="xar-form-label">Site Timezone.</label>
+                <label for="sitetimezone" title="{{ label }}" class="xar-form-label">Site Timezone.</label>
             </div>
             <div class="xar-col">
                 {% set sitetimezone = xar_var({scope: "config", name: "Site.Core.TimeZone"}) %}
                 <xar.data-input type="timezone" name="sitetimezone" id="sitetimezone" value="sitetimezone"/>
-                &#160;The time is {{ sitedatetime.format(DATE_RSS) }}
+                &#160;The time is {{ sitedatetime.format(constant('DATE_RSS')) }}
             </div>
         </div>
     </fieldset>

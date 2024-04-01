@@ -1,7 +1,8 @@
 {# @base/includes/modifyconfig-logging.html.twig #}
 
 {% block modifyconfig_logging %}
-{% set writable = is_writeable(xar_coremethod('sys', 'varpath') ~ 'logs') %}
+{# @todo set writable = is_writeable(xar_coremethod('sys', 'varpath') ~ 'logs') #}
+{% set writable = "is_writeable(xar_coremethod('sys', 'varpath') ~ 'logs')" %}
     {% if writable %}
         <fieldset>
             <legend>Basic Logging</legend>
@@ -89,7 +90,7 @@
                         {{ xar_data_input({type: "checkboxlist", name: "loglevel", value: value, options: levels}) }}
                     </div>
                 </div>
-                {% if xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'Log.Enabled']) and empty(xar_coremethod('xarLog', 'availables')) and xar_coremethod('xarLog', 'fallbackPossible') %}
+                {% if xar_coremethod('xarSystemVars', 'get', [constant('sys::CONFIG'), 'Log.Enabled']) and not xar_coremethod('xarLog', 'availables') and xar_coremethod('xarLog', 'fallbackPossible') %}
 					<div style="color: green">
 						Fallback logging is currently active.
 					</div>

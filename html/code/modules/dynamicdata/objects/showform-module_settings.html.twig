@@ -53,7 +53,7 @@
                 	{% set modname = xar_coremethod('xarMod', 'getName') %}
                     {% for aliasname, modulename in aliasmap %}
                         {% if modulename == modname %}
-                            {% set dummy = 1;options[aliasname] = aliasname %}
+                            {% set options = options|merge({(aliasname): aliasname}) %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
@@ -94,7 +94,7 @@
         <div class="xar-row">
             <div class="xar-col">
                 {% set label = 'Hide link in User Menu' %}
-                {% set title = 'Hide the link to this module's user functions in the Base module User Menu Block' %}
+                {% set title = 'Hide the link to this module\'s user functions in the Base module User Menu Block' %}
                 {{ xar_data_label({property: properties['user_menu_link'], for: "id", label: label, title: title}) }}
             </div>
             <div class="xar-col">
@@ -106,7 +106,7 @@
         <div class="xar-row">
             <div class="xar-col">
                 {% set label = 'Hide link in Admin Menu' %}
-                {% set title = 'Hide the link to this module's admin functions in the Base module Admin Menu Block' %}
+                {% set title = 'Hide the link to this module\'s admin functions in the Base module Admin Menu Block' %}
                 {{ xar_data_label({property: properties['admin_menu_link'], for: "id", label: label, title: title}) }}
             </div>
             <div class="xar-col">
