@@ -1,0 +1,10 @@
+{% if onchange is not null %}
+      {% set evt_change = onchange %}
+    {% else %}
+      {% set evt_change = 'return true;' %}
+    {% endif %}
+    {{ value.date }}
+
+    {% if invalid %}
+        <span class="xar-error">{{ invalid }}</span>
+    {% endif %}

@@ -1,0 +1,79 @@
+{# <!-- Display first-page link or text if there is more than one page --> #}
+    {% if totalpages is not null and (totalitems > items_per_page) %}
+        <div class="xar-pager">
+            {% if totalpages > 1 %}
+                {% if currentpagenum != firstpagenum %}
+                    &#160;&#160;<a title="{{ xar_translate('First page') }}" href="{{ firsturl }}" class="refresh_listing">|&lt;</a>
+                {% else %}
+                    &#160;&#160;<span title="{{ xar_translate('First page') }}">|&lt;</span>
+                {% endif %}
+            {% endif %}
+
+            {# <!-- Display previous-block link if there is more than one block --> #}
+            {% if totalblocks > 1 %}
+                {% set prevblocklabel = xar_translate('Previous #(1) pages',prevblockpages) %}
+                {% if currentblock != firstblock %}
+                    &#160;&#160;<a title="{{ prevblocklabel }}" href="{{ prevblockurl }}" class="refresh_listing">&lt;&lt;</a>
+                {% else %}
+                    &#160;&#160;<span title="{{ prevblocklabel }}">&lt;&lt;</span>
+                {% endif %}
+            {% endif %}
+
+            {# <!-- Display previous-page link if there is just one block --> #}
+            {% if totalblocks == 1 %}
+                {% set prevpagelabel = xar_translate('Previous #(1) items',prevpageitems) %}
+                {% if prevpageitems > 0 %}
+                    &#160;&#160;<a title="{{ prevpagelabel }}" href="{{ prevpageurl }}" class="refresh_listing">&lt;</a>
+                {% else %}
+                    &#160;&#160;<span title="{{ prevpagelabel }}">&lt;</span>
+                {% endif %}
+            {% endif %}
+
+            {% for pagenumber, pageurl in middleurls %}
+                {% if pagenumber != currentpage %}
+                    {% if middleitemsfrom[pagenumber] != middleitemsto[pagenumber] %}
+                        {% set pageurllabel = xar_translate('Page #(1) (items {{ (2) to }}(3))',pagenumber,middleitemsfrom[pagenumber],middleitemsto[pagenumber]) %}
+                    {% else %}
+                        {% set pageurllabel = xar_translate('Page #(1)',pagenumber) %}
+                    {% endif %}
+                    &#160;&#160;<a href="{{ pageurl }}" title="{{ pageurllabel }}" class="refresh_listing">{{ pagenumber }}</a>
+                    {# <!-- &#160;&#160;<a href="{{ pageurl }}" class="refresh_listing">[{{ middleitemsfrom[pagenumber] }}-{{ middleitemsto[pagenumber] }}]</a> --> #}
+                {% else %}
+                    {% set pageurllabel = xar_translate('Page #(1)',pagenumber) %}
+                    &#160;&#160;<span title="{{ pageurllabel }}">{{ pagenumber }}</span>
+                    {# <!-- &#160;&#160;[{{ middleitemsfrom[pagenumber] }}-{{ middleitemsto[pagenumber] }}] --> #}
+                {% endif %}
+            {% endfor %}
+
+            {# <!-- Display next-page link if there is just one block --> #}
+            {% if totalblocks == 1 %}
+                {% set nextpagelabel = xar_translate('Next page; #(1) items',nextpageitems) %}
+                {% if nextpageitems > 0 %}
+                    &#160;&#160;<a title="{{ nextpagelabel }}" href="{{ nextpageurl }}" class="refresh_listing">&gt;</a>
+                {% else %}
+                    &#160;&#160;<span title="{{ nextpagelabel }}">&gt;</span>
+                {% endif %}
+            {% endif %}
+
+            {# <!-- Display next-block link if there is more than one block --> #}
+            {% if totalblocks > 1 %}
+                {% set nextblocklabel = xar_translate('Next #(1) pages',nextblockpages) %}
+                {% if currentblock != lastblock %}
+                    &#160;&#160;<a title="{{ nextblocklabel }}" href="{{ nextblockurl }}" class="refresh_listing">&gt;&gt;</a>
+                {% else %}
+                    &#160;&#160;<span title="{{ nextblocklabel }}">&gt;&gt;</span>
+                {% endif %}
+            {% endif %}
+
+            {# <!-- Display last-page link or text if there is more than one page --> #}
+            {% if totalpages > 1 %}
+                {% if currentpagenum != lastpagenum %}
+                    &#160;&#160;<a title="{{ xar_translate('Last page') }}" href="{{ lasturl }}" class="refresh_listing">&gt;|</a>
+                {% else %}
+                    &#160;&#160;<span title="{{ xar_translate('Last page') }}">&gt;|</span>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% else %}
+        &#160;
+    {% endif %}

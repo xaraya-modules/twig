@@ -1,0 +1,59 @@
+{# <!--
+        Open-ended pager where you don't know the number of pages in total.
+        Set the total pages to current_page + 1 for correct display.
+    --> #}
+    {% if totalpages is not null %}
+        <div class="xar-pager">
+            {# <!-- Display first-page link or text if there is more than one page --> #}
+            {% if totalpages > 1 %}
+                {% if currentpagenum != firstpagenum %}
+                    &#160;&#160;<a title="{{ xar_translate('First page') }}" href="{{ firsturl }}">|&lt;</a>
+                {% else %}
+                    &#160;&#160;|&lt;
+                {% endif %}
+            {% endif %}
+
+            {# <!-- Display previous-block link if there is more than one block --> #}
+            {% if totalblocks > 1 and pagesperblock > 1 %}
+                {% if currentblock != firstblock %}
+                    {% set prevblocklabel = xar_translate('Previous #(1) pages',prevblockpages) %}
+                    &#160;&#160;<a title="{{ prevblocklabel }}" href="{{ prevblockurl }}">&lt;&lt;</a>
+                {% else %}
+                    &#160;&#160;&lt;&lt;
+                {% endif %}
+            {% endif %}
+
+            {# <!-- Display previous-page link if there is just one block --> #}
+            {% if totalblocks == 1 or pagesperblock == 1 %}
+                {% if prevpageitems > 0 %}
+                    &#160;&#160;<a title="{{ xar_translate('Previous page') }}" href="{{ prevpageurl }}">&lt;</a>
+                {% else %}
+                    &#160;&#160;&lt;
+                {% endif %}
+            {% endif %}
+
+            {% for pagenumber, pageurl in middleurls %}
+                {% if pagenumber != currentpage %}
+                    {% set pageurllabel = xar_translate('Page #(1)',pagenumber) %}
+                    {% if pagenumber == lastpagenum %}
+                        &#160;&#160;<a href="{{ pageurl }}" title="{{ pageurllabel }}">{{ pagenumber }}...</a>
+                    {% else %}
+                        &#160;&#160;<a href="{{ pageurl }}" title="{{ pageurllabel }}">{{ pagenumber }}</a>
+                    {% endif %}
+                {% else %}
+                    &#160;&#160;{{ pagenumber }}
+                {% endif %}
+            {% endfor %}
+
+            {# <!-- Display next-page link if there is just one block --> #}
+            {% if currentpagenum != lastpagenum %}
+                {% if nextpageitems > 0 %}
+                    &#160;&#160;<a title="{{ xar_translate('Next page') }}" href="{{ nextpageurl }}">&gt;</a>
+                {% else %}
+                    &#160;&#160;&gt;
+                {% endif %}
+            {% endif %}
+        </div>
+    {% else %}
+        &#160;
+    {% endif %}

@@ -1,0 +1,19 @@
+{# <!-- Pager for displaying legacy next-page links on multi-page documents --> #}
+
+    {# <!-- Display next-page link if we are not on the last page --> #}
+    {% if totalpages is not null %}
+        <div class="xar-pager">
+            {% if currentpagenum != lastpagenum %}
+                <a title="{{ xar_translate('Next page') }}" href="{{ nextpageurl }}">{{ xar_translate('next') }} ({{ nextpage }}/{{ totalpages }})</a>
+            {% endif %}
+
+            {# <!-- Display last-page link if we are not on the last page --> #}
+            {% if currentpagenum != lastpagenum %}
+                &#160;<a title="{{ xar_translate('Last page') }}" href="{{ lasturl }}">&gt;&gt;</a>
+            {% else %}
+                &#160;
+            {% endif %}
+        </div>
+    {% else %}
+        &#160;
+    {% endif %}

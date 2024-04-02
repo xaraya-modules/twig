@@ -1,0 +1,111 @@
+{{ xar_style({method: "link", scope: "property", property: "datetime", file: "style"}) }}
+    {% if class is null %}
+        {% set class = 'xar-dropdown-date' %}
+    {% else %}
+        {% set class = 'xar-dropdown-date-' ~ class %}
+    {% endif %}
+    {% if style is null %}
+        {% set style = '' %}
+    {% endif %}
+
+    {% set nameampm = name ~ "_ampm" %}
+    {% set idampm1 = id ~ "_ampm1" %}
+    {% set idampm2 = id ~ "_ampm2" %}
+
+    {% if layout == 'default' or layout == '' or layout == 'byminute' %}
+        {% if dropdown is not null and dropdown %}
+            <select name="{{ name }}[hour]" id="{{ id }}_hour" tabindex="{{ tabindex }}" onchange="{{ evt_change }}" class="{{ class }}-hour" style="{{ style }}">
+                {% for i in range(0, 24 - 1) %}
+                    {% set val = "00".i;val=val|slice(val|length-2) %}
+                    {% if i == value['hour'] %}
+                        <option value="{{ i }}" selected="selected">{{ val }}</option>
+                    {% else %}
+                        <option value="{{ i }}">{{ val }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            {% if minutes is not null and (minutes == 'false') %}
+                <input type="hidden" name="{{ name }}[minute]" id="{{ id }}_minute" tabindex="{{ tabindex }}" value="1"/>
+            {% else %}
+                &#160;:&#160;
+                <select name="{{ name }}[minute]" id="{{ id }}_minute" tabindex="{{ tabindex }}" onchange="{{ evt_change }}" class="{{ class }}-minute" style="{{ style }}">
+                    {% for i in range(0, 60 - 1) %}
+                        {% set val = "00".i;val=val|slice(val|length-2) %}
+                        {% if i == value['minute'] %}
+                            <option value="{{ i }}" selected="selected">{{ val }}</option>
+                        {% else %}
+                            <option value="{{ i }}">{{ val }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            {% endif %}
+
+            {% if seconds is not null and (seconds == 'false') %}
+                <input type="hidden" name="{{ name }}[second]" id="{{ id }}_second" tabindex="{{ tabindex }}" value="1"/>
+            {% else %}
+                &#160;:&#160;
+                <select name="{{ name }}[second]" id="{{ id }}_second" tabindex="{{ tabindex }}" onchange="{{ evt_change }}" class="{{ class }}" style="{{ style }}">
+                    {% for i in range(1, 61 - 1) %}
+                        {% set val = "00".i;val=val|slice(val|length-2) %}
+                        {% if i == value['second'] %}
+                            <option value="{{ i }}" selected="selected">{{ val }}</option>
+                        {% else %}
+                            <option value="{{ i }}">{{ val }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            {% endif %}
+
+            {% if format is not null and (format == 'ampm') %}
+                &#160;
+                {% set ampmoptions = [
+                                                {'id': 'am', 'name': 'am'},
+                                                {'id': 'pm', 'name': 'pm'}
+                                                ] %}
+                {{ xar_data_input({type: "dropdown", name: nameampm, id: idampm1, tabindex: tabindex, value: value['ampm'], options: ampmoptions, onchange: evt_change}) }}
+            {% endif %}
+        {% else %}
+            {% set val = "00".value['hour'];val=val|slice(val|length-2) %}
+            <input type="text" name="{{ name }}[hour]" id="{{ id }}_hour" tabindex="{{ tabindex }}" value="{{ val }}" onchange="{{ evt_change }}" maxlength="2" style="width: 20px; text-align: right"/>
+            :
+            {% set val = "00".value['minute'];val=val|slice(val|length-2) %}
+            <input type="text" name="{{ name }}[minute]" id="{{ id }}_minute" tabindex="{{ tabindex }}" value="{{ val }}" onchange="{{ evt_change }}" maxlength="2" style="width: 20px; text-align: right"/>
+            {% if seconds is not null and (seconds == 'false') %}
+                <input type="hidden" name="{{ name }}[second]" id="{{ id }}_second" tabindex="{{ tabindex }}" value="1"/>
+            {% else %}
+                &#160;:&#160;
+                {% set val = "00".value['second'];val=val|slice(val|length-2) %}
+                <input type="text" name="{{ name }}[second]" id="{{ id }}_second" tabindex="{{ tabindex }}" value="{{ val }}" onchange="{{ evt_change }}" maxlength="2" style="width: 20px; text-align: right"/>
+            {% endif %}
+            {% if format is not null and (format == 'ampm') %}
+                {% set ampmoptions = [
+                                                {'id': 'am', 'name': 'am'},
+                                                {'id': 'pm', 'name': 'pm'}
+                                                ] %}
+                {{ xar_data_input({type: "dropdown", name: nameampm, id: idampm2, tabindex: tabindex, value: value['ampm'], options: ampmoptions, onchange: evt_change}) }}
+            {% endif %}
+        {% endif %}
+    {% elseif layout == 'byhalfhour' %}
+        {% set dummy = 1;xar_coremethod('sys', 'import', ['properties.datetime.data.halfhours']) %}
+        {% set options = datetime_halfhours() %}
+        {% set minutename = name ~ '_minute' %}
+        {% set minuteid = id ~ '_minute' %}
+        {% set minutes = value['hour'] * 60 + value['minute'] %}
+        {% if style is null %}
+            {% set style = '' %}
+        {% endif %}
+        {{ xar_data_input({type: "dropdown", name: minutename, id: minuteid, tabindex: tabindex, value: minutes, options: options, style: style}) }}
+        <input type="hidden" name="{{ name }}[hour]" id="{{ id }}_hour" value="0"/>
+        <input type="hidden" name="{{ name }}[second]" id="{{ id }}_second" value="0"/>
+    {% elseif layout == 'byhour' %}
+        {% set dummy = 1;xar_coremethod('sys', 'import', ['properties.datetime.data.hours']) %}
+        {% set options = datetime_hours() %}
+        {% set minutename = name ~ '_minute' %}
+        {% set minuteid = id ~ '_minute' %}
+        {# <!--
+        {{ xar_data_input({type: "dropdown", name: minutename, id: minuteid, tabindex: tabindex, value: value['hour'], options: options, style: style}) }}
+        --> #}
+        <input type="hidden" name="{{ name }}[hour]" id="{{ id }}_hour" value="0"/>
+        <input type="hidden" name="{{ name }}[second]" id="{{ id }}_second" value="0"/>
+    {% endif %}

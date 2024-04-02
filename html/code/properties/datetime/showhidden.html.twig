@@ -1,0 +1,16 @@
+<input type="text" name="input_type_{{ name }}" id="{{ id }}_input_type" value="{{ input_type }}" hidden="hidden"/>
+    {% if input_type == 'dropdown' %}
+		<input type="hidden" name="{{ name }}[day]" id="{{ id }}_day" value="{{ value['day'] }}"/>
+		<input type="hidden" name="{{ name }}[month]" id="{{ id }}_month" value="{{ value['month'] }}"/>
+		<input type="hidden" name="{{ name }}[year]" id="{{ id }}_year" value="{{ value['year'] }}"/>
+		<input type="hidden" name="{{ name }}[hour]" id="{{ id }}_hour" value="{{ value['hour'] }}"/>
+		<input type="hidden" name="{{ name }}[minute]" id="{{ id }}_minute" value="{{ value['minute'] }}"/>
+		<input type="hidden" name="{{ name }}[second]" id="{{ id }}_second" value="{{ value['second'] }}"/>
+		{% if value['ampm'] is not null %}
+			<input type="hidden" name="{{ name }}[ampm]" id="{{ id }}_ampm" value="{{ value['ampm'] }}"/>
+		{% endif %}
+    {% else %}
+    	<input type="datetime-local" name="{{ name }}" id="{{ id }}" value="{{ value }}" hidden="hidden"/>
+    {% endif %}
+
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}

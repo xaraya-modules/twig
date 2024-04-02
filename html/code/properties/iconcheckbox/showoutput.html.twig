@@ -1,0 +1,10 @@
+{% set yes = 'Yes' %}
+    {% set no = 'No' %}
+    {% set iconpath = xar_coremethod('sys', 'code') ~ 'properties/iconcheckbox/xartemplates/icons/' ~ icon_directory ~ '/' ~ icon_option %}
+    {% if file_exists(iconpath) and not is_dir(iconpath) %}
+        {% if value %}
+            <img src="{{ iconpath }}" alt="{{ yes }}"/>
+        {% else %}
+            <img src="{{ iconpath }}" alt="{{ no }}"/>
+        {% endif %}
+    {% endif %}

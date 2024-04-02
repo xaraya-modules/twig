@@ -1,0 +1,10 @@
+<input type="text" name="{{ name }}_input_type" id="{{ id }}_input_type" value="{{ input_type }}" hidden="hidden"/>
+    {% if input_type == 'dropdown' %}
+		<input type="hidden" name="{{ name }}[day]" id="{{ id }}_day" value="{{ value.day }}"/>
+		<input type="hidden" name="{{ name }}[month]" id="{{ id }}_month" value="{{ value.month }}"/>
+		<input type="hidden" name="{{ name }}[year]" id="{{ id }}_year" value="{{ value.year }}"/>
+    {% else %}
+    	<input type="date" name="{{ name }}" id="{{ id }}" value="{{ value }}" hidden="hidden"/>
+    {% endif %}
+
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}

@@ -1,0 +1,40 @@
+{{ xar_style({method: "link", scope: "property", property: "datetime", file: "style"}) }}
+    {% if class is null %}
+        {% set class = 'xar-dropdown-date' %}
+    {% else %}
+        {% set class = 'xar-dropdown-date-' ~ class %}
+    {% endif %}
+    {% if style is null %}
+        {% set style = '' %}
+    {% endif %}
+
+    <select name="{{ name }}[day]" id="{{ id }}_day" tabindex="{{ tabindex }}" onchange="{{ evt_change }}" class="{{ class }}-day" style="{{ style }}">
+        {% for i in range(1, 31) %}
+            {% if i == value['day'] %}
+                <option value="{{ i }}" selected="selected">{{ i }}</option>
+            {% else %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    <select name="{{ name }}[month]" id="{{ id }}_month" tabindex="{{ tabindex }}" onchange="{{ evt_change }}" class="{{ class }}-month" style="{{ style }}">
+        {% for i in range(1, 12) %}
+            {% set m = date('F', mktime(0, 0, 0, i, 1, value['year'])) %}
+            {% if i == value['month'] %}
+                <option value="{{ i }}" selected="selected">{{ m }}</option>
+            {% else %}
+                <option value="{{ i }}">{{ m }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    <select name="{{ name }}[year]" id="{{ id }}_year" tabindex="{{ tabindex }}" onchange="{{ evt_change }}" class="{{ class }}-year" style="{{ style }}">
+        {% for i in range(start_year, end_year) %}
+            {% if i == value['year'] %}
+                <option value="{{ i }}" selected="selected">{{ i }}</option>
+            {% else %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
