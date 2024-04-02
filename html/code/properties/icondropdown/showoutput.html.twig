@@ -1,4 +1,3 @@
-{% set iconpath = xar_coremethod('sys', 'code') ~ 'properties/iconcheckbox/xartemplates/icons/' ~ icon_directory ~ '/' ~ icon_option %}
-    {% if file_exists(iconpath) and not is_dir(iconpath) %}
-        <img src="{{ iconpath }}" alt="{{ option['name'] }}"/>
-    {% endif %}
+{% if iconpath %}
+    <img src="{{ iconpath }}" alt="{{ option['name'] }}"/>
+{% endif %}
