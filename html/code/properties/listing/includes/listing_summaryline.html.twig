@@ -13,8 +13,8 @@
                     {% endif %}
 
                     <form method="post" action="{{ xar_moduleurl(module,'new','modify') }}" enctype="{{ enc_type }}">
-                        <xar.data-form name="objectname" tplmodule="tplmodule" template="objectname"/>
-                        <div style="clear.both; text-align. center">
+                        {{ xar_data_form({name: objectname, tplmodule: tplmodule, template: objectname}) }}
+                        <div style="clear:both; text-align: center">
                             <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
                             <input type="hidden" name="confirm" id="confirm" value="1"/>
                             <input type="hidden" name="objectid" id="objectid" value="{{ thisobject.objectid }}"/>

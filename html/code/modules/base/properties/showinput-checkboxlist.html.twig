@@ -71,7 +71,7 @@
                     {% set slice = options|slice((i - 1) * col_count, col_count, true) %}
                     {% set col_options = col_options + slice %}
                 {% endfor %}
-                {% set col_width = round(100 / rows_cols) - 1 %}
+                {% set col_width = (100 / rows_cols)|round - 1 %}
                 {% for c, col_opts in col_options %}
                     <div style="width: {{ col_width }}%;float: left;">
                         {% for o, option in col_opts %}

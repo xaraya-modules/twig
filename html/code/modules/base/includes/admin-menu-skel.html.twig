@@ -27,10 +27,10 @@
                     {% set variable = _context[tabs['variable']] %}
                 {% endif %}
 
-                {% for tab in tabs['menulinks'] %}
-                    {# <!-- Compare each tab value to the value of the variable if it exists --> #}
-                    {% if tab['value'] is not null and variable is not null %}
-                        {% if tab['value'] == variable %}
+                {% for menulink in tabs['menulinks'] %}
+                    {# <!-- Compare each menulink value to the value of the variable if it exists --> #}
+                    {% if menulink['value'] is not null and variable is not null %}
+                        {% if menulink['value'] == variable %}
                             {% set tabclass = 'xar-tab-active' %}
                             {% set linkclass = 'xar-accent xar-accent-outline' %}
                         {% else %}
@@ -38,7 +38,7 @@
                             {% set linkclass = 'xar-norm xar-norm-outline' %}
                         {% endif %}
                     {% else %}
-                        {% if tab['isactive'] %}
+                        {% if menulink['isactive'] %}
                             {% set tabclass = 'xar-tab-active' %}
                             {% set linkclass = 'xar-accent xar-accent-outline' %}
                         {% else %}
@@ -47,13 +47,13 @@
                         {% endif %}
                     {% endif %}
                     <li class="{{ tabclass }}">
-                        {% if tab['url'] %}
-                            <a href="{{ tab['url'] }}" class="{{ linkclass }}" title="{{ tab['title'] }}">
-                                {{ tab['label'] }}
+                        {% if menulink['url'] %}
+                            <a href="{{ menulink['url'] }}" class="{{ linkclass }}" title="{{ menulink['title'] }}">
+                                {{ menulink['label'] }}
                             </a>
                         {% else %}
-                            <a class="{{ linkclass }}" title="{{ tab['title'] }}">
-                                {{ tab['label'] }}
+                            <a class="{{ linkclass }}" title="{{ menulink['title'] }}">
+                                {{ menulink['label'] }}
                             </a>
                         {% endif %}
                     </li>

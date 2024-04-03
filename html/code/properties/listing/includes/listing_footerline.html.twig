@@ -1,6 +1,6 @@
 {# <!-- Leave this line empty, to be overridden by module or theme --> #}
 {# <!--
-    <xar:access level="700">
+    {% if xar_access({'level': 700}) %}
         {% if total > 0 %}
             <div style="text-align:center; padding-top:10px;">
                 <input type="hidden" name="idlist" id="idlist"/>
@@ -20,5 +20,5 @@
                 <a href="javascript:listing_checkall(false)">Uncheck All</a>
             </div>
         {% endif %}
-    </xar:access>
+    {% endif %}
 --> #}

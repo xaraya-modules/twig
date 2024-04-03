@@ -11,7 +11,7 @@
                 {% set auto = column.isAutoIncrement() ? 'true' : 'false' %}
                 {% set default = column.getDefaultValue() %}
                 {% set size = column.getSize() %}
-                {% set scale = column.getScale()?column.getScale().0 %}
+                {% set scale = column.getScale() ? column.getScale().0 %}
                 <column id="{{ table.getName() }}.{{ column.getName() }}" name="{{ column.getName() }}">
                     {# <!-- Determine the required and auto attribute and add these to the column tag --> #}
                     <xar:attribute name="required">

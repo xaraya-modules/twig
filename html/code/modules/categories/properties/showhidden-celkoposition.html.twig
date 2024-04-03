@@ -7,6 +7,7 @@
         <input type="hidden" name="{{ name }}_position" id="{{ name }}_position" value="2"/>
     {% else %}
         {% if not isnew %}
+            {# @todo fix break loop #}
             {% for i in range(0, items|length - 1) %}
                 {% if items[i]['left'] == item['left_id']-1 %}
                     {# <!-- The present item is the first child --> #}

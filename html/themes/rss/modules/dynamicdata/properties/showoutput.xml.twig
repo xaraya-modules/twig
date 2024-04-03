@@ -1,0 +1,11 @@
+{# rss/modules/dynamicdata/properties/showoutput.xml.twig #}
+
+{% block showoutput %}
+    {% if value is iterable %}
+        <![CDATA[
+        {{ value|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
+        ]]>
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endblock %}

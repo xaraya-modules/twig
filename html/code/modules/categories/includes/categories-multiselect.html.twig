@@ -45,7 +45,7 @@
     {% elseif select_type == 3 %}
         {% if (nodesize > 0) or allowempty %}
             {{ xar_javascript({scope: "module", module: "base", filename: "multicombo.js"}) }}
-            {% if not style %}{% set style = 'min-width.10em;' %}{% endif %}
+            {% if not style %}{% set style = 'min-width: 10em;' %}{% endif %}
             <table class="xar-table xar-displayinline">
                 <thead>
                     <tr>

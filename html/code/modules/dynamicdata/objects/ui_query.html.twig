@@ -52,8 +52,8 @@
                             {# <!-- CHECKME: could the dummy datastore actually do something here ? --> #}
                             {% if property.datastore == '_dummy_' %}
                                 N/A
-                                <xar:continue/>
-                            {% endif %}
+                                {# <xar:continue /> #}
+                            {% else %}
     
                             {# <!-- initialize fieldname, fieldid and fieldvalue --> #}
                             {% set fieldname = 'field[' ~ name ~ ']' %}
@@ -154,6 +154,7 @@
                                     {% endfor %}
                                 </select>
                                 {# <!-- check class: {{ get_class(property) }} ({{ get_parent_class(property) }}) --> #}
+                            {% endif %}
                             {% endif %}
                         </div>
                     </div>

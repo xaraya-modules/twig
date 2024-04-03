@@ -69,7 +69,7 @@
                             {{ propinfo.label }} 
                             <xar:break />{% endif %}
                         {% endfor %}
-                        {% elseif style == 'childlist' or style == 'parentid' %}
+                    {% elseif style == 'childlist' or style == 'parentid' %}
                         {# <!-- the parent property needs to be selected --> #}
                         <select name="{{ name }}[link]" id="{{ id }}_link">
                             {% for propname, propinfo in properties %}

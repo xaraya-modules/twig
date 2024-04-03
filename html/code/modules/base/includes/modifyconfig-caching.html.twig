@@ -4,9 +4,7 @@
 <div style="padding: 5px">
         These options are set in var/cache/config.caching.php
     </div>
-    {% set cache_config_file = xar_coremethod('sys', 'varpath') ~ '/cache/config.caching.php' %}
-    {# @todo if file_exists(cache_config_file) #}
-    {% if "file_exists(cache_config_file)" %}
+    {% if cache_config_file %}
             <fieldset>
             <legend>Persistent Caching</legend>
             <div class="xar-row">
@@ -114,25 +112,24 @@
                     </label>
                 </div>
                 <div class="xar-col">
+                    {% if not core_cache_sizes %}
+                        {% set core_cache_sizes = [] %}
+                    {% endif %}
                     {% for scope, value in cache_settings['CoreCache.Preload'] %}
-                        {% if '.' in scope %}
-                            {% set pieces = scope|split('.') %}
-                            {% set filepath = xar_coremethod('sys', 'varpath') ~ '/cache/core/' ~ pieces[0] ~ '.' ~ pieces[1] ~ '.php' %}
+                        {% if ':' in scope %}
+                            {% set pieces = scope|split(':') %}
                             {% if value is null %}
                                 Scope: {{ pieces[0] }} - Name: {{ pieces[1] }} (disabled)<br/>
-                            {# @todo elseif file_exists(filepath) #}
-                            {% elseif "file_exists(filepath)" %}
-                                    Scope: {{ pieces[0] }} - Name: {{ pieces[1] }} ("filesize(filepath)"{# @todo filesize(filepath) #} bytes)<br/>
+                            {% elseif scope in core_cache_sizes|keys %}
+                                    Scope: {{ pieces[0] }} - Name: {{ pieces[1] }} ({{core_cache_sizes[scope] }} bytes)<br/>
                             {% else %}
                                 Scope: {{ pieces[0] }} - Name: {{ pieces[1] }} (not cached)<br/>
                             {% endif %}
                         {% else %}
-                            {% set filepath = xar_coremethod('sys', 'varpath') ~ '/cache/core/' ~ scope ~ '.php' %}
                             {% if value is null %}
                                 Scope: {{ scope }} (disabled)<br/>
-                            {# @todo elseif file_exists(filepath) #}
-                            {% elseif "file_exists(filepath)" %}
-                                Scope: {{ scope }} ("filesize(filepath)"{# @todo filesize(filepath) #} bytes)<br/>
+                            {% elseif scope in core_cache_sizes|keys %}
+                                Scope: {{ scope }} ({{core_cache_sizes[scope] }} bytes)<br/>
                             {% else %}
                                 Scope: {{ scope }} (not cached)<br/>
                             {% endif %}

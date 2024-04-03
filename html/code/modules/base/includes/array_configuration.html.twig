@@ -33,8 +33,7 @@
                                     {{ dump(value) }}
                                 </pre>
                                 <xar:break/>
-                            {% endif %}
-                            {% if value[i][j] %}
+                            {% elseif value[i][j] %}
                                 {% set propvalue = value[i][j] %}
                                 {{ xar_data_input({type: column_types[j], name: propname, id: propid, value: propvalue}) }}
                             {% else %}

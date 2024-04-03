@@ -26,6 +26,7 @@
             {% for i in range(0, modules|length - 1) %}
                 {% set optgroup = 1 %}
                 <optgroup label="Module: {{ modules[i] }}['label']">
+                    {# @todo replace while #}
                     <xar:while condition="1">
                         {% if startmodule == modules[i]['id'] %}
                             <option value="{{ modules[i]['id'] }}" selected="selected">{{ modules[i]['name'] }}</option>

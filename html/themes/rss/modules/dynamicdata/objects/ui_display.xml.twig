@@ -7,10 +7,21 @@
         {% if object.checkAccess('update') %}
             {% set modifylink = object.getActionURL('modify', object.itemid) %}
         {% endif %}
-        <label>{{ object.label }}</label>
-        <viewlink>{{ viewlink }}</viewlink>
+        <category>{{ object.label }}</category>
+        <textInput>
+            <title>View Link</title>
+            <description>View items</description>
+            <name>view</name>
+            <link>{{ viewlink }}</link>
+        </textInput>
         {% if modifylink %}
             <modifylink>{{ modifylink }}</modifylink>
+            <textInput>
+                <title>Modify Link</title>
+                <description>Modify this item</description>
+                <name>modify</name>
+                <link>{{ modifylink }}</link>
+            </textInput>
         {% endif %}
 
         {% set getlinked = xar_coremethod('xarModItemVars', 'get', 'dynamicdata','getlinkedobjects',object.objectid) %}

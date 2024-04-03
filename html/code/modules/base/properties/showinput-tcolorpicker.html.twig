@@ -8,7 +8,7 @@
     {{ xar_javascript({scope: "module", module: "base", filename: "tcolorpicker.js"}) }}
     {% set alttext = 'Click to select a color' %}
 
-    <input type="text" name="{{ name }}" id="{{ id }}" value="{{ value }}" size="{{ size }}" maxlength="{{ maxlength }}" style="background-color:{{ value }}"/>
+    <input type="text" name="{{ name }}" id="{{ id }}" value="{{ value }}" size="{{ size }}" maxlength="{{ maxlength }}" style="background-color: {{ value }}"/>
 
     <a href="javascript:TCP.popup(document.getElementById('{{ id }}'), 1)">
         {{- xar_image({scope: "module", module: "base", file: "tcolorpicker.gif", class: "xar-icon", alt: alttext}) -}}

@@ -2,6 +2,7 @@
         {% set id = 'listingid_0' %}
     {% endif %}
 
+    {# @todo what was this again? #}
     <xar:ajax-listing id="{{ id }}">
         {{ xar_javascript({filename: "checkall.js", property: "listing", position: "head"}) }}
 
@@ -15,12 +16,12 @@
 
         {% set allowread = false %}
         {% set allowedit = false %}
-        <xar:access level="200">
+        {% if xar_access({'level': 200}) %}
             {% set allowread = true %}
-        </xar:access>
-        <xar:access level="500">
+        {% endif %}
+        {% if xar_access({'level': 500}) %}
             {% set allowedit = true %}
-        </xar:access>
+        {% endif %}
 
         {% set url = xar_currenturl(params) %}
 

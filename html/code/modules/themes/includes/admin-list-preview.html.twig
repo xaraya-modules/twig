@@ -7,8 +7,8 @@
             {% for theme in themes %}
                 <tr id="{{ theme['name'] }}">
                     <td style="width:250px;min-height:200px;" class="xar-padding-thickends">
-                    {% set preview_img = 'themes/' ~ theme['directory'] ~ '/images/preview.jpg' %}
-                    {% if is_file(preview_img) %}
+                    {% if theme['preview_img'] %}
+                        {%  set preview_img = theme['preview_img'] %}
                         {{ include('@themes/includes/showimg.html.twig') }}
                     {% else %}
                         <div style="height:200px;line-height:187px;vertical-align:middle;text-align:center;">

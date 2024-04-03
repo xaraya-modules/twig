@@ -22,8 +22,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {# @todo xarCore::$build #}
-                "xarCore::$build"
+                {{ xarCoreBuild }}
             </div>
         </div>
     </fieldset>
@@ -98,9 +97,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {# @todo to be checked in function #}
-                {# @todo set value = realpath('index.php') #}
-                {% set value = "realpath('index.php')" %}
+                {% set value = realpaths['index.php'] %}
                 {% if value == false %}
                     Cannot display this path
                 {% else %}
@@ -116,8 +113,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {# @todo set value = realpath('bootstrap.php') #}
-                {% set value = "realpath('bootstrap.php')" %}
+                {% set value = realpaths['bootstrap.php'] %}
                 {% if value == false %}
                     Cannot display this path
                 {% else %}
@@ -133,8 +129,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {# @todo set value = realpath(xar_coremethod('sys', 'varpath') ~ '/' ~ 'config.system.php') #}
-                {% set value = "realpath(xar_coremethod('sys', 'varpath') ~ '/' ~ 'config.system.php')" %}
+                {% set value = realpaths['config.system.php'] %}
                 {% if value == false %}
                     Cannot display this path
                 {% else %}
@@ -150,8 +145,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {# @todo set value = realpath(xar_coremethod('sys', 'varpath') ~ '/logs/' ~ 'config.log.php') #}
-                {% set value = "realpath(xar_coremethod('sys', 'varpath') ~ '/logs/' ~ 'config.log.php')" %}
+                {% set value = realpaths['config.log.php'] %}
                 {% if value == false %}
                     Cannot display this path
                 {% else %}

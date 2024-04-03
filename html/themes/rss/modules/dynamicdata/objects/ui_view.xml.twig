@@ -4,23 +4,31 @@
 {# <!-- FIXME: this does not generate valid RSS feeds --> #}
     {% if object %}
         {% if object.name == 'objects' and object.linktype == 'object' %}
-            <label>{{ object.label }}</label>
+            <category>{{ object.label }}</category>
             {# <!-- show the list of main objects --> #}
             <items>
                 {{ include('main_objects.xml.twig') }}
             </items>
         {% else %}
-            <label>{{ object.label }}</label>
+            <category>{{ object.label }}</category>
             {% set searchlink = object.getActionURL('search') %}
-            <searchlink>{{ searchlink }}</searchlink>
+            <textInput>
+                <title>Search Link</title>
+                <description>Enter your search terms</description>
+                <name>search</name>
+                <link>{{ searchlink }}</link>
+            </textInput>
             {% if object.primary and object.checkAccess('create') %}
                 {% set newlink = object.getActionURL('new') %}
-                <newlink>{{ newlink }}</newlink>
+                <textInput>
+                    <title>Create Link</title>
+                    <description>Create a new item</description>
+                    <name>create</name>
+                    <link>{{ newlink }}</link>
+                </textInput>
             {% endif %}
             {# <!-- don't show a newlink here --> #}
-            <items>
-                {{ xar_data_view({object: object}) }}
-            </items>
+            {{ xar_data_view({object: object}) }}
         {% endif %}
     {% else %}
         <error>Please select one of the available objects</error>

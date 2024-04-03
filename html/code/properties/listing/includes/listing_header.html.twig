@@ -9,8 +9,8 @@
             {% set formfieldstate = formfieldstates[field] %}
             {% set paramarray = paramarray|merge({'order': column}) %}
             {% if (column == primaryalias) and not show_primary %}
-                <xar:continue />
-            {% endif %}
+                {# <xar:continue /> #}
+            {% else %}
             {% if formfieldstate != 'hidden' %}
                 <th>
                     {# <!-- Output field --> #}
@@ -21,6 +21,7 @@
                     {% set subdata = params|merge({'column': column}) %}
                     {{ include(['@' ~ module ~ '/includes/sortarrows.html.twig', '@properties/listing/includes/listing_headerprefix.html.twig'], subdata) }}
                 </th>
+            {% endif %}
             {% endif %}
         {% endfor %}
         {{ include(['@' ~ module ~ '/includes/listing_headersuffix.html.twig', '@properties/listing/includes/listing_headerprefix.html.twig']) }}

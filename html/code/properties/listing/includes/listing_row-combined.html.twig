@@ -14,7 +14,6 @@
                     {% endif %}
 
                     <form method="post" action="{{ xar_moduleurl(module,'user','modify')" enctype="{{ enc_type }}">
-                        <xar.data-form name="objectname" itemid="itemid" tplmodule="tplmodule" template="objectname"/>
                         {{ xar_data_form({name: objectname, itemid: itemid, tplmodule: tplmodule, template: objectname}) }}
                         <div>
                             <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
@@ -41,15 +40,15 @@
                 {% set column = fieldnames[field] %}
                 {% set value = loopitem[column] %}
                 {% if column == primaryalias and not show_primary %}
-                    <xar.continue />
-                {% endif %}
+                    {# <xar:continue /> #}
+                {% else %}
                 <td class="{{ item_class }} ">
                     {% if formfieldstate == 'hidden' %}
                         {# <!-- Hidden field --> #}
-                        <xar.data-input property="properties[column]" name="formfieldname" id="formfieldid" value="value" hidden="hidden"/>                    
+                        {{ xar_data_input({property: properties[column], name: formfieldname, id: formfieldid, value: value, hidden: "hidden"}) }}
                     {% elseif formfieldstate == 'input' %}
                         {# <!-- Input field --> #}
-                        <xar.data-input property="properties[column]" name="formfieldname" id="formfieldid" value="value"/>                    
+                        {{ xar_data_input({property: properties[column], name: formfieldname, id: formfieldid, value: value}) }}
                     {% else %}
                         {# <!-- Output field --> #}
                         {% if field == keyfieldalias and allowread %}
@@ -61,6 +60,7 @@
                         {% endif %}
                     {% endif %}
                 </td>
+                {% endif %}
             {% endfor %}
             {{ include('@' ~ module ~ '/includes/listing_rowsuffix.html.twig') }}
         </tr>

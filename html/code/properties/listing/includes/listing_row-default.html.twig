@@ -8,8 +8,8 @@
             {% set column = fieldnames[field] %}
             {% set value = loopitem[column] %}
             {% if column == primaryalias and not show_primary %}
-                <xar:continue />
-            {% endif %}
+                {# <xar:continue /> #}
+            {% else %}
             {% if formfieldstate == 'hidden' %}
                 {# <!-- Hidden field --> #}
                 {{ xar_data_input({property: properties[column], name: formfieldname, id: formfieldid, value: value, hidden: "hidden"}) }}                    
@@ -32,6 +32,7 @@
                         {% endif %}
                     {% endif %}
                 </td>
+            {% endif %}
             {% endif %}
         {% endfor %}
         {{ include('@' ~ module ~ '/includes/listing_rowsuffix.html.twig') }}

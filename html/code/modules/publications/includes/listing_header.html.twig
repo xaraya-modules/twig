@@ -11,10 +11,10 @@
             {% set column = fieldnames[field] %}
             {% set paramarray = paramarray|merge({'order': column}) %}
             {% if (column == primaryalias) and not show_primary %}
-                <xar:continue />
+                {# <xar:continue /> #}
             {% elseif layout == 'publications-admin' and column == 'itemtype' %}
                 {# <!-- Don't show the itemtypein the admin view --> #}
-                <xar:continue />
+                {# <xar:continue /> #}
             {% else %}
             <th>
                 {% set url = xar_currenturl(paramarray) %}
