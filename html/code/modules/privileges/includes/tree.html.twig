@@ -13,7 +13,7 @@
                         </a>
                     {% endif %}
                     {% set userslink = xar_moduleurl('privileges','admin','viewroles',{'id': node['parent']['id']}) %}
-                    <a href="{{ userslink }}" title="{{ xar_translate('Show the Groups/Users this Privilege is assigned to') }} }}">
+                    <a href="{{ userslink }}" title="{{ xar_translate('Show the Groups/Users this Privilege is assigned to') }}">
                         {{- xar_image({scope: "module", module: "privileges", file: "usersgroups.gif"}) -}}
                     </a>
                     {% if node.parent.parentid != 0 %}

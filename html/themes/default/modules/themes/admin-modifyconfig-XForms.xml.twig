@@ -3,11 +3,6 @@
 {% block admin_modifyconfig_XForms %}
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet href="xforms2html.xsl" type="text/xsl"?>
-<!DOCTYPE xar:template
-[
-<!ENTITY ndash "&#8211;">
-<!ENTITY xar-modurl-themes-admin-updateconfig "index.php?module=themes&amp;type=admin&amp;func=updateconfig">
-]>
 <xar:template xmlns="http://www.w3.org/1999/xhtml" xmlns:xar="http://xaraya.com/2004/blocklayout"
 xmlns:xf="http://www.w3.org/2002/xforms" xml:lang="en">
     {# <!-- In this template we try to translate the form into XForms. --> #}
@@ -18,7 +13,7 @@ xmlns:xf="http://www.w3.org/2002/xforms" xml:lang="en">
         <div class="xar-mod-body">
             {{ include('admin-menu.html.twig') }}
             <h2>Modify Configuration</h2>
-            <form action="index.php?module=themes&amp;type=admin&amp;func=updateconfig"
+            <form action="{{ xar_moduleurl('themes', 'admin', 'updateconfig') }}"
             method="post" enctype="application/x-www-form-urlencoded">
                 <xf:group ref="configoptions">
                     <xf:label>Configuration Options</xf:label>

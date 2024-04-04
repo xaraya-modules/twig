@@ -34,7 +34,7 @@
                             {% set this_id = 'notify_' ~ loop_item1['id'] %}
                             <label class="xar-form-label">{{ loop_item1['name'] }}</label>
                             {{ xar_data_input({type: "checkbox", name: this_name, id: this_id, value: loop_item1['notify']}) }}
-                            <label for="{{ this_id }}" title="{{ xar_translate('Toggle notifications sent to this Group') }} }}">
+                            <label for="{{ this_id }}" title="{{ xar_translate('Toggle notifications sent to this Group') }}">
                                 notify
                             </label>
                             {% set onclick = xar_moduleurl('roles', 'admin', 'sitelock', {'cmd': 'delete', 'id': loop_item1['id']}) %}
