@@ -34,11 +34,11 @@
                 {% set newurl = str_replace('header[id]='._GET['header']['id'], 'header[id]='.id, xar_currenturl()) %}
             {% else %}
                 {% if strstr(xar_currenturl(),'?') %}
-                    {% set start = xar_currenturl().'&#38;' %}
+                    {% set start = xar_currenturl() ~ '&#38;' %}
                 {% else %}
-                    {% set start = xar_currenturl().'?' %}
+                    {% set start = xar_currenturl() ~ '?' %}
                 {% endif %}
-                {% set newurl = start ~ 'header[id]='.id %}
+                {% set newurl = start ~ 'header[id]=' ~ id %}
             {% endif %}
 
                         <a href="{{ newurl }}">{{ comment['title'] }} {{ comment['thread_text'] }}</a>
@@ -68,13 +68,13 @@
                     {% if package['transformed-text'] is not null %}
                         {{ package['transformed-text'] }}
                         <p>
-                            <a href="{{ xar_currenturl() }}{{ #comment }}$comment['id']{{ " title=" }}{{ xar_translate('parent_url') }}{{ " rel="bookmark">
+                            <a href="{{ xar_currenturl() }}#comment{{ comment['id'] }}" title="{{ xar_translate('parent_url') }}" rel="bookmark">
                             </a>
                         </p>
                         {% else %}
                         {{ comment['text'] }}
                         <p>
-                            <a href="{{ xar_currenturl() }}{{ #comment }}$comment['id']{{ " title=" }}{{ xar_translate('parent_url') }}{{ " rel="bookmark">
+                            <a href="{{ xar_currenturl() }}#comment{{ comment['id'] }}" title="{{ xar_translate('parent_url') }}" rel="bookmark">
                             </a>
                         </p>
     {# <!-- FIXME: nested if's don't seem right here --> #}
@@ -120,11 +120,11 @@
                 {% set newurl = str_replace('header[id]='._GET['header']['id'], 'header[id]='.id, xar_currenturl()) %}
             {% else %}
                 {% if strstr(xar_currenturl(),'?') %}
-                    {% set start = xar_currenturl().'&#38;' %}
+                    {% set start = xar_currenturl() ~ '&#38;' %}
                 {% else %}
-                    {% set start = xar_currenturl().'?' %}
+                    {% set start = xar_currenturl() ~ '?' %}
                 {% endif %}
-                {% set newurl = start ~ 'header[id]='.id %}
+                {% set newurl = start ~ 'header[id]=' ~ id %}
             {% endif %}
 
                         <a href="{{ newurl }}">{{ comment['title'] }} {{ comment['thread_text'] }}</a>
@@ -156,13 +156,13 @@
                     {% if package['transformed-text'] is not null %}
                         {{ package['transformed-text'] }}
                         <p>
-                            <a href="{{ xar_currenturl() }}{{ #comment }}$comment['id']{{ " title=" }}{{ xar_translate('parent_url') }}{{ " rel="bookmark">
+                            <a href="{{ xar_currenturl() }}#comment{{ comment['id'] }}" title="{{ xar_translate('parent_url') }}" rel="bookmark">
                             </a>
                         </p>
                     {% else %}
                         {{ comment['text'] }}
                         <p>
-                            <a href="{{ xar_currenturl() }}{{ #comment }}$comment['id']{{ " title=" }}{{ xar_translate('parent_url') }}{{ " rel="bookmark">
+                            <a href="{{ xar_currenturl() }}#comment{{ comment['id'] }}" title="{{ xar_translate('parent_url') }}" rel="bookmark">
                             </a>
                         </p>
     {# <!-- FIXME: nested if's don't seem right here --> #}

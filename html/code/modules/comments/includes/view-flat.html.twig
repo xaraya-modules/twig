@@ -26,12 +26,12 @@
         <div class="xar-accent xar-comments-comment">
             {% if transformed_text is not null %}
                 <p>
-                    <a href="{{ xar_currenturl() }}{{ #comment }}$comment['id']{{ " title=" }}{{ xar_translate('parent_url') }}{{ " rel="bookmark">
+                    <a href="{{ xar_currenturl() }}#comment{{ comment['id'] }}" title="{{ xar_translate('parent_url') }}" rel="bookmark">
                     </a>
                 </p>
             {% else %}
                 <p>
-                    <a href="{{ xar_currenturl() }}{{ #comment }}$comment['id']{{ " title=" }}{{ xar_translate('parent_url') }}{{ " rel="bookmark">
+                    <a href="{{ xar_currenturl() }}#comment{{ comment['id'] }}" title="{{ xar_translate('parent_url') }}" rel="bookmark">
                     </a>
                 </p>
                 {% if comment['branchout'] is not null and comment['branchout'] == 1 %}

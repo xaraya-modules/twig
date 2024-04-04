@@ -45,7 +45,7 @@
                     {% endif %}
                     {# <!-- populate the day --> #}
                     {% set today = xar_coremethod('xarLocale', 'formatDate', ['%Y%m%d']) %}
-                    {% set thisday = xar_coremethod('xarLocale', 'formatDate', ['%Y%m%d',Day.getTimeStamp(])) %}                    
+                    {% set thisday = xar_coremethod('xarLocale', 'formatDate', ['%Y%m%d',Day.getTimeStamp()]) %}                    
                     {% if today == thisday %}
                         {% set accentclass = 'xar-accent' %}
                     {% else %}

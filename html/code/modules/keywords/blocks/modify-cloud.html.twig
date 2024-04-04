@@ -30,11 +30,11 @@
             </label>
         </div>
         <div class="xar-col">
-            {% set options = {
-                    array('id': 1, 'name': 'Category items'),
-                    array('id': 2, 'name': 'Number of hits'),
-                    array('id': 3, 'name': 'Keywords'),
-                } %}
+            {% set options = [
+                    {'id': 1, 'name': 'Category items'},
+                    {'id': 2, 'name': 'Number of hits'},
+                    {'id': 3, 'name': 'Keywords'}
+                ] %}
             {{ xar_data_input({type: "dropdown", name: "cloudtype", options: options, value: cloudtype}) }}
         </div>
     </div>

@@ -10,8 +10,8 @@
                 {% set inactivetab = 'xar-tab' %}
                 {% set inactivelink = 'xar-norm xar-norm-outline' %}
 
-                {% set tabclass = not modname||modname=='keywords'?activetab.inactivetab %}
-                {% set linkclass = not modname||modname=='keywords'?activelink.inactivelink %}
+                {% set tabclass = (not modname or modname == 'keywords') ? activetab : inactivetab %}
+                {% set linkclass = (not modname or modname == 'keywords') ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'module_id': null, 'itemtype': null}) }}" title="{{ xar_translate('View All Associated Items') }}" class="{{ linkclass }}">
                     All</a>

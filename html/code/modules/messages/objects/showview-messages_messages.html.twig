@@ -28,7 +28,7 @@
                 {% set arrow = 'desc' %}
             {% endif %}
 
-	    <a href="{{ xar_moduleurl('messages','user','view', {'sortfield': name, 'ascdesc': strtoupper(arrow), 'folder' => folder}) }}"><img src="{{ xar_imageurl('icons/sort-' ~ arrow ~ '.png','theme') }}" width="16" height="16" alt="reverse order" /></a>
+	    <a href="{{ xar_moduleurl('messages','user','view', {'sortfield': name, 'ascdesc': arrow|upper, 'folder': folder}) }}"><img src="{{ xar_imageurl('icons/sort-' ~ arrow ~ '.png','theme') }}" width="16" height="16" alt="reverse order" /></a>
 
         {% elseif name == 'to_id' or name == 'from_id' %}
 		{#  these fields are saved as integers but displayed as strings, so sorting would be confusing #}
@@ -53,7 +53,7 @@
             {% for id, fields in items %}
                 <tr>
                     {% for name in properties|keys %}
-                        {% if not fields[name] and fields[name] nd '0' %}
+                        {% if not fields[name] or fields[name] == '0' %}
                             <td valign="top">&#160;</td>
                         {% elseif linkfield and linkfield == name %}
                             <td valign="top"><a href="{{ links[id]['display']['olink'] }}">{{ xar_data_output({property: properties[name], value: fields[name]}) }}</a></td>

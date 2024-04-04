@@ -22,7 +22,7 @@
             </form>
         {% endif %}
         {% if xar_coremethod('xarUser', 'isLoggedIn') %}
-            {% if xar_security_check('EditComments',0,'',header['moduleid'].'.'.header['itemid'].'.'.item['id']) or item['role_id'] == package['role_id'] %}
+            {% if xar_security_check('EditComments',0,'',header['moduleid'] ~ '.' ~ header['itemid'] ~ '.' ~ item['id']) or item['role_id'] == package['role_id'] %}
                  {% if not package['settings']['edittimelimit'] or (time() <= (item['xar_date'] + (package['settings']['edittimelimit'] * 60)) or xar_security_check('Comments-Admin')) %}
                 <form action="{{ xar_moduleurl('comments', 'user', 'modify') }}" method="post" class="xar-comments-actions">
                     <div>

@@ -21,13 +21,13 @@
         </div>
         <div class="xar-col">
             {% set value = xar_modulevar('calendar', 'minutesperunit') %}
-            {% set options = {
-                    array('id': 5, 'name': 5),
-                    array('id': 10, 'name': 10),
-                    array('id': 15, 'name': 15),
-                    array('id': 20, 'name': 20),
-                    array('id': 30, 'name': 30),
-                } %}
+            {% set options = [
+                    {'id': 5, 'name': 5},
+                    {'id': 10, 'name': 10},
+                    {'id': 15, 'name': 15},
+                    {'id': 20, 'name': 20},
+                    {'id': 30, 'name': 30}
+                ] %}
             {{ xar_data_input({type: "dropdown", name: "minutesperunit", id: "minutesperunit", options: options, value: value}) }}&#160;minutes
         </div>
     </div>
@@ -72,13 +72,13 @@
             </label>
         </div>
         <div class="xar-col">
-            {% set options = {
-                                    array('id': 'day', 'name': 'Day'),
-                                    array('id': 'week', 'name': 'Week'),
-                                    array('id': 'month', 'name': 'Month'),
-                                    array('id': 'year', 'name': 'Year'),
-                                    array('id': 'customview', 'name': 'Customized'),
-                                    } %}
+            {% set options = [
+                {'id': 'day', 'name': 'Day'},
+                {'id': 'week', 'name': 'Week'},
+                {'id': 'month', 'name': 'Month'},
+                {'id': 'year', 'name': 'Year'},
+                {'id': 'customview', 'name': 'Customized'}
+            ] %}
             {% set value = xar_modulevar('calendar', 'default_view') %}
             {{ xar_data_input({type: "dropdown", name: "default_view", id: "default_view", options: options, value: value}) }}
         </div>
@@ -115,10 +115,10 @@
             </label>
         </div>
         <div class="xar-col">
-            {% set options = {
-                                    array('id': false, 'name': 'am/pm'),
-                                    array('id': true, 'name': '24 hour'),
-                                    } %}
+            {% set options = [
+                {'id': false, 'name': 'am/pm'},
+                {'id': true, 'name': '24 hour'}
+            ] %}
             {% set value = xar_modulevar('calendar', 'twentyfourhourformat') %}
             {{ xar_data_input({type: "radio", name: "twentyfourhourformat", id: "twentyfourhourformat", value: value, options: options}) }}
         </div>

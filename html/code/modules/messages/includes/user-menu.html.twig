@@ -9,8 +9,8 @@
 {% set activetab = info[2] %}
 
 {% set unread = xar_apifunc('messages','user','get_count',{'recipient': xar_uservar('id'), 'unread': true}) %}
-{% set sent = xar_apifunc('messages','user','get_count',{'author': xar_uservar('id'})) %}
-{% set total = xar_apifunc('messages','user','get_count',{'recipient': xar_uservar('id'})) %}
+{% set sent = xar_apifunc('messages','user','get_count',{'author': xar_uservar('id')}) %}
+{% set total = xar_apifunc('messages','user','get_count',{'recipient': xar_uservar('id')}) %}
 {% set drafts = xar_apifunc('messages','user','get_count',{'author': xar_uservar('id'), 'drafts': true}) %}
  
 

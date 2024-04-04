@@ -8,7 +8,7 @@
                 <xar:continue />
             {% endif %}
             <th>
-                {% set url = xar_currenturl({'letter': letter, 'order': column, 'op' => 'column'}) %}
+                {% set url = xar_currenturl({'letter': letter, 'order': column, 'op': 'column'}) %}
                 <a href="{{ url }}" alt="Click to order by this field" title="Order by {{ field }}">
                     {{ field }}
                 </a>

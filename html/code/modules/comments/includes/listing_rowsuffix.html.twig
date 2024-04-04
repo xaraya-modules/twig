@@ -9,7 +9,7 @@
                     <a href="{{ xar_moduleurl('comments','admin','display',{'id': loopitem[primaryalias]}) }}"
                     title="Display this comment">
                         <xar:if condition = "xarModVars::get('comments','use_module_icons')">
-                            <img src="{{ xar_imageurl('icons/'.'display.png', 'base') }}" style="margin-right: 5px; vertical-align: top;" />
+                            <img src="{{ xar_imageurl('icons/' ~ 'display.png', 'base') }}" style="margin-right: 5px; vertical-align: top;" />
                         {% else %}
                             <b style="margin-right: 5px">H</b>
                         {% endif %}
@@ -19,7 +19,7 @@
                     <a href="{{ xar_moduleurl('comments','admin','modify',{'itemid': loopitem[primaryalias]}) }}"
                     title="Modify this comment">
                         <xar:if condition = "xarModVars::get('comments','use_module_icons')">
-                            <img src="{{ xar_imageurl('icons/'.'modify.png', 'base') }}" style="margin-right: 5px; vertical-align: top;" />
+                            <img src="{{ xar_imageurl('icons/' ~ 'modify.png', 'base') }}" style="margin-right: 5px; vertical-align: top;" />
                         {% else %}
                             <b style="margin-right: 5px">M</b>
                         {% endif %}
@@ -29,7 +29,7 @@
                     <a href="{{ xar_moduleurl('comments','admin','delete',{'itemid': loopitem[primaryalias], 'dtype': 'item'}) }}"
                     title="Delete this comment">
                         <xar:if condition = "xarModVars::get('comments','use_module_icons')">
-                            <img src="{{ xar_imageurl('icons/'.'delete.png', 'base') }}" style="margin-right: 5px; vertical-align: top;" />
+                            <img src="{{ xar_imageurl('icons/' ~ 'delete.png', 'base') }}" style="margin-right: 5px; vertical-align: top;" />
                         {% else %}
                             <b style="margin-right: 5px">D</b>
                         {% endif %}

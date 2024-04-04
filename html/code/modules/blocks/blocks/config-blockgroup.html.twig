@@ -61,8 +61,8 @@
                         {% else %}
                             <img src="{{ imgdown }}" alt="{{ imgdownalt }}" class="xar-icon-disabled"/>
                         {% endif %}
-                        {% set removename = 'remove_block['.instance['block_id'].']' %}
-                        {% set removeid = 'remove_block_'.instance['block_id'] %}
+                        {% set removename = 'remove_block[' ~ instance['block_id'] ~ ']' %}
+                        {% set removeid = 'remove_block_' ~ instance['block_id'] %}
                         {% set removetitle = 'Remove the block from this blockgroup' %}
                         &#160;<label for="{{ removeid }}" title="{{ removetitle }}">Remove</label>&#160;
                         {{ xar_data_input({type: "checkbox", name: removename, id: removeid}) }}

@@ -16,12 +16,12 @@
                 {% if xar_coremethod('xarUser', 'isLoggedIn') and field == keyfieldalias and (xar_security_check('EditCalendar',0) or currentuserid == thisuserid) %}
                 --> #}
                 {% if xar_coremethod('xarUser', 'isLoggedIn') and field == keyfieldalias and xar_security_check('EditCalendar',0) %}
-                    <a href="{{ xar_moduleurl('calendar','user','modify',{'itemid': loopitem[primaryalias], 'name': objectname,'tplmodule' => module}) }}">
+                    <a href="{{ xar_moduleurl('calendar','user','modify',{'itemid': loopitem[primaryalias], 'name': objectname,'tplmodule': module}) }}">
                         {{ xar_data_output({property: properties[column], value: value}) }}
                     </a>
                 {% else %}
                     {% if field == keyfieldalias and xar_security_check('ReadCalendar',0) %}
-                        <a href="{{ xar_moduleurl('calendar','user','display',{'itemid': loopitem[primaryalias], 'name': objectname, 'tplmodule' => module}) }}">
+                        <a href="{{ xar_moduleurl('calendar','user','display',{'itemid': loopitem[primaryalias], 'name': objectname, 'tplmodule': module}) }}">
                             {{ xar_data_output({property: properties[column], value: value}) }}
                         </a>
                     {% else %}
