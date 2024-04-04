@@ -159,10 +159,12 @@
                     <a href="{{ xar_moduleurl('images','admin','derivatives',{'action': 'view', 'fileId': image['fileId']}) }}">
                         {{ xar_translate('View') }}
                     </a>
+                    {# <!--
                     |
                     <a href="{{ xar_moduleurl('images','admin','phpthumb',{'fid': image['fileId']}) }}">
                         {{ xar_translate('Process') }}
                     </a>
+                    --> #}
                     |
                     <a href="{{ xar_moduleurl('images','admin','derivatives',{'action': 'delete', 'fileId': image['fileId']}) }}">
                         {{ xar_translate('Delete') }}

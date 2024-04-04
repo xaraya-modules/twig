@@ -243,15 +243,17 @@
                     <a href="{{ xar_moduleurl('images','admin','browse',{'action': 'view', 'bid': baseId, 'fid': image['fileId']}) }}">
                         {{ xar_translate('View') }}
                     </a>
-                    {% if image['isWritable'] %}
+                    {% if image['isWritable'] or thumbsonly %}
                     |
                     <a href="{{ xar_moduleurl('images','admin','browse',{'action': 'resize', 'bid': baseId, 'fid': image['fileId']}) }}">
                         {{ xar_translate('Resize') }}
                     </a>
+                    {# <!--
                     |
                     <a href="{{ xar_moduleurl('images','admin','phpthumb',{'bid': baseId, 'fid': image['fileId']}) }}">
                         {{ xar_translate('Process') }}
                     </a>
+                    --> #}
                     |
                     <a href="{{ xar_moduleurl('images','admin','browse',{'action': 'delete', 'bid': baseId, 'fid': image['fileId']}) }}">
                         {{ xar_translate('Delete') }}
@@ -270,6 +272,7 @@
                 </td>
             </tr>
             {% if not action %}
+            {# <!--
             <tr>
                 <td colspan="6" align="center" class="xar-accent">
                     <label for="setting">{{ xar_translate('Image Processing') }}</label>
@@ -297,6 +300,7 @@
                     <input type="submit" name="processlist" value="{{ xar_translate('Process') }}" />
                 </td>
             </tr>
+            --> #}
             <tr>
                 <td colspan="6" align="center">
                     <label for="width">{{ xar_translate('Width') }}</label> <input type="text" name="width" id="width" size="5" value="" />
@@ -330,6 +334,7 @@
                     <input type="submit" name="action" value="{{ xar_translate('Cancel') }}" />
                 </td>
             </tr>
+            {# <!--
             {% elseif action == 'processlist' %}
             <tr>
                 <td colspan="6">
@@ -350,6 +355,7 @@
                     <input type="submit" name="action" value="{{ xar_translate('Cancel') }}" />
                 </td>
             </tr>
+            --> #}
             {% endif %}
         </table>
         </form>
