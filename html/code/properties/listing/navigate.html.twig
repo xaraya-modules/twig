@@ -7,7 +7,7 @@
     {% if direction and itemid and listing_id %}
         {% set dummy = xar_coremethod('sys', 'import', ['properties.listing.navigate']) %}
         {# @todo imported functions will not work with Twig #}
-        {% set url = navigate(listing_id, itemid, direction, index_name, url) %}
+        {% set url = xar_coremethod(null, 'navigate', listing_id, itemid, direction, index_name, url) %}
         {% if url != false %}
             {% if direction == 'forward' %}
                 {% set label = 'Next' %}

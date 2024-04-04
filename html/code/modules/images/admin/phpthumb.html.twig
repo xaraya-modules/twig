@@ -18,6 +18,10 @@
         <p><strong>{{ message }}</strong></p>
     {% endif %}
 
+    {% if not selimage %}
+        {% set selimage = [] %}
+    {% endif %}
+
     <a name="config"></a>
     <fieldset>
         <legend>
@@ -180,13 +184,13 @@
                 </label>
             </td>
             <td>
-                {% set options = [
-                      {'p': xar_translate('Portrait Left')},
-                      {'P': xar_translate('Portrait Right')},
-                      {'L': xar_translate('Landscape Left')},
-                      {'l': xar_translate('Landscape Right')},
-                      {'x': xar_translate('EXIF Orientation')}
-                ] %}
+                {% set options = {
+                    'p': xar_translate('Portrait Left'),
+                    'P': xar_translate('Portrait Right'),
+                    'L': xar_translate('Landscape Left'),
+                    'l': xar_translate('Landscape Right'),
+                    'x': xar_translate('EXIF Orientation')
+                } %}
                 <select name="ar" id="ar">
                     <option value=""> </option>
                     {% for id, val in options %}
@@ -286,18 +290,18 @@
                 </label>
             </td>
             <td>
-                {% set options = [
-                      {'BR': xar_translate('Bottom Right')},
-                      {'BL': xar_translate('Bottom Left')},
-                      {'TR': xar_translate('Top Right')},
-                      {'TL': xar_translate('Top Left')},
-                      {'C' : xar_translate('Center')},
-                      {'R' : xar_translate('Right')},
-                      {'L' : xar_translate('Left')},
-                      {'T' : xar_translate('Top')},
-                      {'B' : xar_translate('Bottom')},
-                      {'*' : xar_translate('Tile')}
-                ] %}
+                {% set options = {
+                    'BR': xar_translate('Bottom Right'),
+                    'BL': xar_translate('Bottom Left'),
+                    'TR': xar_translate('Top Right'),
+                    'TL': xar_translate('Top Left'),
+                    'C' : xar_translate('Center'),
+                    'R' : xar_translate('Right'),
+                    'L' : xar_translate('Left'),
+                    'T' : xar_translate('Top'),
+                    'B' : xar_translate('Bottom'),
+                    '*' : xar_translate('Tile')
+                } %}
                 <select name="filter[wmi][1]" id="filter_wmi_1">
                     <option value=""> </option>
                     {% for id, val in options %}
@@ -350,18 +354,18 @@
                 </label>
             </td>
             <td>
-                {% set options = [
-                      {'BR': xar_translate('Bottom Right')},
-                      {'BL': xar_translate('Bottom Left')},
-                      {'TR': xar_translate('Top Right')},
-                      {'TL': xar_translate('Top Left')},
-                      {'C' : xar_translate('Center')},
-                      {'R' : xar_translate('Right')},
-                      {'L' : xar_translate('Left')},
-                      {'T' : xar_translate('Top')},
-                      {'B' : xar_translate('Bottom')},
-                      {'*' : xar_translate('Tile')}
-                ] %}
+                {% set options = {
+                    'BR': xar_translate('Bottom Right'),
+                    'BL': xar_translate('Bottom Left'),
+                    'TR': xar_translate('Top Right'),
+                    'TL': xar_translate('Top Left'),
+                    'C' : xar_translate('Center'),
+                    'R' : xar_translate('Right'),
+                    'L' : xar_translate('Left'),
+                    'T' : xar_translate('Top'),
+                    'B' : xar_translate('Bottom'),
+                    '*' : xar_translate('Tile')
+                } %}
                 <select name="filter[wmt][2]" id="filter_wmt_2">
                     <option value=""> </option>
                     {% for id, val in options %}
@@ -480,11 +484,11 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
                 </label>
             </td>
             <td>
-                {% set options = [
-                      {'jpeg': 'JPEG'},
-                      {'png': 'PNG'},
-                      {'gif': 'GIF'}
-                ] %}
+                {% set options = {
+                    'jpeg': 'JPEG',
+                    'png': 'PNG',
+                    'gif': 'GIF'
+                } %}
                 <select name="f" id="f">
                     {% for id, val in options %}
                         {% if f and f == id %}

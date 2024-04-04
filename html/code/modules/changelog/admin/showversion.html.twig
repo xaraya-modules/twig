@@ -133,9 +133,9 @@
                     <td class="xar-norm">{{ field }}</td>
                     <td class="xar-norm">
                         {% if value is iterable or value is object %}
-                            {% set value = serialize(value) %}
+                            {% set value = value|json_encode(constant('JSON_PRETTY_PRINT')) %}
                         {% endif %}
-                        {% set value = nl2br(xar_prep_display(value)) %}
+                        {% set value = xar_prep_display(value)|nl2br %}
                         {{ value }}
                     </td>
                 </tr>

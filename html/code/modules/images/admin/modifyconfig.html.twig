@@ -60,7 +60,7 @@
                     {% if gdextension %}
                         {{ xar_translate('<em>
                             <strong>Note:</strong> Currently only GD &#62;= 2.0.1 is supported
-                        </em>') }}
+                        </em>')|raw }}
                     {% else %}
                         {{ xar_translate('You do not have any graphics library available, you will not be able to use the resize functions') }}
                     {% endif %}
@@ -75,7 +75,7 @@
                         {{ xar_translate('<em>
                             <strong>Example:</strong> /usr/local/bin/convert (Unix) or<br />
                              C:\Program Files\ImageMagick-6.0.6-Q16\convert.exe (Windows)
-                        </em>') }}
+                        </em>')|raw }}
                     </p>
                </div>
                <br />
