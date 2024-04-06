@@ -3,7 +3,7 @@
         {% if letter %}
             {% set paramarray = paramarray|merge({'letter': letter}) %}
         {% endif %}
-        {{ include(['@' ~ module ~ '/includes/listing_headerprefix.html.twig', '@properties/listing/includes/listing_headerprefix.html.twig']) }}
+        {{ include(['@' ~ module ~ '/includes/listing_headerprefix.html.twig', '@property/listing/includes/listing_headerprefix.html.twig']) }}
         {% for field in fieldnames|keys %}
             {% set column = fieldnames[field] %}
             {% set formfieldstate = formfieldstates[field] %}
@@ -19,10 +19,10 @@
                         {{ fieldlabels.column }}
                     </a>
                     {% set subdata = params|merge({'column': column}) %}
-                    {{ include(['@' ~ module ~ '/includes/sortarrows.html.twig', '@properties/listing/includes/listing_headerprefix.html.twig'], subdata) }}
+                    {{ include(['@' ~ module ~ '/includes/sortarrows.html.twig', '@property/listing/includes/listing_headerprefix.html.twig'], subdata) }}
                 </th>
             {% endif %}
             {% endif %}
         {% endfor %}
-        {{ include(['@' ~ module ~ '/includes/listing_headersuffix.html.twig', '@properties/listing/includes/listing_headerprefix.html.twig']) }}
+        {{ include(['@' ~ module ~ '/includes/listing_headersuffix.html.twig', '@property/listing/includes/listing_headerprefix.html.twig']) }}
     </tr>

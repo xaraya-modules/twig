@@ -38,25 +38,25 @@
         {% if filter %}
             {{ xar_data_form({objectname: objectname, layout: "filter"}) }}
         {% else %}
-            {{ include(['@' ~ module ~ '/includes/listing_alphabet.html.twig', '@properties/listing/includes/listing_alphabet.html.twig']) }}
+            {{ include(['@' ~ module ~ '/includes/listing_alphabet.html.twig', '@property/listing/includes/listing_alphabet.html.twig']) }}
             <div style="clear:both"></div>    
-            {{ include(['@' ~ module ~ '/includes/listing_searchboxline.html.twig', '@properties/listing/includes/listing_searchboxline.html.twig']) }}
+            {{ include(['@' ~ module ~ '/includes/listing_searchboxline.html.twig', '@property/listing/includes/listing_searchboxline.html.twig']) }}
         {% endif %}
-        {{ include(['@' ~ module ~ '/includes/listing_summaryline.html.twig', '@properties/listing/includes/listing_summaryline.html.twig']) }}
-        {{ include(['@' ~ module ~ '/includes/listing_pagerline.html.twig', '@properties/listing/includes/listing_pagerline.html.twig']) }}
+        {{ include(['@' ~ module ~ '/includes/listing_summaryline.html.twig', '@property/listing/includes/listing_summaryline.html.twig']) }}
+        {{ include(['@' ~ module ~ '/includes/listing_pagerline.html.twig', '@property/listing/includes/listing_pagerline.html.twig']) }}
         <table id="listing_table" class="xar-table xar-fullwidth xar-items" style="clear:both; width: 100%" border="0">
             <thead>
-                {{ include(['@' ~ module ~ '/includes/listing_header.html.twig', '@properties/listing/includes/listing_header.html.twig']) }}
+                {{ include(['@' ~ module ~ '/includes/listing_header.html.twig', '@property/listing/includes/listing_header.html.twig']) }}
             </thead>
             <tbody>
-                {{ include(['@' ~ module ~ '/includes/listing_body.html.twig', '@properties/listing/includes/listing_header.html.twig']) }}
+                {{ include(['@' ~ module ~ '/includes/listing_body.html.twig', '@property/listing/includes/listing_header.html.twig']) }}
             </tbody>
         </table>
         {% if not total %}
             <p class="xar-align-center">There are no items selected</p>
         {% endif %}
-        {{ include(['@' ~ module ~ '/includes/listing_footerline.html.twig', '@properties/listing/includes/listing_footerline.html.twig']) }}
+        {{ include(['@' ~ module ~ '/includes/listing_footerline.html.twig', '@property/listing/includes/listing_footerline.html.twig']) }}
         {% if (show_bulk and (show_bulk != 'false')) and (total > 0) %}
-            {{ include(['@' ~ module ~ '/includes/listing_bulk_operations.html.twig', '@properties/listing/includes/listing_bulk_operations.html.twig']) }}
+            {{ include(['@' ~ module ~ '/includes/listing_bulk_operations.html.twig', '@property/listing/includes/listing_bulk_operations.html.twig']) }}
         {% endif %}
     </xar:ajax-listing>

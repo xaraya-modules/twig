@@ -1,7 +1,7 @@
 {% if layout == 'monthyear' %}
-        {{ include('@properties/date/includes/monthyeartemplate-output.html.twig') }}
+        {{ include('@property/date/includes/monthyeartemplate-output.html.twig') }}
     {% elseif layout == 'daymonth' %}
-        {{ include('@properties/date/includes/daymonthtemplate-output.html.twig') }}
+        {{ include('@property/date/includes/daymonthtemplate-output.html.twig') }}
     {% else %}
-        {{ include('@properties/date/includes/datetemplate-output.html.twig') }}
+        {{ include('@property/date/includes/datetemplate-output.html.twig') }}
     {% endif %}

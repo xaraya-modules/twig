@@ -7,11 +7,11 @@
     <input type="text" name="input_type_{{ name }}" id="{{ id }}_input_type" value="{{ input_type }}" hidden="hidden"/>
     {% if input_type == 'dropdown' %}
 		{% if layout == 'monthyear' %}
-			{{ include('@properties/date/includes/monthyeartemplate-input.html.twig') }}
+			{{ include('@property/date/includes/monthyeartemplate-input.html.twig') }}
 		{% elseif layout == 'daymonth' %}
-			{{ include('@properties/date/includes/daymonthtemplate-input.html.twig') }}
+			{{ include('@property/date/includes/daymonthtemplate-input.html.twig') }}
 		{% else %}
-			{{ include('@properties/date/includes/datetemplate-input.html.twig') }}
+			{{ include('@property/date/includes/datetemplate-input.html.twig') }}
 		{% endif %}
     {% else %}
     	<input type="date" name="{{ name }}" id="{{ id }}" value="{{ value }}"/>

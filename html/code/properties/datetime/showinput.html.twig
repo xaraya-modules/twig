@@ -6,8 +6,8 @@
 
     <input type="text" name="input_type_{{ name }}" id="{{ id }}_input_type" value="{{ input_type }}" hidden="hidden"/>
     {% if input_type == 'dropdown' %}
-		{{ include('@properties/datetime/includes/datetemplate-input.html.twig') }}
-		{{ include('@properties/datetime/includes/timetemplate-input.html.twig') }}
+		{{ include('@property/datetime/includes/datetemplate-input.html.twig') }}
+		{{ include('@property/datetime/includes/timetemplate-input.html.twig') }}
     {% else %}
     	<input type="datetime-local" name="{{ name }}" id="{{ id }}" value="{{ value }}"/>
     {% endif %}
