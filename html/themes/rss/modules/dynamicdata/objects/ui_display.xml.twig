@@ -1,4 +1,4 @@
-{# modules/dynamicdata/objects/ui_display.xml.twig #}
+{# @theme/rss/modules/dynamicdata/objects/ui_display.xml.twig #}
 
 {% block ui_display %}
 {# <!-- FIXME: this does not generate valid RSS feeds --> #}
@@ -28,7 +28,7 @@
         {% if getlinked %}
 
             {# <!-- Display object with linked objects --> #}
-            {{ include('rss/includes/display_linked.xml.twig') }}
+            {{ include('@dynamicdata/includes/display_linked.xml.twig') }}
 
         {% else %}
 
