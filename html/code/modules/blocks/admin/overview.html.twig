@@ -16,38 +16,38 @@
                 {% set inactivetab = 'xar-tab' %}
                 {% set inactivelink = 'xar-norm xar-norm-outline' %}
 
-                {% set tabclass = not tab?activetab.inactivetab %}
-                {% set linkclass = not tab?activelink.inactivelink %}
+                {% set tabclass = not tab ? activetab : inactivetab %}
+                {% set linkclass = not tab ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'tab': null}) }}" title="{{ xar_translate('About') }}" class="{{ linkclass }}">
                     About</a>
                 </li>
-                {% set tabclass = tab=='admin'?activetab.inactivetab %}
-                {% set linkclass = tab=='admin'?activelink.inactivelink %}
+                {% set tabclass = tab=='admin' ? activetab : inactivetab %}
+                {% set linkclass = tab=='admin' ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'tab': 'admin'}) }}" title="{{ xar_translate('Admin') }}" class="{{ linkclass }}">
                     Admin</a>
                 </li>
-                {% set tabclass = tab=='config'?activetab.inactivetab %}
-                {% set linkclass = tab=='config'?activelink.inactivelink %}
+                {% set tabclass = tab=='config' ? activetab : inactivetab %}
+                {% set linkclass = tab=='config' ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'tab': 'config'}) }}" title="{{ xar_translate('Config') }}" class="{{ linkclass }}">
                     Config</a>
                 </li>
-                {% set tabclass = tab=='caching'?activetab.inactivetab %}
-                {% set linkclass = tab=='caching'?activelink.inactivelink %}
+                {% set tabclass = tab=='caching' ? activetab : inactivetab %}
+                {% set linkclass = tab=='caching' ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'tab': 'caching'}) }}" title="{{ xar_translate('Caching') }}" class="{{ linkclass }}">
                     Caching</a>
                 </li>
-                {% set tabclass = tab=='access'?activetab.inactivetab %}
-                {% set linkclass = tab=='access'?activelink.inactivelink %}
+                {% set tabclass = tab=='access' ? activetab : inactivetab %}
+                {% set linkclass = tab=='access' ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'tab': 'access'}) }}" title="{{ xar_translate('Access') }}" class="{{ linkclass }}">
                     Access</a>
                 </li>
-                {% set tabclass = tab=='howto'?activetab.inactivetab %}
-                {% set linkclass = tab=='howto'?activelink.inactivelink %}
+                {% set tabclass = tab=='howto' ? activetab : inactivetab %}
+                {% set linkclass = tab=='howto' ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'tab': 'howto'}) }}" title="{{ xar_translate('How To') }}" class="{{ linkclass }}">
                     How To</a>

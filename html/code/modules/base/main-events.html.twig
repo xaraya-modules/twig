@@ -16,33 +16,33 @@
         <p>NOTE: The event system is distinct from hooks in that events belonging to the event system are guaranteed to happen, unlike hooks which may, or may not have been configured by the site administrator.</p>
         <div>
             <ul class="xar-tabs xar-alt xar-norm-outline">
-                {% set tabclass = not tab?activetab.inactivetab %}
-                {% set linkclass = not tab?activelink.inactivelink %}
+                {% set tabclass = not tab ? activetab : inactivetab %}
+                {% set linkclass = not tab ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'tab': null}) }}" title="{{ xar_translate('Overview') }}" class="{{ linkclass }}">
                     Overview</a>
                 </li>
                 {# <!--
-                {% set tabclass = tab=='functions'?activetab.inactivetab %}
-                {% set linkclass = tab=='functions'?activelink.inactivelink %}
+                {% set tabclass = tab=='functions' ? activetab : inactivetab %}
+                {% set linkclass = tab=='functions' ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'tab': 'functions'}) }}" title="{{ xar_translate('Functions') }}" class="{{ linkclass }}">
                     Functions</a>
                 </li>
-                {% set tabclass = tab=='subjects'?activetab.inactivetab %}
-                {% set linkclass = tab=='subjects'?activelink.inactivelink %}
+                {% set tabclass = tab=='subjects' ? activetab : inactivetab %}
+                {% set linkclass = tab=='subjects' ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'tab': 'subjects'}) }}" title="{{ xar_translate('Subjects') }}" class="{{ linkclass }}">
                     Subjects</a>
                 </li>
-                {% set tabclass = tab=='observers'?activetab.inactivetab %}
-                {% set linkclass = tab=='observers'?activelink.inactivelink %}
+                {% set tabclass = tab=='observers' ? activetab : inactivetab %}
+                {% set linkclass = tab=='observers' ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'tab': 'observers'}) }}" title="{{ xar_translate('Observers') }}" class="{{ linkclass }}">
                     Observers</a>
                 </li>
-                {% set tabclass = tab=='examples'?activetab.inactivetab %}
-                {% set linkclass = tab=='examples'?activelink.inactivelink %}
+                {% set tabclass = tab=='examples' ? activetab : inactivetab %}
+                {% set linkclass = tab=='examples' ? activelink : inactivelink %}
                 <li class="{{ tabclass }}">
                     <a href="{{ xar_currenturl({'tab': 'examples'}) }}" title="{{ xar_translate('Examples') }}" class="{{ linkclass }}">
                     Examples</a>
