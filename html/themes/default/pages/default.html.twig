@@ -1,46 +1,33 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-{{ xar_twig_header("text/html") -}}
-    <html xml:lang="en" lang="en">
-        {# <!-- Call blocks early so any css and js from them is included --> #}
-        {% set leftgroup = xar_blockgroup("left") %}
-        {% set rightgroup = xar_blockgroup("right") %}
-        {% set topnavgroup = xar_blockgroup("topnav") %}
-        {% set centergroup = xar_blockgroup("center") %} 
-        <head>
-            {{ xar_blockgroup("header") }}
-            <title>
-                {{ tpl.pageTitle }}
-            </title>
-            <base href="{{ xar_baseurl() }}index.php"/>
-            <link rel='icon' href="favicon.ico"/>
-            {{ xar_style({scope: "common"}) }}
-            {{ xar_style({scope: "theme", file: "style", title: "Xaraya Default Stylesheet"}) }}
-            {{ xar_place_css() }}
-            {{ xar_place_javascript({position: "head"}) }}
-        </head>
-        <body>
-            <div id="wrapper">
-                <div id="main">
-                    <div id="logo">
-                        <a href="index.php" title="home">
-                            {{- xar_image({scope: "theme", file: "xarLogo2.png", width: "90", height: "90", alt: "Xaraya Logo", title: "home"}) -}}
-                        </a>
-                        <p>
-                            {{ xar_modulevar("themes", "SiteSlogan") }}
-                        </p>
-                    </div>
-                    {% block modulespace %}{{ _bl_mainModuleOutput|raw }}{% endblock %}
-                </div>
-                <div id="sideInfo1" class="sideInfo">
-                    {{ leftgroup|raw }}
-                </div>
-                <div id="sideInfo2" class="sideInfo">
-                    {{ rightgroup|raw }}
-                </div>
-                {{ topnavgroup|raw }}
-                {{ centergroup|raw }}
-                
-            </div>
-            {{ xar_place_javascript({position: "body"}) }}
-        </body>
-    </html>
+{# default/pages/default.html.twig #}
+
+{# We use a 3-column layout with main content + 2 sidebars for anonymous users #}
+{% extends 'default/pages/layout-3.html.twig' %}
+
+{# Specify a page type to override div id's, e.g. default, user or admin #}
+{% set page_type = '' %}
+
+{# Call blockgroups early so any css and js from them is included #}
+{% set leftgroup = xar_blockgroup("left") %}
+{% set rightgroup = xar_blockgroup("right") %}
+{% set topnavgroup = xar_blockgroup("topnav") %}
+{% set centergroup = xar_blockgroup("center") %}
+
+{% block body_sidebar1 %}
+<div id="sideInfo1" class="sideInfo">
+    {# Insert the sidebar1 blockgroups here #}
+    {{ leftgroup|raw }}
+</div>
+{% endblock %}
+
+{% block body_sidebar2 %}
+<div id="sideInfo2" class="sideInfo">
+    {# Insert the sidebar2 blockgroups here #}
+    {{ rightgroup|raw }}
+</div>
+{% endblock %}
+
+{% block body_unused %}
+    {# Not used in this theme - any leftover blockgroups go here #}
+    {{ topnavgroup|raw }}
+    {{ centergroup|raw }}
+{% endblock %}

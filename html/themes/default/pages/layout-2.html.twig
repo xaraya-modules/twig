@@ -1,0 +1,71 @@
+{# default/pages/layout-3.html.twig #}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{{ xar_twig_header("text/html") -}}
+{#
+    We define a 2-column layout with main content + 1 sidebar here
+#}
+{# Specify a page type to override div id's, e.g. default, user or admin #}
+{# set page_type = '' #}
+{# Call blockgroups early so any css and js from them is included #}
+{# set leftgroup = xar_blockgroup("left") #}
+<html xml:lang="en" lang="en">
+    <head>
+        {# Use standard header for every page #}
+        {{ xar_blockgroup("header") }}
+        <title>
+            {{ tpl.pageTitle }}
+        </title>
+        <base href="{{ xar_baseurl() }}index.php"/>
+        <link rel='icon' href="favicon.ico"/>
+        {% block head_styles %}
+            {# Use common styles for every page #}
+            {{ xar_style({scope: "common"}) }}
+            {{ xar_style({scope: "theme", file: "style", title: "Xaraya Default Stylesheet"}) }}
+            {% block head_styles_extra %}
+                {# Instead of an *_extra block here we could also override the head_styles block and call parent() after inserting this #}
+            {% endblock %}
+            {{ xar_place_css() }}
+        {% endblock %}
+        {% block head_javascript %}
+            {{ xar_place_javascript({position: "head"}) }}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body_wrapper %}
+        <div id="{{ page_type }}wrapper">
+            {% block body_main %}
+            <div id="{{ page_type }}main">
+                <div id="logo">
+                    <a href="index.php" title="home">
+                        {{- xar_image({scope: "theme", file: "xarLogo2.png", width: "90", height: "90", alt: "Xaraya Logo", title: "home"}) -}}
+                    </a>
+                    <p>
+                        {{ xar_modulevar("themes", "SiteSlogan") }}
+                    </p>
+                </div>
+                {# The main module output will be placed here #}
+                {% block modulespace %}{{ _bl_mainModuleOutput|raw }}{% endblock %}
+            </div>
+            {% endblock %}
+
+            {% block body_sidebar1 %}
+            <div id="sideInfo1" class="sideInfo">
+                {# Insert the sidebar1 blockgroups here #}
+            </div>
+            {% endblock %}
+
+            {% block body_sidebar2 %}
+                {# Not used for this layout - see layout-3.html.twig #}
+            {% endblock %}
+
+            {% block body_unused %}
+                {# Not used in this theme - any leftover blockgroups go here #}
+            {% endblock %}
+        </div>
+        {% endblock %}
+
+        {% block body_javascript %}
+            {{ xar_place_javascript({position: "body"}) }}
+        {% endblock %}
+    </body>
+</html>

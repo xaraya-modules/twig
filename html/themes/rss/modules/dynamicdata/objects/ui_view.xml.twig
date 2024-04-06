@@ -3,11 +3,11 @@
 {% block ui_view %}
 {# <!-- FIXME: this does not generate valid RSS feeds --> #}
     {% if object %}
-        {% if object.name == 'objects' and object.linktype == 'object' %}
+        {% if object.name == 'objects' and object.linktype == 'object' and false %}
             <category>{{ object.label }}</category>
             {# <!-- show the list of main objects --> #}
             <items>
-                {{ include('main_objects.xml.twig') }}
+                {{ include('@dynamicdata/includes/main_objects.xml.twig') }}
             </items>
         {% else %}
             <category>{{ object.label }}</category>

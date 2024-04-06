@@ -1,18 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 {{ xar_twig_header("text/html") -}}
-    <html xml:lang="en" lang="en">
-        <head>
-            {{ xar_blockgroup("header") }}
-            <title>
-                {{ tpl.pageTitle }}
-            </title>
-            <base href="{{ xar_baseurl() }}index.php"/>
-            <link rel='icon' href="favicon.ico"/>
-            {{ xar_style({scope: "common"}) }}
-            {{ xar_style({scope: "theme", file: "style", title: "Kingston Default Stylesheet"}) }}
-            {{ xar_place_css() }}
-            {{ xar_place_javascript({position: "head"}) }}
-        </head>
+<html xml:lang="en" lang="en">
+	<head>
+		{{ xar_blockgroup("header") }}
+		<title>
+			{{ tpl.pageTitle }}
+		</title>
+		<base href="{{ xar_baseurl() }}index.php"/>
+		<link rel='icon' href="favicon.ico"/>
+		{{ xar_style({scope: "common"}) }}
+		{{ xar_style({scope: "theme", file: "style", title: "Kingston Default Stylesheet"}) }}
+		{{ xar_place_css() }}
+		{{ xar_place_javascript({position: "head"}) }}
+	</head>
 
 <body>
 
@@ -81,4 +81,3 @@
 
 </body>
 </html>
-
