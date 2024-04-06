@@ -1,0 +1,39 @@
+{# @modules/includes/modinfo-bl.html.twig #}
+
+{% block modinfo_bl %}
+    <div class="xar-row">
+        <div class="xar-col">
+            <label class="xar-form-label">
+                Blocklayout Templates
+            </label>
+        </div>
+        <div class="xar-col">
+            <fieldset>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        Theme
+                    </div>
+                    <div class="xar-col">
+                        <strong>html/themes/{theme}/</strong>modules/{{ modname }}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        Module
+                    </div>
+                    <div class="xar-col">
+                        <strong>html/</strong>code/modules/{{ modname }}
+                    </div>
+                </div>
+                <div class="xar-row">
+                    <div class="xar-col">
+                        Extension
+                    </div>
+                    <div class="xar-col">
+                        .xt
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+{% endblock %}

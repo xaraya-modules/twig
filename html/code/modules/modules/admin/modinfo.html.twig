@@ -186,6 +186,10 @@
                     </div>
                 </div>
             {% endif %}
+            {% if twigtemplates %}
+                {{ include('@modules/includes/modinfo-bl.html.twig') }}
+                {{ include('@modules/includes/modinfo-twig.html.twig') }}
+            {% endif %}
         </fieldset>
         <div class="xar-form-actions">
             <div class="xar-row">
