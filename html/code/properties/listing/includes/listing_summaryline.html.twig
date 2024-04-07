@@ -43,6 +43,6 @@
             {% endif %}
         </div>
         <div class="xar-floatright xar-padding-thick xar-halfwidth xar-align-right" style="padding-top:1em;">
-            {{ include('@' ~ module ~ '/includes/listing_newlink.html.twig') }}
+            {{ include(['@' ~ module ~ '/includes/listing_newlink.html.twig', '@property/listing/includes/listing_newlink.html.twig']) }}
         </div>
     {% endif %}

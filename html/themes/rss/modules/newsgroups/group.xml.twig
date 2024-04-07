@@ -8,8 +8,8 @@
                 <title>{{ xar_prep_display(loop_item1['Subject']) }}</title>
                 <link>{{ xar_moduleurl('newsgroups', 'user', 'article', {'group': group, 'article': loop_item1['number']}) }}</link>
                 <description></description>
-                <author>{{ xar_coremethod('xarVar', 'prepEmailDisplay', xar_prep_display(loop_item1['From')]) }}</author>
-                <pubDate>{{ xar_coremethod('xarLocale', 'formatUTCDate', "%a, %d %b %Y %H.%M.%S GMT", date(loop_item1['Date').getTimestamp()]) }}</pubDate>
+                <author>{{ xar_coremethod('xarVar', 'prepEmailDisplay', xar_prep_display(loop_item1['From'])) }}</author>
+                <pubDate>{{ xar_coremethod('xarLocale', 'formatUTCDate', "%a, %d %b %Y %H.%M.%S GMT", date(loop_item1['Date']).getTimestamp()) }}</pubDate>
             </item>
         {% endfor %}
     {% endif %}
