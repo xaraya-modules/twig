@@ -16,7 +16,7 @@
             {% endfor %}
         {% endif %}
     {% elseif layout == 'country' %}
-        {{ include('@' ~ module ~ '/includes/' ~ country_template ~ '.html.twig') }}
+        {{ include(['@' ~ module ~ '/includes/' ~ country_template ~ '.html.twig', '@property/address/includes/' ~ country_template ~ '.html.twig']) }}
     {% else %}
     {% endif %}
     {{ include('@base/includes/dataproperty_additions.html.twig') }}

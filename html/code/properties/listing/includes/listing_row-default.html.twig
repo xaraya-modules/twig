@@ -1,6 +1,6 @@
 {% set trid = 'row-' ~ loopitem[primaryalias] %}
     <tr id="{{ trid }}">
-        {{ include('@' ~ module ~ '/includes/listing_rowprefix.html.twig') }}
+        {{ include(['@' ~ module ~ '/includes/listing_rowprefix.html.twig', '@property/listing/includes/listing_rowprefix.html.twig']) }}
         {% for field in fieldnames|keys %}
             {% set formfieldname = field ~ '[' ~ loopitem[primaryalias] ~ ']' %}
             {% set formfieldid = field ~ '_' ~ loopitem[primaryalias] %}
@@ -35,5 +35,5 @@
             {% endif %}
             {% endif %}
         {% endfor %}
-        {{ include('@' ~ module ~ '/includes/listing_rowsuffix.html.twig') }}
+        {{ include(['@' ~ module ~ '/includes/listing_rowsuffix.html.twig', '@property/listing/includes/listing_rowsuffix.html.twig']) }}
     </tr>

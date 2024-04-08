@@ -32,7 +32,7 @@
         </tr>
     {% else %}
         <tr class="{{ item_class }}">
-            {{ include('@' ~ module ~ '/includes/listing_rowprefix.html.twig') }}
+            {{ include(['@' ~ module ~ '/includes/listing_rowprefix.html.twig', '@property/listing/includes/listing_rowprefix.html.twig']) }}
             {% for field in fieldnames|keys %}
                 {% set formfieldname = formfieldnames[field] ~ '[' ~ loopindex ~ ']' %}
                 {% set formfieldid = formfieldnames[field] ~ '_' ~ loopindex %}
@@ -62,6 +62,6 @@
                 </td>
                 {% endif %}
             {% endfor %}
-            {{ include('@' ~ module ~ '/includes/listing_rowsuffix.html.twig') }}
+            {{ include(['@' ~ module ~ '/includes/listing_rowsuffix.html.twig', '@property/listing/includes/listing_rowsuffix.html.twig']) }}
         </tr>
     {% endif %}

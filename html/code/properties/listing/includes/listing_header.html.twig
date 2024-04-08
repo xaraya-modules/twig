@@ -16,13 +16,13 @@
                     {# <!-- Output field --> #}
                     {% set url = xar_currenturl(paramarray) %}
                     <a href="{{ url }}" class="refresh_listing" alt="Click to order by this field" title="Order by {{ column }}">
-                        {{ fieldlabels.column }}
+                        {{ fieldlabels[column] }}
                     </a>
                     {% set subdata = params|merge({'column': column}) %}
-                    {{ include(['@' ~ module ~ '/includes/sortarrows.html.twig', '@property/listing/includes/listing_headerprefix.html.twig'], subdata) }}
+                    {{ include(['@' ~ module ~ '/includes/sortarrows.html.twig', '@property/listing/includes/sortarrows.html.twig'], subdata) }}
                 </th>
             {% endif %}
             {% endif %}
         {% endfor %}
-        {{ include(['@' ~ module ~ '/includes/listing_headersuffix.html.twig', '@property/listing/includes/listing_headerprefix.html.twig']) }}
+        {{ include(['@' ~ module ~ '/includes/listing_headersuffix.html.twig', '@property/listing/includes/listing_headersuffix.html.twig']) }}
     </tr>

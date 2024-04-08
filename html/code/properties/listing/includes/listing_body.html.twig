@@ -5,10 +5,10 @@
             {% set item_class = 'xar-norm' %}
         {% endif %}
         {% if xar_coremethod('xarUser', 'isLoggedIn') %}
-            {% set currentuserid = xar_uservar('id'); %}
+            {% set currentuserid = xar_uservar('id') %}
         {% endif %}
 
         {% set loopindex = loop_index1 %}
         {% set loopitem = loop_item1 %}
-        {{ include('@' ~ module ~ '/includes/listing_row.html.twig') }}
+        {{ include(['@' ~ module ~ '/includes/listing_row.html.twig', '@property/listing/includes/listing_row.html.twig']) }}
     {% endfor %}
