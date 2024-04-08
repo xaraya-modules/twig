@@ -8,7 +8,7 @@
         the tplmodule="..." argument in the xar:data-view BL tag or showView() method call.
     --> #}
     {{ xar_style({scope: "module", module: "dynamicdata", file: "dd"}) }}
-    {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', 'categories',modname,itemtype) %}
+    {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', 'categories', modname, itemtype) %}
         {{ include('@dynamicdata/includes/catnavigation.html.twig') }}
     {% endif %}
     {# <!-- You can give a custom 'newlink' argument to showView() higher up --> #}
