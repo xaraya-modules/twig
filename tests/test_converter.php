@@ -5,6 +5,8 @@
 
 namespace Xaraya\Bridge\TemplateEngine;
 
+use xarCache;
+use xarDatabase;
 use xarTwigTpl;
 use sys;
 
@@ -15,9 +17,13 @@ if (php_sapi_name() !== 'cli') {
 
 $baseDir = dirname(__DIR__, 5);
 require_once $baseDir . '/vendor/autoload.php';
+chdir($baseDir . '/html');
 
 // initialize bootstrap
 sys::init();
+// initialize database to call xarMod::apiFunc() for namespaces
+xarCache::init();
+xarDatabase::init();
 
 // convert all test_*.xt templates from workflow includes directory
 /**
@@ -62,8 +68,10 @@ class TestConverter
 
     public function convertTheme(string $theme, string $subDir = '', string $prefix = '')
     {
-        // no namespace for themes pages etc.
-        $options = [];
+        // use @theme (singular) namespace for themes
+        $options = [
+            'namespace' => '@theme/' . $theme,
+        ];
         // use .xml.twig extension for rss theme
         if ($theme == 'rss') {
             $options['extension'] = '.xml.twig';
@@ -75,6 +83,7 @@ class TestConverter
             $sourcePath .= '/' . $subDir;
             $targetPath .= '/' . $subDir;
         }
+        // @todo fix page includes and renaming module files
         $converter->convertDir($sourcePath, $targetPath, '.xt');
     }
 
