@@ -62,7 +62,7 @@
                         Operation
                     </div>
                     <div class="xar-col">
-                        {#  only show properties with status ACTIVE, DISPLAYONLY and VIEWONLY #}
+                        { #  only show properties with status ACTIVE, DISPLAYONLY and VIEWONLY # }
                         {% set filterstatus = [1, 2, 4] %}
                         {% set show_props = [] %}
                         {% for name, property in object.properties %}
@@ -72,7 +72,7 @@
                             {% set dummy = show_props|merge([name]) %}
                             {% endif %}
                         {% endfor %}
-                        {#  show properties in three columns to save screen space #}
+                        { #  show properties in three columns to save screen space # }
                         {% set size = ((show_props|length - 0.5) / 3)|round(0, 'floor') + 1 %}
                         {% set columns = show_props|batch(size) %}
                         <table class="xar-table">
@@ -87,10 +87,10 @@
                                 <td valign="top">
                                 {% for name in proplist %}
                                     {% set property = object.properties.name %}
-                                    {#  CHECKME: could the dummy datastore actually do something here ? #}
+                                    { #  CHECKME: could the dummy datastore actually do something here ? # }
                                     {% if property.datastore == '_dummy_' %}
                                         N/A
-                                        {# <xar:continue /> #}
+                                        { # <xar:continue /> # }
                                     {% else %}
                                     <select name="field[{{ name }}]" id="field_{{ name }}">
                                         {% for value, label in stats.options %}

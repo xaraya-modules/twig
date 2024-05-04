@@ -1,7 +1,7 @@
 {# @dynamicdata/properties/showinput-callable.html.twig #}
 
 {% block showinput_callable %}
-{% if value is iterable and not source and array_key_exists('id', value) %}
+{% if value is iterable and not source and 'id' in value|keys %}
         {% set source = value['id'] %}
     {% elseif source is null %}
         {% set source = value %}

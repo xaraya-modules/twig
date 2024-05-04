@@ -34,7 +34,7 @@
                                     {{ config['datastore'] }} ({{ config['dbConnIndex'] }}) {{ config['dbConnArgs'] }}
                                 </li>
                             {% endfor %}
-                            {% set dbname = module ~ '.*' ~ name %}
+                            {% set dbname = module ~ '.*' %}
                             <li><a href="{{ xar_moduleurl('dynamicdata', 'admin', 'dbconfig', {'obj': dbname}) }}">Configure other objects</a></li>
                         </ul>
                     </li>

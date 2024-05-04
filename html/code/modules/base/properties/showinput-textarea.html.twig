@@ -62,6 +62,6 @@
     {% endif %}
     
     {{ xar_style({method: "embed", source: textareasource, media: "all"}) }}
-    <textarea name="{{ name }}" id="{{ id }}" tabindex="{{ tabindex }}" class="{{ class }}">{{ value }}</textarea>
+    <textarea name="{{ name }}" id="{{ id }}" tabindex="{{ tabindex }}" class="{{ class }}">{{ value|raw }}</textarea>
     {{ include('@base/includes/dataproperty_additions.html.twig') }}
 {% endblock %}
