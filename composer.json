@@ -8,11 +8,12 @@
         "optimize-autoloader": true,
         "sort-packages": true
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "conflict": {
         "xaraya/core": "<2.4.1"
     },
     "require-dev": {
-        "twig/twig": "^3.8"
+        "twig/twig": "^3.14"
     }
 }
