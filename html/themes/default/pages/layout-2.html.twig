@@ -43,8 +43,10 @@
                         {{ xar_modulevar("themes", "SiteSlogan") }}
                     </p>
                 </div>
-                {# The main module output will be placed here #}
-                {% block modulespace %}{{ _bl_mainModuleOutput|raw }}{% endblock %}
+                <div id="main-module-output">
+                    {# The main module output will be placed here #}
+                    {% block modulespace %}{{ _bl_mainModuleOutput|raw }}{% endblock %}
+                </div>
             </div>
             {% endblock %}
 
