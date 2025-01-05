@@ -32,7 +32,7 @@ xmlns:xf="http://www.w3.org/2002/xforms" xml:lang="en">
                             {{ xar_data_label({label: "Enable the Admin Dashboard", for: "dashboard", title: "Use the Admin Dashboard to manage all your Admin settings from a single page."}) }}
                         </div>
                         <div class="textInputContainer">
-                            {{ xar_data_label({label: "Dashboard Template name", for: "dashtemplate", title: "Template name for the dashboard - no trailing suffix, defaults to \'dashboard\'"}) }}
+                            {{ xar_data_label({label: "Dashboard Template name", for: "dashtemplate", title: "Template name for the dashboard - no trailing suffix, defaults to 'dashboard'"}) }}
                             <div class="infoAddedInput">
                                 {% set valDashtamplate = xar_modulevar('themes', 'dashtemplate') %}
                                 {{ xar_data_input({id: "dashtamplate", name: "dashtamplate", type: "textbox", value: valDashtamplate, size: "30", maxlength: "100"}) }}

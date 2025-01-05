@@ -28,11 +28,11 @@
                     <div class="xar-col">
                         <div>
                             {{ xar_data_input({type: "radio", name: "qdef_choose", id: "qdef_enter", value: qdef_method, options: qdef_create}) }}
-                            {{ xar_data_input({type: "textbox", name: "qdef_name_enter", id: "qdef_name_enter", maxlength: "12", size: "12", value: qdef_name, validation: "1:12:\w+", onfocus: "document.getElementById(\'qdef_enter\').checked=true"}) }}
+                            {{ xar_data_input({type: "textbox", name: "qdef_name_enter", id: "qdef_name_enter", maxlength: "12", size: "12", value: qdef_name, validation: "1:12:\w+", onfocus: "document.getElementById('qdef_enter').checked=true"}) }}
                         </div>
                         <div>
                             {{ xar_data_input({type: "radio", name: "qdef_choose", id: "qdef_choose", value: qdef_method, options: qdef_choose}) }}
-                            {{ xar_data_input({type: "object", name: "qdef_name_choose", id: "qdef_name_choose", onchange: "document.getElementById(\'qdef_choose\').checked=true"}) }}
+                            {{ xar_data_input({type: "object", name: "qdef_name_choose", id: "qdef_name_choose", onchange: "document.getElementById('qdef_choose').checked=true"}) }}
                         </div>
                     </div>
                 </div>

@@ -61,7 +61,7 @@
                 </td>
                 <td class="{{ displayclass }}">
                     {% if xar_modulevar('dynamicdata', 'use_module_icons') %}
-                        {% set title = xar_translate('Edit configuration for property \"#(1)\"',field['name']) %}
+                        {% set title = xar_translate('Edit configuration for property "#(1)"',field['name']) %}
                         {% set link = xar_moduleurl('dynamicdata', 'admin', 'showpropval', {'itemid': field['id']}) %}
                         {% set label = 'Edit' %}
                         {% set icon = xar_imageurl('icons/modify.png', 'theme') %}
