@@ -10,8 +10,9 @@
                     <th>
 
                 {#  if we're already sorting on this column, we want to show the arrow and don't need to make the column head a link #}
-        {% set sortfield = sort|slice( 0, strpos(sort, ' ')) %}
-	{% set ascdesc = sort|slice(  strpos(sort, ' ') + 1) %}
+    {% set sortsplit = sort|split(' ') %}
+    {% set sortfield = sortsplit[0] %}
+	{% set ascdesc = sortsplit[1] %}
 
 	{% if name == sortfield %}
 
