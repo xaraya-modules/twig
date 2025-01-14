@@ -6,7 +6,7 @@
     {{ include('@changelog/includes/admin-menu.html.twig') }}
     <h2>{{ xar_translate('Modify Configuration') }}</h2>
 
-    <form method="post" action="&xar-modurl-changelog-admin-updateconfig;" enctype="application/x-www-form-urlencoded" >
+    <form method="post" action="{{ xar_moduleurl('changelog', 'admin', 'updateconfig') }}" enctype="application/x-www-form-urlencoded" >
     <fieldset>
         <legend>
             {{ xar_translate('Configuration Options') }}

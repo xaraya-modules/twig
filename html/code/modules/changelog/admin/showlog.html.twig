@@ -10,7 +10,7 @@
     {% if itemlink %}
         <h3><a href="{{ itemlink }}">{{ itemtitle }} &#160; &quot;{{ itemlabel }}&quot;</a></h3>
     {% endif %}
-        <form method="POST" action="&xar-modurl-changelog-admin-showdiff;">
+        <form method="POST" action="{{ xar_moduleurl('changelog', 'admin', 'showdiff') }}">
     <fieldset>
         <legend>{{ xar_translate('Versions For This Item') }}</legend>
         <div class="xar-form-input-wrapper">

@@ -14,7 +14,7 @@
         <h3>
             {{ xar_translate('Restore this version of the module item ?') }}
         </h3>
-        <form method="post" action="&xar-modurl-changelog-admin-showversion;">
+        <form method="post" action="{{ xar_moduleurl('changelog', 'admin', 'showversion') }}">
             <input type="hidden" name="authid" id="authid" value="{{ authid }}" />
             <input type="hidden" name="modid" id="modid" value="{{ modid }}" />
             <input type="hidden" name="itemtype" id="itemtype" value="{{ itemtype }}" />

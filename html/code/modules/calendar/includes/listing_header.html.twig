@@ -2,9 +2,9 @@
 
 {% block listing_header %}
 <tr>
-        {{ include('@' ~ module ~ '/includes/listing_headerprefix.html.twig') }}
+        {{ include(['@' ~ module ~ '/includes/listing_headerprefix.html.twig', '@property/listing/includes/listing_headerprefix.html.twig']) }}
         {% for column, field in fields %}
-            {% if ((column == primaryalias) and not show_primary) or strpos(column,'return_link') %}
+            {% if ((column == primaryalias) and not show_primary) or ('return_link' in column) %}
                 <xar:continue />
             {% endif %}
             <th>
@@ -13,9 +13,9 @@
                     {{ field }}
                 </a>
                 {% set subdata = params|merge({'column': column}) %}
-                {{ include('@' ~ module ~ '/includes/sortarrows.html.twig', subdata) }}
+                {{ include(['@' ~ module ~ '/includes/sortarrows.html.twig', '@property/listing/includes/sortarrows.html.twig'], subdata) }}
             </th>
         {% endfor %}
-        {{ include('@' ~ module ~ '/includes/listing_headersuffix.html.twig') }}
+        {{ include(['@' ~ module ~ '/includes/listing_headersuffix.html.twig', '@property/listing/includes/listing_headersuffix.html.twig']) }}
     </tr>
 {% endblock %}

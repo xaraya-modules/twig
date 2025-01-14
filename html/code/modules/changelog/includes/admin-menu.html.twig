@@ -21,28 +21,28 @@
             {% set tabclass = '' %}
         {% endif %}
         <dd class="{{ tabclass }}">
-          <a href="&xar-modurl-changelog-admin-view;">
+          <a href="{{ xar_moduleurl('changelog', 'admin', 'view') }}">
             {{ xar_translate('Manage Changelog Entries') }}
           </a>
         </dd>
 
         {% set tabclass = activetab=='hooks' ? 'active' ~ '' %}
         <dd class="{{ tabclass }}">
-          <a href="&xar-modurl-changelog-admin-hooks;">
+          <a href="{{ xar_moduleurl('changelog', 'admin', 'hooks') }}">
             {{ xar_translate('Hooks') }}
           </a>
         </dd>
 
         {% set tabclass = activetab=='modifyconfig' ? 'active' ~ '' %}
         <dd class="{{ tabclass }}">
-          <a href="&xar-modurl-changelog-admin-modifyconfig;">
+          <a href="{{ xar_moduleurl('changelog', 'admin', 'modifyconfig') }}">
             {{ xar_translate('Modify Config') }}
           </a>
         </dd>
 
     {% set tabclass = activetab=='main' ? 'active' ~ '' %}
     <dd class="{{ tabclass }}">
-      <a href="&xar-modurl-changelog-admin-overview;">
+      <a href="{{ xar_moduleurl('changelog', 'admin', 'overview') }}">
         {{ xar_translate('Overview') }}
       </a>
     </dd>

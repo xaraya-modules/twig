@@ -53,7 +53,7 @@
         {% endif %}
         {% if (rated is null) and showinput == 1 %}
             {% if xar_security_check('CommentRatings',0) %}
-                <form method="post" action="&xar-modurl-ratings-user-rate;" id="post" enctype="application/x-www-form-urlencoded" >
+                <form method="post" action="{{ xar_moduleurl('ratings', 'user', 'rate') }}" id="post" enctype="application/x-www-form-urlencoded" >
                     <div>
                         {% set label = 'Rate this Item' %}
                         {{- xar_button({type: "submit", label: label}) -}}

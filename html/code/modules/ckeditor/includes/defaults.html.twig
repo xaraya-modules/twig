@@ -10,7 +10,7 @@
         <label for="bar" title="{{ xar_translate('An example of a module-specific configuration variable') }}" class="xar-form-label">
             {{ xar_translate('Bar:') }}
         </label>
-        {% set value = xar_coremethod('xarModItemVars', 'get', ['ckeditor', 'bar', regid]) %}
+        {% set value = xar_coremethod('xarModItemVars', 'get', 'ckeditor', 'bar', regid) %}
         {{ xar_data_input({type: "textbox", name: "bar", value: value}) }}
     </div>
 {% endblock %}
