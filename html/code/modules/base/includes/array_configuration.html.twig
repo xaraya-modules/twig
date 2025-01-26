@@ -67,6 +67,7 @@
                     </td>
                 {% endfor %}
                 <td>
+                    {% set k = column_titles|length - 1 %}
                     {% set propname = name ~ '[' ~ extendedrows ~ '][' ~ k ~ ']' %}
                     {% set propid = id ~ '_' ~ extendedrows ~ '_' ~ k %}
                     {{ xar_data_input({type: column_types[k], name: propname, id: propid, rows: "2", cols: "20"}) }}
