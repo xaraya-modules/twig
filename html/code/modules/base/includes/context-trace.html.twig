@@ -1,0 +1,17 @@
+{# @base/includes/context-trace.html.twig #}
+
+{% block context_trace %}
+    <!-- get context from page template if available -->
+    {% if _bl_context and not context %}
+        {% set context = _bl_context %}
+    {% endif %}
+    {% set trace = context.getTrace() %}
+    <div id="context-trace">
+        <p>Context Trace:</p>
+        <ol>
+        {% for line in trace %}
+            <li>{{ line[0] }}:  {{ line[1] }} {{ line[2]|json_encode }}</li>
+        {% endfor %}
+        </ol>
+    </div>
+{% endblock %}
