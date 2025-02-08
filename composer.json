@@ -13,7 +13,7 @@
     "conflict": {
         "xaraya/core": "<2.4.1"
     },
-    "require-dev": {
+    "require": {
         "twig/twig": "^3.19"
     }
 }
