@@ -60,7 +60,7 @@
                                 {{- xar_image({scope: "theme", file: "icons/display.png", class: "xar-icon", alt: title}) -}}
                             </a>&#160;
                             {% set title = 'Modify Configuration' %}
-                            <a href="{{ xar_moduleurl('themes','admin','modify_config',{'itemid': fields['id']}) }}" title="{{ title }}" class="xar-icon-modify">
+                            <a href="{{ xar_moduleurl('themes','admin','update_config',{'itemid': fields['id']}) }}" title="{{ title }}" class="xar-icon-modify">
                                 {{- xar_image({scope: "theme", file: "icons/modify.png", class: "xar-icon", alt: title}) -}}
                             </a>&#160;
                             {% set title = 'Delete Configuration' %}
@@ -73,7 +73,7 @@
                             </a>
                         {% else %}
                             <a href="{{ xar_moduleurl('themes','admin','display_config',{'itemid': fields['id']}) }}">Display</a>&#160;
-                            <a href="{{ xar_moduleurl('themes','admin','modify_config',{'itemid': fields['id']}) }}">Modify</a>&#160;
+                            <a href="{{ xar_moduleurl('themes','admin','update_config',{'itemid': fields['id']}) }}">Modify</a>&#160;
                             <a href="{{ xar_moduleurl('themes','admin','delete_config',{'itemid': fields['id']}) }}">Delete</a>&#160;
                             <a href="{{ xar_moduleurl('themes','admin','export_config',{'itemid': fields['id']}) }}">Export</a>&#160;
                         {% endif %}
