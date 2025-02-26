@@ -4,7 +4,7 @@
 <div class="xar-mod-head">
         <span class="xar-mod-title">
             {% if xar_modulevar('ratings', 'use_module_alias') %}
-                {{ xar_var({scope: "module", module: "ratings", name: "module_alias_name"}) }}
+                {{ xar_modulevar('ratings', 'module_alias_name') }}
             {% else %}
                 Ratings Administration
             {% endif %}

@@ -4,7 +4,7 @@
 {% set firstline = xar_translate('Select Category') %}
     {% if preview %}
         {# <!-- Note: we might get a single value here instead of an array, if there is only one tree --> #}
-        {% set dummy = xar_coremethod('xarVar', 'fetch', 'hookedcategories_categories', 'isset', categories, [], constant('xarVar::NOT_REQUIRED')) %}
+        {% set categories = xar_findvar('hookedcategories_categories', categories, 'isset', []) %}
         {% if categories is not iterable %}
             {% set categories = [categories] %}
         {% endif %}

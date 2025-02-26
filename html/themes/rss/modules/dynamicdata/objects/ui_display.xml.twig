@@ -24,7 +24,7 @@
             </textInput>
         {% endif %}
 
-        {% set getlinked = xar_coremethod('xarModItemVars', 'get', 'dynamicdata','getlinkedobjects',object.objectid) %}
+        {% set getlinked = xar_moditemvar('dynamicdata', 'getlinkedobjects', object.objectid) %}
         {% if getlinked %}
 
             {# <!-- Display object with linked objects --> #}
@@ -41,7 +41,7 @@
                 <hookoutput>
                 {% for module, output in hooks %}
                     <module name="{{ module }}">
-                        {{ output }}
+                        {{ output|raw }}
                     </module>
                 {% endfor %}
                 </hookoutput>

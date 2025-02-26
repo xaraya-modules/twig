@@ -50,7 +50,7 @@
                 {{ filepath }}&#160;
                  <a href="{{ xar_moduleurl('publications','user','download',{'filepath': filepath}) }}"
                  title="Download this file">
-                    {% if xar_coremethod('xarModVars', 'get', 'grader', 'use_module_icons') %}
+                    {% if xar_modulevar('use_module_icons') %}
                         <img src="{{ xar_imageurl('icons/' ~ 'document-save.png', 'base') }}" style="margin-right: 5px; vertical-align: top;" />
                     {% else %}
                         <b style="margin-right: 5px">Download</b>

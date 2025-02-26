@@ -189,7 +189,7 @@
                 </div>
                 <div class="xar-col">
                     <input type="hidden" name="itemid" id="itemid" value="{{ itemid }}"/>
-                    <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                    <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
                     {% set label = 'Update Job' %}
                     {{- xar_button({type: "submit", name: "confirm", label: label}) -}}
                 </div>

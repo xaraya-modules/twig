@@ -110,7 +110,7 @@
                                     <label for="duvs_userhome" title="{{ label }}" class="xar-form-label">Home:</label>
                                 </div>
                                 <div class="xar-col">
-                                    <input type="text" name="duvs[userhome]" id="duvs_userhome" value="{{ xar_coremethod('xarModUserVars', 'get', 'roles','userhome',id) }}" size="40" maxlength="100" tabindex="7"/>
+                                    <input type="text" name="duvs[userhome]" id="duvs_userhome" value="{{ xar_moduservar('roles', 'userhome', id) }}" size="40" maxlength="100" tabindex="7"/>
                                     <p class="xar-col dummy">
                                         You can use the module shortcut syntax available in the Base user menu block.
                                     </p>
@@ -127,7 +127,7 @@
                                         </label>
                                     </div>
                                     <div class="xar-col">
-                                        {% set value = xar_coremethod('xarModUserVars', 'get', 'roles','useremailformat',id) %}
+                                        {% set value = xar_moduservar('roles', 'useremailformat', id) %}
                                         {% set options = [ 
                                                 {'id': 'text', 'name': 'text'},
                                                 {'id': 'html', 'name': 'html'}
@@ -145,7 +145,7 @@
                                         </label>
                                     </div>
                                     <div class="xar-col">
-                                        {% set value = xar_coremethod('xarModUserVars', 'get', 'roles','usertimezone',id) %}
+                                        {% set value = xar_moduservar('roles', 'usertimezone', id) %}
                                         {{ xar_data_input({type: "timezone", name: "duvs[usertimezone]", id: "duvs_usertimezone", value: value}) }}
                                     </div>
                                 </div>
@@ -160,7 +160,7 @@
                                         </label>
                                     </div>
                                     <div class="xar-col">
-                                        {% set checked = xar_coremethod('xarModUserVars', 'get', 'roles', 'allowemail', id) %}
+                                        {% set checked = xar_moduservar('roles', 'allowemail', id) %}
                                         {{ xar_data_input({type: "checkbox", name: "duvs[allowemail]", id: "duvs_allowemail", checked: checked}) }}
                                     </div>
                                 </div>
@@ -173,7 +173,7 @@
                                         </label>
                                     </div>
                                     <div class="xar-col">
-                                        {% set passwordupdate = xar_coremethod('xarModUserVars', 'get', 'roles', 'passwordupdate', id) %}
+                                        {% set passwordupdate = xar_moduservar('roles', 'passwordupdate', id) %}
                                         {{ xar_localedate(passwordupdate, 'medium', '') }}
                                         {{ xar_localedate(passwordupdate, '', 'medium') }}
                                     </div>
@@ -187,7 +187,7 @@
                                         </label>
                                     </div>
                                     <div class="xar-col">
-                                        {% set userlastlogin = xar_coremethod('xarModUserVars', 'get', 'roles', 'userlastlogin', id) %}
+                                        {% set userlastlogin = xar_moduservar('roles', 'userlastlogin', id) %}
                                         {{ xar_localedate(userlastlogin, 'medium', '') }}
                                         {{ xar_localedate(userlastlogin, '', 'medium') }}
                                     </div>
@@ -197,7 +197,7 @@
                         <p class="xar-clear"></p>
                         {% if hooks and hooks|length > 0 %}
                             {% for hookmodule in hooks|keys %}
-                                {{ hooks[hookmodule] }}
+                                {{ hooks[hookmodule]|raw }}
                             {% endfor %}
                         {% endif %}
                         <div class="xar-row">

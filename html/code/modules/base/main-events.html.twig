@@ -4,7 +4,7 @@
 
 {% block modulespace %}
 {{ xar_style({scope: "theme", file: "navtabs"}) }}
-    {% set dummy = xar_coremethod('xarVar', 'fetch', 'tab', 'str', tab, '', constant('xarVar::NOT_REQUIRED')) %}
+    {% set tab = xar_findvar('tab', tab, 'str', '') %}
     {% set activetab = 'xar-tab-active' %}
     {% set activelink = 'xar-accent xar-accent-outline' %}
     {% set inactivetab = 'xar-tab' %}

@@ -11,7 +11,7 @@
                     <input type="hidden" name="authid" id="authid" value="{{ authid }}" />
                     {{ xar_data_form({object: object}) }}
                     <tr><td colspan="2">
-                      {{ hooks }}
+                      {{ hooks|raw }}
                     </td></tr>
                     <tr><td colspan="2" align="center"><input type="submit" name="confirm" value="{{ confirm }}" /></td></tr>
                 </table>

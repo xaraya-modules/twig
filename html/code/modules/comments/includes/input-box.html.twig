@@ -23,7 +23,7 @@
                 :
                 {% if strtolower(xar_uservar('uname')) != 'anonymous' %}
                   <a href="{{ xar_moduleurl('roles', 'user', 'display', {'id': package['role_id']}) }}">{{ package['name'] }}</a>
-                  {% if receipt['action'] != 'modify' and xar_coremethod('xarUser', 'isLoggedIn') %}
+                  {% if receipt['action'] != 'modify' and xar_isloggedin() %}
                     [ <a class="xar-norm" href="{{ xar_moduleurl('authsystem', 'user', 'logout') }}">
                         Logout
                     </a> ]

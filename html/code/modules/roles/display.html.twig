@@ -12,7 +12,7 @@
         {% endif %}
         {% if hooks %}
             {% for module, output in hooks %}
-                {{ output }}
+                {{ output|raw }}
             {% endfor %}
         {% endif %}
     </div>

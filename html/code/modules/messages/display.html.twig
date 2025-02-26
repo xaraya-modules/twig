@@ -16,7 +16,7 @@
             {{ xar_data_display({object: object, tplmodule: "messages", action: action, folder: folder, replyto: replyto}) }}
      
     
-        {% set folder = xar_coremethod('xarSession', 'getVar', ['messages_currentfolder']) %}
+        {% set folder = xar_sessionvar('messages_currentfolder') %}
         
         <div class="user-display-buttons">
         

@@ -4,7 +4,7 @@
 <div class="xar-mod-head">
         <span class="xar-mod-title">
             {% if xar_modulevar('scheduler', 'use_module_alias') %}
-                {{ xar_var({scope: "module", module: "scheduler", name: "module_alias_name"}) }}
+                {{ xar_modulevar('scheduler', 'module_alias_name') }}
             {% else %}
                 Scheduler
             {% endif %}

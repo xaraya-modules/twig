@@ -22,9 +22,9 @@
 							<div id="header_tlcorner"><div id="header_trcorner">&#160;</div></div>
 
 							<div id="header_contentcore">
-								{% set script_path = xar_coremethod('xarServer', 'getVar', 'SCRIPT_NAME') %}
+								{% set script_path = xar_servervar('SCRIPT_NAME') %}
 								{% set script = script_path|split("/")|last %}
-								{% set modulename = xar_coremethod('xarController', 'getVar', 'module') %}
+								{% set modulename = xar_requestvar('module') %}
 								{% if script == 'install.php' or modulename == 'installer' %}
 									<h1>Xaraya Installer</h1>
 									<p>

@@ -78,7 +78,7 @@
             {% else %}
                 <a href="{{ item['link'] }}">{{ item['title'] }}</a>
             {% endif %}
-            {% if item['pubdate'] %}{{ xar_coremethod('xarLocale', 'formatDate', '%a, %d %B %Y %H.%M.%S %Z', item['pubdate']) }}{% endif %}
+            {% if item['pubdate'] %}{{ xar_formatdate('%a, %d %B %Y %H.%M.%S %Z', item['pubdate']) }}{% endif %}
             {# <!-- Show relevance for MySQL full-text search (see $getfields in search.php)
                 {% if item['relevance'] is not null %}
                   {% set relevance = sprintf('%.2f',item['relevance']) %}

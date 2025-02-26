@@ -5,7 +5,7 @@
         Waiting Content has not been configured
     {% else %}
         {% for module, hookoutput in output %}
-            {{ hookoutput }}
+            {{ hookoutput|raw }}
         {% endfor %}
     {% endif %}
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block navigation_trails %}
 {% if catdescr %}
-    <div class="xar-mod-head"><span class="xar-mod-title">{{ catdescr }}{% if cathooks and cathooks['pubsub'] %} {{ cathooks['pubsub'] }}{% endif %}</span></div>
+    <div class="xar-mod-head"><span class="xar-mod-title">{{ catdescr }}{% if cathooks and cathooks['pubsub'] %} {{ cathooks['pubsub']|raw }}{% endif %}</span></div>
     {% endif %}
 
     <table class="xar-table" border="0" cellpadding="1" cellspacing="0">
@@ -56,7 +56,7 @@
         {# <!-- TODO: do something specific with pubsub, hitcount, comments etc. --> #}
         {% for hookmodule, hookoutput in cathooks %}
             {% if hookmodule != 'pubsub' %}
-                {{ hookoutput }}
+                {{ hookoutput|raw }}
             {% endif %}
         {% endfor %}
     {% endif %}

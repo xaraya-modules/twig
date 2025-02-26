@@ -18,7 +18,7 @@
         {% endif %}
         {% if hooks %}
             {% for module, output in hooks %}
-                {{ output }}
+                {{ output|raw }}
             {% endfor %}
         {% endif %}
         <div style="clear:both">&#160;</div>

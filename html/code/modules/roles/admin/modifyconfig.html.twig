@@ -163,7 +163,7 @@
                        <fieldset>
                             <legend>Default Hooks For Users</legend>
                             {% for hookmodule in hooks|keys %}
-                                {{ hooks[hookmodule] }}
+                                {{ hooks[hookmodule]|raw }}
                             {% endfor %}
                         </fieldset>
                         <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
@@ -182,7 +182,7 @@
                         <fieldset>
                             <legend>Default Hooks For Groups</legend>
                             {% for hookmodule in hooks|keys %}
-                            {{ hooks[hookmodule] }}{% endfor %}
+                            {{ hooks[hookmodule]|raw }}{% endfor %}
                         </fieldset>
                         <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
                         {{ include('@base/includes/update-button.html.twig') }}

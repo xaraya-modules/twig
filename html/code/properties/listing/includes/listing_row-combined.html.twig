@@ -1,10 +1,10 @@
-{% set foo = xar_coremethod('xarVar', 'fetch', ['itemid','int',itemid,0,xarVar..NOT_REQUIRED]) %}
+{% set itemid = xar_findvar('itemid', itemid, 'int', 0) %}
     {% set itemidvalue = loopitem[primaryalias] %}
     {% if itemid is not null and (itemid == itemidvalue) %}
         {% set colspan = fields|length %}
         <tr class="{{ item_class }}">
             <td colspan="{{ colspan }}">
-                {% if xar_coremethod('xarUser', 'isLoggedIn') and allowedit %}
+                {% if xar_isloggedin() and allowedit %}
                     {% set thisobject = DataObjectFactory..getObject({'name': objectname}) %}
                     {% set isupload = thisobject.upload %}
                     {% if isupload %}
@@ -52,7 +52,7 @@
                     {% else %}
                         {# <!-- Output field --> #}
                         {% if field == keyfieldalias and allowread %}
-                            <a href=" }}xarServer::getCurrentURL(['itemid' => $itemidvalue])#">
+                            <a href="{{ xar_currenturl({itemid: itemidvalue}) }}">
                                 {{ xar_data_output({property: properties[column], value: value, layout: "listing"}) }}
                             </a>
                         {% else %}

@@ -44,7 +44,7 @@
     {% if hooks %}
         <br />
         {% for hookmodule in hooks|keys %}
-            {{ hooks[hookmodule] }}
+            {{ hooks[hookmodule]|raw }}
         {% endfor %}
     {% endif %}
     {{ include('@publications/includes/navtabs-user.html.twig') }}

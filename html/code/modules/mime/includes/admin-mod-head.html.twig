@@ -4,7 +4,7 @@
 <div class="xar-mod-head">
         <span class="xar-mod-title">
             {% if xar_modulevar('mime', 'use_module_alias') %}
-                {{ xar_var({scope: "module", module: "mime", name: "module_alias_name"}) }}
+                {{ xar_modulevar('mime', 'module_alias_name') }}
             {% else %}
                 Mime Administration
             {% endif %}

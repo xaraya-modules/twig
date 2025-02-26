@@ -33,13 +33,13 @@
                     </label>
                 </div>
                 <div class="xar-col">
-                    {% set userlastlogin = xar_coremethod('xarModUserVars', 'get', 'roles', 'userlastlogin', userid) %}
+                    {% set userlastlogin = xar_moduservar('roles', 'userlastlogin', userid) %}
                     {{ xar_localedate(userlastlogin, 'medium', '') }}
                     {{ xar_localedate(userlastlogin, '', 'medium') }}
                 </div>
             </div>
         {% endif %}
-        {% if xar_modulevar('roles', 'allowemail') and xar_coremethod('xarModUserVars', 'get', 'roles', 'allowemail', userid) and (currentid != userid) %}
+        {% if xar_modulevar('roles', 'allowemail') and xar_moduservar('roles', 'allowemail', userid) and (currentid != userid) %}
             <div class="xar-row">
                 <div class="xar-col">
                     <label class="xar-form-label">
@@ -53,8 +53,8 @@
                 </div>
             </div>
         {% endif %}
-        {% if xar_coremethod('xarModUserVars', 'get', 'roles', 'userhome', userid) != '' and 'userhome' in settings %}
-            {% set homelink = xar_coremethod('xarModUserVars', 'get', 'roles', 'userhome', userid) %}
+        {% if xar_moduservar('roles', 'userhome', userid) != '' and 'userhome' in settings %}
+            {% set homelink = xar_moduservar('roles', 'userhome', userid) %}
             <div class="xar-row">
                 <div class="xar-col">
                     <label class="xar-form-label">
@@ -76,7 +76,7 @@
                     </label>
                 </div>
                 <div class="xar-col">
-                    {% set value = xar_coremethod('xarModUserVars', 'get', 'roles','usertimezone') %}
+                    {% set value = xar_moduservar('roles', 'usertimezone') %}
                     {{ xar_data_output({type: "timezone", value: value}) }}
                 </div>
             </div>
@@ -89,7 +89,7 @@
                     </label>
                 </div>
                 <div class="xar-col">
-                    {% set value = xar_coremethod('xarModUserVars', 'get', 'roles','useremailformat') %}
+                    {% set value = xar_moduservar('roles', 'useremailformat') %}
                     {{ xar_data_output({type: "textbox", value: value}) }}
                 </div>
             </div>

@@ -97,7 +97,7 @@
     {# <!-- Display hook output --> #}
     {% if hooks %}
         {% for module, output in hooks %}
-            {{ output }}
+            {{ output|raw }}
         {% endfor %}
     {% endif %}
 

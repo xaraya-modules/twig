@@ -5,8 +5,8 @@
     {% set postanon = properties['postanon'].value %}
     {% set recipient = properties['to_id'].value %}
     {% set author = properties['from_id'].value %}
-   {# <!--  {% set vettor = xar_coremethod('xarSession', 'getVar', ['role_id']) == recipient ? recipient : author %}
-    {% set vettee = xar_coremethod('xarSession', 'getVar', ['role_id']) == recipient ? author : recipient %} --> #}
+   {# <!--  {% set vettor = xar_sessionvar('role_id') == recipient ? recipient : author %}
+    {% set vettee = xar_sessionvar('role_id') == recipient ? author : recipient %} --> #}
     {# <!-- {% if not vettee %}
         {% set is_sendtouser = 1 %}
     {% else %}

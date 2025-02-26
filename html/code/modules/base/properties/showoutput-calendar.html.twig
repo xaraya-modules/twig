@@ -1,5 +1,5 @@
 {# @base/properties/showoutput-calendar.html.twig #}
 
 {% block showoutput_calendar %}
-{{ xar_coremethod('xarLocale', 'formatDate', dateformat,value) }}
+{{ xar_formatdate(dateformat, value) }}
 {% endblock %}

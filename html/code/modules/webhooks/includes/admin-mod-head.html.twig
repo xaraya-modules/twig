@@ -4,7 +4,7 @@
 <div class="xar-mod-head">
         <span class="xar-mod-title">
             {% if xar_modulevar('webhooks', 'use_module_alias') %}
-                {{ xar_var({scope: "module", module: "webhooks", name: "module_alias_name"}) }}
+                {{ xar_modulevar('webhooks', 'module_alias_name') }}
             {% else %}
                 Webhooks Administration
             {% endif %}

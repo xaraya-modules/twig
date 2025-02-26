@@ -39,18 +39,18 @@
             {% for i in range(0, rows - 1) %}
                 {# <!-- name[row] --> #}
                 {% set j = i %}
-                {% set row_name = "{name}[{j}]" %}
-                {% set row_id = "{id}_{j}" %}
-                {% set col_name = "{row_name}[0]" %}
-                {% set col_id = "{row_id}_0" %}
+                {% set row_name = name ~ "[" ~ j ~ "]" %}
+                {% set row_id = id ~ "_" ~ j %}
+                {% set col_name = row_name ~ "[0]" %}
+                {% set col_id = row_id ~ "_0" %}
                 <tr id="{{ row_id }}">
                 
                     {# <!-- This column holds the index of the respective row --> #}
                     {# <!-- By definition this is a static value (can't change via the UI) --> #}
                     <td>
                         <span style="display: {{ index_display }}">
-                            {% set index_name = "{row_name}[1000000]" %}
-                            {% set index_id = "{row_id}_1000000" %}
+                            {% set index_name = row_name ~ "[1000000]" %}
+                            {% set index_id = row_id ~ "_1000000" %}
                             {{ index_name }} {{ index_id }}
                         </span>
                         <input type="text" name="{{ index_name }}" id="{{ index_id }}" value="{{ i+1 }}" style="width: 15px" readonly="readonly"/>
@@ -59,11 +59,11 @@
                     {% for k in range(0, column_titles|length - 1) %}
                         {% set col_index = k %}
                         {# <!-- columnname[row][column] --> #}                        
-                        {% set col_name = "{row_name}[{col_index}]" %}
-                        {% set col_id = "{row_id}_{col_index}" %}
+                        {% set col_name = row_name ~ "[" ~ col_index ~ "]" %}
+                        {% set col_id = row_id ~ "_" ~ col_index %}
                         {# <!-- propertyname[row][column] --> #}
-                        {% set prop_name = "{col_name}" %}
-                        {% set prop_id = "{col_id}" %}
+                        {% set prop_name = col_name %}
+                        {% set prop_id = col_id %}
                         {# <!-- property[row][column] --> #}
                         {# <!-- we need to instantiate the property this way so we can insert a default value --> #}
                         {% if column_defaults[k] is not null %}
@@ -109,10 +109,10 @@
       fail if a row is subsequently deleted and an attempt is made to add a new one --> #}
             {% if (addremove != 0) %}
                 {% set thisrow = lastrow %}
-                {% set row_name = "{name}[{thisrow}]" %}
-                {% set row_id = "{id}_{thisrow}" %}
-                {% set col_name = "{row_name}[0]" %}
-                {% set col_id = "{row_id}_0" %}
+                {% set row_name = name ~ "[" ~ thisrow ~ "]" %}
+                {% set row_id = id ~ "_" ~ thisrow %}
+                {% set col_name = row_name ~ "[0]" %}
+                {% set col_id = row_id ~ "_0" %}
                 {# <!-- Hide this row if we're already at the limit 
                      NOTE: can't rely on JS for this, it may be disabled --> #}
                 {% if rows < maximum_rows %}
@@ -125,8 +125,8 @@
                 <tr id="{{ id }}_template" style="display: {{ row_display }}">
                     <td>
                         <span style="display: {{ index_display }}">
-                            {% set index_name = "{row_name}[1000000]" %}
-                            {% set index_id = "{row_id}_1000000" %}
+                            {% set index_name = row_name ~ "[1000000]" %}
+                            {% set index_id = row_id ~ "_1000000" %}
                             {{ index_name }} {{ index_id }}
                         </span>
                         <input type="text" name="{{ index_name }}" id="{{ index_id }}" value="{{ thisrow+1 }}" style="width: 15px" readonly="readonly"/>
@@ -134,11 +134,11 @@
                     {% for k in range(0, column_titles|length - 1) %}
                         {% set col_index = k %}
                         {# <!-- name[row][column] --> #}                        
-                        {% set col_name = "{row_name}[{col_index}]" %}
-                        {% set col_id = "{row_id}_{col_index}" %}
+                        {% set col_name = row_name ~ "[" ~ col_index ~ "]" %}
+                        {% set col_id = row_id ~ "_" ~ col_index %}
                         {# <!-- name[row][column] --> #}
-                        {% set prop_name = "{col_name}" %}
-                        {% set prop_id = "{col_id}" %}
+                        {% set prop_name = col_name %}
+                        {% set prop_id = col_id %}
                         <td>
                             {% if column_defaults[k] is not null %}
                                 {% set col_default = column_defaults[k] %}

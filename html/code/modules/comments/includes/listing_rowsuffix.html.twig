@@ -1,7 +1,7 @@
 {# @comments/includes/listing_rowsuffix.html.twig #}
 
 {% block listing_rowsuffix %}
-{% if xar_coremethod('xarUser', 'isLoggedIn') and xar_security_check('ManageComments',0) %}
+{% if xar_isloggedin() and xar_security_check('ManageComments',0) %}
         <td class="{{ item_class }}" style="text-align: center;" nowrap="nowrap">
             {% set objectname = object.name %}
             {% if objectname == 'comments_comments' and layout == 'admin' %}

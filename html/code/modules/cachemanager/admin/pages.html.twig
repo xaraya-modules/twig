@@ -188,7 +188,7 @@
 <a name="viewlog"></a>
     <h2>{{ xar_translate('Current Auto-Cache Log') }} [ <a href="{{ xar_currenturl() }}#config">{{ xar_translate('up') }}</a> ]</h2>
     {% if autocachepages %}
-    <p>{{ xar_translate('From #(1) to #(2)', xar_coremethod('xarLocale', 'formatDate', '%a, %d %B %Y %H.%M.%S %Z',autocachestart), xar_coremethod('xarLocale', 'formatDate', '%a, %d %B %Y %H.%M.%S %Z',autocacheend)) }}</p>
+    <p>{{ xar_translate('From #(1) to #(2)', xar_formatdate('%a, %d %B %Y %H.%M.%S %Z', autocachestart), xar_formatdate('%a, %d %B %Y %H.%M.%S %Z', autocacheend)) }}</p>
     <table border="1" cellpadding="4" cellspacing="0">
     <tr>
       {% for status in autocachehits|keys %}

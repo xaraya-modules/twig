@@ -9,7 +9,7 @@
 {% set navYearUrl = xar_moduleurl('calendar','user','year',{'cal_date': cal_date, 'cal_sdow': cal_sdow}) %}
 {% set navSubmitUrl = xar_moduleurl('calendar','user','submit',{'cal_date': cal_date, 'cal_sdow': cal_sdow}) %}
 
-{% set null = xar_coremethod('xarVar', 'fetch', ['func','str.1.',whatFunc]) %}
+{% set whatFunc = xar_findvar('func', whatFunc, 'str:1:') %}
 <ul>
     {% if whatFunc == 'day' %}
         <li><a class="active" href="{{ navDayUrl }}">Day</a></li>

@@ -182,7 +182,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set value = xar_var({scope: "module", module: "uploads", name: "file.cache-expire"}) %}
+                            {% set value = xar_modulevar('uploads', 'file.cache-expire') %}
                             <input type="text" name="file[cache-expire]" id="file_cache_expire" size="3" maxlength="3" value="{{ value }}"/>
                             seconds
                         </div>
@@ -194,7 +194,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set value = xar_var({scope: "module", module: "uploads", name: "view.itemsperpage"}) %}
+                            {% set value = xar_modulevar('uploads', 'view.itemsperpage') %}
                             <input type="text" name="view[itemsperpage]" id="view_itemsperpage" size="3" maxlength="3" value="{{ value }}"/>
                         </div>
                     </div>
@@ -283,7 +283,7 @@
                         <div class="xar-col">
                             {% if hooks %}
                                 {% for hookmodule in hooks|keys %}
-                                    {{ hooks[hookmodule] }}
+                                    {{ hooks[hookmodule]|raw }}
                                 {% endfor %}
                             {% else %}
                                 No hooks configured. 
@@ -309,7 +309,7 @@
                                     {'id': 2, 'name': xar_translate('Group owned files')},
                                     {'id': 3, 'name': xar_translate('All files')},
                                 ] %}
-                            {% set value = xar_var({scope: "module", module: "uploads", name: "permit_download"}) %}
+                            {% set value = xar_modulevar('uploads', 'permit_download') %}
                             {{ xar_data_input({type: "dropdown", name: "permit_download", options: options, value: value}) }}
                         </div>
                     </div>
@@ -320,7 +320,7 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set value = xar_var({scope: "module", module: "uploads", name: "permit_download_function"}) %}
+                            {% set value = xar_modulevar('uploads', 'permit_download_function') %}
                             {{ xar_data_input({type: "textbox", name: "permit_download_function", value: value}) }}
                         </div>
                     </div>

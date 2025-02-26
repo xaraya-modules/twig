@@ -28,7 +28,7 @@
         </div>
     {% if hooks %}
         <br />
-        {% for hookmodule in hooks|keys %}{{ hooks[hookmodule] }}{% endfor %}
+        {% for hookmodule in hooks|keys %}{{ hooks[hookmodule]|raw }}{% endfor %}
     {% endif %}
     {% else %}
         You do not have permission to access this page.

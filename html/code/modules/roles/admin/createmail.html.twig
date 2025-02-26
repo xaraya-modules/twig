@@ -8,7 +8,7 @@
             {'id': constant('xarRoles::ROLES_STATE_ACTIVE'), 'name': xar_translate('Active')},
             {'id': constant('xarRoles::ROLES_STATE_PENDING'), 'name': xar_translate('Pending')}
         ] %}
-    {% set modstatus = xar_coremethod('xarSession', 'getVar', 'statusmsg') %}
+    {% set modstatus = xar_sessionvar('statusmsg') %}
     {% set messagetitle = 'Write this string in the message body or subject to display the corresponding information' %}
     {{ include('@roles/includes/admin-mod-head.html.twig') }}
     <div class="xar-mod-body">
@@ -189,7 +189,7 @@
                                         {{ loop_item1['email'] }}</a>
                                     </td>
                                     <td class="xar-align-center">
-                                    {{ xar_coremethod('xarLocale', 'formatDate', '%m/%d/%Y',loop_item1['date_reg']) }}</td>
+                                    {{ xar_formatdate('%m/%d/%Y', loop_item1['date_reg']) }}</td>
                                     <td>
                                         {% if loop_item1['status'] == 1 %}Inactive 
                                         {% elseif loop_item1['status'] == 2 %}Not Validated 

@@ -142,7 +142,7 @@
     {# <!-- Include the part for creating a new property --> #}
     {{ include('@dynamicdata/includes/newproperty.html.twig') }}
     {% if hooks %}
-        {% for module, output in hooks %}{{ output }}{% endfor %}
+        {% for module, output in hooks %}{{ output|raw }}{% endfor %}
     {% endif %}
     <div class="xar-form-actions">
         <div class="xar-row">

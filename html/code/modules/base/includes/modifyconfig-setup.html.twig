@@ -38,7 +38,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {{ xar_coremethod('xarSystemVars', 'get', constant('sys::CONFIG'), 'DB.Host') }}
+                {{ xar_systemvar('DB.Host') }}
             </div>
         </div>
         <div class="xar-row">
@@ -49,7 +49,7 @@
                 </label>
             </div>
             <div class="xar-col">
-                {{ xar_coremethod('xarSystemVars', 'get', constant('sys::CONFIG'), 'DB.Type') }}
+                {{ xar_systemvar('DB.Type') }}
             </div>
         </div>
         <div class="xar-row">
@@ -60,11 +60,11 @@
                 </label>
             </div>
             <div class="xar-col">
-                {% if xar_coremethod('xarSystemVars', 'get', constant('sys::CONFIG'), 'DB.Switching') %}
-                    {% set value = xar_coremethod('xarSystemVars', 'get', constant('sys::CONFIG'), 'DB.Name') %}
+                {% if xar_systemvar('DB.Switching') %}
+                    {% set value = xar_systemvar('DB.Name') %}
                     {{ xar_data_input({type: "dropdown", name: "database", value: value, options: allowed_dbs}) }}
                 {% else %}
-                    {{ xar_coremethod('xarSystemVars', 'get', constant('sys::CONFIG'), 'DB.Name') }}
+                    {{ xar_systemvar('DB.Name') }}
                 {% endif %}
             </div>
         </div>
@@ -80,7 +80,7 @@
                         {'id': 'Creole', 'name': 'Creole'}, 
                         {'id': 'PDO', 'name': 'PDO'}, 
                     ] %}
-                {% set value = xar_coremethod('xarSystemVars', 'get', constant('sys::CONFIG'), 'DB.Middleware') %}
+                {% set value = xar_systemvar('DB.Middleware') %}
                 {{ xar_data_input({type: "dropdown", name: "middleware", id: "middleware", options: options, value: value}) }}
             </div>
         </div>

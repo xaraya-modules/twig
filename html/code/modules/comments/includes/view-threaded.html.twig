@@ -53,7 +53,7 @@
                     {% endif %}
                 </span>
                 <span class="xar-tr-date">
-                    {{ xar_coremethod('xarLocale', 'formatDate', "%B %d, %Y %I.%M %p",comment['date']) }}
+                    {{ xar_formatdate('%B %d, %Y %I.%M %p', comment['date']) }}
                 </span>
             </div>
 
@@ -85,7 +85,7 @@
                     {% endif %}
                     {# <!-- show changelog --> #}
                     {% if xar_security_check('ModerateComments') %}
-                    {% if xar_coremethod('xarModHooks', 'isHooked', 'changelog', 'comments') %}
+                    {% if xar_modishooked('changelog', 'comments') %}
                        <br />
                         <span class="xar-sub">
                             <a href="{{ xar_moduleurl('changelog','admin','showlog',{'modid': 14, 'itemid': comment['id']}) }}" title="{{ xar_translate('View Changes') }}">
@@ -141,7 +141,7 @@
                 </span>
 
                 <span class="xar-tr-date">
-                    {{ xar_coremethod('xarLocale', 'formatDate', "%B %d, %Y %I.%M %p",comment['date']) }}
+                    {{ xar_formatdate('%B %d, %Y %I.%M %p', comment['date']) }}
                 </span>
             </div>
 
@@ -173,7 +173,7 @@
                     {% endif %}
                     {# <!-- show changelog --> #}
                     {% if xar_security_check('ModerateComments') %}
-                    {% if xar_coremethod('xarModHooks', 'isHooked', 'changelog', 'comments') %}
+                    {% if xar_modishooked('changelog', 'comments') %}
                     <br />
                         <span class="xar-sub">
                             <a href="{{ xar_moduleurl('changelog','admin','showlog',{'modid': 14, 'itemid': comment['id']}) }}" title="{{ xar_translate('View Changes') }}">

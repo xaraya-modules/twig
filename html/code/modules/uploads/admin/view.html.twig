@@ -118,7 +118,7 @@
                     <td colspan="7" style="text-align:right;">
                         {% if not xar_modulevar('uploads', 'file.auto-purge') %}
                         <form action="{{ xar_moduleurl('uploads','admin','purge_rejected') }}" method="post">
-                            <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                            <input type="hidden" name="authid" value="{{ xar_security_authkey() }}"/>
                             {% set label = 'Purge Rejected Files' %}
                             {{- xar_button({type: "submit", name: "fileDo", id: "fileDo_purge", label: label}) -}}
                         </form>

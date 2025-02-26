@@ -53,7 +53,7 @@
                                 <label for="duvs_useremailformat" title="{{ label }}" class="xar-form-label">Email Format:</label>
                             </div>
                             <div class="xar-col">
-                                {% set value = xar_coremethod('xarModUserVars', 'get', 'roles','useremailformat',id) %}
+                                {% set value = xar_moduservar('roles', 'useremailformat', id) %}
                                 {% set options = [ 
                                         {'id': 'text', 'name': 'text'}, 
                                         {'id': 'html', 'name': 'html'}, 
@@ -70,7 +70,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set value = xar_coremethod('xarModUserVars', 'get', 'roles','usertimezone',id) %}
+                                {% set value = xar_moduservar('roles', 'usertimezone', id) %}
                                 {{ xar_data_input({type: "timezone", name: "duvs[usertimezone]", id: "duvs_usertimezone", value: value}) }}
                             </div>
                         </div>
@@ -85,11 +85,11 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            <input type="text" name="duvs[userhome]" id="duvs_userhome" value="{{ xar_coremethod('xarModUserVars', 'get', 'roles','userhome',id) }}" size="40" maxlength="100" tabindex="7"/>
+                            <input type="text" name="duvs[userhome]" id="duvs_userhome" value="{{ xar_moduservar('roles', 'userhome', id) }}" size="40" maxlength="100" tabindex="7"/>
                         </div>
                     </div>
                 {% endif %}
-                {% for hookmodule in hooks|keys %}{{ hooks[hookmodule] }}{% endfor %}
+                {% for hookmodule in hooks|keys %}{{ hooks[hookmodule]|raw }}{% endfor %}
             </fieldset>
             <div class="xar-form-actions">
                 <div class="xar-row">

@@ -28,7 +28,7 @@
                 {{ xar_data_form({object: object, tplmodule: "messages", template: "modify", reply: reply, replyto: replyto, to_id: to_id}) }}
 		
            <div class="xar-form-input-wrapper-after">
-                <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
                 {# <!-- <input type="hidden" name="id" id="id" value="{{ id }}" /> --> #}
               
 		<input type="submit" name="draft" id="draft" value="{{ xar_translate('Save draft') }}" class="xar-margin-thickright" />

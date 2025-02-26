@@ -17,7 +17,7 @@
                     {% set object = objects[i] %}
                     {{ xar_data_form({object: object}) }}
                     {% if hooks %}
-                        {% for module, output in hooks %}{{ output }}{% endfor %}
+                        {% for module, output in hooks %}{{ output|raw }}{% endfor %}
                     {% endif %}
                 </fieldset>
             {% endfor %}

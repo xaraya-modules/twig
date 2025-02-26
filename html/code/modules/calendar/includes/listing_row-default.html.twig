@@ -13,9 +13,9 @@
                 {# <!-- TODO: This works within listings module but needs to be adjusted in the
                 DD for modify function to consider the user, or adjust for listings module instance to match.
                 Leaving as display only until this is addressed
-                {% if xar_coremethod('xarUser', 'isLoggedIn') and field == keyfieldalias and (xar_security_check('EditCalendar',0) or currentuserid == thisuserid) %}
+                {% if xar_isloggedin() and field == keyfieldalias and (xar_security_check('EditCalendar',0) or currentuserid == thisuserid) %}
                 --> #}
-                {% if xar_coremethod('xarUser', 'isLoggedIn') and field == keyfieldalias and xar_security_check('EditCalendar',0) %}
+                {% if xar_isloggedin() and field == keyfieldalias and xar_security_check('EditCalendar',0) %}
                     <a href="{{ xar_moduleurl('calendar','user','modify',{'itemid': loopitem[primaryalias], 'name': objectname,'tplmodule': module}) }}">
                         {{ xar_data_output({property: properties[column], value: value}) }}
                     </a>

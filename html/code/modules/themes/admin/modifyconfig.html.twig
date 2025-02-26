@@ -369,7 +369,7 @@
                             {{ xar_data_input({type: "checkbox", name: "variable_dump", checked: checked}) }} Debug Templates by Showing Available Variables
                         </div>
                     </div>
-                    {% if xar_coremethod('xarMod', 'isAvailable', 'atom') %}
+                    {% if xar_modisavailable('atom') %}
                         {# <!-- This should be moved if we ever fully support the atom spec --> #}
                         <div class="xar-row">
                             <div class="xar-col">

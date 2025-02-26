@@ -4,7 +4,7 @@
 {% if storedList is not null and storedList|length %}
             Attach a previously stored file:<br />
 
-            {% set multiple = "multiple_{id}" %}
+            {% set multiple = "multiple_" ~ id %}
 
             {% if multiple is not null and multiple == TRUE %}
                 <select name="{{ id }}_attach_stored[]" id="{{ id }}_attach_stored_id" multiple="multiple" size="5">

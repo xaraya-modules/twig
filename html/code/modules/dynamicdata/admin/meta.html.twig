@@ -189,7 +189,7 @@
             {# <!-- @todo example of using virtual object descriptor to show database table --> #}
             {% set descriptor = xar_new('TableObjectDescriptor', {'table': table, 'fields': tables[table], 'dbConnIndex': dbConnIndex}) %}
             {% set object = xar_new('DataObject', descriptor) %}
-            {% set dummy = xar_coremethod('xarVar', 'fetch', 'itemid', 'notempty', itemid, 1, constant('xarVar::NOT_REQUIRED')) %}
+            {% set itemid = xar_findvar('itemid', itemid, 'notempty', 1) %}
             {% set dummy = object.getItem({'itemid': itemid}) %}
             <h3>
                 Table: {{ table }}&#160;

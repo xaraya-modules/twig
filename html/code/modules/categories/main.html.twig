@@ -19,7 +19,7 @@
           <strong>{{ parent['name'] }}</strong>
         {% endif %}
       {% endfor %}
-      {{ hooks }}
+      {{ hooks|raw }}
       <br/><br/>
     {% endif %}
 

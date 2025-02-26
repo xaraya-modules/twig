@@ -6,7 +6,7 @@
 <div class="xar-mod-head">
         <span class="xar-mod-title">
             {% if xar_modulevar('calendar', 'useModuleAlias') %}
-                {{ xar_var({scope: "module", module: "calendar", name: "aliasname"}) }}
+                {{ xar_modulevar('calendar', 'aliasname') }}
             {% else %}
                 Delete Event
             {% endif %}

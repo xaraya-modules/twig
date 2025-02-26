@@ -32,7 +32,7 @@
 							{'id': 0, 'name': xar_translate('No')},
 							{'id': 1, 'name': xar_translate('Yes')},
 						] %}
-					{% set checked = xar_coremethod('xarSystemVars', 'get', [sys..CONFIG, 'Log.Enabled']) %}
+					{% set checked = xar_systemvar('Log.Enabled') %}
 					{{ xar_data_input({type: "radio", name: "logenabled", value: checked, options: options}) }}
                 </fieldset>
                 <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>

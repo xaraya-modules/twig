@@ -124,7 +124,7 @@
                 {% set value = xar_configvar('Site.Session.RefererCheck') %}
                 <input type="text" id="referercheck" name="referercheck" value="{{ value }}" maxlength="40" class="xar-form-textmedium"/>
                 <span>
-                    &#160;Default: {{ xar_coremethod('xarServer', 'getVar', 'HTTP_HOST') }} for security level 'High'
+                    &#160;Default: {{ xar_servervar('HTTP_HOST') }} for security level 'High'
                 </span>
             </div>
         </div>

@@ -12,7 +12,7 @@
       {{ xar_translate('Actions:') }}
     </dt>
     {% if xar_security_check('AdminImages') %}
-        {% if xar_coremethod('xarMod', 'isAvailable', 'uploads') and xar_security_check('AdminUploads',0) %}
+        {% if xar_modisavailable('uploads') and xar_security_check('AdminUploads',0) %}
             {% set tabclass = activetab == 'uploads' ? 'active' : '' %}
             <dd class="{{ tabclass }}">
               <a href="{{ xar_moduleurl('images', 'admin', 'uploads') }}">

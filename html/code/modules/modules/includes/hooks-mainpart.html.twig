@@ -69,8 +69,8 @@
                     {% for module, modinfo in subjects %}
 
                         {# <!-- Begin subject module --> #}
-                        {% set subject_id = "subjects_{module}" %}
-                        {% set subject_name = "subjects[{module}]" %}
+                        {% set subject_id = "subjects_" ~ module %}
+                        {% set subject_name = "subjects[" ~ module ~ "]" %}
                         <fieldset>
                             <legend>{{ modinfo['displayname'] }}</legend>
                             {# <!-- Hooked to none --> #}
@@ -126,8 +126,8 @@
                             {% for scope in observers[curhook]['scopes']|keys %}
                                 {% set scopehooked = modinfo['itemtypes'][0]['scopes'][scope] %}
                                 <li>
-                                    {% set type_id = "{subject_id}_itemtypes_0_{scope}" %}
-                                    {% set type_name = "{subject_name}[itemtypes][0][{scope}]" %}
+                                    {% set type_id = subject_id ~ "_itemtypes_0_" ~ scope %}
+                                    {% set type_name = subject_name ~ "[itemtypes][0][" ~ scope ~ "]" %}
                                     {{ xar_data_input({type: "checkbox", name: type_name, id: type_id, checked: scopehooked}) }}<label for="{{ type_id }}">{{ scope }} Hooks</label>
                                 </li>
                             {% endfor %}
@@ -170,8 +170,8 @@
                             {% for itemtype, typeinfo in modinfo['itemtypes'] %}
                                 {% if not itemtype %}
                                 {% else %}
-                                {% set type_id = "{subject_id}_itemtypes_{itemtype}" %}
-                                {% set type_name = "{subject_name}[itemtypes][{itemtype}]" %} 
+                                {% set type_id = subject_id ~ "_itemtypes_" ~ itemtype %}
+                                {% set type_name = subject_name ~ "[itemtypes][" ~ itemtype ~ "]" %} 
                                 <li><h4>Itemtype {{ itemtype }}: {{ typeinfo['label'] }}</h4>
                                 
                                 <div class="xar-row">
@@ -225,8 +225,8 @@
                                     {% for scope in observers[curhook]['scopes']|keys %}
                                         {% set scopehooked = typeinfo['scopes'][scope] %}
                                         <li>
-                                            {% set scope_name = "{type_name}[scopes][{scope}]" %}
-                                            {% set scope_id = "{type_id}_scopes_{scope}" %}
+                                            {% set scope_name = type_name ~ "[scopes][" ~ scope ~ "]" %}
+                                            {% set scope_id = type_id ~ "_scopes_" ~ scope %}
                                             {{ xar_data_input({type: "checkbox", name: scope_name, id: scope_id, checked: scopehooked}) }}
                                             <label for="{{ scope_id }}">{{ scope }} Hooks</label>
                                         </li>

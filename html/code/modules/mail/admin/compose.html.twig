@@ -105,7 +105,7 @@
                         {{ xar_data_input({type: "textarea", name: "message", id: "message", class: "xar-form-textarealarge"}) }}
                     </div>
                 </div>
-                {% if xar_coremethod('xarMod', 'isAvailable', 'scheduler') %}
+                {% if xar_modisavailable('scheduler') %}
                     <div class="xar-row">
                         <div class="xar-col">
                             {% set label = 'Test scheduled mails' %}

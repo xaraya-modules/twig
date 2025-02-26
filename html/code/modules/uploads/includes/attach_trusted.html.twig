@@ -3,7 +3,7 @@
 {% block attach_trusted %}
 Attach a file from the Trusted directory:<br />
 
-    {% set multiple = "multiple_{id}" %}
+    {% set multiple = "multiple_" ~ id %}
 
     {% if multiple is not null and multiple == TRUE %}
         <select name="{{ id }}_attach_trusted[]" id="{{ id }}_attach_trusted_id" multiple="multiple" size="5">

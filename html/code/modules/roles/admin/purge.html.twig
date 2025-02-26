@@ -87,7 +87,7 @@
                                 <td>{{ loop_item1['uname'] }}</td>
                                 <td>{{ loop_item1['email'] }}</td>
                                     <td class="xar-align-center">
-                                {{ xar_coremethod('xarLocale', 'formatDate', '%m/%d/%Y',loop_item1['date_reg']) }}</td>
+                                {{ xar_formatdate('%m/%d/%Y', loop_item1['date_reg']) }}</td>
                                 <td>{{ loop_item1['itemtype'] }}</td>
                                     <td class="xar-align-center">
                                         {% if loop_item1['unique'] == 1 %}
@@ -184,7 +184,7 @@
                                 <td>{{ xar_data_output({type: "name", value: purgeuser['uname']}) }}</td>
                                 <td>{{ xar_data_output({type: "name", value: purgeuser['email']}) }}</td>
                                 <td class="xar-align-center">
-                                    {{ xar_coremethod('xarLocale', 'formatDate', '%m/%d/%Y',purgeuser['date_reg']) }}
+                                    {{ xar_formatdate('%m/%d/%Y', purgeuser['date_reg']) }}
                                 </td>
                                 <td>{{ purgeuser['state'] }}</td>
                                 <td class="xar-align-center">

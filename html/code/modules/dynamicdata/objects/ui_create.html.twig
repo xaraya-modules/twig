@@ -37,7 +37,7 @@
             {# <!-- Remove hooks from DD for now ??? chris: they show in modify, why not here --> #}
                 {% if hooks %}
                     {% for module, output in hooks %}
-                        {{ output }}
+                        {{ output|raw }}
                     {% endfor %}
                 {% endif %}
 

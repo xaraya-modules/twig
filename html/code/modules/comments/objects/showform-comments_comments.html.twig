@@ -7,7 +7,7 @@
     <div class="xar-row">
             {% set label = 'Name:' %}
             {{ xar_data_label({property: properties['author'], label: label}) }}
-            {% if xar_coremethod('xarUser', 'isLoggedIn') %}
+            {% if xar_isloggedin() %}
                 <a href="{{ xar_moduleurl('roles', 'user', 'display', {'role_id': xar_uservar('id')}) }}">
                     {{ xar_data_output({property: properties['author']}) }}
                 </a>

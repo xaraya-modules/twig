@@ -7,8 +7,8 @@
             <td>
                 <select name="{{ name }}[dbformat]" id="{{ id }}_dbformat" tabindex="{{ tabindex }}">
                     {% set timestamp = xar_coremethod('xarMLS', 'userTime') %}
-                    {% set datetime = xar_coremethod('xarLocale', 'formatDate', '%Y-%m-%d %H.%M.%S') %}
-                    {% set date = xar_coremethod('xarLocale', 'formatDate', '%Y-%m-%d') %}
+                    {% set datetime = xar_formatdate('%Y-%m-%d %H.%M.%S') %}
+                    {% set date = xar_formatdate('%Y-%m-%d') %}
                     {# <!--
               Note : timestamp is not an option for ExtendedDate
             --> #}

@@ -5,7 +5,7 @@
 
     <div class="xar-mod-body">
         <p style="text-align: right; margin: 15px 0 0 0;">
-            {% if xar_coremethod('xarMod', 'isAvailable', 'export') %}
+            {% if xar_modisavailable('export') %}
                 <a href="{{ xar_moduleurl('calendar','user','export') }}"><b>Download Items</b></a>
             {% endif %}
         </p>

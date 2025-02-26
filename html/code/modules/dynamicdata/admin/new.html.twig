@@ -43,7 +43,7 @@
                 {{ xar_data_form({object: object}) }}
             {# <!-- Remove hooks from DD for now - why ??? --> #}
                 {% if hooks %}
-                    {% for module, output in hooks %}{{ output }}{% endfor %}
+                    {% for module, output in hooks %}{{ output|raw }}{% endfor %}
                 {% endif %}
             {# <!-- --> #}
             </fieldset>

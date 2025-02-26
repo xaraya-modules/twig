@@ -116,7 +116,7 @@
             </td>
             </form>
         </tr>
-        {% if xar_coremethod('xarMod', 'isAvailable', 'categories') and xar_coremethod('xarModHooks', 'isHooked', 'categories', 'uploads', 1) %}
+        {% if xar_modisavailable('categories') and xar_modishooked('categories', 'uploads', 1) %}
         <tr>
             <td colspan="6">
                 {{ include('@uploads/includes/catnavigation.html.twig') }}

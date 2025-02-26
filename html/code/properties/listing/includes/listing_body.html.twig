@@ -4,7 +4,7 @@
         {% else %}
             {% set item_class = 'xar-norm' %}
         {% endif %}
-        {% if xar_coremethod('xarUser', 'isLoggedIn') %}
+        {% if xar_isloggedin() %}
             {% set currentuserid = xar_uservar('id') %}
         {% endif %}
 

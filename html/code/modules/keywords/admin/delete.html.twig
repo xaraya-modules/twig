@@ -72,7 +72,7 @@
                             <input type="hidden" name="module_id" id="module_id" value="{{ module_id }}"/>
                             <input type="hidden" name="itemtype" id="itemtype" value="{{ itemtype }}"/>
                             <input type="hidden" name="itemid" id="itemid" value="{{ itemid }}"/>
-                            <input type="hidden" name="authid" id="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                            <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
                             <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}"/>
                             <input type="submit" value="{{ submitLabel }}"/>
                             &#160;

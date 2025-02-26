@@ -52,7 +52,7 @@
         {% if not fields['fileupload'] %}
             {# <!-- Nothing to display --> #}
 
-        {% elseif xar_coremethod('xarModHooks', 'isHooked', 'uploads','publications', fields['itemtype']) and fields['fileupload']|slice(0,1) == ';' %}
+        {% elseif xar_modishooked('uploads','publications', fields['itemtype']) and fields['fileupload']|slice(0,1) == ';' %}
             {# <!-- Hook output --> #}
             {#
                 If you hook the uploads module to publications, then file upload fields will contain

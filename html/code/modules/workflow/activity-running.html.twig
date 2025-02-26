@@ -42,7 +42,7 @@
       {% endif %}
       {% if hooks and hooks|length > 0 %}
         {% for hookname, hookoutput in hooks %}
-        {{ hookoutput }}
+        {{ hookoutput|raw }}
       {% endfor %}
       {% endif %}
     </div>
