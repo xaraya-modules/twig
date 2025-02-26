@@ -193,7 +193,7 @@
                             <input type="text" name="copyright" id="copyright" value="{{ value }}" size="30" maxlength="100"/>
                         </div>
                     </div>
-                    {{ xar_coremethod('xarVar', 'delCached', 'Mod.Variables.themes','SiteCopyRight') }} 
+                    {{ xar_varcache('Mod.Variables.themes', 'SiteCopyRight', 'DELETE_ME') }} 
                     <div class="xar-row">
                         <div class="xar-col">
                             <label for="footer">
@@ -205,7 +205,7 @@
                             {{ xar_data_input({type: "textarea", name: "footer", cols: "40", rows: "3", value: value, class: "xar-form-textareamedium"}) }}
                         </div>
                     </div>
-                    {{ xar_coremethod('xarVar', 'delCached', 'Mod.Variables.themes','SiteFooter') }} 
+                    {{ xar_varcache('Mod.Variables.themes', 'SiteFooter', 'DELETE_ME') }} 
                     <div class="xar-row">
                         <div class="xar-col">
                             <label for="separator">

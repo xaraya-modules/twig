@@ -14,6 +14,7 @@
             {{ row['component'] }}
         </td>
         <td>
+            {# @todo set in template variables #}
             {% set level = xar_coremethod('SecurityLevel','displayMap')[row['level']] %}
             {{ level }}
         </td>

@@ -13,7 +13,7 @@
 			<link rel="stylesheet" type="text/css" href="themes/installer/style/style.css"/>
 		</head>
 		<body>
-			{% set isupgrade = xar_coremethod('xarVar', 'getCached', 'Upgrade', 'upgrading') %}
+			{% set isupgrade = xar_varcache('Upgrade', 'upgrading') %}
 			<div id="header">
 				<div id="header_logo">
 					<div id="head_link">Xaraya</div>

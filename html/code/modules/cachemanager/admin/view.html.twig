@@ -55,8 +55,8 @@
         {% if tab == 'variable' %}
             <tr>
                 <td colspan="2">
-                {% set dummy = lines|join("\n") %}
-		<pre>{{ dummy }}</pre>
+                {% set joined = lines|join("\n") %}
+		<pre>{{ joined }}</pre>
                 </td>
             </tr>
         {% else %}

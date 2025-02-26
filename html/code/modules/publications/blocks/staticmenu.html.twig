@@ -30,7 +30,7 @@
             {% else %}
             {# <!-- Check if this is the active node --> #}
             {% set hilite = 'hilite' ~ node['id'] %}
-            {% if node['id'] == xar_coremethod('xarCoreCache', 'getCached', 'Blocks.publications', 'current_base_id') %}
+            {% if node['id'] == xar_varcache('Blocks.publications', 'current_base_id') %}
                 {% set hilite = 'active' %}
             {% else %}
                 {% set hilite = '' %}
@@ -62,7 +62,7 @@
             {% for node in nodes %}
                 {# <!-- Check if this is the active node --> #}
                 {% set hilite = 'hilite' ~ node['id'] %}
-                {% if node['id'] == xar_coremethod('xarCoreCache', 'getCached', 'Blocks.publications', 'current_base_id') %}
+                {% if node['id'] == xar_varcache('Blocks.publications', 'current_base_id') %}
                     {% set hilite = 'active' %}
                 {% else %}
                     {% set hilite = '' %}

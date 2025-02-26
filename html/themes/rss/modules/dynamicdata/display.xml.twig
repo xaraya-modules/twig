@@ -1,7 +1,7 @@
 {# @theme/rss/modules/dynamicdata/display.xml.twig #}
 
 {% block user_display %}
-{% set dummy = xar_coremethod('xarTpl', 'setPageTemplateName', 'header') %}
+{% set dummy = xar_pagetemplate('header') %}
     {% if object %}
         <xar:element name="{{ object.name }}">
             {{ xar_data_display({object: object}) }}

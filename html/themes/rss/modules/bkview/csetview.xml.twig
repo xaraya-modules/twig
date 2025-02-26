@@ -8,7 +8,7 @@
             {{ xar_moduleurl('bkview','user','deltaview') }}&amp;rev={{ loop_item1['rev'] }}&amp;repoid={{ repoid }}</link>
             <description>{{ loop_item1['comments'] }}</description>
             <author>{{ loop_item1['author'] }}</author>
-            <pubDate>{{ xar_coremethod('xarLocale', 'formatUTCDate', "%a, %d %b %Y %H.%M.%S GMT",loop_item1['utc']) }}</pubDate>
+            <pubDate>{{ xar_formatdate('%a, %d %b %Y %H.%M.%S GMT', loop_item1['utc'], false) }}</pubDate>
         </item>
     {% endfor %}
 {% endblock %}

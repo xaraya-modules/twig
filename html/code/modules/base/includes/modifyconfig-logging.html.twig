@@ -90,7 +90,7 @@
                         {{ xar_data_input({type: "checkboxlist", name: "loglevel", value: value, options: levels}) }}
                     </div>
                 </div>
-                {% if xar_systemvar('Log.Enabled') and not xar_coremethod('xarLog', 'availables') and xar_coremethod('xarLog', 'fallbackPossible') %}
+                {% if xar_systemvar('Log.Enabled') and not available_loggers and fallback_possible %}
 					<div style="color: green">
 						Fallback logging is currently active.
 					</div>

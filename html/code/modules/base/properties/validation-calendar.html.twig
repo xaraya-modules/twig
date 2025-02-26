@@ -6,7 +6,7 @@
             <td>Store as</td>
             <td>
                 <select name="{{ name }}[dbformat]" id="{{ id }}_dbformat" tabindex="{{ tabindex }}">
-                    {% set timestamp = xar_coremethod('xarMLS', 'userTime') %}
+                    {% set timestamp = xar_usertime() %}
                     {% set datetime = xar_formatdate('%Y-%m-%d %H.%M.%S') %}
                     {% set date = xar_formatdate('%Y-%m-%d') %}
                     {# <!--

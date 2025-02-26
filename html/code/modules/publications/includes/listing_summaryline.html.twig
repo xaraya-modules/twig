@@ -29,6 +29,7 @@
                         Import a Publication Type from XML 
                     </a>
                 {% endif %}
+                {# @todo set in template variables #}
                 {% set args = xar_coremethod('DataObjectDescriptor','getObjectID',{'name': 'publications_types'}) %}
                 {% set link = xar_moduleurl('dynamicdata','admin','new',{'objectid': args['objectid']}) %}
                 {% if xar_modulevar('publications', 'use_module_icons') %}

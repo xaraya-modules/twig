@@ -96,6 +96,7 @@
     {% elseif layout == 'pubtypes' %}
         <td class="xar-norm" nowrap="nowrap">
             {% set ptid = loopitem[primaryalias] %}
+            {# @todo set in template variables #}
             {% set args = xar_coremethod('DataObjectDescriptor','getObjectID',{'name': properties['name'].value}) %}
             {% if xar_security_check('ManagePublications') %}
                 <a href="{{ xar_moduleurl('publications','admin','modify_pubtype',{'itemid': ptid}) }}" title="{{ xar_translate('Modify this publication type') }}" style="margin-right: 5px">                    

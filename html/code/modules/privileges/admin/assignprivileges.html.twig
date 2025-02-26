@@ -1,6 +1,7 @@
 {# @privileges/admin/assignprivileges.html.twig #}
 
 {% block assignprivileges %}
+{# @todo set in template variables #}
 {% set options = xar_coremethod('xarPrivileges', 'getPrivileges', {'module': tab}) %}
     {{ include('@privileges/includes/admin-mod-head.html.twig') }}
     <div class="xar-mod-body">

@@ -70,6 +70,7 @@
             {{ xar_data_input({type: "checkbox", name: "use_process_states", checked: value}) }}
         </div>
     </div>
+    {# @todo set in template variables #}
     {% if xar_coremethod('xarDB', 'getType') == 'mysql' %}
         <div class="xar-row">
             <div class="xar-col">

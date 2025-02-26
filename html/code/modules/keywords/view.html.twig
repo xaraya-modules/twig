@@ -48,6 +48,7 @@
                 <div class="xar-col">
                 </div>
                 <div class="xar-col">
+                    {# @todo set in template variables #}
                     {% if xar_coremethod('xarController', 'isLocalReferer') %}
                         {% set label = 'Go back' %}
                         {{- xar_button({type: "cancel", label: label}) -}}

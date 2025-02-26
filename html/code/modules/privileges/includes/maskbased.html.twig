@@ -30,7 +30,7 @@
         {% if val %}
             {% set dummy = xar_modulevar('privileges', flip, '') %}
         {% elseif val is not null %}
-            {% set dummy = xar_coremethod('xarModVars', 'delete', 'privileges', flip) %}
+            {% set dummy = xar_modulevar('privileges', flip, 'DELETE_ME') %}
         {% else %}
             {% set dummy = xar_modulevar('privileges', flip, 1) %}
         {% endif %}
@@ -59,8 +59,8 @@ uasort(groups,'by_name') %}
         {% for group in groups %}
             {% for itemid, fields in items %}
                 {% set code = 'SC.' ~ fields['name'] ~ '.' ~ group['id'] %}
-                {% set dummy = xar_security_check(fields['name'], 0, '', '', '', group['name'], 0, 0) %}
-                {% if dummy %}
+                {% set checked = xar_security_check(fields['name'], 0, '', '', '', group['name'], 0, 0) %}
+                {% if checked %}
                     {% set dummy = xar_modulevar('privileges', code, 1) %}
                 {% else %}
                     {% set dummy = xar_modulevar('privileges', code, 0) %}

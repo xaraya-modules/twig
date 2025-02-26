@@ -30,7 +30,7 @@
                 {% if openapi %}
                     <a href="./var/cache/api/openapi.json">var/cache/api/openapi.json</a>
                     {% set mtime = filemtimes['openapi']|default(0) %}
-                    ({{ xar_coremethod('xarLocale', 'formatUTCDate', "%Y-%m-%d", mtime) }})
+                    ({{ xar_formatdate('%Y-%m-%d', mtime) }})
                 {% else %}
                     var/cache/api/openapi.json
                 {% endif %}
@@ -72,7 +72,7 @@
                 {% if schema %}
                     <a href="./var/cache/api/schema.graphql">var/cache/api/schema.graphql</a>
                     {% set mtime = filemtimes['schema']|default(0) %}
-                    ({{ xar_coremethod('xarLocale', 'formatUTCDate', "%Y-%m-%d", mtime) }})
+                    ({{ xar_formatdate('%Y-%m-%d', mtime) }})
                 {% else %}
                     var/cache/api/schema.graphql
                 {% endif %}

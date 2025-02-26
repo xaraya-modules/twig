@@ -153,6 +153,7 @@
                         </label>
                     </div>
                     <div class="xar-col">
+                        {# @todo set in template variables #}
                         {% set options = xar_coremethod('xarPrivileges', 'getprivileges') %}
                         {{ xar_data_input({type: "dropdown", name: "privid", options: options}) }}&#160;
                         <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>

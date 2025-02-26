@@ -77,7 +77,7 @@
             <dd>
 	            <select name="defaultlocale" id="defaultlocale">
 	                {% for loop_key1, loop_item1 in locales %}{% set loop_index1 = loop.index %}
-	                    {% if xar_coremethod('xarMLS', 'getSiteLocale') == loop_item1['name'] %}
+	                    {% if xar_configvar('Site.MLS.DefaultLocale') == loop_item1['name'] %}
 	                        <option value="{{ loop_item1['name'] }}" selected="selected">
 	                            {{ loop_item1['name'] }}
 	                        </option>

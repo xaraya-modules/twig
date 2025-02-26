@@ -74,6 +74,7 @@
                             Access Level
                         </th>
                         <td>
+                            {# @todo set in template variables #}
                             {% set levels = xar_coremethod('SecurityLevel','displayMap') %}
                             {% set options = [] %}
                             {% for key, value in levels %}
