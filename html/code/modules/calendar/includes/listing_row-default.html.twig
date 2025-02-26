@@ -7,8 +7,8 @@
             {% set value = loopitem[field] %}
             {% set column = columns[field] %}
             {% if (field == primaryalias and not show_primary) or column == 'return_link' %}
-                <xar:continue />
-            {% endif %}
+                {# <xar:continue /> #}
+            {% else %}
             <td>
                 {# <!-- TODO: This works within listings module but needs to be adjusted in the
                 DD for modify function to consider the user, or adjust for listings module instance to match.
@@ -29,6 +29,7 @@
                     {% endif %}
                 {% endif %}
             </td>
+            {% endif %}
         {% endfor %}
 
     {# <!-- To be reviewed - jo

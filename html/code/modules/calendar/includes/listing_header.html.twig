@@ -5,8 +5,8 @@
         {{ include(['@' ~ module ~ '/includes/listing_headerprefix.html.twig', '@property/listing/includes/listing_headerprefix.html.twig']) }}
         {% for column, field in fields %}
             {% if ((column == primaryalias) and not show_primary) or ('return_link' in column) %}
-                <xar:continue />
-            {% endif %}
+                {# <xar:continue /> #}
+            {% else %}
             <th>
                 {% set url = xar_currenturl({'letter': letter, 'order': column, 'op': 'column'}) %}
                 <a href="{{ url }}" alt="Click to order by this field" title="Order by {{ field }}">
@@ -15,6 +15,7 @@
                 {% set subdata = params|merge({'column': column}) %}
                 {{ include(['@' ~ module ~ '/includes/sortarrows.html.twig', '@property/listing/includes/sortarrows.html.twig'], subdata) }}
             </th>
+            {% endif %}
         {% endfor %}
         {{ include(['@' ~ module ~ '/includes/listing_headersuffix.html.twig', '@property/listing/includes/listing_headersuffix.html.twig']) }}
     </tr>

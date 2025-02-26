@@ -23,8 +23,8 @@
                 you should remove the following if condition
          #}
         {% if not moditem['toplinks'] and not isadmin %}
-          <xar:continue />
-        {% endif %}
+          {# <xar:continue /> #}
+        {% else %}
         <li> <a href="{{ moditem['link'] }}">{{ moditem['name'] }}</a> =&gt; {{ moditem['numitems'] }} items
           <ul>
             {% if moditem['toplinks'] %}
@@ -38,6 +38,7 @@
             {% endif %}
           </ul>
         </li>
+        {% endif %}
       {% endfor %}
       </ul>
     </div>
