@@ -205,7 +205,7 @@
                 </div>
                 <div class="xar-col">
                     <form method="post" action="{{ xar_moduleurl('publications','admin','modifyconfig',{'tab': 'pubtypes'}) }}">
-                        {% set onchange = "javascript.this.form.submit();" %}
+                        {% set onchange = "javascript:this.form.submit();" %}
                         {{ xar_data_input({name: "ptid", type: "objectref", refobject: "publications_types", store_prop: "id", display_prop: "description", value: ptid, onchange: onchange}) }}
                     </form>
                 </div>
@@ -498,11 +498,11 @@
                         {% endif %}
 
                         {# <!-- Figure out which template to use --> #}
-                        {% set includepath = "objects/pubtypename" %}
+                        {% set includepath = "objects/" ~ pubtypename %}
                         {% set filename = 'settings' %}
 
                         {# <!-- Display --> #}
-                        {{ include('@publications/includes/' ~ filename ~ '.html.twig') }}
+                        {{ include(['@publications/' ~ includepath ~ '/' ~ filename ~ '.html.twig', '@publications/objects/generic/' ~ filename ~ '.html.twig']) }}
                 </fieldset>
                 <div class="xar-row">
                     <div class="xar-col">

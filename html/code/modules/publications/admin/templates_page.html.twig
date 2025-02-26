@@ -14,7 +14,7 @@
                         Template file:
                     </label>
                     <form method="post" action="{{ xar_moduleurl('publications','admin','templates_page') }}">
-                        {% set onchange = "javascript.this.form.submit();" %}
+                        {% set onchange = "javascript:this.form.submit();" %}
                         {{ xar_data_input({type: "dropdown", name: "file", options: files, value: file, onchange: onchange}) }}
                         &#160;
                         {% if filetype == 'module' %}

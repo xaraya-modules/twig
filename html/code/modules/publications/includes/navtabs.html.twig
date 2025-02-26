@@ -11,7 +11,7 @@
             Select Publication Type             : 
         </dt>
         <form method="post" action="{{ xar_moduleurl('publications','admin','modifyconfig') }}">
-            {% set onchange = "javascript.this.form.submit();" %}
+            {% set onchange = "javascript:this.form.submit();" %}
             {{ xar_data_input({name: "ptid", type: "objectref", refobject: "publications_types", store_prop: "id", display_prop: "description", value: ptid, onchange: onchange}) }}
         </form>
         <dd style="float:right">

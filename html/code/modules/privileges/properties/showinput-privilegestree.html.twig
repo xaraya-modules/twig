@@ -18,10 +18,16 @@
     // --> #}
     </script>
     {% if trees %}
+        {#
         {% set deleteicon =  xar_image({scope: "theme", file: "icons/delete.png", render: "false"})  %}
         {% set groupsicon =  xar_image({scope: "theme", file: "icons/system-user-groups.png", render: "false"})  %}
         {% set removeicon =  xar_image({scope: "theme", file: "icons/remove.png", render: "false"})  %}
         {% set blankicon =  xar_image({scope: "theme", file: "icons/blank.png", render: "false"})  %}
+        #}
+        {% set deleteicon =  xar_imageurl("icons/delete.png", "theme") %}
+        {% set groupsicon =  xar_imageurl("icons/system-user-groups.png", "theme") %}
+        {% set removeicon =  xar_imageurl("icons/remove.png", "theme") %}
+        {% set blankicon =  xar_imageurl("icons/blank.png", "theme") %}
         
         {% for tree in trees %}
             <ul class="xar-tree">

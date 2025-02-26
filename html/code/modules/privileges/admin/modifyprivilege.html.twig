@@ -205,7 +205,7 @@
                                     {% set options = [] %}
                                     {% for key, value in levels %}
                                         {# <!-- @todo this needs to go --> #}
-                                        {% set options = options + [{'id': key * 100, 'name': value}] %}
+                                        {% set options = options|merge([{'id': key, 'name': value}]) %}
                                     {% endfor %}
                                     {{ xar_data_input({type: "dropdown", name: "plevel", value: plevel, options: options, tabindex: "6"}) }}
                                 </div>
@@ -315,7 +315,7 @@
                                     </a>
                                 </span>
                                 <a href="{{ xar_moduleurl('privileges','admin','removemember',{'childid': ppid, 'parentid': loop_item1['parentid'], 'authid': authid}) }}">
-                                    <img src="{{ xar_coremethod('sys', 'code') }}modules/privileges/xarimages/remove.gif" alt="{{ xar_translate('Remove') }}" title="Remove {{ pname }} from {{ loop_item1['parentname'] }}"/>
+                                    <img src="{{ xar_imageurl('remove.gif', 'privileges') }}" alt="{{ xar_translate('Remove') }}" title="Remove {{ pname }} from {{ loop_item1['parentname'] }}"/>
                                 </a>
                             </div>
                         </div>

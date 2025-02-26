@@ -49,7 +49,7 @@
                                 Author
                             </th>
                             <td>
-                                {% set onchange = "javascript.this.form.submit();" %}
+                                {% set onchange = "javascript:this.form.submit();" %}
                                 {{ xar_data_input({type: "dropdown", name: "uid", options: authorlist, value: uid, firstline: "All / Other --> ", onchange: onchange}) }}
                                 <input type="text" name="author" id="author" value="{{ author }}" size="15" onchange="javascript:this.form.submit();" />
                             </td>
@@ -75,11 +75,11 @@
                         </th>
                         <td>
                             {# @todo set in template variables #}
-                            {% set levels = xar_coremethod('SecurityLevel','displayMap') %}
+                            {% set levels = xar_coremethod('SecurityLevel', 'displayMap') %}
                             {% set options = [] %}
                             {% for key, value in levels %}
                                 {% if key not in [-1, 400, 600] %}
-                                    {% set options = options|merge([{'id': key * 100, 'name': value}]) %}
+                                    {% set options = options|merge([{'id': key, 'name': value}]) %}
                                 {% endif %}
                             {% endfor %}
                             {{ xar_data_input({type: "dropdown", name: "extlevel", value: extlevel, options: options}) }}

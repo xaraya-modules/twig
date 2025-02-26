@@ -29,7 +29,7 @@
         <div id="status_body">
             <div class="xar-align-center">
                 {% set label = 'Upgrade icon' %}
-                <img src="{{ xar_coremethod('sys', 'code') }}modules/installer/xarimages/installer.png" alt="{{ label }}"/>
+                <img src="{{ xar_imageurl('installer.png', 'installer') }}" alt="{{ label }}"/>
             </div>
             <ul>
                 {% for phase in range(1, active_step - 1) %}

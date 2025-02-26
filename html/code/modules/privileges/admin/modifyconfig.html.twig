@@ -271,7 +271,7 @@
                                 </label>
                             </div>
                             <div class="xar-col">
-                                {% set value = xar_modulevar('privileges'|trim( 'testmask')) %}
+                                {% set value = xar_modulevar('privileges', 'testmask')|trim %}
                                 {% if not value %}
                                     {% set value = 'All' %}
                                 {% endif %}
