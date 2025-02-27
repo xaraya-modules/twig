@@ -9,9 +9,14 @@
         {% else %}
         <div class="xar-form-container">
             {% if link and source %}
+                {% if '[itemid]' in link %}
+                    {% set itemlink = link|replace({'[itemid]': source}) %}
+                {% else %}
+                    {% set itemlink = link %}
+                {% endif %}
                 <div class="xar-row">
                     <div class="xar-col">
-                        <label title="" style=""><a href="{{ link }}">{{ source }}</a>:</label>&#160;
+                        <label title="" style=""><a href="{{ itemlink }}">{{ source }}</a>:</label>&#160;
                     </div>
                 </div>
             {% endif %}
@@ -26,7 +31,12 @@
         </div>
         {% endif %}
         {% elseif link %}
-            <a href="{{ link }}">{{ value }}</a>
+            {% if '[itemid]' in link %}
+                {% set itemlink = link|replace({'[itemid]': source}) %}
+            {% else %}
+                {% set itemlink = link %}
+            {% endif %}
+            <a href="{{ itemlink }}">{{ value }}</a>
         {% else %}
             {{ value }}
         {% endif %}
