@@ -15,7 +15,11 @@
                         <div class="xar-col">
                         {% if val is iterable %}
                         {% if link %}
-                            {% set itemlink = link|replace({'[itemid]': key}) %}
+                            {% if link is iterable %}
+                                {% set itemlink = link[key] %}
+                            {% else %}
+                                {% set itemlink = link|replace({'[itemid]': key}) %}
+                            {% endif %}
                             <label title="" style=""><a href="{{ itemlink }}">{{ key }}</a>.</label>&#160;
                         {% else %}
                             <label title="" style="">{{ key }}.</label>&#160;
@@ -32,7 +36,11 @@
                             </div>
                         {% elseif link %}
                             {# <!-- label title="" style="">{{ key }}.</label>&#160; --> #}
-                            {% set itemlink = link|replace({'[itemid]': key}) %}
+                            {% if link is iterable %}
+                                {% set itemlink = link[key] %}
+                            {% else %}
+                                {% set itemlink = link|replace({'[itemid]': key}) %}
+                            {% endif %}
                             {% if val %}
                                 <a href="{{ itemlink }}">{{ val }}</a>
                             {% else %}
@@ -49,14 +57,22 @@
                 {% endif %}
             {% elseif link %}
                 {% for val in value %}
-                     {% set itemlink = link|replace({'[itemid]': val}) %}
+                    {% if link is iterable %}
+                        {% set itemlink = link[val] %}
+                    {% else %}
+                        {% set itemlink = link|replace({'[itemid]': val}) %}
+                    {% endif %}
                      <a href="{{ itemlink }}">{{ val }}</a>&#160;{% endfor %}
             {% else %}
                 {% set val = value|join('&#160;') %}
                 {{ val }}
             {% endif %}
         {% elseif link %}
-            {% set itemlink = link|replace({'[itemid]': value}) %}
+            {% if link is iterable %}
+                {% set itemlink = link[value] %}
+            {% else %}
+                {% set itemlink = link|replace({'[itemid]': value}) %}
+            {% endif %}
             <a href="{{ itemlink }}">{{ value }}</a>
         {% else %}
             {{ value }}
