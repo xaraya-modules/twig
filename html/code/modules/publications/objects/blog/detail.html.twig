@@ -105,16 +105,16 @@
         <div class="g-plusone" data-size="medium" data-count="false" ></div>
 
         <style type="text/css">
-            @import "{{ xar_coremethod('sys', 'code') }}modules/publications/xarstyles/jquery.bookmark.css";
+            @import "{{ xar_fileurl('xarstyles/jquery.bookmark.css', 'module', 'publications') }}";
             
             #basicBookmark ul { width: 320px; }
             .bookmark_list span.bookmark_icons {
-                background: url({{ xar_coremethod('sys', 'code') }}modules/publications/xarstyles/bookmarks.png) no-repeat center;
+                background: url({{ xar_fileurl('xarstyles/bookmarks.png', 'module', 'publications') }}) no-repeat center;
             }
         </style>
         <script type="text/javascript" src="http.//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-        <script type="text/javascript" src="{{ xar_coremethod('sys', 'code') }}modules/publications/xartemplates/scripts/jquery.bookmark.min.js"></script>
-        <script type="text/javascript" src="{{ xar_coremethod('sys', 'code') }}modules/publications/xartemplates/scripts/jquery.bookmark.ext.pack.js"></script>
+        <script type="text/javascript" src="{{ xar_fileurl('xartemplates/scripts/jquery.bookmark.min.js', 'module', 'publications') }}"></script>
+        <script type="text/javascript" src="{{ xar_fileurl('xartemplates/scripts/jquery.bookmark.ext.pack.js', 'module', 'publications') }}"></script>
         <script type="text/javascript">
             (function () {
                 ('#basicBookmark').bookmark();

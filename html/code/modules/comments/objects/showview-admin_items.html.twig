@@ -24,7 +24,7 @@
                 <th>
                 {% if name == sortfield %}
                     {{ xar_data_label({property: properties[name]}) }}
-                    <a href="{{ xar_moduleurl('comments','admin','view', {'sortfield': name, 'ascdesc': arrow|upper}) }}"><img src="{{ xar_coremethod('sys', 'code') }}modules/base/xarimages/icons/sort-{{ arrow }}.png" width="16" height="16" alt="reverse order" /></a>
+                    <a href="{{ xar_moduleurl('comments','admin','view', {'sortfield': name, 'ascdesc': arrow|upper}) }}"><img src="{{ xar_imageurl('icons/sort-' ~ arrow ~ '.png', 'module', 'base') }}" width="16" height="16" alt="reverse order" /></a>
                 {% else %}
                     {# <!--we're not sorting on this column, so we should make the column head a link--> #}
                     <a href="{{ xar_moduleurl('comments','admin','view', {'sortfield': name}) }}">{{ xar_data_label({property: properties[name]}) }}</a>
@@ -51,12 +51,12 @@
                 {% if not linkfield %}
                     <td valign="top">
                         {% if xar_security_check('EditComments',0) %}
-                            <a href="{{ xar_moduleurl('comments','admin','modify', {'id': id}) }}"><img src="{{ xar_coremethod('sys', 'code') }}modules/base/xarimages/icons/modify.png" width="16" height="16" alt="Edit" /></a>
+                            <a href="{{ xar_moduleurl('comments','admin','modify', {'id': id}) }}"><img src="{{ xar_imageurl('icons/modify.png', 'module', 'base') }}" width="16" height="16" alt="Edit" /></a>
                         {% endif %}
                         {% if xar_security_check('DeleteComments',0) %}
-                            &nbsp;  <a href="{{ xar_moduleurl('comments','admin','delete', {'id': id, 'dtype': 'object', 'modid': fields['modid'], 'objectid': fields['objectid'], 'itemtype': fields['itemtype']}) }}"><img src="{{ xar_coremethod('sys', 'code') }}modules/base/xarimages/icons/delete.png" width="16" height="16" alt="Delete" /></a>
+                            &nbsp;  <a href="{{ xar_moduleurl('comments','admin','delete', {'id': id, 'dtype': 'object', 'modid': fields['modid'], 'objectid': fields['objectid'], 'itemtype': fields['itemtype']}) }}"><img src="{{ xar_imageurl('icons/delete.png', 'module', 'base') }}" width="16" height="16" alt="Delete" /></a>
                         {% endif %}
-                        &nbsp;  <a href="{{ fields['parent_url'] }}#{{ id }}"><img src="{{ xar_coremethod('sys', 'code') }}modules/base/xarimages/icons/display.png" width="16" height="16" alt="Display" /></a>
+                        &nbsp;  <a href="{{ fields['parent_url'] }}#{{ id }}"><img src="{{ xar_imageurl('icons/display.png', 'module', 'base') }}" width="16" height="16" alt="Display" /></a>
                     </td>
                 {% endif %}
             </tr>

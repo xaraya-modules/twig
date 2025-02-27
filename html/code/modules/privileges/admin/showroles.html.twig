@@ -1,7 +1,7 @@
 {# @privileges/admin/showroles.html.twig #}
 
 {% block showroles %}
-<script type="text/javascript" src="{{ xar_coremethod('sys', 'code') }}modules/privileges/xartemplates/xarTree.js"></script>
+    {{ xar_javascript({scope: "module", module: "privileges", filename: "xarTree.js"}) }}
     <script type="text/javascript">
         var oldOnLoadFunction = (window.onload) ? window.onload : new
         Function("","return true;"); function doOnLoad() { oldOnLoadFunction();

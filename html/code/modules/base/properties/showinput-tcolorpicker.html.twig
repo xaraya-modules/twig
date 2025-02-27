@@ -2,8 +2,8 @@
 
 {% block showinput_tcolorpicker %}
 <script type="text/javascript">
-        var TCP_picker_page = "{{ xar_coremethod('sys', 'code') }}modules/base/xartemplates/scripts/tcolorpicker.html";
-        var TCP_picker_pixel = "{{ xar_coremethod('sys', 'code') }}modules/base/xartemplates/includes/img/tcolorpicker_pixel.gif";
+        var TCP_picker_page = "{{ xar_fileurl('xartemplates/scripts/tcolorpicker.html', 'module', 'base') }}";
+        var TCP_picker_pixel = "{{ xar_fileurl('xartemplates/includes/img/tcolorpicker_pixel.gif', 'module', 'base') }}";
     </script>
     {{ xar_javascript({scope: "module", module: "base", filename: "tcolorpicker.js"}) }}
     {% set alttext = 'Click to select a color' %}

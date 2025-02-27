@@ -87,7 +87,7 @@
             {% endif %}
         {% endif %}
     {% elseif layout == 'byhalfhour' %}
-        {% set dummy = 1;xar_coremethod('sys', 'import', ['properties.datetime.data.halfhours']) %}
+        {% set dummy = xar_sys().import('properties.datetime.data.halfhours') %}
         {# @todo imported functions will not work with Twig #}
         {% set options = datetime_halfhours() %}
         {% set minutename = name ~ '_minute' %}
@@ -100,7 +100,7 @@
         <input type="hidden" name="{{ name }}[hour]" id="{{ id }}_hour" value="0"/>
         <input type="hidden" name="{{ name }}[second]" id="{{ id }}_second" value="0"/>
     {% elseif layout == 'byhour' %}
-        {% set dummy = 1;xar_coremethod('sys', 'import', ['properties.datetime.data.hours']) %}
+        {% set dummy = xar_sys().import('properties.datetime.data.hours') %}
         {# @todo imported functions will not work with Twig #}
         {% set options = datetime_hours() %}
         {% set minutename = name ~ '_minute' %}

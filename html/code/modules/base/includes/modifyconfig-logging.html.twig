@@ -1,7 +1,7 @@
 {# @base/includes/modifyconfig-logging.html.twig #}
 
 {% block modifyconfig_logging %}
-{# @todo set writable = is_writeable(xar_coremethod('sys', 'varpath') ~ 'logs') #}
+{# @todo set writable = is_writeable(xar_sys().varpath() ~ 'logs') #}
 {% set writable = true %}
     {% if not writable %}
         <fieldset>

@@ -171,7 +171,7 @@
             <a href="{{ xar_moduleurl('dynamicdata','admin','meta',{'showdb': 1}) }}">Show other databases</a></p>
         {% elseif export == 'view' %}
             {# <!-- @todo example of using virtual object descriptor to show database table --> #}
-            {% set dummy = xar_coremethod('sys', 'import', 'modules.dynamicdata.class.objects.virtual') %}
+            {% set dummy = xar_sys().import('modules.dynamicdata.class.objects.virtual') %}
             {% set descriptor = xar_new('TableObjectDescriptor', {'table': table, 'fields': tables[table], 'dbConnIndex': dbConnIndex}) %}
             {% set object = xar_new('DataObjectList', descriptor) %}
             {% set dummy = object.getItems() %}
