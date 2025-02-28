@@ -168,7 +168,7 @@
                         <select name="sort" id="sort">
                             <option value=""></option>
                             {% for name in show_props %}
-                                {% set property = object.properties.name %}
+                                {% set property = object.properties[name] %}
                                 {% if query['sort'] == name %}
                                     <option value="{{ name }}" selected="selected">{{ property.label }}</option>
                                 {% else %}

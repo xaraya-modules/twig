@@ -80,13 +80,13 @@
                             {% for proplist in columns %}
                                 <td valign="top">
                                 {% for name in proplist %}
-                                    {% set property = object.properties.name %}
+                                    {% set property = object.properties[name] %}
                                     <label for="field_{{ name }}">{{ property.label }}</label><br/>
                                 {% endfor %}
                                 </td>
                                 <td valign="top">
                                 {% for name in proplist %}
-                                    {% set property = object.properties.name %}
+                                    {% set property = object.properties[name] %}
                                     { #  CHECKME: could the dummy datastore actually do something here ? # }
                                     {% if property.datastore == '_dummy_' %}
                                         N/A

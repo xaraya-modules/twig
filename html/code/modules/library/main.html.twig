@@ -88,7 +88,8 @@
                 <h3>{{ description }}</h3>
                 <ul>
                     {% for objectname, objectinfo in objects %}
-                        {% set link = xar_objecturl(objectname, 'view') %}
+                        {% set entity = objectname|slice(3) %}
+                        {% set link = xar_moduleurl('library', 'user', 'view', {'entity': entity}) %}
                         <li><a href="{{ link }}">{{ objectinfo['label'] }}</a></li>
                     {% endfor %}
                 </ul>

@@ -72,18 +72,18 @@
                             {% set displaystatus = property.getDisplayStatus() %}
                             {% if displaystatus not in filterstatus %}
                             {% else %}
-                            {% set show_props = show_props + [name] %}
+                            {% set show_props = show_props|merge([name]) %}
                             {% endif %}
                         {% endfor %}
                         {# <!-- show properties in three columns to save screen space --> #}
-                        {% set size = ((show_props|length - 0.5) / 3)|round + 1 %}
+                        {% set size = ((show_props|length - 0.5) // 3) + 1 %}
                         {% set columns = show_props|batch(size) %}
                         <table class="xar-table">
                             <tr>
                             {% for proplist in columns %}
                                 <td valign="top">
                                 {% for name in proplist %}
-                                    {% set property = object.properties.name %}
+                                    {% set property = object.properties[name] %}
                                     {# <!-- CHECKME: could the dummy datastore actually do something here ? --> #}
                                     {% if property.datastore == '_dummy_' %}
                                         <input type="checkbox" name="field[{{ name }}]" id="field_{{ name }}" value="1" disabled="disabled"/>
@@ -108,7 +108,7 @@
                         <select name="sort" id="sort">
                             <option value=""></option>
                             {% for name in show_props %}
-                                {% set property = object.properties.name %}
+                                {% set property = object.properties[name] %}
                                 {% if search['sort'] == name %}
                                     <option value="{{ name }}" selected="selected">{{ property.label }}</option>
                                 {% else %}
