@@ -1,21 +1,6 @@
 {# @base/includes/modifyconfig-other.html.twig #}
 
 {% block modifyconfig_other %}
-<fieldset>
-        <legend>Legacy Support</legend>
-        <div class="xar-row">
-            <div class="xar-col">
-                {% set label = 'Load Legacy Support for Xaraya1x/BlockLayout1 functions' %}
-                <label for="loadlegacy" title="{{ label }}">
-                    Enable Legacy Support
-                </label>
-            </div>
-            <div class="xar-col">
-                {% set checked = xar_configvar('Site.Core.LoadLegacy') %}
-                {{ xar_data_input({type: "checkbox", name: "loadlegacy", id: "loadlegacy", checked: checked}) }}
-            </div>
-        </div>
-    </fieldset>
     <fieldset>
         <legend>Proxy Configuration</legend>
         <p>
