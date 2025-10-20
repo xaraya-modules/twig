@@ -274,6 +274,8 @@
                 No notes available
             {% elseif constant('xarCore::VERSION_NUM') == '2.4.1' %}
                 {{ include('@installer/includes/notes-241.html.twig') }}
+            {% elseif constant('xarCore::VERSION_NUM') == '2.8.1' %}
+                {{ include('@installer/includes/notes-281.html.twig') }}
             {% endif %}
         {% endif %}
         {% if upgrade['errormessage'] %}
