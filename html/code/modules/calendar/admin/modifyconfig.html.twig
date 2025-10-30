@@ -57,7 +57,7 @@
         <tr>
           <td><label for="default_cal">Default calendar ics file(s)</label>
               (NOTE: put your ics files in var/calendar)
-              <br /><b>NOTE TO DEVS: default filenames are stored in array xarModVars::get('calendar', 'default_cal'); the directory is
+              <br /><b>NOTE TO DEVS: default filenames are stored in array xar::mod('calendar')->getVar('default_cal'); the directory is
               sys::varpath() . '/calendar'</b>
           </td>
           <td>
