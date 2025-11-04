@@ -1,7 +1,7 @@
 {# @blocks/includes/type-status.html.twig #}
 
 {% block type_status %}
-    {% if block['type_state'] == constant('xarBlock::TYPE_STATE_MISSING') %}
+    {% if block['type_state'] == constant('ixarBlock::TYPE_STATE_MISSING') %}
         <h3>Block Type Missing</h3>
         <p class="xar-error">
             Block type file(s) not found or could not be loaded.
@@ -26,7 +26,7 @@
             <p>Please notify the site administrator</p>
         {% endif %}
 
-    {% elseif block['type_state'] == constant('xarBlock::TYPE_STATE_ERROR') %}
+    {% elseif block['type_state'] == constant('ixarBlock::TYPE_STATE_ERROR') %}
         <h3>Block Type Error</h3>
         <p class="xar-error">
             Block type could not be instantiated.
@@ -47,7 +47,7 @@
         {% else %}
             <p>Please notify the site administrator</p>
         {% endif %}
-    {% elseif block['type_state'] == constant('xarBlock::TYPE_STATE_MOD_UNAVAILABLE') %}
+    {% elseif block['type_state'] == constant('ixarBlock::TYPE_STATE_MOD_UNAVAILABLE') %}
         <h3>Block Type Unavailable</h3>
         <p class="xar-error">
             Block type module unavailable.
