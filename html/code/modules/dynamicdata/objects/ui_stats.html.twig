@@ -87,11 +87,6 @@
                                 <td valign="top">
                                 {% for name in proplist %}
                                     {% set property = object.properties[name] %}
-                                    { #  CHECKME: could the dummy datastore actually do something here ? # }
-                                    {% if property.datastore == '_dummy_' %}
-                                        N/A
-                                        { # <xar:continue /> # }
-                                    {% else %}
                                     <select name="field[{{ name }}]" id="field_{{ name }}">
                                         {% for value, label in stats.options %}
                                             {% if (value == 'sum' or value == 'avg') and not xar_subclass(property, 'NumberBoxProperty') %}
@@ -103,7 +98,6 @@
                                             {% endif %}
                                         {% endfor %}
                                     </select><br/>
-                                    {% endif %}
                                 {% endfor %}
                                 </td>
                             {% endfor %}
@@ -128,11 +122,6 @@
                             <label class="xar-form-label" for="field_{{ name }}">{{ property.label }}</label>
                         </div>
                         <div class="xar-col">
-                            {#  CHECKME: could the dummy datastore actually do something here ? #}
-                            {% if property.datastore == '_dummy_' %}
-                                N/A
-                                {# <xar:continue /> #}
-                            {% else %}
                             <select name="field[{{ name }}]" id="field_{{ name }}">
                                 {% for value, label in stats.options %}
                                     {% if (value == 'sum' or value == 'avg') and not xar_subclass(property, 'NumberBoxProperty') %}
@@ -144,7 +133,6 @@
                                     {% endif %}
                                 {% endfor %}
                             </select>
-                            {% endif %}
                         </div>
                     </div>
                     {% endif %}

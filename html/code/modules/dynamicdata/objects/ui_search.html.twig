@@ -84,10 +84,7 @@
                                 <td valign="top">
                                 {% for name in proplist %}
                                     {% set property = object.properties[name] %}
-                                    {# <!-- CHECKME: could the dummy datastore actually do something here ? --> #}
-                                    {% if property.datastore == '_dummy_' %}
-                                        <input type="checkbox" name="field[{{ name }}]" id="field_{{ name }}" value="1" disabled="disabled"/>
-                                    {% elseif not search['field'] or name in search['field'] %}
+                                    {% if not search['field'] or name in search['field'] %}
                                         <input type="checkbox" name="field[{{ name }}]" id="field_{{ name }}" value="1" checked="checked"/>
                                     {% else %}
                                         <input type="checkbox" name="field[{{ name }}]" id="field_{{ name }}" value="1"/>
