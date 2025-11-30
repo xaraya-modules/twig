@@ -3,7 +3,7 @@
 {% block skin %}
 <form action="{{ xar_moduleurl('themes', 'user', 'switch_theme') }}" method="post">
         <div>
-            {% set default_theme_id = 'default_theme_'.blockid %}
+            {% set default_theme_id = 'default_theme_' ~ blockid %}
             <label for="default_theme" id="{{ default_theme_id }}">Select Theme</label>
         </div>
         <div class="xar-align-center">

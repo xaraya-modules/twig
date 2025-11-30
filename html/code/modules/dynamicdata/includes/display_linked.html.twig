@@ -170,7 +170,7 @@
                 {% set fromvalue = object.properties.fromprop.value %}
                 {% set toprop = link.to_prop %}
                 {% if fromvalue and fromvalue is numeric %}
-                    {% set newlink = xar_objecturl(link['list'].name, 'create', ['values['.toprop.']' => fromvalue]) %}
+                    {% set newlink = xar_objecturl(link['list'].name, 'create', ['values[' ~ toprop ~ ']' => fromvalue]) %}
                 {% endif %}
                 --> #}
                 {% if link.list.itemids %}

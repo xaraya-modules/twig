@@ -2,10 +2,10 @@
 
 {% block login %}
 <form action="{{ xar_moduleurl('authsystem','user','login') }}" method="post" class="xar-margin-none">
-        {% set id = 'returnurl'._bl_block_id %}
-        {% set unameid = 'uname'._bl_block_id %}
-        {% set passid = 'pass'._bl_block_id %}
-        {% set remembermeid = 'rememberme'._bl_block_id %}
+        {% set id = 'returnurl' ~ _bl_block_id %}
+        {% set unameid = 'uname' ~ _bl_block_id %}
+        {% set passid = 'pass' ~ _bl_block_id %}
+        {% set remembermeid = 'rememberme' ~ _bl_block_id %}
         {{ xar_data_input({type: "hidden", name: "redirecturl", id: id, value: return_url}) }}
         
         <fieldset>

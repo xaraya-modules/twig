@@ -37,7 +37,7 @@
             --> #}
             {# <!--
                 {% if xar_modisavailable('pubsub') and xar_modishooked('pubsub', 'comments') %}
-                    {% set extrainfo = {'module': 'comments', 'id': 0, 'extra': header['moduleid'].'-'.header['itemtype'].'-'.header['objectid']} %}
+                    {% set extrainfo = {'module': 'comments', 'id': 0, 'extra': header['moduleid'] ~ '-' ~ header['itemtype'] ~ '-' ~ header['objectid']} %}
                     {{ xar_guifunc("pubsub", "user", "displayicon", {main: "false", extrainfo: extrainfo, layout: "text"}) }}
                 {% endif %}
             --> #}
