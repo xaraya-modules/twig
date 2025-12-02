@@ -1,0 +1,83 @@
+{# @base/main-classmap.html.twig #}
+
+{% extends '@base/base.html.twig' %}
+
+{% block modulespace %}
+    {# {{ include('@base/includes/user-mod-head.html.twig') }} #}
+    <div class="xar-mod-body">
+
+        <h2>Class Map</h2>
+        <p>This page allows you to explore the autoload class map for Xaraya modules</p>
+        {% set classmap = xar_coremethod('xarClassMap', 'getClassMap') %}
+        {% set class = xar_findvar('class', class) %}
+        {% set mod = xar_findvar('mod', mod) %}
+
+        {% if not class and mod %}
+            <strong>{{ mod }}:</strong>
+        {% endif %}
+        <ul>
+        {% for classtype, values in classmap %}
+            <li>
+                {% set url = xar_currenturl({'class': classtype, 'mod': null}) %}
+                {% if class and class == classtype %}
+                    <a href="{{ url }}">{{ classtype }}</a>:
+                    <ul>
+                    {% for module, types in values %}
+                        {% set url = xar_currenturl({'class': classtype, 'mod': module}) %}
+                        {% if types is iterable %}
+                            <li>
+                                {% if mod is not null and mod == module %}
+                                    {{ module }} ({{ types|length }}):
+                                    <ul>
+                                    {% for type, items in types %}
+                                        <li>
+                                            {% if classtype == 'methods' %}
+                                                {{ type }} ({{ items|length }})
+                                            {% else %}
+                                                {{ type }} =&gt; {{ items|keys|join(', ') }}
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <a href="{{ url }}">{{ module }}&#160;</a> ({{ types|length }})
+                                {% endif %}
+                            </li>
+                        {% else %}
+                            <li>
+                                {% if mod is not null and mod == module %}
+                                    {{ module }}:
+                                    {{ types|split("/")|last }}
+                                {% else %}
+                                    <a href="{{ url }}">{{ module }}</a>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                {% elseif not class and mod %}
+                    {% if not values[mod] %}
+                        <a href="{{ url }}">{{ classtype }}</a> (0):
+                    {% else %}
+                        <a href="{{ url }}">{{ classtype }}</a> ({{ values[mod]|length }}):
+                        <ul>
+                        {% for type, items in values[mod] %}
+                            <li>
+                                {% if classtype == 'methods' %}
+                                    {{ type }} ({{ items|length }})
+                                {% else %}
+                                    {{ type }} =&gt; {{ items|keys|join(', ') }}
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ url }}">{{ classtype }}</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

@@ -1,7 +1,7 @@
 {# @dynamicdata/properties/showhidden-subitems.html.twig #}
 
 {% block showhidden_subitems %}
-    {% set itemkeys = items|join(','|keys) %}
+    {% set itemkeys = items|keys|join(',') %}
     {% set itemkenumber_of_subitems = items|length %}
     <input type="hidden" name="number_of_subitems_{{ newprefix }}" id="number_of_subitems_{{ newprefix }}" value="{{ itemkenumber_of_subitems }}" />
     <input type="hidden" name="itemid_{{ newprefix }}" id="itemid_{{ newprefix }}" value="{{ itemid }}" />
