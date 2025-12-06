@@ -5,7 +5,7 @@
         <tr class="{{ item_class }}">
             <td colspan="{{ colspan }}">
                 {% if xar_isloggedin() and allowedit %}
-                    {% set thisobject = DataObjectFactory..getObject({'name': objectname}) %}
+                    {% set thisobject = xar_coremethod('DataObjectFactory','getObject',{'name': objectname}) %}
                     {% set isupload = thisobject.upload %}
                     {% if isupload %}
                         {% set enc_type = 'multipart/form-data' %}
@@ -19,10 +19,10 @@
                             <input type="hidden" name="authid" id="authid" value="{{ xar_security_authkey() }}"/>
                             <input type="hidden" name="confirm" id="confirm" value="1"/>
                             <input type="hidden" name="objectid" id="objectid" value="{{ thisobject.objectid }}"/>
-                            <input type="hidden" name="itemid" id="itemid" value="{{ itemid }}/>
+                            <input type="hidden" name="itemid" id="itemid" value="{{ itemid }}"/>
                             <input type="hidden" name="tplmodule" id="tplmodule" value="{{ tplmodule }}"/>
                             <input type="hidden" name="return_url" id="return_url" value="{{ xar_currentutl({'itemid': 0}) }}"/>
-                            <input type="submit" value=" }}{{ xar_translate('Save') }}" class="xar-margin-thickleft"/>
+                            <input type="submit" value="{{ xar_translate('Save') }}" class="xar-margin-thickleft"/>
                         </div>
                     </form>
                 {% elseif allowread %}

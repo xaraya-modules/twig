@@ -9,7 +9,7 @@
     --> #}
     {% if not layout or layout == 'default' %}
         {% for name, property in properties %}
-            {% if property.getDisplayStatus() not = DataPropertyMaster..DD_DISPLAYSTATE_HIDDEN %}
+            {% if property.getDisplayStatus() != constant('DataPropertyMaster::DD_DISPLAYSTATE_HIDDEN') %}
                 <div class="xar-form-input-wrapper">
                     {{ xar_data_label({property: properties[name], for: "id"}) }}
                     {{ xar_data_input({property: properties[name]}) }}
