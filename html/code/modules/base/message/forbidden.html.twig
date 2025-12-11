@@ -8,7 +8,7 @@
         {% set label = 'Privileges Icon' %}
         {{- xar_image({scope: "theme", file: "privileges.png", alt: label, width: "96", height: "96", class: "xar-module-icon"}) -}}
         {% if msg %}
-            <h2>{{ msg }}</h2>
+            <h2>{{ msg|raw }}</h2>
         {% endif %}
         <h3>Our apologies, you cannot perform this operation</h3>
 

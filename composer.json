@@ -11,9 +11,9 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "conflict": {
-        "xaraya/core": "<2.4.1"
+        "xaraya/core": "<2.8.1"
     },
     "require": {
-        "twig/twig": "^3.21"
+        "twig/twig": "^3.22"
     }
 }
